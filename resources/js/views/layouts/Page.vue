@@ -1,7 +1,7 @@
 <template>
     <div class="p-5 mt-4 xl:px-0">
         <Alert class="mb-4"/>
-        <div class="flex flex-wrap justify-between mb-6">
+        <Breadcrumb>
             <div>
                 <h2 class="bold text-2xl mb-3">{{ $props.title }}</h2>
                 <!-- Breadcrumbs -->
@@ -29,7 +29,7 @@
                     <Button v-else @click="onPageActionClick({action: action})" :class="{'mr-3' : j < ($props.actions.length-1)}" :title="action.name" :icon="action.hasOwnProperty('icon') ? action.icon : null" :theme="action.hasOwnProperty('theme') ? action.theme : null" :label="action.name"/>
                 </slot>
             </div>
-        </div>
+        </Breadcrumb>
         <slot name="filters"></slot>
         <div class="grid grid-cols-1">
             <template v-if="isElementLoading">
@@ -51,10 +51,11 @@ import Alert from "@/views/components/Alert";
 import Spinner from "@/views/components/icons/Spinner";
 import {useGlobalStateStore} from "@/stores";
 import {storeToRefs} from "pinia";
+import Breadcrumb from "@/views/components/Breadcrumb.vue";
 
 export default defineComponent({
     name: "Page",
-    components: {Alert, Button, Spinner},
+    components: {Breadcrumb, Alert, Button, Spinner},
     props: {
         id: {
             type: String,
