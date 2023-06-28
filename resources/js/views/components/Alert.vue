@@ -1,5 +1,5 @@
 <template>
-    <div v-if="alertStore.hasAlert()">
+    <div v-if="alertStore.hasAlert()" class="container-alert">
         <div v-if="alertStore" :class="wrapperClass" role="alert">
             <template v-if="alertStore.isError()">
                 <template v-if="alertStore.hasMultiple()">
@@ -34,8 +34,7 @@
 </template>
 
 <script>
-
-import {computed, defineComponent, ref} from "vue";
+import {computed, defineComponent, watch} from "vue";
 import {trans} from "@/helpers/i18n";
 import Icon from "@/views/components/icons/Icon";
 import {useAlertStore} from "@/stores";
@@ -73,6 +72,15 @@ export default defineComponent({
             alertStore.clear();
         }
 
+        watch(() => alertStore.errors,
+            ()=>{
+                if (alertStore.messages.length > 0) {
+                    setTimeout(() => {
+                        alertStore.clear();
+                    }, 5000)
+                }
+            })
+
         return {
             alertStore,
             wrapperClass,
@@ -85,3 +93,11 @@ export default defineComponent({
     }
 });
 </script>
+<style scoped>
+.container-alert {
+    position: absolute;
+    right: 2rem;
+    top: 2rem;
+    z-index: 99999999;
+}
+</style>

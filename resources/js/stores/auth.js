@@ -22,9 +22,12 @@ export const useAuthStore = defineStore("auth", {
                 this.user = response.data.user;
                 this.setBrowserData();
                 alertStore.clear();
-                await router.push("/panel/dashboard");
+                await router.push({name:"dashboard"});
                 await this.getCurrentUser();
             } catch (error) {
+                console.log(error)
+                console.log(error.response.status)
+                console.log(error.status)
                 alertStore.error(getResponseError(error));
             }
         },
@@ -33,7 +36,7 @@ export const useAuthStore = defineStore("auth", {
             const alertStore = useAlertStore();
             try {
                 const response = await authService.registerUser(payload);
-                await router.push("/panel/dashboard");
+                await router.push({name:"dashboard"});
                 alertStore.clear();
             } catch (error) {
                 alertStore.error(getResponseError(error));
@@ -81,7 +84,7 @@ export const useAuthStore = defineStore("auth", {
                         this.clearBrowserData();
                         this.user = null;
                         if (router.currentRoute.name !== "login") {
-                            router.push({path: "/login"});
+                            router.push({name:"login"});
                             console.log('logout...');
                         }
                         resolve(response)

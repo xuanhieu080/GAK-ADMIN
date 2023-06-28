@@ -16,7 +16,7 @@ const authStore = useAuthStore();
 <template>
     <div>
       <main
-          class="h-screen bg-gray-50 dark:bg-gray-900"
+          class="h-screen bg-gray-200 dark:bg-gray-900"
           :class="{ 'overflow-hidden': isSideMenuOpen }"
       >
         <Sidebar v-if="authStore.user.email"/>

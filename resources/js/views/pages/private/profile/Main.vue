@@ -8,7 +8,7 @@
     </Page>
 
     <Modal :is-showing="isAvatarModalShowing" @close="isAvatarModalShowing = false;">
-        <FormAvatar @error="isAvatarModalShowing = false;" @done="isAvatarModalShowing = false;"/>
+        <FormAvatar @error="isAvatarModalShowing = true;" @done="isAvatarModalShowing = false;"/>
     </Modal>
 
 </template>

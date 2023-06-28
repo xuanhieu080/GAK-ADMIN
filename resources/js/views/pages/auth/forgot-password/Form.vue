@@ -2,7 +2,7 @@
     <div>
         <Alert class="mb-4"/>
         <Form id="forgot-password-form" @submit.prevent="onFormSubmit">
-            <TextInput type="email" :required="true" :label="trans('users.labels.email')" name="email" v-model="form.email" autocomplete="email" class="mb-4"/>
+            <TextInput type="email" :required="true" :label="trans('users.labels.email')" error-input="email" name="email" v-model="form.email" autocomplete="email" class="mb-4"/>
             <div class="text-center">
                 <Button type="submit" :label="trans('global.buttons.send')"/>
             </div>

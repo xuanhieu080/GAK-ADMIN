@@ -2,16 +2,13 @@
     <Panel :title="trans('users.labels.password_settings')">
         <form @submit.prevent="onFormSubmit">
             <div class="mb-2">
-                <label for="password" class="text-sm text-gray-500">{{ trans('users.labels.current_password') }}</label>
-                <input type="password" id="current-password" :required="true" v-model="form.currentPassword" class="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500"/>
+                <TextInput type="password" name="current-password" :required="true" :label="trans('users.labels.current_password')" error-input="current_password" v-model="form.currentPassword" class="mb-4"/>
             </div>
             <div class="mb-2">
-                <label for="password" class="text-sm text-gray-500">{{ trans('users.labels.new_password') }}</label>
-                <input type="password" id="password" :required="true" v-model="form.password" class="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500"/>
+                <TextInput type="password" name="password" :required="true" :label="trans('users.labels.new_password')" error-input="password" v-model="form.password" class="mb-4"/>
             </div>
             <div class="mb-4">
-                <label for="password-confirm" class="text-sm text-gray-500">{{ trans('users.labels.confirm_password') }}</label>
-                <input type="password" id="password-confirm" :required="true" v-model="form.passwordConfirm" class="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500"/>
+                <TextInput type="password" name="password-confirm" :required="true" :label="trans('users.labels.confirm_password')" error-input="password_confirmation" v-model="form.passwordConfirm" class="mb-4"/>
             </div>
             <Button type="submit" :label="trans('global.buttons.update')"/>
         </form>
@@ -27,9 +24,11 @@ import {useAlertStore} from "@/stores";
 import {getResponseError} from "@/helpers/api";
 import Button from "@/views/components/input/Button";
 import Panel from "@/views/components/Panel";
+import TextInput from "@/views/components/input/TextInput.vue";
 
 export default defineComponent({
     components: {
+        TextInput,
         Panel,
         Button,
     },

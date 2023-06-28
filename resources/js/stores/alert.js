@@ -5,6 +5,7 @@ export const useAlertStore = defineStore({
     state: () => {
         return {
             messages: [],
+            errors: [],
             type: null,
         }
     },
@@ -14,21 +15,26 @@ export const useAlertStore = defineStore({
             this.push(message);
             this.type = 'success'
         },
-        error(message) {
+        error(message, status = 400) {
             this.clear();
-            this.push(message);
+            this.push(message, status);
             this.type = 'error'
         },
-        push(message) {
-            if (Array.isArray(message) || (typeof message === 'object' && message != null)) {
-                for (let i in message) {
-                    this.messages.push(message[i]);
-                }
+        push(message, status = 400) {
+            if (status == 422) {
+                this.errors = message;
             } else {
-                this.messages.push(message);
+                if (Array.isArray(message) || (typeof message === 'object' && message != null)) {
+                    for (let i in message) {
+                        this.messages.push(message[i]);
+                    }
+                } else {
+                    this.messages.push(message);
+                }
             }
         },
         clear() {
+            this.errors = [];
             this.messages = [];
             this.type = null;
         },

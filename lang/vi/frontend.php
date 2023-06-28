@@ -1,0 +1,134 @@
+<?php
+
+return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Front-end application translations
+    |--------------------------------------------------------------------------
+    |
+    | The following language lines are used for the front-end application.
+    |
+    */
+
+    "users"           => [
+        "status" => [
+            "verified"     => "Đã xác minh",
+            "not_verified" => "Chưa xác minh",
+            "ask_verify"   => "Xác minh Email"
+        ],
+        "roles"  => [
+            "regular" => "Thường",
+            "admin"   => "Quản trị"
+        ],
+        "labels" => [
+            "id"                => "ID",
+            "id_pound"          => "#",
+            "first_name"        => "Họ",
+            "last_name"         => "Tên",
+            "middle_name"       => "Tên đệm",
+            "name"              => "Tên",
+            "avatar"            => "Hình đại diện",
+            "email"             => "Email",
+            "role"              => "Vai trò",
+            "roles"             => "Vai trò",
+            "status"            => "Trạng thái",
+            "current_password"  => "Mật khẩu hiện tại",
+            "password"          => "Mật khẩu",
+            "new_password"      => "Mật khẩu mới",
+            "confirm_password"  => "Xác nhận mật khẩu",
+            "ask_upload_avatar" => "Tải lên Hình đại diện",
+            "new_record"        => "Người dùng mới",
+            "edit_record"       => "Chỉnh sửa Người dùng",
+            "general_settings"  => "Cài đặt chung",
+            "password_settings" => "Cài đặt Mật khẩu",
+            "avatar_settings"   => "Cài đặt Hình đại diện",
+        ]
+    ],
+    "messages"        => [
+        "name" => "Tin nhắn"
+    ],
+
+    "global" => [
+        "pages"   => [
+            "home"            => "Trang chủ",
+            "users"           => "Người dùng",
+            "users_create"    => "Người dùng mới",
+            "users_edit"      => "Chỉnh sửa người dùng",
+            "profile"         => "Hồ sơ",
+            "register"        => "Đăng ký",
+            "login"           => "Đăng nhập",
+            "logout"          => "Đăng xuất",
+            "forgot_password" => "Quên mật khẩu",
+            "reset_password"  => "Đặt lại mật khẩu"
+        ],
+        "phrases" => [
+            'clear_filters'            => 'Xóa tất cả',
+            "loading"                  => "Đang tải...",
+            "sign_out"                 => "Đăng xuất",
+            'all_records'              => 'Tất cả hồ sơ',
+            "argh"                     => "Ồ!",
+            "success"                  => "Thành công!",
+            "fix_errors"               => "Vui lòng sửa các lỗi sau:",
+            "no_records"               => "Không tìm thấy hồ sơ.",
+            'login_desc'               => 'Nếu bạn đã là thành viên, vui lòng đăng nhập.',
+            'login_not_verified'       => 'Vui lòng xác minh email của bạn để có thể đăng nhập.',
+            'register_desc'            => 'Nếu bạn chưa có tài khoản, vui lòng đăng ký.',
+            'reset_password_desc'      => 'Điền vào biểu mẫu để đặt lại mật khẩu của bạn.',
+            'login_ask'                => 'Đã có tài khoản?',
+            'register_ask'             => 'Chưa có tài khoản?',
+            'forgot_password_desc'     => 'Nếu bạn quên mật khẩu, hãy đặt lại nó dưới đây.',
+            "forgot_password_ask"      => "Quên mật khẩu?",
+            'forgot_password_login'    => 'Có mật khẩu của bạn? Đăng nhập.',
+            "already_registered_login" => "Hoàn thành rồi? Đăng nhập.",
+            "inspire"                  => "Hãy xây dựng một cái gì đó thú vị!",
+            "copyright"                => sprintf("Bản quyền © %s. %s. Đã đăng ký Bảo lưu.", date('Y'), env('APP_NAME')),
+            'record_created'           => 'Tạo hồ sơ thành công.',
+            'record_not_created'       => 'Không thể tạo hồ sơ.',
+            'record_updated'           => 'Cập nhật hồ sơ thành công.',
+            'record_not_updated'       => 'Không thể cập nhật hồ sơ.',
+            'file_uploaded'            => 'Tải lên tệp thành công',
+            'file_not_uploaded'        => 'Không thể tải lên tệp',
+            'password_updated'         => 'Cập nhật mật khẩu thành công',
+            'password_not_updated'     => 'Không thể cập nhật mật khẩu',
+            'profile_updated'          => 'Cập nhật hồ sơ thành công',
+            'profile_not_updated'      => 'Không thể cập nhật hồ sơ',
+            'not_found_title'          => '404',
+            'not_found_text'           => 'Trang bạn đang tìm không có ở đây.',
+            'not_found_back'           => 'Quay lại',
+            'input_files_select'       => 'Kéo và thả tệp vào đây hoặc nhấp để tải lên | Kéo và thả tệp vào đây hoặc nhấp để tải lên',
+            'input_files_selected'     => '{count} tệp được chọn | {count} tệp được chọn',
+            'email_verified'           => 'Xác minh email thành công!',
+            "member_since"             => "Thành viên từ: {date}",
+            "verification_sent"        => "Đã gửi liên kết xác minh email.",
+        ],
+        "buttons" => [
+            'add_new'       => 'Thêm mới',
+            'filters'       => 'Bộ lọc',
+            "save"          => "Lưu",
+            "send"          => "Gửi",
+            "submit"        => "Gửi",
+            "login"         => "Đăng nhập",
+            "register"      => "Đăng ký",
+            "search"        => "Tìm kiếm",
+            "new_record"    => "Hồ sơ mới",
+            'documentation' => "Tài liệu",
+            "back"          => "Quay lại",
+            "upload"        => "Tải lên",
+            "update"        => "Cập nhật",
+            "change_avatar" => "Thay đổi hình đại diện",
+        ],
+        "actions" => [
+            "name"   => "Hành động",
+            "edit"   => "Chỉnh sửa",
+            "delete" => "Xóa"
+        ],
+        "alerts"  => [
+            "success"                => "Thành công!",
+            "warning"                => "Cảnh báo!",
+            "danger"                 => "Lỗi!",
+            "confirm"                => "Xác nhận!",
+            "confirm_action_message" => "Bạn có chắc chắn muốn thực hiện hành động này?",
+        ]
+    ]
+];

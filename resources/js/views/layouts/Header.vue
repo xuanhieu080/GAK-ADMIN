@@ -20,13 +20,8 @@ const {
   closeToggle
 } = useStore();
 
-async function logout() {
-  try {
-    await axios.post(route('user.logout'));
-    router.push('/login');
-  } catch (error) {
-    console.error(error);
-  }
+function logout() {
+    authStore.logout()
 }
 
 function toggleSideMenuSidebar() {

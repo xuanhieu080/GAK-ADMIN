@@ -26,12 +26,15 @@
             :placeholder="placeholder"
             :autocomplete="autocomplete"
             class="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-theme-500 focus:border-theme-500 text-sm"></textarea>
+        <span v-if="errorInput && errorStore.errors[errorInput]" class="text-xs tracking-wide text-red-600">{{
+                errorStore.errors[errorInput][0]
+            }}</span>
     </div>
 </template>
 
 <script>
-
 import {defineComponent} from "vue";
+import {useAlertStore} from "@/stores";
 
 export default defineComponent({
     inheritAttrs: false,
@@ -74,15 +77,21 @@ export default defineComponent({
             type: String,
             default: null,
         },
+        errorInput: {
+            type: String,
+        }
     },
     emits: ['update:modelValue'],
     setup(props, {emit}) {
+
+        const errorStore = useAlertStore();
         function onInput(event) {
             emit("update:modelValue", event.target.value);
         }
 
         return {
-            onInput
+            onInput,
+            errorStore
         }
     }
 });

@@ -2,7 +2,7 @@
     <Panel>
         <div class="flex">
             <div class="w-1/6 px-2">
-                <img v-if="avatarUrl" :src="avatarUrl" class="w-full rounded-full" :alt="user.full_name"/>
+                <img v-if="user.avatar_url" :src="authStore.user.avatar_url" class="w-full rounded-full" :alt="user.full_name"/>
                 <div v-else class="rounded-full">
                     <Avatar></Avatar>
                 </div>
@@ -58,6 +58,7 @@ export default defineComponent({
     setup(props, {emit}) {
         const authService = new AuthService();
         const alertStore = useAlertStore();
+        const authStore = useAuthStore()
         const {user} = useAuthStore()
 
         const avatarUrl = computed(() => {
@@ -79,6 +80,7 @@ export default defineComponent({
             onVerificationSend,
             onChangeAvatar,
             avatarUrl,
+            authStore,
             trans,
         }
     }

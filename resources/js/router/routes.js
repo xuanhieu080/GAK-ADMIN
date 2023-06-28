@@ -17,49 +17,8 @@ const routes = [
     {
         name: "home",
         path: "/",
-        meta: {requiresAuth: false},
-        component: PageLogin,
-    },
-    {
-        name: "panel",
-        path: "/panel",
-        children: [
-            {
-                name: "dashboard",
-                path: "dashboard",
-                meta: {requiresAuth: true},
-                component: PageDashboard,
-            },
-            {
-                name: "profile",
-                path: "profile",
-                meta: {requiresAuth: true, isOwner: true},
-                component: PageProfile,
-            },
-            {
-                path: "users",
-                children: [
-                    {
-                        name: "users.list",
-                        path: "list",
-                        meta: {requiresAuth: true, requiresAbility: abilities.LIST_USER},
-                        component: PageUsers,
-                    },
-                    {
-                        name: "users.create",
-                        path: "create",
-                        meta: {requiresAuth: true, requiresAbility: abilities.CREATE_USER},
-                        component: PageUsersCreate,
-                    },
-                    {
-                        name: "users.edit",
-                        path: ":id/edit",
-                        meta: {requiresAuth: true, requiresAbility: abilities.EDIT_USER},
-                        component: PageUsersEdit,
-                    },
-                ]
-            },
-        ]
+        meta: {requiresAuth: true},
+        component: PageDashboard
     },
     {
         path: "/login",
@@ -84,6 +43,41 @@ const routes = [
         name: "forgotPassword",
         meta: {requiresAuth: false},
         component: PageForgotPassword,
+    },
+    {
+        name: "dashboard",
+        path: "/dashboard",
+        meta: {requiresAuth: true},
+        component: PageDashboard,
+    },
+    {
+        name: "profile",
+        path: "/profile",
+        meta: {requiresAuth: true, isOwner: true},
+        component: PageProfile,
+    },
+    {
+        path: "/users",
+        children: [
+            {
+                name: "users.list",
+                path: "list",
+                meta: {requiresAuth: true, requiresAbility: abilities.LIST_USER},
+                component: PageUsers,
+            },
+            {
+                name: "users.create",
+                path: "create",
+                meta: {requiresAuth: true, requiresAbility: abilities.CREATE_USER},
+                component: PageUsersCreate,
+            },
+            {
+                name: "users.edit",
+                path: ":id/edit",
+                meta: {requiresAuth: true, requiresAbility: abilities.EDIT_USER},
+                component: PageUsersEdit,
+            },
+        ]
     },
     {
         path: "/:catchAll(.*)",

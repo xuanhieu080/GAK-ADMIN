@@ -62,7 +62,7 @@ return [
     */
 
     //'home' => RouteServiceProvider::HOME,
-    'home' => env( 'SPA_URL' ) . '/panel/dashboard',
+    'home' => env( 'SPA_URL' ) . '/dashboard',
 
     /*
     |--------------------------------------------------------------------------

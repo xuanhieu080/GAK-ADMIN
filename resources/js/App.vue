@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-gray-100" v-if="authStore.user && authStore.user.hasOwnProperty('id')">
+    <div class="bg-gray-300" v-if="authStore.user && authStore.user.hasOwnProperty('id')">
         <Index/>
     </div>
     <template v-else>
@@ -55,7 +55,7 @@ export default {
                     showDesktop: true,
                     showMobile: true,
                     requiresAbility: false,
-                    to: '/panel/dashboard',
+                    to: '/dashboard',
                 },
                 {
                     name: trans('global.pages.users'),
@@ -63,7 +63,7 @@ export default {
                     showDesktop: true,
                     showMobile: true,
                     requiresAbility: getAbilitiesForRoute(['users.list', 'users.create', 'users.edit']),
-                    to: '/panel/users/list',
+                    to: '/users/list',
                     children: [
                         {
                             name: trans('global.phrases.all_records'),
@@ -71,7 +71,7 @@ export default {
                             showDesktop: true,
                             showMobile: true,
                             requiresAbility: getAbilitiesForRoute('users.list'),
-                            to: '/panel/users/list',
+                            to: '/users/list',
                         },
                         {
                             name: trans('global.buttons.add_new'),
@@ -79,7 +79,7 @@ export default {
                             showDesktop: true,
                             showMobile: true,
                             requiresAbility: getAbilitiesForRoute('users.create'),
-                            to: '/panel/users/create',
+                            to: '/users/create',
                         }
                     ]
                 },

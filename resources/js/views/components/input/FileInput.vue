@@ -21,16 +21,18 @@
                     <span>{{ files[0].name }}</span>
                 </template>
             </div>
-            <input type="file" ref="input" :disabled="disabled" :multiple="multiple" :accept="$props.accept" @input="onChange"/>
+            <input type="file" ref="input" :required="required" :disabled="disabled" :multiple="multiple" :accept="$props.accept" @input="onChange"/>
         </div>
+        <span v-if="errorInput && errorStore.errors[errorInput]" class="text-xs tracking-wide text-red-600">{{
+                errorStore.errors[errorInput][0]
+            }}</span>
     </div>
 </template>
 
 <script>
 import {computed, defineComponent, ref, watch} from "vue";
-
 import {trans} from "@/helpers/i18n";
-
+import {useAlertStore} from "@/stores";
 
 export default defineComponent({
     props: {
@@ -71,11 +73,14 @@ export default defineComponent({
         accept: {
             type: String,
             default: '*/*'
+        },
+        errorInput: {
+            type: String,
         }
     },
     emits: ['update:modelValue', 'change', 'click', 'input', 'error', 'clear'],
     setup(props, {emit}) {
-
+        const errorStore = useAlertStore();
         let hover = ref(false);
 
         const input = ref(null);
@@ -216,7 +221,8 @@ export default defineComponent({
             canClear,
             onChange,
             placeholderMessage,
-            trans
+            trans,
+            errorStore
         }
 
     }
