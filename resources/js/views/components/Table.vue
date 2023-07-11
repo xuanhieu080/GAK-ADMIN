@@ -6,7 +6,7 @@
                 <th v-for="(item, i) in headers" scope="col" class="align-middle px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     <slot :name="'header-'+i">
                         <div class="leading-loose inline-block">{{ item }}</div>
-                        <div class="sort-arrows inline-block text-center absolute" v-if="sorting.hasOwnProperty(i) && sorting[i]">
+                        <div class="sort-arrows inline-block text-center" v-if="sorting.hasOwnProperty(i) && sorting[i]">
                             <span @click.prevent="onSortChange(i, 'asc')" :class="sortControlClasses(i, 'asc')" class="w-full block cursor-pointer font-normal hover:font-bold focus:font-bold hover:text-theme-600 focus:text-theme-600 dark:hover:text-theme-500 dark:focus:text-theme-500"><i class="fa fa-caret-up"></i></span>
                             <span @click.prevent="onSortChange(i, 'desc')" :class="sortControlClasses(i, 'desc')" class="w-full block cursor-pointer font-normal hover:font-bold focus:font-bold hover:text-theme-600 focus:text-theme-600 dark:hover:text-theme-500 dark:focus:text-theme-500"><i class="fa fa-caret-down"></i></span>
                         </div>

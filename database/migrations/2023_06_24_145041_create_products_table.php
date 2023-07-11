@@ -20,6 +20,8 @@ return new class extends Migration
             $table->double('price', 15)->default(0);
             $table->unsignedBigInteger('category_id')->nullable();
             $table->integer('qty')->default(100);
+            $table->integer('qty_sold')->default(0);
+            $table->integer('priority')->default(0);
             $table->boolean('is_active')->default(1);
             $table->timestamps();
         });

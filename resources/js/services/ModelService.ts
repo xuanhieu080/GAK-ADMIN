@@ -25,6 +25,14 @@ export default abstract class ModelService extends BaseService {
         return this.get(this.url + `/${object_id}/edit`, {});
     }
 
+    public storeCustom(object_id, payload) {
+        let data = this.transformPayloadForSubmission(payload);
+        return this.post(this.url + `/${object_id}`, data, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+        });
+    }
     public store(payload) {
         let data = this.transformPayloadForSubmission(payload);
         return this.post(this.url, data, {
@@ -63,8 +71,9 @@ export default abstract class ModelService extends BaseService {
         return this.update(object_id, data).then((response) => {
             let answer = response.data;
             alertStore.success(answer.message);
+            return response;
         }).catch((error) => {
-            alertStore.error(getResponseError(error));
+            alertStore.error(getResponseError(error), error.response.status);
         }).finally(() => {
             globalUserState.loadingElements[ui_element_id] = false;
         })
@@ -78,9 +87,23 @@ export default abstract class ModelService extends BaseService {
             let answer = response.data;
             alertStore.success(answer.message);
         }).catch((error) => {
-            alertStore.error(getResponseError(error));
+            alertStore.error(getResponseError(error), error.response.status);
         }).finally(() => {
             globalUserState.setElementLoading(ui_element_id, false);
+        })
+    }
+
+    public handleCreateCustom(ui_element_id,object_id, data) {
+        const alertStore = useAlertStore();
+        const globalUserState = useGlobalStateStore();
+        globalUserState.loadingElements[ui_element_id] = true;
+        return this.storeCustom(object_id, data).then((response) => {
+            let answer = response.data;
+            alertStore.success(answer.message);
+        }).catch((error) => {
+            alertStore.error(getResponseError(error), error.response.status);
+        }).finally(() => {
+            globalUserState.loadingElements[ui_element_id] = false;
         })
     }
 
@@ -90,12 +113,31 @@ export default abstract class ModelService extends BaseService {
             let val = payload[key];
             if (Array.isArray(val)) {
                 for (let index in val) {
-                    data.append(key + '[]', val[index]);
+                    if (typeof val[index] === 'object' && val[index] !== null) {
+                        const array = this.objectToArray(val[index]);
+                        array.forEach(function(number) {
+                            data.append(key + `[${index}][${number.key}]`, number.value);
+                        });
+                    } else if(val != null) {
+                        data.append(key + `[${index}]`, val[index]);
+                    }
                 }
-            } else {
+            } else if(val != null) {
                 data.append(key, val);
             }
         }
         return data;
+    }
+
+    public objectToArray(obj) {
+        const result = [];
+
+        for (const key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                result.push({ key: key, value: obj[key] });
+            }
+        }
+
+        return result;
     }
 }

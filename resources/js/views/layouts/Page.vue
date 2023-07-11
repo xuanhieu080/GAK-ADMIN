@@ -1,14 +1,14 @@
 <template>
     <div class="p-5 mt-4 xl:px-0">
         <Alert class="mb-4"/>
-        <Breadcrumb>
+        <Breadcrumb v-if="breadcrumbs.length > 0 ">
             <div>
                 <h2 class="bold text-2xl mb-3">{{ $props.title }}</h2>
                 <!-- Breadcrumbs -->
                 <nav class="flex" aria-label="Breadcrumb" v-if="$props.breadcrumbs.length > 0">
                     <ol class="inline-flex items-center space-x-1 md:space-x-3">
                         <li class="inline-flex items-center">
-                            <router-link :to="toUrl('/dashboard')" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+                            <router-link :to="{name: 'home'}" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
                                 <i class="fa fa-home mr-3"></i>
                                 {{ trans('global.pages.home') }}
                             </router-link>

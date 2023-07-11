@@ -1,17 +1,9 @@
 import ModelService from "@/services/ModelService";
 
-export default class UserService extends ModelService {
+export default class CustomerService extends ModelService {
 
     constructor() {
         super();
-        this.url = '/users';
+        this.url = '/customers';
     }
-
-    public updateAvatar(id, payload) {
-        const formData = new FormData();
-        formData.append("avatar", payload.avatar);
-        formData.append('_method', 'put');
-        return this.post(`/users/${id}/avatar`, formData);
-    }
-
 }

@@ -25,7 +25,7 @@ class Customer extends Authenticatable implements MustVerifyEmail
      * ALlowed search fields
      * @var string[]
      */
-    protected $searchFields = ['first_name', 'last_name', 'email', 'username'];
+    protected $searchFields = ['first_name', 'last_name', 'email', 'username', 'code'];
 
     /**
      * The attributes that aren't mass assignable.
@@ -59,8 +59,8 @@ class Customer extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $appends = [
-        'avatar_url',
         'full_name',
+        'name',
     ];
 
     /**
@@ -82,39 +82,6 @@ class Customer extends Authenticatable implements MustVerifyEmail
         });
     }
 
-    /**
-     * Returns the user avatar
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne|MediaFile
-     */
-    public function avatar()
-    {
-        return $this->hasOne(MediaFile::class, 'id', 'avatar_id');
-    }
-
-    /**
-     * Returns the user files
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function mediaFiles()
-    {
-        return $this->hasMany(MediaFile::class, 'user_id', 'id');
-    }
-
-    /**
-     * Returns the avatar url attribute
-     * @return string|null
-     */
-    public function getAvatarUrlAttribute()
-    {
-        $src = $this->getAttribute('avatar_id');
-        if (is_null($src)) {
-            return null;
-        }
-        if (!empty($this->avatar)) {
-            return asset('storage/'.$this->avatar->path);
-        }
-        return null;
-    }
 
     /**
      * Returns the full_name attribute
@@ -130,6 +97,18 @@ class Customer extends Authenticatable implements MustVerifyEmail
             }
         }
         return implode(' ', $names);
+    }
+
+    public function getNameAttribute()
+    {
+        $names = [];
+        foreach (['first_name', 'last_name'] as $key) {
+            $value = $this->getAttribute($key);
+            if (!empty($value)) {
+                $names[] = $value;
+            }
+        }
+        return trim(implode(' ', $names));
     }
 
     /**

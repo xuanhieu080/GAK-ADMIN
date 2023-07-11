@@ -16,6 +16,9 @@
                @input="onInput"
                :placeholder="placeholder"
                :autocomplete="autocomplete"
+               :class="inputClass"
+               :min="min"
+               :max="max"
                class="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-theme-500 focus:border-theme-500 text-sm"/>
         <textarea v-else
             :id="name"
@@ -25,6 +28,8 @@
             @input="onInput"
             :placeholder="placeholder"
             :autocomplete="autocomplete"
+            :class="inputClass"
+            :rows="rows"
             class="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-theme-500 focus:border-theme-500 text-sm"></textarea>
         <span v-if="errorInput && errorStore.errors[errorInput]" class="text-xs tracking-wide text-red-600">{{
                 errorStore.errors[errorInput][0]
@@ -40,6 +45,7 @@ export default defineComponent({
     inheritAttrs: false,
     props: {
         class: String,
+        inputClass: String,
         style: [String, Object],
         name: {
             type: String,
@@ -77,8 +83,18 @@ export default defineComponent({
             type: String,
             default: null,
         },
+        rows: {
+            type: Number,
+            default: 2,
+        },
         errorInput: {
             type: String,
+        },
+        min: {
+            type: Number,
+        },
+        max: {
+            type: Number,
         }
     },
     emits: ['update:modelValue'],

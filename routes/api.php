@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -31,6 +34,10 @@ Route::middleware(['auth:sanctum', 'apply_locale'])->group(function () {
      */
     Route::put('/users/{user}/avatar', [UserController::class, 'updateAvatar']);
     Route::resource('users', UserController::class);
+    Route::resource('customers', CustomerController::class);
+    Route::resource('products', ProductController::class);
+    Route::resource('categories', CategoryController::class);
+    Route::post('/customers/{id}/recharge', [CustomerController::class, 'recharge']);
 
     /**
      * Roles

@@ -51,7 +51,7 @@ export default defineComponent({
             authService.updateUser(form)
                 .then(() => authStore.getCurrentUser())
                 .then((response) => (alertStore.success(trans('global.phrases.profile_updated'))))
-                .catch((error) => (alertStore.error(getResponseError(error))));
+                .catch((error) => (alertStore.error(getResponseError(error), error.response.status)));
         }
 
         return {

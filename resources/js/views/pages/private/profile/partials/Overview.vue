@@ -68,7 +68,7 @@ export default defineComponent({
         function onVerificationSend() {
             authService.sendVerification({user: user.id})
                 .then((response) => (alertStore.success(trans('global.phrases.verification_sent'))))
-                .catch((error) => (alertStore.error(getResponseError(error))));
+                .catch((error) => (alertStore.error(getResponseError(error), error.response.status)));
         }
 
         function onChangeAvatar() {

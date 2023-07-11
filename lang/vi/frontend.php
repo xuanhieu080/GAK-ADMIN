@@ -11,7 +11,7 @@ return [
     |
     */
 
-    "users"           => [
+    "users"    => [
         "status" => [
             "verified"     => "Đã xác minh",
             "not_verified" => "Chưa xác minh",
@@ -28,6 +28,8 @@ return [
             "last_name"         => "Tên",
             "middle_name"       => "Tên đệm",
             "name"              => "Tên",
+            "code"              => "Mã",
+            "username"          => "Tên đăng nhập",
             "avatar"            => "Hình đại diện",
             "email"             => "Email",
             "role"              => "Vai trò",
@@ -45,22 +47,32 @@ return [
             "avatar_settings"   => "Cài đặt Hình đại diện",
         ]
     ],
-    "messages"        => [
+    "messages" => [
         "name" => "Tin nhắn"
     ],
 
     "global" => [
         "pages"   => [
-            "home"            => "Trang chủ",
-            "users"           => "Người dùng",
-            "users_create"    => "Người dùng mới",
-            "users_edit"      => "Chỉnh sửa người dùng",
-            "profile"         => "Hồ sơ",
-            "register"        => "Đăng ký",
-            "login"           => "Đăng nhập",
-            "logout"          => "Đăng xuất",
-            "forgot_password" => "Quên mật khẩu",
-            "reset_password"  => "Đặt lại mật khẩu"
+            "home"              => "Trang chủ",
+            "users"             => "Người dùng",
+            "users_create"      => "Người dùng mới",
+            "users_edit"        => "Chỉnh sửa người dùng",
+            "customers"         => "Khách hàng",
+            "customers_create"  => "Khách hàng mới",
+            "customers_edit"    => "Chỉnh sửa khách hàng",
+            "categories"        => "Nhóm sản phẩm",
+            "categories_create" => "Nhóm sản phẩm mới",
+            "categories_edit"   => "Chỉnh sửa nhóm sản phẩm",
+            "products"          => "Sản phẩm",
+            "products_create"   => "Sản phẩm mới",
+            "products_edit"     => "Chỉnh sửa sản phẩm",
+            "profile"           => "Hồ sơ",
+            "register"          => "Đăng ký",
+            "login"             => "Đăng nhập",
+            "logout"            => "Đăng xuất",
+            "forgot_password"   => "Quên mật khẩu",
+            "reset_password"    => "Đặt lại mật khẩu",
+            "recharge"          => "Nạp tiền",
         ],
         "phrases" => [
             'clear_filters'            => 'Xóa tất cả',
@@ -117,11 +129,13 @@ return [
             "upload"        => "Tải lên",
             "update"        => "Cập nhật",
             "change_avatar" => "Thay đổi hình đại diện",
+            "recharge"      => "Nạp tiền",
         ],
         "actions" => [
-            "name"   => "Hành động",
-            "edit"   => "Chỉnh sửa",
-            "delete" => "Xóa"
+            "name"     => "Hành động",
+            "edit"     => "Chỉnh sửa",
+            "delete"   => "Xóa",
+            "recharge" => "Nạp tiền"
         ],
         "alerts"  => [
             "success"                => "Thành công!",
@@ -130,5 +144,19 @@ return [
             "confirm"                => "Xác nhận!",
             "confirm_action_message" => "Bạn có chắc chắn muốn thực hiện hành động này?",
         ]
+    ],
+    "labels" => [
+        "transaction_code" => "Mã giao dịch",
+        "amount"           => "Số tiền",
+        "description"      => "Nội dung",
+        "categories"       => "Danh sách nhóm",
+        "priority"         => "Thứ tự hiển thị",
+        "price"            => "Giá tiền",
+        "qty"              => "Số lượng",
+        "is_active"        => "Trạng thái",
+        "detail"           => "Chi tiết",
+        "add"              => "Thêm",
+        "add_detail"       => "Thêm chi tiết",
+        "delete"           => "Xoá",
     ]
 ];

@@ -55,7 +55,7 @@ export default {
                     showDesktop: true,
                     showMobile: true,
                     requiresAbility: false,
-                    to: '/dashboard',
+                    to: '/',
                 },
                 {
                     name: trans('global.pages.users'),

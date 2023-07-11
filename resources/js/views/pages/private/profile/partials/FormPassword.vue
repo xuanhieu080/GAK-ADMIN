@@ -50,7 +50,7 @@ export default defineComponent({
             };
             authService.updatePassword(payload)
                 .then((response) => (alertStore.success(trans('global.phrases.password_updated'))))
-                .catch((error) => (alertStore.error(getResponseError(error))));
+                .catch((error) => (alertStore.error(getResponseError(error), error.response.status)));
         }
 
         return {

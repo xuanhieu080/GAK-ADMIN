@@ -1,5 +1,5 @@
 <template>
-    <div class="relative z-10 p-4 md:p-8 bg-gray-200 rounded mb-2">
+    <div class="relative z-10 p-4 md:p-8 bg-gray-50 rounded mb-2">
         <label class="absolute text-sm leading-snug text-gray-900 cursor-pointer hover:text-gray-700 top-2.5 right-3.5" @click="onClear">{{ $props.clear_text }}</label>
         <slot></slot>
     </div>

@@ -14,7 +14,7 @@
                         <TextInput name="email" type="email" :label="trans('users.labels.email')" v-model="mainQuery.filters.email.value"></TextInput>
                     </FiltersCol>
                     <FiltersCol>
-                        <Dropdown name="role" server="roles/search" :multiple="true" :label="trans('users.labels.role')" v-model="mainQuery.filters.role.value"></Dropdown>
+                        <Dropdown name="role" server="roles/search" :multiple="true" :label="trans('users.labels.role')" :server-search-min-characters="0" v-model="mainQuery.filters.role.value"></Dropdown>
                     </FiltersCol>
                 </FiltersRow>
             </Filters>
@@ -116,7 +116,7 @@ export default defineComponent({
             breadcrumbs: [
                 {
                     name: trans('global.pages.users'),
-                    to: toUrl('/users'),
+                    to: toUrl('/users/list'),
                     active: true,
                 }
             ],
@@ -223,7 +223,7 @@ export default defineComponent({
                     table.loading = false;
                 })
                 .catch((error) => {
-                    alertStore.error(getResponseError(error));
+                    alertStore.error(getResponseError(error), error.response.status);
                     table.loading = false;
                 });
         }

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->boolean('is_active')->default(1);
-            $table->boolean('status')->default(0)->comment('0: chưa bán, 1: đã bán');
+            $table->string('status')->default('PENDING')->comment('PENDING: chưa bán, SOLD: đã bán, EXPIRED: Đã hết hạn');
             $table->timestamps();
         });
     }

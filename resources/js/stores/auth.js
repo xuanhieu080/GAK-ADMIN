@@ -22,13 +22,10 @@ export const useAuthStore = defineStore("auth", {
                 this.user = response.data.user;
                 this.setBrowserData();
                 alertStore.clear();
-                await router.push({name:"dashboard"});
+                await router.push({name:"home"});
                 await this.getCurrentUser();
             } catch (error) {
-                console.log(error)
-                console.log(error.response.status)
-                console.log(error.status)
-                alertStore.error(getResponseError(error));
+                alertStore.error(getResponseError(error,error.response.status));
             }
         },
         async register(payload) {
@@ -36,10 +33,10 @@ export const useAuthStore = defineStore("auth", {
             const alertStore = useAlertStore();
             try {
                 const response = await authService.registerUser(payload);
-                await router.push({name:"dashboard"});
+                await router.push({name:"home"});
                 alertStore.clear();
             } catch (error) {
-                alertStore.error(getResponseError(error));
+                alertStore.error(getResponseError(error), error.response.status);
             }
         },
         async getCurrentUser() {
@@ -69,7 +66,7 @@ export const useAuthStore = defineStore("auth", {
                         });
                     })
                     .catch((err) => {
-                        alertStore.error(getResponseError(err));
+                        alertStore.error(getResponseError(err), err.response.status);
                         reject(err)
                     })
             })
@@ -90,7 +87,7 @@ export const useAuthStore = defineStore("auth", {
                         resolve(response)
                     })
                     .catch((err) => {
-                        alertStore.error(getResponseError(err));
+                        alertStore.error(getResponseError(err), err.response.status);
                         reject(err)
                     })
             });

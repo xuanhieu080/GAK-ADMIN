@@ -43,7 +43,7 @@ router.beforeEach(async (to, from, next) => {
         if (authStore.user.is_owner) {
             next()
         } else {
-            next({name: 'dashboard'})
+            next({name: 'home'})
         }
     } else {
         next()

@@ -31,7 +31,7 @@ function onBackdropMenu(e) {
 
 onMounted(() => {
   routeName.value = routeStore.name
-  if (routeStore.name === 'category' || routeStore.name === 'product' || routeStore.name === 'unit') {
+  if (routeStore.name === 'categories.list' || routeStore.name === 'categories.create' || routeStore.name === 'categories.edit' || routeStore.name === 'products.list' || routeStore.name === 'products.create' || routeStore.name === 'products.edit') {
     isToggleProduct.value = true
   } else {
     isToggleProduct.value = false
@@ -40,8 +40,7 @@ onMounted(() => {
 
 watch(() => routeStore.name, () => {
   routeName.value = routeStore.name
-  if (routeStore.name === 'category' || routeStore.name === 'product' || routeStore.name === 'unit') {
-    isToggleProduct.value = true
+    if (routeStore.name === 'categories.list' || routeStore.name === 'categories.create' || routeStore.name === 'categories.edit' || routeStore.name === 'products.list' || routeStore.name === 'products.create' || routeStore.name === 'products.edit') {    isToggleProduct.value = true
   } else {
     isToggleProduct.value = false
   }
@@ -77,9 +76,9 @@ watch(() => routeStore.name, () => {
                         aria-hidden="true"
                         class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
                     ></span>
-            <router-link :class="{'text-gray-800': routeName === 'dashboard'}"
+            <router-link :class="{'text-gray-800': routeName == 'home'}"
                          class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
-                         to="/"
+                         :to="{name:'home'}"
             >
                 <span class="menu-icon">
                   <svg
@@ -134,8 +133,8 @@ watch(() => routeStore.name, () => {
             <template v-if="isToggleProduct">
               <ul aria-label="submenu" class="submenu overflow-hidden text-sm font-medium text-gray-500">
                 <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
-                  <router-link :class="{'active text-gray-800': routeName === 'category'}" class="menu-link w-full"
-                               to="/categories">
+                  <router-link :class="{'active text-gray-800': routeName === 'categories.list' ||  routeName === 'categories.create' || routeName === 'categories.edit'}" class="menu-link w-full"
+                               :to="{name: 'categories.list'}">
                                     <span class="menu-bullet">
                                         <span class="bullet bullet-dot"></span>
                                     </span>
@@ -143,8 +142,8 @@ watch(() => routeStore.name, () => {
                   </router-link>
                 </li>
                 <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
-                  <router-link :class="{'active text-gray-800': routeName === 'product'}" class="menu-link w-full"
-                               to="/products">
+                  <router-link :class="{'active text-gray-800': routeName === 'products.list' || routeName === 'products.create' || routeName === 'products.edit'}" class="menu-link w-full"
+                               :to="{name: 'products.list'}">
                                     <span class="menu-bullet">
                                         <span class="bullet bullet-dot"></span>
                                     </span>
@@ -171,9 +170,34 @@ watch(() => routeStore.name, () => {
                   aria-hidden="true"
                   class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
               ></span>
-            <router-link :class="{'text-gray-800': routeName === 'customer'}"
+            <router-link :class="{'text-gray-800': routeName === 'users.list'}"
                          class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
-                         to="/customers"
+                         :to="{name: 'users.list'}"
+            >
+
+                <span class="menu-icon">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5"
+                     viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                      d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+                </svg>
+                </span>
+              <span class="ml-4 menu-name">Admin</span>
+            </router-link>
+          </div>
+        </li>
+
+        <li class="item menu-item">
+          <div class="menu-link px-7 py-3">
+              <span
+                  aria-hidden="true"
+                  class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
+              ></span>
+            <router-link :class="{'text-gray-800': routeName === 'customers.list'}"
+                         class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
+                         :to="{name: 'customers.list'}"
             >
 
                 <span class="menu-icon">
@@ -231,9 +255,9 @@ watch(() => routeStore.name, () => {
                         aria-hidden="true"
                         class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
                     ></span>
-            <router-link :class="{'text-gray-800': routeName === 'dashboard'}"
+            <router-link :class="{'text-gray-800': routeName === 'home'}"
                          class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
-                         to="/"
+                         :to="{name: 'home'}"
             >
                 <span class="menu-icon">
                   <svg

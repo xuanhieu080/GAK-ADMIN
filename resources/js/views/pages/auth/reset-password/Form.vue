@@ -58,7 +58,7 @@ export default defineComponent({
             };
             authService.resetPassword(payload)
                 .then((response) => (alertStore.success(response.data.message)))
-                .catch((error) => (alertStore.error(getResponseError(error))));
+                .catch((error) => (alertStore.error(getResponseError(error), error.response.status)));
         }
 
         return {
