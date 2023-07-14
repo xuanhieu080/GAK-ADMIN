@@ -122,7 +122,7 @@ class ProductService
             $product->price = Arr::get($data, 'price', $product->price);
             $product->category_id = Arr::get($data, 'category_id', $product->category_id);
             $product->qty = Arr::get($data, 'qty', $product->qty);
-            $product->is_active = Arr::get($data, 'is_active', $product->is_active);
+            $product->is_active = filter_var(Arr::get($data, 'is_active', $product->is_active), FILTER_VALIDATE_BOOLEAN);
             $product->priority = Arr::get($data, 'priority', $product->priority);
             if (!empty($data['file'])) {
                 $product->image = HasImage::updateImage($data['file'], $product->image, Product::path);

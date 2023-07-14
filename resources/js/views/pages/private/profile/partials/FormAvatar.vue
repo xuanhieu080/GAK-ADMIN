@@ -1,7 +1,7 @@
 <template>
-    <Panel :title="trans('users.labels.avatar_settings')">
+    <Panel :title="trans('labels.avatar_settings')">
         <Form @submit.prevent="onSubmit">
-            <FileInput name="file" :label="trans('users.labels.avatar')" v-model="form.file"
+            <FileInput name="file" :label="trans('labels.avatar')" v-model="form.file"
                        :required="false"
                        error-input="avatar"
                        @clear="form.file = ''"

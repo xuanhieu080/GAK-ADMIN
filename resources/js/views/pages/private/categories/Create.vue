@@ -2,8 +2,8 @@
     <Page :title="page.title" :breadcrumbs="page.breadcrumbs" :actions="page.actions" @action="onAction">
         <Panel>
             <Form id="create-category" @submit.prevent="onSubmit">
-                <TextInput class="mb-4" type="text" :required="true" error-input="name" name="name" v-model="form.name" :label="trans('users.labels.name')"/>
-                <FileInput class="mb-4" name="file" v-model="form.file" :required="true" error-input="file" accept="image/*" :label="trans('users.labels.avatar')" @click="form.file = ''"></FileInput>
+                <TextInput class="mb-4" type="text" :required="true" error-input="name" name="name" v-model="form.name" :label="trans('labels.name')"/>
+                <FileInput class="mb-4" name="file" v-model="form.file" :required="true" error-input="file" accept="image/*" :label="trans('labels.avatar')" @click="form.file = ''"></FileInput>
                 <TextInput class="mb-4" type="textarea" :rows="5" name="description" v-model="form.description" error-input="description" :label="trans('labels.description')"/>
             </Form>
         </Panel>

@@ -68,7 +68,7 @@ class ProductController extends Controller
         $input = $request->validated();
         $record = $this->productService->create($input);
         if (!is_null($record)) {
-            return $this->responseStoreSuccess(['record' => $record]);
+            return $this->responseStoreSuccess(['model' => $record]);
         } else {
             return $this->responseStoreFail();
         }
@@ -139,7 +139,7 @@ class ProductController extends Controller
         $this->authorize('delete', Product::class);
 
         if ($this->productService->delete($product)) {
-            return $this->responseDeleteSuccess(['record' => $product]);
+            return $this->responseDeleteSuccess(['model' => $product]);
         }
 
         return $this->responseDeleteFail();

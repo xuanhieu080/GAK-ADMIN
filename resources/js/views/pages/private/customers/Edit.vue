@@ -2,11 +2,11 @@
     <Page :title="page.title" :breadcrumbs="page.breadcrumbs" :actions="page.actions" @action="onAction" :is-loading="page.loading">
         <Panel>
             <Form id="edit-customer" @submit.prevent="onSubmit">
-                <TextInput class="mb-4" type="text" :required="true" error-input="name" name="name" v-model="form.name" :label="trans('users.labels.name')"/>
-                <TextInput class="mb-4" input-class="bg-gray-200" type="text" :disabled="true" name="code" v-model="customer.code" :label="trans('users.labels.code')"/>
-                <TextInput class="mb-4" input-class="bg-gray-200" type="text" :disabled="true" name="username" v-model="customer.username" :label="trans('users.labels.username')"/>
-                <TextInput class="mb-4" type="email" :required="true" error-input="email" name="email" v-model="form.email" :label="trans('users.labels.email')"/>
-                <TextInput class="mb-4" type="password" name="password" v-model="form.password" error-input="password" :label="trans('users.labels.password')"/>
+                <TextInput class="mb-4" type="text" :required="true" error-input="name" name="name" v-model="form.name" :label="trans('labels.name')"/>
+                <TextInput class="mb-4" input-class="bg-gray-200" type="text" :disabled="true" name="code" v-model="customer.code" :label="trans('labels.code')"/>
+                <TextInput class="mb-4" input-class="bg-gray-200" type="text" :disabled="true" name="username" v-model="customer.username" :label="trans('labels.username')"/>
+                <TextInput class="mb-4" type="email" :required="true" error-input="email" name="email" v-model="form.email" :label="trans('labels.email')"/>
+                <TextInput class="mb-4" type="password" name="password" v-model="form.password" error-input="password" :label="trans('labels.password')"/>
             </Form>
         </Panel>
     </Page>

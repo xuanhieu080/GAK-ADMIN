@@ -5,16 +5,16 @@
             <Filters @clear="onFiltersClear">
                 <FiltersRow>
                     <FiltersCol>
-                        <TextInput name="first_name" :label="trans('users.labels.first_name')" v-model="mainQuery.filters.first_name.value"></TextInput>
+                        <TextInput name="first_name" :label="trans('labels.first_name')" v-model="mainQuery.filters.first_name.value"></TextInput>
                     </FiltersCol>
                     <FiltersCol>
-                        <TextInput name="last_name" :label="trans('users.labels.last_name')" v-model="mainQuery.filters.last_name.value"></TextInput>
+                        <TextInput name="last_name" :label="trans('labels.last_name')" v-model="mainQuery.filters.last_name.value"></TextInput>
                     </FiltersCol>
                     <FiltersCol>
-                        <TextInput name="email" type="email" :label="trans('users.labels.email')" v-model="mainQuery.filters.email.value"></TextInput>
+                        <TextInput name="email" type="email" :label="trans('labels.email')" v-model="mainQuery.filters.email.value"></TextInput>
                     </FiltersCol>
                     <FiltersCol>
-                        <Dropdown name="role" server="roles/search" :multiple="true" :label="trans('users.labels.role')" :server-search-min-characters="0" v-model="mainQuery.filters.role.value"></Dropdown>
+                        <Dropdown name="role" server="roles/search" :multiple="true" :label="trans('labels.role')" :server-search-min-characters="0" v-model="mainQuery.filters.role.value"></Dropdown>
                     </FiltersCol>
                 </FiltersRow>
             </Filters>
@@ -33,7 +33,7 @@
                                 {{ props.item.full_name }}
                             </div>
                             <div class="text-sm text-gray-500">
-                                {{ trans('users.labels.id') + ': ' + props.item.id }}
+                                {{ trans('labels.id') + ': ' + props.item.id }}
                             </div>
                         </div>
                     </div>
@@ -139,12 +139,12 @@ export default defineComponent({
 
         const table = reactive({
             headers: {
-                id: trans('users.labels.id_pound'),
-                first_name: trans('users.labels.first_name'),
-                last_name: trans('users.labels.last_name'),
-                email: trans('users.labels.email'),
-                status: trans('users.labels.status'),
-                role: trans('users.labels.role'),
+                id: trans('labels.id_pound'),
+                first_name: trans('labels.first_name'),
+                last_name: trans('labels.last_name'),
+                email: trans('labels.email'),
+                status: trans('labels.status'),
+                role: trans('labels.role'),
             },
             sorting: {
                 first_name: true,

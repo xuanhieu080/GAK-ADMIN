@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('code',10)->unique();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
+            $table->string('name')->nullable();
             $table->string('username');
             $table->string('email')->unique()->nullable();
             $table->double('balance')->default(0);

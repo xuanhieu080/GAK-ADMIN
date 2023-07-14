@@ -20,6 +20,17 @@ import {default as PageProduct} from "@/views/pages/private/products/Index";
 import {default as PageProductCreate} from "@/views/pages/private/products/Create";
 import {default as PageProductEdit} from "@/views/pages/private/products/Edit";
 
+import {default as PagePostIndex} from "@/views/pages/private/posts/Index.vue";
+import {default as PagePostCreate} from "@/views/pages/private/posts/Create";
+import {default as PagePostEdit} from "@/views/pages/private/posts/Edit.vue";
+
+import {default as PageSupportIndex} from "@/views/pages/private/supports/Index.vue";
+import {default as PageSupportCreate} from "@/views/pages/private/supports/Create";
+import {default as PageSupportEdit} from "@/views/pages/private/supports/Edit.vue";
+
+import {default as PageConfigIndex} from "@/views/pages/private/configs/Index.vue";
+import {default as PageConfigEdit} from "@/views/pages/private/configs/Edit.vue";
+
 // Products
 import {default as PageCategory} from "@/views/pages/private/categories/Index.vue";
 import {default as PageCategoryEdit} from "@/views/pages/private/categories/Edit.vue";
@@ -165,6 +176,69 @@ const routes = [
                 path: ":id/edit",
                 meta: {requiresAuth: true},
                 component: PageProductEdit,
+            }
+        ]
+    },
+    {
+        path: "/posts",
+        children: [
+            {
+                name: "posts.list",
+                path: "list",
+                meta: {requiresAuth: true},
+                component: PagePostIndex,
+            },
+            {
+                name: "posts.create",
+                path: "create",
+                meta: {requiresAuth: true},
+                component: PagePostCreate,
+            },
+            {
+                name: "posts.edit",
+                path: ":id/edit",
+                meta: {requiresAuth: true},
+                component: PagePostEdit,
+            }
+        ]
+    },
+    {
+        path: "/supports",
+        children: [
+            {
+                name: "supports.list",
+                path: "list",
+                meta: {requiresAuth: true},
+                component: PageSupportIndex,
+            },
+            {
+                name: "supports.create",
+                path: "create",
+                meta: {requiresAuth: true},
+                component: PageSupportCreate,
+            },
+            {
+                name: "supports.edit",
+                path: ":id/edit",
+                meta: {requiresAuth: true},
+                component: PageSupportEdit,
+            }
+        ]
+    },
+    {
+        path: "/configs",
+        children: [
+            {
+                name: "configs.list",
+                path: "list",
+                meta: {requiresAuth: true},
+                component: PageConfigIndex,
+            },
+            {
+                name: "configs.edit",
+                path: ":id/edit",
+                meta: {requiresAuth: true},
+                component: PageConfigEdit,
             }
         ]
     },

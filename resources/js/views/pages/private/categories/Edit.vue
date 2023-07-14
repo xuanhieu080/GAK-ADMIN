@@ -2,9 +2,9 @@
     <Page :title="page.title" :breadcrumbs="page.breadcrumbs" :actions="page.actions" @action="onAction" :is-loading="page.loading">
         <Panel>
             <Form id="edit-category" @submit.prevent="onSubmit">
-                <TextInput class="mb-4" type="text" :required="true" error-input="name" name="name" v-model="form.name" :label="trans('users.labels.name')"/>
-                <TextInput class="mb-4" type="text" :disabled="true" name="code" v-model="item.code" :label="trans('users.labels.code')"/>
-                <FileInput class="mb-4" name="file" :required="true" v-model="form.file" error-input="file" accept="image/*" :label="trans('users.labels.avatar')" @click="form.file = ''"></FileInput>
+                <TextInput class="mb-4" type="text" :required="true" error-input="name" name="name" v-model="form.name" :label="trans('labels.name')"/>
+                <TextInput class="mb-4" type="text" :disabled="true" name="code" v-model="item.code" :label="trans('labels.code')"/>
+                <FileInput class="mb-4" name="file" :required="true" v-model="file" error-input="file" accept="image/*" :label="trans('labels.avatar')" @click="form.file = ''"></FileInput>
                 <TextInput class="mb-4" type="textarea" :rows="5" name="description" v-model="form.description" error-input="description" :label="trans('labels.description')"/>
             </Form>
         </Panel>
@@ -14,7 +14,7 @@
 <script>
 import {defineComponent, onBeforeMount, reactive, ref} from "vue";
 import {trans} from "@/helpers/i18n";
-import {fillObject, reduceProperties} from "@/helpers/data"
+import {clearObject, fillObject, reduceProperties} from "@/helpers/data"
 import {useRoute} from "vue-router";
 import {toUrl} from "@/helpers/routing";
 import CategoryService from "@/services/CategoryService";
@@ -26,6 +26,7 @@ import Panel from "@/views/components/Panel";
 import Page from "@/views/layouts/Page";
 import FileInput from "@/views/components/input/FileInput";
 import Form from "@/views/components/Form";
+import {useAlertStore} from "@/stores";
 
 export default defineComponent({
     components: {
@@ -41,6 +42,8 @@ export default defineComponent({
     setup() {
         const route = useRoute();
         const item = ref(null);
+        const file = ref(null);
+        const alertStore = useAlertStore();
         const form = reactive({
             name: '',
             file: '',
@@ -49,7 +52,7 @@ export default defineComponent({
 
         const page = reactive({
             id: 'edit_user',
-            title: trans('global.pages.users_edit'),
+            title: trans('global.pages.categories_edit'),
             filters: false,
             loading: true,
             breadcrumbs: [
@@ -98,7 +101,18 @@ export default defineComponent({
         }
 
         function onSubmit() {
-            service.handleUpdate('edit-category', route.params.id, reduceProperties(form, 'roles', 'id'));
+            if (file.value != null) {
+                form.file = file.value;
+            }
+            service.handleUpdate('edit-category', route.params.id, reduceProperties(form, 'roles', 'id')).then((response) => {
+                if (alertStore.type == 'success') {
+                    clearObject(form)
+                    fillObject(form, response.data.model);
+                    item.value = response.data.model;
+                    file.value = null;
+                    page.loading = false;
+                }
+            });
             return false;
         }
 
@@ -108,6 +122,8 @@ export default defineComponent({
             onSubmit,
             onAction,
             page,
+            file,
+            alertStore,
             item
         }
     }

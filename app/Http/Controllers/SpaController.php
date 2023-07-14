@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Config;
 use Illuminate\Routing\Controller as BaseController;
 
 class SpaController extends BaseController
@@ -12,7 +13,7 @@ class SpaController extends BaseController
      */
     public function __invoke()
     {
-        return view('index');
+        return view('index', ['config' => Config::pluck('description', 'code')]);
     }
 }
 

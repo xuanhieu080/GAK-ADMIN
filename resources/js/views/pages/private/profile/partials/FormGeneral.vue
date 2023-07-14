@@ -1,9 +1,9 @@
 <template>
-    <Panel :title="trans('users.labels.general_settings')">
+    <Panel :title="trans('labels.general_settings')">
         <form @submit.prevent="onFormSubmit">
-            <TextInput type="text" error-input="first_name" :required="true" :label="trans('users.labels.first_name')" name="first_name" v-model="form.first_name" class="mb-2"/>
-            <TextInput type="text" error-input="last_name" :required="true" :label="trans('users.labels.last_name')" name="last_name" v-model="form.last_name" class="mb-2"/>
-            <TextInput type="email" error-input="email" :required="true" :label="trans('users.labels.email')" name="email" v-model="form.email" autocomplete="email" class="mb-4"/>
+            <TextInput type="text" error-input="first_name" :required="true" :label="trans('labels.first_name')" name="first_name" v-model="form.first_name" class="mb-2"/>
+            <TextInput type="text" error-input="last_name" :required="true" :label="trans('labels.last_name')" name="last_name" v-model="form.last_name" class="mb-2"/>
+            <TextInput type="email" error-input="email" :required="true" :label="trans('labels.email')" name="email" v-model="form.email" autocomplete="email" class="mb-4"/>
             <Button type="submit" :label="trans('global.buttons.update')"/>
         </form>
     </Panel>

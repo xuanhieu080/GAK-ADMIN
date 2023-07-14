@@ -5,13 +5,13 @@
             <Filters @clear="onFiltersClear">
                 <FiltersRow>
                     <FiltersCol>
-                        <TextInput name="name" :label="trans('users.labels.name')" v-model="mainQuery.filters.name.value"></TextInput>
+                        <TextInput name="name" :label="trans('labels.name')" v-model="mainQuery.filters.name.value"></TextInput>
                     </FiltersCol>
                     <FiltersCol>
-                        <TextInput name="username" :label="trans('users.labels.username')" v-model="mainQuery.filters.username.value"></TextInput>
+                        <TextInput name="username" :label="trans('labels.username')" v-model="mainQuery.filters.username.value"></TextInput>
                     </FiltersCol>
                     <FiltersCol>
-                        <TextInput name="email" type="email" :label="trans('users.labels.email')" v-model="mainQuery.filters.email.value"></TextInput>
+                        <TextInput name="email" type="email" :label="trans('labels.email')" v-model="mainQuery.filters.email.value"></TextInput>
                     </FiltersCol>
                 </FiltersRow>
             </Filters>
@@ -26,7 +26,7 @@
                                 {{ props.item.name }}
                             </div>
                             <div class="text-sm text-gray-500">
-                                {{ trans('users.labels.code') + ': ' + props.item.code }}
+                                {{ trans('labels.code') + ': ' + props.item.code }}
                             </div>
                         </div>
                     </div>
@@ -121,10 +121,10 @@ export default defineComponent({
 
         const table = reactive({
             headers: {
-                id: trans('users.labels.id_pound'),
-                name: trans('users.labels.name'),
-                email: trans('users.labels.email'),
-                status: trans('users.labels.status'),
+                id: trans('labels.id_pound'),
+                name: trans('labels.name'),
+                email: trans('labels.email'),
+                status: trans('labels.status'),
             },
             sorting: {
                 name: true,

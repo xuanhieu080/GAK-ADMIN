@@ -1,14 +1,14 @@
 <template>
-    <Panel :title="trans('users.labels.password_settings')">
+    <Panel :title="trans('labels.password_settings')">
         <form @submit.prevent="onFormSubmit">
             <div class="mb-2">
-                <TextInput type="password" name="current-password" :required="true" :label="trans('users.labels.current_password')" error-input="current_password" v-model="form.currentPassword" class="mb-4"/>
+                <TextInput type="password" name="current-password" :required="true" :label="trans('labels.current_password')" error-input="current_password" v-model="form.currentPassword" class="mb-4"/>
             </div>
             <div class="mb-2">
-                <TextInput type="password" name="password" :required="true" :label="trans('users.labels.new_password')" error-input="password" v-model="form.password" class="mb-4"/>
+                <TextInput type="password" name="password" :required="true" :label="trans('labels.new_password')" error-input="password" v-model="form.password" class="mb-4"/>
             </div>
             <div class="mb-4">
-                <TextInput type="password" name="password-confirm" :required="true" :label="trans('users.labels.confirm_password')" error-input="password_confirmation" v-model="form.passwordConfirm" class="mb-4"/>
+                <TextInput type="password" name="password-confirm" :required="true" :label="trans('labels.confirm_password')" error-input="password_confirmation" v-model="form.passwordConfirm" class="mb-4"/>
             </div>
             <Button type="submit" :label="trans('global.buttons.update')"/>
         </form>

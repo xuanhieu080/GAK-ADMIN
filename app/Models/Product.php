@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Supports\HasImage;
+use App\Traits\Filterable;
+use App\Traits\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
@@ -10,6 +12,8 @@ use Illuminate\Support\Facades\Storage;
 class Product extends Model
 {
     use HasFactory;
+
+    use Searchable, Filterable;
 
     const path = 'products';
 

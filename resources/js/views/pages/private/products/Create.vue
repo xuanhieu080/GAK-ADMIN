@@ -2,8 +2,8 @@
     <Page :title="page.title" :breadcrumbs="page.breadcrumbs" :actions="page.actions" @action="onAction">
         <Panel>
             <Form id="create-category" @submit.prevent="onSubmit">
-                <TextInput class="mb-4" type="text" :required="true" error-input="name" name="name" v-model="form.name" :label="trans('users.labels.name')"/>
-                <FileInput class="mb-4" name="file" v-model="file" error-input="file" accept="image/*" :label="trans('users.labels.avatar')" @click="clearImage"></FileInput>
+                <TextInput class="mb-4" type="text" :required="true" error-input="name" name="name" v-model="form.name" :label="trans('labels.name')"/>
+                <FileInput class="mb-4" name="file" v-model="file" error-input="file" accept="image/*" :label="trans('labels.avatar')" @click="clearImage"></FileInput>
                 <TextInput class="mb-4" type="textarea" :required="true" :rows="5" name="description" v-model="form.description" error-input="description" :label="trans('labels.description')"/>
                 <Dropdown class="mb-4" name="category" error-input="category_id" :required="true" :multiple="true" server="categories" :label="trans('labels.categories')" :placeholder="trans('labels.categories')" :server-search-min-characters="0" v-model="category"></Dropdown>
                 <TextInput class="mb-4" type="number" :min="0" :max="999999999999" name="price" v-model="form.price" error-input="price" :label="trans('labels.price')"/>

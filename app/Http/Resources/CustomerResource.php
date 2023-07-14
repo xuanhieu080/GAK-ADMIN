@@ -22,6 +22,7 @@ class CustomerResource extends JsonResource
     {
 
         $data = $this->resource->toArray();
+        $data['title'] = $this->name;
         $data['created_at'] = !empty($this->resource->created_at) ? $this->resource->created_at->diffForHumans() : null;
         $data['updated_at'] = !empty($this->resource->updated_at) ? $this->resource->updated_at->diffForHumans() : null;
 

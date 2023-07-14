@@ -2,10 +2,10 @@
     <Page :title="page.title" :breadcrumbs="page.breadcrumbs" :actions="page.actions" @action="onAction">
         <Panel>
             <Form id="create-customer" @submit.prevent="onSubmit">
-                <TextInput class="mb-4" type="text" :required="true" name="first_name" v-model="form.name" error-input="name" :label="trans('users.labels.name')"/>
-                <TextInput class="mb-4" type="text" :required="true" name="username" v-model="form.username" error-input="username" :label="trans('users.labels.username')"/>
-                <TextInput class="mb-4" type="email" :required="true" name="email" v-model="form.email" error-input="email" :label="trans('users.labels.email')"/>
-                <TextInput class="mb-4" type="password" :required="true" name="password" v-model="form.password" error-input="password" :label="trans('users.labels.password')"/>
+                <TextInput class="mb-4" type="text" :required="true" name="first_name" v-model="form.name" error-input="name" :label="trans('labels.name')"/>
+                <TextInput class="mb-4" type="text" :required="true" name="username" v-model="form.username" error-input="username" :label="trans('labels.username')"/>
+                <TextInput class="mb-4" type="email" :required="true" name="email" v-model="form.email" error-input="email" :label="trans('labels.email')"/>
+                <TextInput class="mb-4" type="password" :required="true" name="password" v-model="form.password" error-input="password" :label="trans('labels.password')"/>
             </Form>
         </Panel>
     </Page>

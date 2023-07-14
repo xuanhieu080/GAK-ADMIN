@@ -4,9 +4,9 @@
         <Panel>
             <Form id="edit-product" @submit.prevent="onSubmit">
                 <TextInput class="mb-4" type="text" :required="true" error-input="name" name="name" v-model="form.name"
-                           :label="trans('users.labels.name')"/>
+                           :label="trans('labels.name')"/>
                 <FileInput class="mb-4" name="file" :multiple="true" v-model="file" :required="true" error-input="file"
-                           accept="image/*" :label="trans('users.labels.avatar')" @clear="clearImage"></FileInput>
+                           accept="image/*" :label="trans('labels.avatar')" @clear="clearImage"></FileInput>
                 <TextInput class="mb-4" type="textarea" :rows="5" name="description" v-model="form.description"
                            error-input="description" :label="trans('labels.description')"/>
                 <Dropdown class="mb-4" name="category" :multiple="true" server="categories"

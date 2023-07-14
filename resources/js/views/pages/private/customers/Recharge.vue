@@ -4,10 +4,10 @@
             <div class="grid grid-cols-2 gap-8">
                 <div>
                     <Form id="customer">
-                        <TextInput class="mb-4" input-class="bg-gray-200" type="text" name="name"  v-model="customer.name" :label="trans('users.labels.name')"/>
-                        <TextInput class="mb-4" input-class="bg-gray-200" type="text" name="customer-code" v-model="customer.code" :label="trans('users.labels.code')"/>
-                        <TextInput class="mb-4" input-class="bg-gray-200" type="text" name="username" v-model="customer.username" :label="trans('users.labels.username')"/>
-                        <TextInput class="mb-4" input-class="bg-gray-200" type="email" name="email" v-model="customer.email" :label="trans('users.labels.email')"/>
+                        <TextInput class="mb-4" input-class="bg-gray-200" type="text" name="name"  v-model="customer.name" :label="trans('labels.name')"/>
+                        <TextInput class="mb-4" input-class="bg-gray-200" type="text" name="customer-code" v-model="customer.code" :label="trans('labels.code')"/>
+                        <TextInput class="mb-4" input-class="bg-gray-200" type="text" name="username" v-model="customer.username" :label="trans('labels.username')"/>
+                        <TextInput class="mb-4" input-class="bg-gray-200" type="email" name="email" v-model="customer.email" :label="trans('labels.email')"/>
                     </Form>
                 </div>
                 <div>

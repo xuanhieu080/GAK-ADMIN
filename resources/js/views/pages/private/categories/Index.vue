@@ -5,10 +5,10 @@
             <Filters @clear="onFiltersClear">
                 <FiltersRow>
                     <FiltersCol>
-                        <TextInput name="first_name" :label="trans('users.labels.code')" v-model="mainQuery.filters.first_name.value"></TextInput>
+                        <TextInput name="code" :label="trans('labels.code')" v-model="mainQuery.filters.code.value"></TextInput>
                     </FiltersCol>
                     <FiltersCol>
-                        <TextInput name="last_name" :label="trans('users.labels.name')" v-model="mainQuery.filters.last_name.value"></TextInput>
+                        <TextInput name="name" :label="trans('labels.name')" v-model="mainQuery.filters.name.value"></TextInput>
                     </FiltersCol>
                 </FiltersRow>
             </Filters>
@@ -106,9 +106,9 @@ export default defineComponent({
 
         const table = reactive({
             headers: {
-                id: trans('users.labels.id_pound'),
-                code: trans('users.labels.code'),
-                name: trans('users.labels.name'),
+                id: trans('labels.id_pound'),
+                code: trans('labels.code'),
+                name: trans('labels.name'),
             },
             sorting: {
                 code: true,

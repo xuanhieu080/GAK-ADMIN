@@ -1,11 +1,11 @@
 <template>
     <Form id="register-form" @submit.prevent="onFormSubmit">
         <Alert class="mb-4"/>
-        <TextInput type="text" error-input="first_name" :required="true" :label="trans('users.labels.first_name')" name="first_name" v-model="form.first_name" class="mb-2"/>
-        <TextInput type="text" error-input="last_name" :required="true" :label="trans('users.labels.last_name')" name="last_name" v-model="form.last_name" class="mb-2"/>
-        <TextInput type="email" error-input="email" :required="true" :label="trans('users.labels.email')" name="email" v-model="form.email" class="mb-2"/>
-        <TextInput type="password" error-input="password" :required="true" :label="trans('users.labels.password')" name="password" v-model="form.password" class="mb-2"/>
-        <TextInput type="password" error-input="password_confirmation" :required="true" :label="trans('users.labels.confirm_password')" name="password-confirm" v-model="form.passwordConfirm" class="mb-4"/>
+        <TextInput type="text" error-input="first_name" :required="true" :label="trans('labels.first_name')" name="first_name" v-model="form.first_name" class="mb-2"/>
+        <TextInput type="text" error-input="last_name" :required="true" :label="trans('labels.last_name')" name="last_name" v-model="form.last_name" class="mb-2"/>
+        <TextInput type="email" error-input="email" :required="true" :label="trans('labels.email')" name="email" v-model="form.email" class="mb-2"/>
+        <TextInput type="password" error-input="password" :required="true" :label="trans('labels.password')" name="password" v-model="form.password" class="mb-2"/>
+        <TextInput type="password" error-input="password_confirmation" :required="true" :label="trans('labels.confirm_password')" name="password-confirm" v-model="form.passwordConfirm" class="mb-4"/>
         <div class="text-center">
             <Button type="submit" :label="trans('global.buttons.register')"/>
         </div>

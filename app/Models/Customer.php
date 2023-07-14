@@ -59,8 +59,7 @@ class Customer extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $appends = [
-        'full_name',
-        'name',
+        'full_name'
     ];
 
     /**
@@ -97,18 +96,6 @@ class Customer extends Authenticatable implements MustVerifyEmail
             }
         }
         return implode(' ', $names);
-    }
-
-    public function getNameAttribute()
-    {
-        $names = [];
-        foreach (['first_name', 'last_name'] as $key) {
-            $value = $this->getAttribute($key);
-            if (!empty($value)) {
-                $names[] = $value;
-            }
-        }
-        return trim(implode(' ', $names));
     }
 
     /**

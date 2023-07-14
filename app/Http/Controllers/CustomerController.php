@@ -67,7 +67,7 @@ class CustomerController extends Controller
         $input = $request->validated();
         $record = $this->customerService->create($input);
         if (!is_null($record)) {
-            return $this->responseStoreSuccess(['record' => $record]);
+            return $this->responseStoreSuccess(['model' => $record]);
         } else {
             return $this->responseStoreFail();
         }
@@ -119,7 +119,7 @@ class CustomerController extends Controller
 
         $data = $request->validated();
         if ($this->customerService->update($customer, $data)) {
-            return $this->responseUpdateSuccess(['record' => $customer->fresh()]);
+            return $this->responseUpdateSuccess(['model' => $customer->fresh()]);
         } else {
             return $this->responseUpdateFail();
         }
@@ -140,7 +140,7 @@ class CustomerController extends Controller
 
         $data = $request->validated();
         if ($this->customerService->update($customer, $data)) {
-            return $this->responseUpdateSuccess(['record' => $customer->fresh()]);
+            return $this->responseUpdateSuccess(['model' => $customer->fresh()]);
         } else {
             return $this->responseUpdateFail();
         }
@@ -159,7 +159,7 @@ class CustomerController extends Controller
         $this->authorize('delete', Customer::class);
 
         if ($this->customerService->delete($customer)) {
-            return $this->responseDeleteSuccess(['record' => $customer]);
+            return $this->responseDeleteSuccess(['model' => $customer]);
         }
 
         return $this->responseDeleteFail();

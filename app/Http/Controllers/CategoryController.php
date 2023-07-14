@@ -68,7 +68,7 @@ class CategoryController extends Controller
         $input = $request->validated();
         $record = $this->categoryService->create($input);
         if (!is_null($record)) {
-            return $this->responseStoreSuccess(['record' => $record]);
+            return $this->responseStoreSuccess(['model' => $record]);
         } else {
             return $this->responseStoreFail();
         }
@@ -120,7 +120,7 @@ class CategoryController extends Controller
 
         $data = $request->validated();
         if ($this->categoryService->update($category, $data)) {
-            return $this->responseUpdateSuccess(['record' => $category->fresh()]);
+            return $this->responseUpdateSuccess(['model' => $category->fresh()]);
         } else {
             return $this->responseUpdateFail();
         }
@@ -139,7 +139,7 @@ class CategoryController extends Controller
         $this->authorize('delete', Category::class);
 
         if ($this->categoryService->delete($category)) {
-            return $this->responseDeleteSuccess(['record' => $category]);
+            return $this->responseDeleteSuccess(['model' => $category]);
         }
 
         return $this->responseDeleteFail();

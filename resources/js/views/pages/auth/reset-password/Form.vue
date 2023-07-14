@@ -3,13 +3,13 @@
         <Alert class="mb-4"/>
         <Form id="reset-password-form" @submit.prevent="onFormSubmit">
             <div class="mb-2">
-                <TextInput type="email" error-input="email" :required="true" :label="trans('users.labels.email')" name="email" v-model="form.email" class="mb-2"/>
+                <TextInput type="email" error-input="email" :required="true" :label="trans('labels.email')" name="email" v-model="form.email" class="mb-2"/>
             </div>
             <div class="mb-2">
-                <TextInput type="password" error-input="password" :required="true" :label="trans('users.labels.password')" name="password" v-model="form.password" class="mb-2"/>
+                <TextInput type="password" error-input="password" :required="true" :label="trans('labels.password')" name="password" v-model="form.password" class="mb-2"/>
             </div>
             <div class="mb-4">
-                <TextInput type="password" error-input="password_confirmation" :required="true" :label="trans('users.labels.confirm_password')" name="password-confirm" v-model="form.passwordConfirm" class="mb-2"/>
+                <TextInput type="password" error-input="password_confirmation" :required="true" :label="trans('labels.confirm_password')" name="password-confirm" v-model="form.passwordConfirm" class="mb-2"/>
             </div>
             <div class="text-center">
                 <Button type="submit" :label="trans('global.buttons.submit')"/>

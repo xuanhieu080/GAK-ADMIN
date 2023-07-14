@@ -2,11 +2,11 @@
     <Page :title="page.title" :breadcrumbs="page.breadcrumbs" :actions="page.actions" @action="onAction">
         <Panel>
             <Form id="create-user" @submit.prevent="onSubmit">
-                <TextInput class="mb-4" type="text" :required="true" name="first_name" v-model="form.first_name" error-input="first_name" :label="trans('users.labels.first_name')"/>
-                <TextInput class="mb-4" type="text" :required="true" name="last_name" v-model="form.last_name" error-input="last_name" :label="trans('users.labels.last_name')"/>
-                <TextInput class="mb-4" type="email" :required="true" name="email" v-model="form.email" error-input="email" :label="trans('users.labels.email')"/>
-                <FileInput class="mb-4" name="avatar" v-model="form.avatar" error-input="avatar" accept="image/*" :label="trans('users.labels.avatar')" @click="form.avatar = ''"></FileInput>
-                <TextInput class="mb-4" type="password" :required="true" name="password" v-model="form.password" error-input="password" :label="trans('users.labels.password')"/>
+                <TextInput class="mb-4" type="text" :required="true" name="first_name" v-model="form.first_name" error-input="first_name" :label="trans('labels.first_name')"/>
+                <TextInput class="mb-4" type="text" :required="true" name="last_name" v-model="form.last_name" error-input="last_name" :label="trans('labels.last_name')"/>
+                <TextInput class="mb-4" type="email" :required="true" name="email" v-model="form.email" error-input="email" :label="trans('labels.email')"/>
+                <FileInput class="mb-4" name="avatar" v-model="form.avatar" error-input="avatar" accept="image/*" :label="trans('labels.avatar')" @click="form.avatar = ''"></FileInput>
+                <TextInput class="mb-4" type="password" :required="true" name="password" v-model="form.password" error-input="password" :label="trans('labels.password')"/>
             </Form>
         </Panel>
     </Page>

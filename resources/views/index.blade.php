@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>{{env('APP_NAME')}}</title>
+    <title>{{$config['name']}}</title>
 
     @vite(['resources/scss/main.scss', 'resources/js/main.js'])
 
@@ -22,6 +22,7 @@
                 vi: {!! json_encode(\Illuminate\Support\Facades\Lang::get('frontend', [], 'vi')) !!},
             }
         }
+        window.WebConfig = {!! \App\Models\Config::pluck('description', 'code') !!}
     </script>
 </head>
 

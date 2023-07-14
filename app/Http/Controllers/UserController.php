@@ -69,7 +69,7 @@ class UserController extends Controller
         $input = $request->validated();
         $record = $this->userService->create($input);
         if (!is_null($record)) {
-            return $this->responseStoreSuccess(['record' => $record]);
+            return $this->responseStoreSuccess(['model' => $record]);
         } else {
             return $this->responseStoreFail();
         }
@@ -121,7 +121,7 @@ class UserController extends Controller
 
         $data = $request->validated();
         if ($this->userService->update($user, $data)) {
-            return $this->responseUpdateSuccess(['record' => $user->fresh()]);
+            return $this->responseUpdateSuccess(['model' => $user->fresh()]);
         } else {
             return $this->responseUpdateFail();
         }
@@ -140,7 +140,7 @@ class UserController extends Controller
 
         $data = $request->validated();
         if ($this->userService->updateAvatar($user, $data)) {
-            return $this->responseUpdateSuccess(['record' => $user->fresh()]);
+            return $this->responseUpdateSuccess(['model' => $user->fresh()]);
         } else {
             return $this->responseUpdateFail();
         }
@@ -159,7 +159,7 @@ class UserController extends Controller
         $this->authorize('delete', User::class);
 
         if ($this->userService->delete($user)) {
-            return $this->responseDeleteSuccess(['record' => $user]);
+            return $this->responseDeleteSuccess(['model' => $user]);
         }
 
         return $this->responseDeleteFail();

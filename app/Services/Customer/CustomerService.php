@@ -6,6 +6,7 @@ use App\Http\Resources\CustomerResource;
 use App\Models\Customer;
 use App\Services\Media\MediaService;
 use App\Supports\Support;
+use App\Traits\Filterable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
@@ -82,7 +83,6 @@ class CustomerService
         $data['first_name'] = trim($firstName);
         $data['last_name'] = trim($lastName);
         $data['code'] = Support::genCode('customers', 'code');
-        unset($data['name']);
 
         $record = Customer::query()->create($data);
         if (!empty($record)) {
@@ -112,7 +112,6 @@ class CustomerService
         $lastName = strtok('');
         $data['first_name'] = trim($firstName);
         $data['last_name'] = trim($lastName);
-        unset($data['name']);
         unset($data['username']);
 
         return $customer->update($data);
