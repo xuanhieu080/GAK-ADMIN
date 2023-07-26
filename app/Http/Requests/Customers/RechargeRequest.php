@@ -17,7 +17,8 @@ class RechargeRequest extends BaseRequest
             'amount'      => 'required|numeric|min:1000|max:999999999999',
 //            'code'        => 'required|string|min:3|max:255|unique:customer_recharges,code',
 //            'description' => 'nu|string|min:3|max:255',
-            'bank'        => 'required|unique::banks,id',
+            'bank_id'        => 'required|exists:banks,id',
+            'customer_id'        => 'required|exists:customers,id',
         ];
     }
 

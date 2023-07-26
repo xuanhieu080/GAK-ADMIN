@@ -9,6 +9,8 @@ import {storeToRefs} from 'pinia';
 const state = useStore();
 const {isToggleDesktop, isSideMenuOpen} = storeToRefs(state);
 import {useAuthStore} from "@/stores/auth";
+import Alert from "@/views/components/Alert.vue";
+import Notify from "@/views/components/Notify.vue";
 const authStore = useAuthStore();
 
 </script>
@@ -44,8 +46,10 @@ const authStore = useAuthStore();
           <!--                        </li>-->
           <!--                    </ol>-->
           <!--                </nav>-->
+
+            <Notify/>
           <div class="overflow-y-hidden h-full">
-              <div class="overflow-y-scroll h-full px-8">
+              <div class="overflow-y-scroll h-full px-2 md:px-8">
                   <router-view></router-view>
               </div>
           </div>

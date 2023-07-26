@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('code');
             $table->double('amount')->default(0);
             $table->string('description');
+            $table->string('status')->default('SUCCESS')->comment('FAILED, SUCCESS');
             $table->unsignedBigInteger('bank_id');
             $table->timestamp('date')->nullable();
             $table->unsignedBigInteger('customer_id');

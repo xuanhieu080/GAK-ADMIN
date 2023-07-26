@@ -61,7 +61,7 @@ function toggleSideMenuSidebar() {
         <!-- Profile menu -->
         <li class="relative">
           <button
-              class="align-middle rounded-full focus:shadow-outline-purple focus:outline-none"
+              class="p-1 border-2 border-sky-700 align-middle rounded-full focus:shadow-outline-purple focus:outline-none"
               v-on:click="toggleProfileMenu"
               v-on:keydown.esc="closeToggle"
               v-on-click-outside="closeToggle"

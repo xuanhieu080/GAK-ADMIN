@@ -12,7 +12,7 @@
                 </div>
                 <div>
                     <Form id="recharge" @submit.prevent="onSubmit">
-                        <TextInput class="mb-4" type="text" :required="true" error-input="code" name="code" v-model="form.code" :label="trans('labels.transaction_code')"/>
+                        <Dropdown class="mb-4" name="bank" error-input="bank_id" :required="true" :multiple="false" server="banks" :label="trans('labels.bank')" :placeholder="trans('labels.bank')" :server-search-min-characters="0" v-model="bank"></Dropdown>
                         <TextInput class="mb-4" type="number" :required="true" error-input="amount" name="amount" v-model="form.amount" :label="trans('labels.amount') +' (vnđ)'"/>
                         <TextInput class="mb-4" type="textarea" :rows="5" :required="true" name="description" v-model="form.description" error-input="description" :label="trans('labels.description')"/>
                     </Form>
@@ -25,7 +25,7 @@
 <script>
 import {defineComponent, onBeforeMount, reactive, ref} from "vue";
 import {trans} from "@/helpers/i18n";
-import {fillObject, reduceProperties} from "@/helpers/data"
+import {clearObject, fillObject, reduceProperties} from "@/helpers/data"
 import {useRoute} from "vue-router";
 import {useAuthStore} from "@/stores/auth";
 import {toUrl} from "@/helpers/routing";
@@ -38,6 +38,8 @@ import Panel from "@/views/components/Panel";
 import Page from "@/views/layouts/Page";
 import FileInput from "@/views/components/input/FileInput";
 import Form from "@/views/components/Form";
+import {useAlertStore} from "@/stores";
+import RechargeService from "@/services/RechargeService";
 
 export default defineComponent({
     components: {
@@ -51,7 +53,9 @@ export default defineComponent({
         Page
     },
     setup() {
+        const alertStore = useAlertStore();
         const route = useRoute();
+        const bank = ref(null)
         const form = reactive({
             name: '',
             email: '',
@@ -92,6 +96,7 @@ export default defineComponent({
         });
 
         const service = new CustomerService();
+        const rechargeService = new RechargeService();
 
         onBeforeMount(() => {
             service.edit(route.params.id).then((response) => {
@@ -110,8 +115,27 @@ export default defineComponent({
         }
 
         function onSubmit() {
-            service.handleCreateCustom('recharge', `${route.params.id}/recharge`, form);
+            if (bank.value && bank.value.id) {
+                form.bank_id = bank.value.id;
+            }
+
+            if (customer.value && customer.value.id) {
+                form.customer_id = customer.value.id;
+            }
+
+            rechargeService.handleCreate('create-recharge', reduceProperties(form, 'roles', 'id')).then(() => {
+                if (alertStore.type == 'success') {
+                    clearObject(form)
+                    clearData();
+                }
+            })
             return false;
+        }
+
+        function clearData() {
+            form.amount = null
+            form.description = null
+            bank.value = null
         }
 
         return {
@@ -120,7 +144,8 @@ export default defineComponent({
             form,
             onSubmit,
             onAction,
-            page
+            page,
+            bank
         }
     }
 })

@@ -29,6 +29,7 @@ return new class extends Migration
             $table->double('total',15)->default(0);
             $table->double('discount',15)->default(0);
             $table->boolean('is_active')->default(1);
+            $table->timestamps();
         });
     }
 

@@ -77,7 +77,7 @@ export default defineComponent({
                 if (alertStore.messages.length > 0) {
                     setTimeout(() => {
                         alertStore.clear();
-                    }, 5000)
+                    }, 50000)
                 }
             })
 

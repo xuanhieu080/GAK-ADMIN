@@ -3,6 +3,7 @@
 namespace App\Services\Customer;
 
 use App\Http\Resources\CustomerRechargeResource;
+use App\Models\Bank;
 use App\Models\Customer;
 use App\Models\CustomerRecharge;
 use App\Services\Media\MediaService;
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class RechargeService
@@ -32,12 +34,12 @@ class RechargeService
 
     /**
      * Get a single resource from the database
-     * @param  Customer $customer
+     * @param CustomerRecharge $customerRecharge
      * @return CustomerRechargeResource
      */
-    public function get(CustomerRecharge $customer)
+    public function get(CustomerRecharge $customerRecharge)
     {
-        return new CustomerRechargeResource($customer);
+        return new CustomerRechargeResource($customerRecharge);
     }
 
     /**
@@ -63,68 +65,48 @@ class RechargeService
 
     /**
      * Creates resource in the database
-     * @param  array  $data
+     * @param array $data
      * @return Builder|\Illuminate\Database\Eloquent\Model|null
      */
     public function create(array $data)
     {
-        $data = $this->clean($data);
+        try {
+            DB::beginTransaction();
+            $data = $this->clean($data);
 
-        $data['code'] = Support::genCode('customer_recharges', 'code');
-        $firstName = strtok($data['name'], ' ');
-        $lastName = strtok('');
-        $data['first_name'] = trim($firstName);
-        $data['last_name'] = trim($lastName);
-        $data['code'] = Support::genCode('customers', 'code');
-        unset($data['name']);
+            $data['code'] = Support::genCode('customer_recharges', 'code');
+            $bank = Bank::find($data['bank_id']);
+            $data['description'] = "$bank->code";
+            $data['status'] = "SUCCESS";
+            $data['date'] = date('Y-m-d H:i:s', time());
 
-        $record = CustomerRecharge::query()->create($data);
-        if (!empty($record)) {
-            return $record->fresh();
-        } else {
+            $record = CustomerRecharge::query()->create($data);
+
+            $customer = Customer::find($data['customer_id']);
+            $customer->balance += $record->amount;
+            $customer->save();
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            dd($e);
             return null;
         }
-    }
-
-    /**
-     * Updates resource in the database
-     * @param  Customer|Model  $customer
-     * @param  array  $data
-     * @return bool
-     */
-    public function update(Customer $customer, array $data)
-    {
-        $data = $this->clean($data);
-
-        if (empty($data['password'])) {
-            unset($data['password']);
-        } else {
-            $data['password'] = Hash::make($data['password']);
-        }
-
-        $firstName = strtok($data['name'], ' ');
-        $lastName = strtok('');
-        $data['first_name'] = trim($firstName);
-        $data['last_name'] = trim($lastName);
-        unset($data['name']);
-        unset($data['username']);
-
-        return $customer->update($data);
+        return $record->fresh();
     }
 
     /**
      * Deletes resource in the database
-     * @param  Customer|Model  $customer
+     * @param Customer|Model $customerRecharge
      * @return bool
      */
-    public function delete(Customer $customer)
+    public function delete(CustomerRecharge $customerRecharge)
     {
-        return $customer->delete();
+//        return $customerRecharge->delete();
     }
 
     /**
      * Clean the data
-     * @param  array  $data
+     * @param array $data
      * @return array
      */
     private function clean(array $data)

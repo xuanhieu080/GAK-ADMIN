@@ -20,5 +20,4 @@ class Bank extends Model
      *
      * @var array<string>|bool
      */
-    protected $guarded = ['id'];
 }

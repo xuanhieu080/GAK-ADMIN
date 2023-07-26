@@ -5,13 +5,13 @@
             <Filters @clear="onFiltersClear">
                 <FiltersRow>
                     <FiltersCol>
-                        <TextInput name="name" :label="trans('labels.name')" v-model="mainQuery.filters.name.value"></TextInput>
+                        <TextInput name="code" :label="trans('labels.code')" v-model="mainQuery.filters.code.value"></TextInput>
                     </FiltersCol>
                     <FiltersCol>
-                        <TextInput name="username" :label="trans('labels.username')" v-model="mainQuery.filters.username.value"></TextInput>
+                        <Dropdown name="products" server="products" :multiple="true" :label="trans('labels.product')" v-model="mainQuery.filters.product_id.value"></Dropdown>
                     </FiltersCol>
                     <FiltersCol>
-                        <TextInput name="email" type="email" :label="trans('labels.email')" v-model="mainQuery.filters.email.value"></TextInput>
+                        <Dropdown name="customers" server="customers" :multiple="true" :label="trans('labels.customer')" v-model="mainQuery.filters.customer_id.value"></Dropdown>
                     </FiltersCol>
                 </FiltersRow>
             </Filters>
@@ -19,26 +19,15 @@
 
         <template #default>
             <Table :id="page.id" v-if="table" :headers="table.headers" :sorting="table.sorting" :actions="table.actions" :records="table.records" :pagination="table.pagination" :is-loading="table.loading" @page-changed="onTablePageChange" @action="onTableAction" @sort="onTableSort">
-                <template v-slot:content-id="props">
-                    <div class="flex items-center">
-                        <div class="ml-4">
-                            <div class="text-sm font-medium text-gray-900">
-                                {{ props.item.name }}
-                            </div>
-                            <div class="text-sm text-gray-500">
-                                {{ trans('labels.code') + ': ' + props.item.code }}
-                            </div>
-                        </div>
-                    </div>
+                <template v-slot:content-price="props">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800" v-html="props.item.price.toLocaleString()"></span>
                 </template>
-                <template v-slot:content-balance="props">
-                    <div class="flex items-center justify-end">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">{{props.item.balance.toLocaleString()}}</span>
-                    </div>
+                <template v-slot:content-total="props">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800" v-html="props.item.total.toLocaleString()"></span>
                 </template>
                 <template v-slot:content-status="props">
-                    <span v-if="props.item.email_verified_at" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800" v-html="trans('users.status.verified')"></span>
-                    <span v-else class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800" v-html="trans('users.status.not_verified')"></span>
+                    <span v-if="props.item.status == 'SUCCESS'" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800" v-html="trans('labels.list_status.success')"></span>
+                    <span v-else class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800" v-html="trans('labels.list_status.failed')"></span>
                 </template>
             </Table>
         </template>
@@ -48,7 +37,7 @@
 <script>
 
 import {trans} from "@/helpers/i18n";
-import CustomerService from "@/services/CustomerService";
+import OrderService from "@/services/OrderService";
 import {watch, onMounted, defineComponent, reactive, ref} from 'vue';
 import {getResponseError, prepareQuery} from "@/helpers/api";
 import {toUrl} from "@/helpers/routing";
@@ -75,35 +64,35 @@ export default defineComponent({
         Avatar
     },
     setup() {
-        const service = new CustomerService();
+        const service = new OrderService();
         const alertStore = useAlertStore();
         const mainQuery = reactive({
             page: 1,
             search: '',
             sort: '',
             filters: {
-                name: {
+                code: {
                     value: '',
                     comparison: '='
                 },
-                username: {
+                customer_id: {
                     value: '',
                     comparison: '='
                 },
-                email: {
+                product_id: {
                     value: '',
                     comparison: '='
-                }
+                },
             }
         });
 
         const page = reactive({
-            id: 'list_customers',
-            title: trans('global.pages.users'),
+            id: 'list_orders',
+            title: trans('global.pages.orders'),
             breadcrumbs: [
                 {
-                    name: trans('global.pages.users'),
-                    to: toUrl('/customers/list'),
+                    name: trans('global.pages.orders'),
+                    to: toUrl('/orders/list'),
                     active: true,
                 }
             ],
@@ -113,12 +102,6 @@ export default defineComponent({
                     name: trans('global.buttons.filters'),
                     icon: "fa fa-filter",
                     theme: 'outline',
-                },
-                {
-                    id: 'new',
-                    name: trans('global.buttons.add_new'),
-                    icon: "fa fa-plus",
-                    to: toUrl('/customers/create')
                 }
             ],
             toggleFilters: false,
@@ -127,41 +110,40 @@ export default defineComponent({
         const table = reactive({
             headers: {
                 id: trans('labels.id_pound'),
-                name: trans('labels.name'),
-                email: trans('labels.email'),
-                balance: trans('labels.balance'),
+                code: trans('labels.code'),
+                title: trans('labels.title'),
+                date: trans('labels.date'),
+                customer_name: trans('labels.customer_name'),
+                customer_code: trans('labels.customer_code'),
+                product_name: trans('labels.product'),
+                qty: trans('labels.qty'),
+                price: trans('labels.price'),
+                total: trans('labels.total'),
                 status: trans('labels.status'),
             },
             sorting: {
-                name: true,
-                username: true
+                code: true,
+                date: true
             },
             pagination: {
                 meta: null,
                 links: null,
             },
             actions: {
-                recharge: {
-                    id: 'recharge',
-                    name: trans('global.actions.recharge'),
-                    icon: "fa fa-money",
-                    showName: false,
-                    to: toUrl('/customers/{id}/recharge')
-                },
                 edit: {
                     id: 'edit',
                     name: trans('global.actions.edit'),
                     icon: "fa fa-edit",
                     showName: false,
-                    to: toUrl('/customers/{id}/edit')
+                    to: toUrl('/orders/{id}/edit')
                 },
-                delete: {
-                    id: 'delete',
-                    name: trans('global.actions.delete'),
-                    icon: "fa fa-trash",
-                    showName: false,
-                    danger: true,
-                }
+                // delete: {
+                //     id: 'delete',
+                //     name: trans('global.actions.delete'),
+                //     icon: "fa fa-trash",
+                //     showName: false,
+                //     danger: true,
+                // }
             },
             loading: false,
             records: null

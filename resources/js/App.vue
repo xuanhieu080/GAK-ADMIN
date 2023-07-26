@@ -38,8 +38,8 @@ export default {
 
         const isLoading = computed(() => {
             var value = false;
-            for(var i in globalStateStore.loadingElements) {
-                if(globalStateStore.loadingElements[i]){
+            for (var i in globalStateStore.loadingElements) {
+                if (globalStateStore.loadingElements[i]) {
                     value = true;
                     break;
                 }

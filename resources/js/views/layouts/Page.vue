@@ -52,10 +52,11 @@ import Spinner from "@/views/components/icons/Spinner";
 import {useGlobalStateStore} from "@/stores";
 import {storeToRefs} from "pinia";
 import Breadcrumb from "@/views/components/Breadcrumb.vue";
+import Notify from "@/views/components/Notify.vue";
 
 export default defineComponent({
     name: "Page",
-    components: {Breadcrumb, Alert, Button, Spinner},
+    components: {Notify, Breadcrumb, Alert, Button, Spinner},
     props: {
         id: {
             type: String,

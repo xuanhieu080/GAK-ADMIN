@@ -107,7 +107,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $src = $this->getAttribute('avatar_id');
         if (is_null($src)) {
-            return null;
+            return asset('assets/images/user-default.png');
         }
         if (!empty($this->avatar)) {
             return asset('storage/'.$this->avatar->path);

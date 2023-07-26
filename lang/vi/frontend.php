@@ -48,7 +48,7 @@ return [
         ]
     ],
     "messages" => [
-        "name" => "Tin nhắn"
+        "name" => "Tin nhắn",
     ],
 
     "global" => [
@@ -82,6 +82,11 @@ return [
             "forgot_password"   => "Quên mật khẩu",
             "reset_password"    => "Đặt lại mật khẩu",
             "recharge"          => "Nạp tiền",
+            "recharges"         => "Nạp tiền",
+            "recharges_create"  => "Nạp tiền cho khách",
+            "recharges_edit"    => "Xem thông tin nạp tiền",
+            "orders"            => "Hoá đơn",
+            "orders_edit"       => "Chi tiết hoá đơn",
         ],
         "phrases" => [
             'clear_filters'            => 'Xóa tất cả',
@@ -172,7 +177,7 @@ return [
         "author_name"       => "Người viết",
         "comment_count"     => "Lượt bình luận",
         "author_comment"    => "Người bình luận",
-        "customer_name"     => "Người bình luận",
+        "customer_name"     => "Khách hàng",
         "created_at"        => "Thời gian tạo",
         "id"                => "ID",
         "id_pound"          => "#",
@@ -202,5 +207,19 @@ return [
         "telegram"          => "Telegram",
         "image"             => "Hình ảnh",
         "value"             => "Giá trị",
+        "bank_name"         => "Ngân hàng",
+        "date"              => "Thời gian",
+        "customer_code"     => "Mã khách hàng",
+        "customer"          => "Khách hàng",
+        "status_name"       => "Trạng thái",
+        "bank"              => "Ngân hàng",
+        "bank_code"         => "Ngân hàng",
+        "balance"           => "Số dư",
+        "total"             => "Tổng",
+        "product"           => "Sản phẩm",
+        "list_status"       => [
+            "failed"  => "Thất bại",
+            "success" => "Thành công",
+        ]
     ]
 ];

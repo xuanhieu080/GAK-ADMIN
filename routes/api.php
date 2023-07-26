@@ -1,9 +1,12 @@
 <?php
 
+use App\Http\Controllers\BankController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\CustomerRechargeController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
@@ -39,6 +42,9 @@ Route::middleware(['auth:sanctum', 'apply_locale'])->group(function () {
     Route::put('/users/{user}/avatar', [UserController::class, 'updateAvatar']);
     Route::resource('users', UserController::class);
     Route::resource('customers', CustomerController::class);
+    Route::resource('recharges', CustomerRechargeController::class);
+    Route::get('orders/{id}/details', [OrderController::class,'details']);
+    Route::resource('orders', OrderController::class);
     Route::resource('products', ProductController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('posts', PostController::class);
@@ -46,6 +52,7 @@ Route::middleware(['auth:sanctum', 'apply_locale'])->group(function () {
     Route::resource('configs', ConfigController::class);
     Route::post('/customers/{id}/recharge', [CustomerController::class, 'recharge']);
     Route::get('/comments', [CommentController::class, 'index']);
+    Route::get('/banks', [BankController::class, 'index']);
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy']);
 
     /**

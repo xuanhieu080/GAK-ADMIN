@@ -1,8 +1,10 @@
 <template>
     <Alert class="mb-4"></Alert>
     <Form id="login-form" @submit.prevent="onFormSubmit">
-        <TextInput type="email" :label="trans('labels.email')" :required="true" name="email" v-model="form.email" autocomplete="email" error-input="email" class="mb-2"/>
-        <TextInput type="password" :label="trans('labels.password')" :required="true" name="password" v-model="form.password" error-input="password" class="mb-4"/>
+        <TextInput type="email" :label="trans('labels.email')" :required="true" name="email" v-model="form.email"
+                   autocomplete="email" error-input="email" class="mb-2"/>
+        <TextInput type="password" :label="trans('labels.password')" :required="true" name="password"
+                   v-model="form.password" error-input="password" class="mb-4"/>
         <div class="text-center">
             <Button type="submit" :label="trans('global.buttons.login')"/>
         </div>

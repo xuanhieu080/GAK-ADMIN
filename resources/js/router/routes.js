@@ -28,8 +28,15 @@ import {default as PageSupportIndex} from "@/views/pages/private/supports/Index.
 import {default as PageSupportCreate} from "@/views/pages/private/supports/Create";
 import {default as PageSupportEdit} from "@/views/pages/private/supports/Edit.vue";
 
+import {default as PageRechargeIndex} from "@/views/pages/private/recharges/Index.vue";
+import {default as PageRechargeCreate} from "@/views/pages/private/recharges/Create";
+import {default as PageRechargeEdit} from "@/views/pages/private/recharges/Edit.vue";
+
 import {default as PageConfigIndex} from "@/views/pages/private/configs/Index.vue";
 import {default as PageConfigEdit} from "@/views/pages/private/configs/Edit.vue";
+
+import {default as PageOrderIndex} from "@/views/pages/private/orders/Index.vue";
+import {default as PageOrderEdit} from "@/views/pages/private/orders/Edit.vue";
 
 // Products
 import {default as PageCategory} from "@/views/pages/private/categories/Index.vue";
@@ -226,6 +233,29 @@ const routes = [
         ]
     },
     {
+        path: "/recharges",
+        children: [
+            {
+                name: "recharges.list",
+                path: "list",
+                meta: {requiresAuth: true},
+                component: PageRechargeIndex,
+            },
+            {
+                name: "recharges.create",
+                path: "create",
+                meta: {requiresAuth: true},
+                component: PageRechargeCreate,
+            },
+            {
+                name: "recharges.edit",
+                path: ":id/edit",
+                meta: {requiresAuth: true},
+                component: PageRechargeEdit,
+            }
+        ]
+    },
+    {
         path: "/configs",
         children: [
             {
@@ -239,6 +269,23 @@ const routes = [
                 path: ":id/edit",
                 meta: {requiresAuth: true},
                 component: PageConfigEdit,
+            }
+        ]
+    },
+    {
+        path: "/orders",
+        children: [
+            {
+                name: "orders.list",
+                path: "list",
+                meta: {requiresAuth: true},
+                component: PageOrderIndex,
+            },
+            {
+                name: "orders.edit",
+                path: ":id/edit",
+                meta: {requiresAuth: true},
+                component: PageOrderEdit,
             }
         ]
     },
