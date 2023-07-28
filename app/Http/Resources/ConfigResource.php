@@ -15,7 +15,7 @@ class ConfigResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      *
      * @return array
      */
@@ -25,11 +25,16 @@ class ConfigResource extends JsonResource
         if ($this->is_file) {
             $value = $this->image_url;
         }
-        return [
+        $data = [
             'id'      => $this->id,
             'code'    => $this->code,
             'is_file' => $this->is_file,
             'value'   => $value,
         ];
+
+        if ($this->code == 'notification') {
+            $data['description'] = str_replace("\n", '', trim(mb_substr(strip_tags($value), 0, 20)));
+        }
+        return $data;
     }
 }

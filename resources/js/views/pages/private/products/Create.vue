@@ -4,12 +4,24 @@
             <Form id="create-category" @submit.prevent="onSubmit">
                 <TextInput class="mb-4" type="text" :required="true" error-input="name" name="name" v-model="form.name" :label="trans('labels.name')"/>
                 <FileInput class="mb-4" name="file" v-model="file" error-input="file" accept="image/*" :label="trans('labels.avatar')" @click="clearImage"></FileInput>
-                <TextInput class="mb-4" type="textarea" :required="true" :rows="5" name="description" v-model="form.description" error-input="description" :label="trans('labels.description')"/>
+                <div class="mb-4">
+                    <QuillEditor
+                        v-model:content="form.description"
+                        :options="options"
+                        :toolbar="'full'"
+                        contentType="html"
+                        :placeholder="trans('labels.description')"
+                        :required="true"
+                    />
+                    <span v-if="alertStore.errors['description']" class="text-xs tracking-wide text-red-600">{{
+                            alertStore.errors['description'][0]
+                        }}</span>
+                </div>
                 <Dropdown class="mb-4" name="category" error-input="category_id" :required="true" :multiple="true" server="categories" :label="trans('labels.categories')" :placeholder="trans('labels.categories')" :server-search-min-characters="0" v-model="category"></Dropdown>
                 <TextInput class="mb-4" type="number" :min="0" :max="999999999999" name="price" v-model="form.price" error-input="price" :label="trans('labels.price')"/>
                 <TextInput class="mb-4" type="number" :min="0" :max="999999" name="qty" v-model="form.qty" error-input="qty" :label="trans('labels.qty')"/>
                 <TextInput class="mb-4" type="number" :min="0" :max="10000" name="priority" v-model="form.priority" error-input="priority" :label="trans('labels.priority')"/>
-                <Toggle class="mb-4" v-model="form.is_active" :checked="form.is_active" error-input="is_active" :label="trans('labels.is_active')"/>
+                <Toggle class="mb-4" v-model="form.is_active" :checked="form.is_active" error-input="is_active" :label="trans('labels.show')"/>
                 <div v-if="form.details.length > 0" class="w-full">
                     <span class="text-sm text-gray-500">{{trans('labels.detail')}}</span>
                     <div v-for="(detail, index) in form.details" class="flex flex-row flex-nowrap justify-between items-center mb-4">
@@ -42,9 +54,11 @@ import Form from "@/views/components/Form";
 import {useAlertStore} from "@/stores/alert";
 import Toggle from "@/views/components/input/Toggle.vue";
 import Spinner from "@/views/components/icons/Spinner.vue";
+import {QuillEditor} from "@vueup/vue-quill";
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
 export default defineComponent({
-    components: {Spinner, Toggle, Form, FileInput, Panel, Alert, Dropdown, TextInput, Button, Page},
+    components: {QuillEditor, Spinner, Toggle, Form, FileInput, Panel, Alert, Dropdown, TextInput, Button, Page},
     setup() {
         const alertStore = useAlertStore();
         const category = ref(null)
@@ -58,6 +72,13 @@ export default defineComponent({
             priority: 100,
             is_active: false,
             details: [],
+        });
+
+        const options = ref({
+            debug: 'info',
+            toolbar: 'full',
+            theme: 'snow',
+            contentType: 'html',
         });
 
         const page = reactive({
@@ -154,6 +175,8 @@ export default defineComponent({
             addDetail,
             deleteDetail,
             clearData,
+            options,
+            alertStore
         }
 
     }

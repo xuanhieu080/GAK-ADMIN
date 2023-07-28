@@ -20,7 +20,8 @@
                             <Avatar v-else class="w-10 h-10 text-gray-400 rounded-full"/>
                         </div>
                     </div>
-                    <span v-else>{{props.item.value}}</span>
+                    <span v-if="!props.item.is_file && props.item.code != 'notification'">{{props.item.value}}</span>
+                    <span v-else>{{props.item.description}}</span>
                 </template>
             </Table>
         </template>

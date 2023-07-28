@@ -4,7 +4,20 @@
             <Form id="edit-config" @submit.prevent="onSubmit">
                 <TextInput class="mb-4" type="text" :disabled="true" name="code" v-model="item.code" :label="trans('labels.name')"/>
                 <FileInput v-if="item.is_file" class="mb-4" name="file" :required="true" v-model="file" error-input="file" accept="image/*" :label="trans('labels.avatar')" @click="form.file = ''"></FileInput>
-                <TextInput v-else class="mb-4" type="text" :required="true" error-input="value" name="value" v-model="form.value" :label="trans('labels.value')"/>
+                <TextInput v-if="!item.is_file && item.code != 'notification'" class="mb-4" type="text" :required="true" error-input="value" name="value" v-model="form.value" :label="trans('labels.value')"/>
+                <div v-else class="mb-4">
+                    <QuillEditor
+                        v-model:content="form.value"
+                        :options="options"
+                        :toolbar="'full'"
+                        contentType="html"
+                        :placeholder="trans('labels.description')"
+                    />
+
+                    <span v-if="alertStore.errors['value']" class="text-xs tracking-wide text-red-600">{{
+                            alertStore.errors['value'][0]
+                        }}</span>
+                </div>
             </Form>
         </Panel>
     </Page>
@@ -27,8 +40,13 @@ import FileInput from "@/views/components/input/FileInput";
 import Form from "@/views/components/Form";
 import {useAlertStore} from "@/stores";
 
+
+import {QuillEditor} from "@vueup/vue-quill";
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
+
 export default defineComponent({
     components: {
+        QuillEditor,
         Form,
         FileInput,
         Panel,
@@ -45,6 +63,12 @@ export default defineComponent({
         const alertStore = useAlertStore();
         const form = reactive({
             value: '',
+        });
+        const options = ref({
+            debug: 'info',
+            toolbar: 'full',
+            theme: 'snow',
+            contentType: 'html',
         });
 
         const page = reactive({
@@ -121,7 +145,8 @@ export default defineComponent({
             page,
             file,
             alertStore,
-            item
+            item,
+            options
         }
     }
 })

@@ -12,8 +12,12 @@
                         contentType="html"
                         :placeholder="trans('labels.content')"
                     />
+
+                    <span v-if="alertStore.errors['content']" class="text-xs tracking-wide text-red-600">{{
+                            alertStore.errors['content'][0]
+                        }}</span>
                 </div>
-                <Toggle class="mb-4" v-model="form.is_active" :checked="form.is_active" error-input="is_active" :label="trans('labels.is_active')"/>
+                <Toggle class="mb-4" v-model="form.is_active" :checked="form.is_active" error-input="is_active" :label="trans('labels.show')"/>
             </Form>
         </Panel>
         <Comment v-if="item.id && item.comment_count > 0" :post-id="item.id"/>
@@ -39,6 +43,7 @@ import Toggle from "@/views/components/input/Toggle.vue";
 import {QuillEditor} from "@vueup/vue-quill";
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import Comment from "@/views/pages/private/posts/Comment.vue";
+import {useAlertStore} from "@/stores";
 
 export default defineComponent({
     components: {
@@ -55,6 +60,7 @@ export default defineComponent({
         QuillEditor
     },
     setup() {
+        const alertStore = useAlertStore();
         const route = useRoute();
         const item = ref(null);
         const form = reactive({
@@ -62,6 +68,13 @@ export default defineComponent({
             file: '',
             content: '',
             is_active: false,
+        });
+
+        const options = ref({
+            debug: 'info',
+            toolbar: 'full',
+            theme: 'snow',
+            contentType: 'html',
         });
 
         const page = reactive({
@@ -125,7 +138,9 @@ export default defineComponent({
             onSubmit,
             onAction,
             page,
-            item
+            item,
+            alertStore,
+            options
         }
     }
 })
@@ -133,4 +148,9 @@ export default defineComponent({
 
 <style scoped>
 
+</style>
+<style>
+.ql-editor {
+    min-height: 200px;
+}
 </style>

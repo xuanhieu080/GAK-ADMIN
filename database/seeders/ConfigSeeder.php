@@ -20,6 +20,7 @@ class ConfigSeeder extends Seeder
             ['code' => 'name', 'is_file' => 0],
             ['code' => 'address', 'is_file' => 0],
             ['code' => 'phone', 'is_file' => 0],
+            ['code' => 'notification', 'is_file' => 0],
             ['code' => 'ico', 'is_file' => 1],
         ],
             ['code'],

@@ -1,5 +1,5 @@
 <template>
-    <div class="p-5 mt-4 xl:px-0">
+    <div class="p-5 mt-4 xl:px-0 main-body relative">
         <Alert class="mb-4"/>
         <Breadcrumb v-if="breadcrumbs.length > 0 ">
             <div>

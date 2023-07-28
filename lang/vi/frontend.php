@@ -217,6 +217,7 @@ return [
         "balance"           => "Số dư",
         "total"             => "Tổng",
         "product"           => "Sản phẩm",
+        "show"              => "Hiển thị",
         "list_status"       => [
             "failed"  => "Thất bại",
             "success" => "Thành công",

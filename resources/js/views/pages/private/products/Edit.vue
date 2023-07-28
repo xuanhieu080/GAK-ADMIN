@@ -7,8 +7,19 @@
                            :label="trans('labels.name')"/>
                 <FileInput class="mb-4" name="file" :multiple="true" v-model="file" :required="true" error-input="file"
                            accept="image/*" :label="trans('labels.avatar')" @clear="clearImage"></FileInput>
-                <TextInput class="mb-4" type="textarea" :rows="5" name="description" v-model="form.description"
-                           error-input="description" :label="trans('labels.description')"/>
+                <div class="mb-4">
+                    <QuillEditor
+                        v-model:content="form.description"
+                        :options="options"
+                        :toolbar="'full'"
+                        contentType="html"
+                        :placeholder="trans('labels.description')"
+                        :required="true"
+                    />
+                    <span v-if="alertStore.errors['description']" class="text-xs tracking-wide text-red-600">{{
+                            alertStore.errors['description'][0]
+                        }}</span>
+                </div>
                 <Dropdown class="mb-4" name="category" :multiple="true" server="categories"
                           :label="trans('labels.categories')" :placeholder="trans('labels.categories')"
                           :server-search-min-characters="0" v-model="category"></Dropdown>
@@ -19,7 +30,7 @@
                 <TextInput class="mb-4" type="number" :min="0" :max="10000" name="priority" v-model="form.priority"
                            error-input="priority" :label="trans('labels.priority')"/>
                 <Toggle class="mb-4" v-model="form.is_active" :checked="form.is_active" error-input="is_active"
-                        :label="trans('labels.is_active')"/>
+                        :label="trans('labels.show')"/>
                 <div v-if="form.details.length > 0 || form.detail_currents.length > 0" class="w-full">
                     <span class="text-sm text-gray-500">{{ trans('labels.detail') }}</span>
                     <div v-for="(detail, index) in form.detail_currents"
@@ -66,9 +77,12 @@ import FileInput from "@/views/components/input/FileInput";
 import Form from "@/views/components/Form";
 import Toggle from "@/views/components/input/Toggle.vue";
 import {useAlertStore} from "@/stores/alert";
+import {QuillEditor} from "@vueup/vue-quill";
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
 export default defineComponent({
     components: {
+        QuillEditor,
         Form,
         FileInput,
         Panel,
@@ -97,6 +111,13 @@ export default defineComponent({
             detail_currents: [],
         });
 
+
+        const options = ref({
+            debug: 'info',
+            toolbar: 'full',
+            theme: 'snow',
+            contentType: 'html',
+        });
         const page = reactive({
             id: 'edit_user',
             title: trans('global.pages.products_edit'),
@@ -229,6 +250,8 @@ export default defineComponent({
             clearImage,
             addDetail,
             deleteDetail,
+            alertStore,
+            options
         }
     }
 })

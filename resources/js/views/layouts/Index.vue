@@ -4,6 +4,7 @@ import Header from '@/views/layouts/Header.vue';
 import Sidebar from '@/views/layouts/Sidebar.vue';
 
 import {useStore} from '@/stores/sidebar';
+import {useGlobalStateStore} from '@/stores/global';
 import {storeToRefs} from 'pinia';
 
 const state = useStore();
@@ -11,7 +12,18 @@ const {isToggleDesktop, isSideMenuOpen} = storeToRefs(state);
 import {useAuthStore} from "@/stores/auth";
 import Alert from "@/views/components/Alert.vue";
 import Notify from "@/views/components/Notify.vue";
+import {onMounted} from "vue";
+import {useAlertStore} from "@/stores";
 const authStore = useAuthStore();
+const globalStore = useGlobalStateStore();
+
+onMounted(() => {
+    const element = document.querySelector(`.main-container`);
+
+    element.onscroll = () => {
+        globalStore.scroll = element.scrollTop;
+    };
+})
 
 </script>
 
@@ -49,7 +61,7 @@ const authStore = useAuthStore();
 
             <Notify/>
           <div class="overflow-y-hidden h-full">
-              <div class="overflow-y-scroll h-full px-2 md:px-8">
+              <div class="main-container overflow-y-scroll h-full px-2 md:px-8">
                   <router-view></router-view>
               </div>
           </div>

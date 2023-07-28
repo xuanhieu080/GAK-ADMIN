@@ -12,8 +12,11 @@
                         contentType="html"
                         :placeholder="trans('labels.content')"
                     />
+                    <span v-if="alertStore.errors['content']" class="text-xs tracking-wide text-red-600">{{
+                            alertStore.errors['content'][0]
+                        }}</span>
                 </div>
-                <Toggle class="mb-4" v-model="form.is_active" :checked="form.is_active" error-input="is_active" :label="trans('labels.is_active')"/>
+                <Toggle class="mb-4" v-model="form.is_active" :checked="form.is_active" error-input="is_active" :label="trans('labels.show')"/>
             </Form>
         </Panel>
     </Page>
@@ -62,7 +65,7 @@ export default defineComponent({
             filters: false,
             breadcrumbs: [
                 {
-                    name: trans('global.pages.users'),
+                    name: trans('global.pages.posts'),
                     to: toUrl('/posts/list'),
 
                 },
@@ -114,6 +117,7 @@ export default defineComponent({
             onSubmit,
             onAction,
             options,
+            alertStore
         }
     }
 })
@@ -121,4 +125,9 @@ export default defineComponent({
 
 <style scoped>
 
+</style>
+<style>
+.ql-editor {
+    min-height: 200px;
+}
 </style>

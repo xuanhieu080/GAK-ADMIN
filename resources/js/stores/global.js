@@ -6,6 +6,7 @@ export const useGlobalStateStore = defineStore({
         return {
             loadingElements: {},
             isUILoading: false,
+            scroll: 0,
         }
     },
     actions: {
