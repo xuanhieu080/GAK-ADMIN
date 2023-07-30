@@ -9,6 +9,7 @@ use App\Supports\HasImage;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use \Illuminate\Support\Facades\Config as AppConfig;
 
 class ConfigService
 {
@@ -99,7 +100,7 @@ class ConfigService
         } else {
             $config->value = Arr::get($data, 'value', $config->value);
             $config->description = Arr::get($data, 'value', $config->value);
-        }
+        }np
 
         $config->save();
 

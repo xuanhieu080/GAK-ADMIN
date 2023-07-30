@@ -97,7 +97,7 @@ export default defineComponent({
 .container-alert {
     position: absolute;
     right: 2rem;
-    top: 2rem;
+    top: 0;
     z-index: 99999999;
 }
 </style>

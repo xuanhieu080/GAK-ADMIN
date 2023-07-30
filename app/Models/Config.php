@@ -26,6 +26,8 @@ class Config extends Model
         'image',
         'is_file',
         'description',
+        'group',
+        'config',
         'is_active',
     ];
 

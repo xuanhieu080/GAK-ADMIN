@@ -100,7 +100,7 @@
 .notify {
     position: absolute;
     right: 2rem;
-    top: 2rem;
+    top: 4rem;
     z-index: 99999999;
 }
 </style>
