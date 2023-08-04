@@ -80,6 +80,7 @@ class ProductService
             $data = array_intersect_key($data, array_flip($full_columns));
 
             $data['is_active'] = filter_var($data['is_active'], FILTER_VALIDATE_BOOLEAN);
+            $data['qty'] = count($details);
 
             $record = Product::query()->create($data);
             $params = [];
@@ -121,7 +122,6 @@ class ProductService
             $product->description = Arr::get($data, 'description', $product->description);
             $product->price = Arr::get($data, 'price', $product->price);
             $product->category_id = Arr::get($data, 'category_id', $product->category_id);
-            $product->qty = Arr::get($data, 'qty', $product->qty);
             $product->is_active = filter_var(Arr::get($data, 'is_active', $product->is_active), FILTER_VALIDATE_BOOLEAN);
             $product->priority = Arr::get($data, 'priority', $product->priority);
             if (!empty($data['file'])) {
@@ -155,6 +155,7 @@ class ProductService
                     ];
                 }
             }
+            dd(count($detailCurrents),count($details));
             $params = $this->deleteNull($params);
             if (!empty($params)) {
                 $product->details()->createMany($params);

@@ -303,5 +303,6 @@ return [
         '*.locations'               => 'vị trí',
         '*.tags'                    => 'tags',
         '*.status'                  => 'trạng thái',
+        'details.*'                 => 'chi tiết',
     ],
 ];

@@ -37,7 +37,7 @@
                          class="flex flex-row flex-nowrap justify-between items-center mb-4">
                         <TextInput class="w-full" type="text" :min="0" :max="255" :name="'detail-current'+ index"
                                    v-model="form.detail_currents[index].description" :error-input="'detail_currents[' +index +']'"/>
-                        <TextInput class="w-full d-none" type="text" :min="0" :max="255" :name="'detail-current-id-'+ index"
+                        <TextInput class="w-full hidden" type="text" :min="0" :max="255" :name="'detail-current-id-'+ index"
                                    v-model="form.detail_currents[index].id" :error-input="'detail_currents.' +index"/>
                         <a @click="deleteDetail(index,'current')" class="uppercase cursor-pointer text-lg ml-3 text-danger-400"
                            :title="trans('labels.delete')">
@@ -213,14 +213,14 @@ export default defineComponent({
 
         function deleteDetail(index, type = 'add') {
             if (type == 'add') {
-                if (form.details[index]) {
+                if (form.details[index] == '' || form.details[index]) {
                     form.details.splice(index, 1);
                     if (alertStore.errors[`details.${index}`]) {
                         delete alertStore.errors[`details.${index}`]
                     }
                 }
             } else {
-                if (form.detail_currents[index]) {
+                if (form.detail_currents[index] == '' || form.detail_currents[index]) {
                     form.detail_currents.splice(index, 1);
                     if (alertStore.errors[`detail_currents.${index}`]) {
                         delete alertStore.errors[`detail_currents.${index}`]

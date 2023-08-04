@@ -155,6 +155,17 @@ $attributes = [
     'seo'                       => 'seo',
     'seoDelete'                 => 'seo',
     'code'                      => 'mã',
+    'details.1'                      => 'Chi tiết',
+    'details.2'                      => 'Chi tiết',
+    'details.3'                      => 'Chi tiết',
+    'details.4'                      => 'Chi tiết',
+    'details.5'                      => 'Chi tiết',
+    'details.6'                      => 'Chi tiết',
+    'details.7'                      => 'Chi tiết',
+    'details.8'                      => 'Chi tiết',
+    'details.9'                      => 'Chi tiết',
+    'details.10'                      => 'Chi tiết',
+    'details.11'                      => 'Chi tiết',
 ];
 
 

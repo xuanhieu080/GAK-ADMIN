@@ -45,7 +45,7 @@ class UpdateRequest extends BaseRequest
             ],
             'details'           => 'nullable|array',
             'details.*'         => [
-                'nullable',
+                'required',
                 'string',
                 'unique:product_details,description'
             ],

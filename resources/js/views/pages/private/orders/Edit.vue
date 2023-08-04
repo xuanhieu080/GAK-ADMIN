@@ -49,12 +49,14 @@
                                             </div>
                                             <div class="mb-3 flex">
                                                 <span class="mr-5 w-1/3">Trạng thái:</span>
-                                                <span v-if="item.status == 'SUCCESS'"
-                                                      class="w-2/3 px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
-                                                      v-html="trans('labels.list_status.success')"></span>
-                                                <span v-else
-                                                      class="w-2/3 px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800"
-                                                      v-html="trans('labels.list_status.failed')"></span>
+                                                <div>
+                                                    <span v-if="item.status == 'SUCCESS'"
+                                                          class="w-2/3 px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+                                                          v-html="trans('labels.list_status.success')"></span>
+                                                    <span v-else
+                                                          class="w-2/3 px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800"
+                                                          v-html="trans('labels.list_status.failed')"></span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

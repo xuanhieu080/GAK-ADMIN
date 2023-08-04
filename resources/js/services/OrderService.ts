@@ -1,6 +1,6 @@
 import ModelService from "@/services/ModelService";
 
-export default class CategoryService extends ModelService {
+export default class OrderService extends ModelService {
 
     constructor() {
         super();
