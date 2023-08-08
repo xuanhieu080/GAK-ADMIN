@@ -100,7 +100,7 @@ class ConfigService
         } else {
             $config->value = Arr::get($data, 'value', $config->value);
             $config->description = Arr::get($data, 'value', $config->value);
-        }np
+        }
 
         $config->save();
 

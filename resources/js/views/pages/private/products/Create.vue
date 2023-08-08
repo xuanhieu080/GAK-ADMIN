@@ -19,9 +19,8 @@
                 </div>
                 <Dropdown class="mb-4" name="category" error-input="category_id" :required="true" :multiple="true" server="categories" :label="trans('labels.categories')" :placeholder="trans('labels.categories')" :server-search-min-characters="0" v-model="category"></Dropdown>
                 <TextInput class="mb-4" type="number" :min="0" :max="999999999999" name="price" v-model="form.price" error-input="price" :label="trans('labels.price')"/>
-                <TextInput class="mb-4" type="number" :min="0" :max="999999" name="qty" v-model="form.qty" error-input="qty" :label="trans('labels.qty')"/>
                 <TextInput class="mb-4" type="number" :min="0" :max="10000" name="priority" v-model="form.priority" error-input="priority" :label="trans('labels.priority')"/>
-                <Toggle class="mb-4" v-model="form.is_active" :checked="form.is_active" error-input="is_active" :label="trans('labels.show')"/>
+                <Toggle class="mb-4" v-model="form.is_active" :checked="form.is_active" error-input="is_active" :label="trans('labels.show')" name="status"/>
                 <div v-if="form.details.length > 0" class="w-full">
                     <span class="text-sm text-gray-500">{{trans('labels.detail')}}</span>
                     <div v-for="(detail, index) in form.details" class="flex flex-row flex-nowrap justify-between items-center mb-4">
@@ -68,7 +67,6 @@ export default defineComponent({
             description: null,
             category_id: null,
             price: 0,
-            qty: 100,
             priority: 100,
             is_active: false,
             details: [],

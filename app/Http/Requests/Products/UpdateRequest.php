@@ -37,7 +37,8 @@ class UpdateRequest extends BaseRequest
                     if (empty($detail)) {
                         return $fail(__("messages.not_exist", ['name' => 'Giá trị']));
                     }
-                    $item = ProductDetail::whereDescription($value['description'])->first();
+                    $item = ProductDetail::whereDescription($value['description'])
+                                         ->where('product_id','<>',$this->route('product')->id)->first();
                     if (!empty($item) && $item->id != $value['id']) {
                         return $fail(__('messages.unique', ['name' => "$attribute: #" . $value['id']]));
                     }

@@ -128,16 +128,25 @@ class ProductService
                 $product->image = HasImage::updateImage($data['file'], $product->image, Product::path);
             }
 
-            $product->save();
             $detailCurrents = Arr::get($data, 'detail_currents', []);
-            $valueIds = array_column($detailCurrents, 'id');
+
+            $valueIds = [];
+            $valueDescriptions = [];
+            foreach ($detailCurrents as $index => $item) {
+                if (!in_array($item['description'], $valueDescriptions)) {
+                    $valueDescriptions[] = $item['description'];
+                    $valueIds[] = $item['id'];
+                } else {
+                    unset($detailCurrents[$index]);
+                }
+            }
+
             ProductDetail::where('product_id', $product->id)
                 ->whereNotIn('id',$valueIds)
                 ->where('status','PENDING')
                 ->delete();
 
-            $keyToRemove = 'title';
-            $detailCurrents = $this->removeKey($detailCurrents, $keyToRemove);
+            $detailCurrents = $this->removeKey($detailCurrents, "title");
             ProductDetail::upsert($detailCurrents,['id'],['description']);
 
             $details = Arr::get($data, 'details', []);
@@ -155,12 +164,14 @@ class ProductService
                     ];
                 }
             }
-            dd(count($detailCurrents),count($details));
             $params = $this->deleteNull($params);
             if (!empty($params)) {
                 $product->details()->createMany($params);
             }
 
+
+            $product->qty = count($details) + count($detailCurrents);
+            $product->save();
             $product->load(['details']);
             DB::commit();
         } catch (\Exception $e) {
