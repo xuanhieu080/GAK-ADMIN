@@ -30,6 +30,7 @@ class UsersTableSeeder extends Seeder
             [
                 'first_name' => 'Sáng',
                 'last_name' => 'Sáng',
+                'name' => 'Sáng Sáng',
                 'email_verified_at' => null,
                 'password' => bcrypt('lsang088@gmail.com')
             ]
@@ -39,6 +40,7 @@ class UsersTableSeeder extends Seeder
             [
                 'first_name' => 'Phan',
                 'last_name' => 'Hiếu',
+                'name' => 'Phan Hiếu',
                 'email_verified_at' => null,
                 'password' => bcrypt('xuanhieu.ht96@gmail.com')
             ]

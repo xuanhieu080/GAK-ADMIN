@@ -25,7 +25,7 @@ class Customer extends Authenticatable implements MustVerifyEmail
      * ALlowed search fields
      * @var string[]
      */
-    protected $fillable = ['first_name', 'last_name', 'email', 'username', 'code', 'balance'];
+    protected $fillable = ['password','first_name', 'last_name', 'name', 'is_active', 'email', 'username', 'code', 'balance'];
     protected $searchFields = ['first_name', 'last_name', 'email', 'username', 'code'];
 
     /**
