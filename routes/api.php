@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AttributeController;
+use App\Http\Controllers\AttributeGroupController;
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
@@ -47,6 +49,8 @@ Route::middleware(['auth:sanctum', 'apply_locale'])->group(function () {
     Route::resource('orders', OrderController::class);
     Route::resource('products', ProductController::class);
     Route::resource('categories', CategoryController::class);
+    Route::resource('attribute-groups', AttributeGroupController::class);
+    Route::resource('attributes', AttributeController::class);
     Route::resource('posts', PostController::class);
     Route::resource('supports', SupportController::class);
     Route::resource('configs', ConfigController::class);

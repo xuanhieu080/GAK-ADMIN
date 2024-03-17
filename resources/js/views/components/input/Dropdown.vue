@@ -3,19 +3,26 @@
         <label :for="name" class="text-sm text-gray-500" :class="{ 'sr-only': !showLabel }" v-if="label">
             {{ label }}<span class="text-red-600" v-if="$props.required">*</span>
         </label>
-        <Multiselect track-by="id" :label="labelName" v-model="value" :id="$props.name" :name="$props.name" :disabled="disabled" :placeholder="$props.placeholder" :options="selectOptions" :searchable="!!$props.server" :loading="isLoading"
+        <Multiselect track-by="id" :label="labelName" v-model="value" :id="$props.name"
+                     :name="$props.name"
+                     :disabled="disabled"
+                     :placeholder="$props.placeholder"
+                     :options="selectOptions"
+                     :searchable="!!$props.server"
+                     :loading="isLoading"
                      :internal-search="false"
                      :clear-on-select="true"
                      :close-on-select="true"
                      :max-height="400"
                      :show-no-results="false"
-                     :hide-selected="true"
+                     :hide-selected="false"
                      :filter-results="true"
                      :create-option="true"
                      :select-label="'Chọn'"
                      :deselect-label="'Chọn để xoá'"
                      :preserveSearch="true"
                      :showLabels="true"
+                     :allow-empty="true"
                      open-direction="bottom" @search-change="handleSearch">
         </Multiselect>
         <span v-if="errorInput && errorStore.errors[errorInput]" class="text-xs tracking-wide text-red-600">{{
@@ -82,13 +89,16 @@ export default defineComponent({
         },
         serverPerPage: {
             type: Number,
-            default: 5
+            default: 20
         },
         serverSearchMinCharacters: {
             type: Number,
             default: 3
         },
         errorInput: {
+            type: String,
+        },
+        params: {
             type: String,
         }
     },
@@ -129,7 +139,7 @@ export default defineComponent({
             }
             const service = new SearchService(props.server);
             isLoading.value = true;
-            service.begin(search, 1, props.serverPerPage).then((response) => {
+            service.begin(search, 1, props.serverPerPage, props.params).then((response) => {
                 selectOptionsArr.value = [];
                 for (let i in response.data.data) {
                     selectOptionsArr.value.push({id: response.data.data[i].id, title: response.data.data[i].title});

@@ -2,30 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
+use App\Models\Attribute;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Http\Resources\CategoryResource;
-use App\Http\Requests\Categories\StoreRequest;
-use App\Http\Requests\Categories\UpdateRequest;
+use App\Http\Resources\AttributeResource;
+use App\Http\Requests\Attributes\StoreRequest;
+use App\Http\Requests\Attributes\UpdateRequest;
 use App\Http\Requests\DestroyUserRequest;
-use App\Services\Product\CategoryService;
+use App\Services\Product\AttributeService;
 
-class CategoryController extends Controller
+class AttributeController extends Controller
 {
     /**
      * The service instance
-     * @var CategoryService
+     * @var AttributeService
      */
-    private CategoryService $categoryService;
+    private AttributeService $attributeService;
 
     /**
      * Constructor
      */
-    public function __construct(CategoryService $categoryService)
+    public function __construct(AttributeService $attributeService)
     {
-        $this->categoryService = $categoryService;
+        $this->attributeService= $attributeService;
     }
 
     /**
@@ -35,9 +35,9 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('list', Category::class);
+        $this->authorize('list', Attribute::class);
 
-        return $this->categoryService->index($request->all());
+        return $this->attributeService->index($request->all());
     }
 
     /**
@@ -48,7 +48,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', Category::class);
+        $this->authorize('create', Attribute::class);
 
         return $this->responseDataSuccess(['properties' => $this->properties()]);
     }
@@ -63,10 +63,10 @@ class CategoryController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $this->authorize('create', Category::class);
+        $this->authorize('create', Attribute::class);
 
         $input = $request->validated();
-        $record = $this->categoryService->create($input);
+        $record = $this->attributeService->create($input);
         if (!is_null($record)) {
             return $this->responseStoreSuccess(['model' => $record]);
         } else {
@@ -77,49 +77,49 @@ class CategoryController extends Controller
     /**
      *  Show the form for editing the specified resource.
      *
-     * @param  Category  $category
+     * @param  Attribute  $attribute
      *
-     * @return CategoryResource|JsonResponse
+     * @return AttributeResource|JsonResponse
      * @throws AuthorizationException
      */
-    public function show(Category $category)
+    public function show(Attribute $attribute)
     {
-        $this->authorize('view', Category::class);
+        $this->authorize('view', Attribute::class);
 
-        $model = $this->categoryService->get($category);
+        $model = $this->attributeService->get($attribute);
         return $this->responseDataSuccess(['model' => $model, 'properties' => $this->properties()]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Category  $category
+     * @param  Attribute  $attribute
      *
      * @return JsonResponse|\Illuminate\Http\Response
      * @throws AuthorizationException
      */
-    public function edit(Category $category)
+    public function edit(Attribute $attribute)
     {
-        $this->authorize('edit', Category::class);
+        $this->authorize('edit', Attribute::class);
 
-        return $this->show($category);
+        return $this->show($attribute);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  UpdateRequest  $request
-     * @param  Category  $category
+     * @param  Attribute  $attribute
      *
      * @return JsonResponse
      * @throws AuthorizationException
      */
-    public function update(UpdateRequest $request, Category $category)
+    public function update(UpdateRequest $request, Attribute $attribute)
     {
-        $this->authorize('edit', Category::class);
+        $this->authorize('edit', Attribute::class);
 
         $data = $request->validated();
-        if ($item = $this->categoryService->update($category, $data)) {
+        if ($item = $this->attributeService->update($attribute, $data)) {
             return $this->responseUpdateSuccess(['model' => $item]);
         } else {
             return $this->responseUpdateFail();
@@ -134,12 +134,12 @@ class CategoryController extends Controller
      * @return JsonResponse
      * @throws AuthorizationException
      */
-    public function destroy(DestroyUserRequest $request, Category $category)
+    public function destroy(DestroyUserRequest $request, Attribute $attribute)
     {
-        $this->authorize('delete', Category::class);
+        $this->authorize('delete', Attribute::class);
 
-        if ($this->categoryService->delete($category)) {
-            return $this->responseDeleteSuccess(['model' => $category]);
+        if ($this->attributeService->delete($attribute)) {
+            return $this->responseDeleteSuccess(['model' => $attribute]);
         }
 
         return $this->responseDeleteFail();

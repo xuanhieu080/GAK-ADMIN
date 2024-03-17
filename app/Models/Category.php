@@ -9,10 +9,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Kalnoy\Nestedset\NodeTrait;
+use Spatie\Image\Enums\Fit;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Category extends Model
+class Category extends Model implements HasMedia
 {
-    use HasFactory, NodeTrait;
+    use HasFactory, NodeTrait, InteractsWithMedia;
 
     use Searchable, Filterable;
 
@@ -25,38 +29,41 @@ class Category extends Model
         'name',
         'description',
         'is_active',
+        '_lft',
+        '_rgt',
+        'parent_id',
+        'show_header',
+        'slug',
+        'meta_title',
+        'meta_description',
+        'meta_key',
     ];
 
-    protected $appends = [
-        'image_url'
-    ];
+//    protected $appends = [
+//        'image_url'
+//    ];
+//
+//    public function getImageUrlAttribute()
+//    {
+//        return $this->getFirstMediaUrl();
+//    }
 
-    public function getImageUrlAttribute()
+    public function upTree()
     {
-        if (!empty($this->image)) {
-            return Storage::disk(HasImage::disk())->url($this->image);
-        }
-        return null;
+        return $this->newQuery()->where('_lft', '<', $this->_lft)->where('_rgt', '>', $this->_rgt);
     }
 
-    public function getLftName()
+    public function registerMediaConversions(Media $media = null): void
     {
-        return 'left';
+        $this
+            ->addMediaConversion('preview')
+            ->fit(Fit::Contain, 300, 300)
+            ->nonQueued();
     }
 
-    public function getRgtName()
+    public function getMediaFolderName()
     {
-        return 'right';
+        return 'categories';
     }
 
-    public function getParentIdName()
-    {
-        return 'parent';
-    }
-
-// Specify parent id attribute mutator
-    public function setParentAttribute($value)
-    {
-        $this->setParentIdAttribute($value);
-    }
 }

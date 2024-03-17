@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {defineEmits, defineProps, ref} from "vue";
+import {defineEmits, defineProps, ref, watch} from "vue";
 import {useAlertStore} from "@/stores/alert";
 
 const emit = defineEmits(["update:modelValue"]);
@@ -50,6 +50,7 @@ function onInput() {
     emit("update:modelValue", checkValue.value);
 }
 
+watch(() =>props.checked, () => {checkValue.value = props.checked})
 </script>
 
 <template>

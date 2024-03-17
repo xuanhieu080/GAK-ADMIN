@@ -9,8 +9,8 @@ export default class SearchService extends BaseService {
         this.setupAPI(axios.defaults.baseURL);
     }
 
-    public begin(phrase, page, perPage) {
-        return this.get(this.url + `/?search=${phrase}&per_page=${perPage}&page=${page}`)
+    public begin(phrase, page, perPage, params = null) {
+        return this.get(this.url + `/?search=${phrase}&per_page=${perPage}&page=${page}${params}`)
     }
 
 }

@@ -13,14 +13,13 @@ return new class extends Migration
     {
         Schema::table('categories', function (Blueprint $table) {
             $table->nestedSet();
-            $table->boolean('show_header');
+            $table->boolean('show_header')->default(0)->nullable();
             $table->string('slug', 255)->nullable();
             $table->string('meta_title', 255)->nullable();
             $table->string('meta_description', 255)->nullable();
             $table->string('meta_key', 255)->nullable();
         });
         Schema::table('products', function (Blueprint $table) {
-            $table->nestedSet();
             $table->string('slug', 255)->nullable();
             $table->string('meta_title', 255)->nullable();
             $table->string('meta_description', 255)->nullable();

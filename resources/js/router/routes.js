@@ -28,9 +28,13 @@ import {default as PageSupportIndex} from "@/views/pages/private/supports/Index.
 import {default as PageSupportCreate} from "@/views/pages/private/supports/Create";
 import {default as PageSupportEdit} from "@/views/pages/private/supports/Edit.vue";
 
-import {default as PageRechargeIndex} from "@/views/pages/private/recharges/Index.vue";
-import {default as PageRechargeCreate} from "@/views/pages/private/recharges/Create";
-import {default as PageRechargeEdit} from "@/views/pages/private/recharges/Edit.vue";
+import {default as PageAttributeGroupIndex} from "@/views/pages/private/attribute-groups/Index.vue";
+import {default as PageAttributeGroupCreate} from "@/views/pages/private/attribute-groups/Create";
+import {default as PageAttributeGroupEdit} from "@/views/pages/private/attribute-groups/Edit.vue";
+
+import {default as PageAttributeIndex} from "@/views/pages/private/attributes/Index.vue";
+import {default as PageAttributeCreate} from "@/views/pages/private/attributes/Create";
+import {default as PageAttributeEdit} from "@/views/pages/private/attributes/Edit.vue";
 
 import {default as PageConfigIndex} from "@/views/pages/private/configs/Index.vue";
 import {default as PageConfigEdit} from "@/views/pages/private/configs/Edit.vue";
@@ -233,25 +237,48 @@ const routes = [
         ]
     },
     {
-        path: "/recharges",
+        path: "/attribute-groups",
         children: [
             {
-                name: "recharges.list",
+                name: "attribute_group.list",
                 path: "list",
                 meta: {requiresAuth: true},
-                component: PageRechargeIndex,
+                component: PageAttributeGroupIndex,
             },
             {
-                name: "recharges.create",
+                name: "attribute_group.create",
                 path: "create",
                 meta: {requiresAuth: true},
-                component: PageRechargeCreate,
+                component: PageAttributeGroupCreate,
             },
             {
-                name: "recharges.edit",
+                name: "attribute_group.edit",
                 path: ":id/edit",
                 meta: {requiresAuth: true},
-                component: PageRechargeEdit,
+                component: PageAttributeGroupEdit,
+            }
+        ]
+    },
+    {
+        path: "/attributes",
+        children: [
+            {
+                name: "attribute.list",
+                path: "list",
+                meta: {requiresAuth: true},
+                component: PageAttributeIndex,
+            },
+            {
+                name: "attribute.create",
+                path: "create",
+                meta: {requiresAuth: true},
+                component: PageAttributeCreate,
+            },
+            {
+                name: "attribute.edit",
+                path: ":id/edit",
+                meta: {requiresAuth: true},
+                component: PageAttributeEdit,
             }
         ]
     },

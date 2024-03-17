@@ -67,7 +67,7 @@ class Controller extends BaseController
      */
     protected function responseUpdateSuccess($data = [], $code = 200)
     {
-        return $this->responseSuccess(trans('frontend.global.phrases.record_updated'), $data, $code);
+        return $this->responseSuccess('Cập nhật thông tin thành công', $data, $code);
     }
 
 
