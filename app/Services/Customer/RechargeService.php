@@ -88,7 +88,6 @@ class RechargeService
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            dd($e);
             return null;
         }
         return $record->fresh();

@@ -39,6 +39,10 @@ class Category extends Model implements HasMedia
         'meta_key',
     ];
 
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
+
 //    protected $appends = [
 //        'image_url'
 //    ];

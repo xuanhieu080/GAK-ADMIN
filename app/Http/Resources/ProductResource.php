@@ -15,8 +15,15 @@ class ProductResource extends JsonResource
      */
     public function toArray($request)
     {
+        $thumb = [];
+
+        foreach ($this->getMedia("thumb") as $item) {
+            $thumb[] = $item->getFullUrl();
+        }
         $data = $this->resource->toArray();
-        $data['details'] = Data::formatCollectionForSelect($this->details, 'id', 'description', ['description']);
+        $data['image'] = $this->getFirstMediaUrl();
+        $data['image_url'] = $this->getFirstMediaUrl();
+        $data['thumb_image'] = $thumb;
         $data['category_name'] = object_get($this, 'category.name');
         $data['created_at'] = !empty($this->resource->created_at) ? $this->resource->created_at->diffForHumans() : null;
         $data['updated_at'] = !empty($this->resource->updated_at) ? $this->resource->updated_at->diffForHumans() : null;

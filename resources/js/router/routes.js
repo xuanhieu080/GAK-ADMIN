@@ -24,6 +24,10 @@ import {default as PagePostIndex} from "@/views/pages/private/posts/Index.vue";
 import {default as PagePostCreate} from "@/views/pages/private/posts/Create";
 import {default as PagePostEdit} from "@/views/pages/private/posts/Edit.vue";
 
+import {default as PagePostGroupIndex} from "@/views/pages/private/post-groups/Index.vue";
+import {default as PagePostGroupCreate} from "@/views/pages/private/post-groups/Create";
+import {default as PagePostGroupEdit} from "@/views/pages/private/post-groups/Edit.vue";
+
 import {default as PageSupportIndex} from "@/views/pages/private/supports/Index.vue";
 import {default as PageSupportCreate} from "@/views/pages/private/supports/Create";
 import {default as PageSupportEdit} from "@/views/pages/private/supports/Edit.vue";
@@ -187,6 +191,29 @@ const routes = [
                 path: ":id/edit",
                 meta: {requiresAuth: true},
                 component: PageProductEdit,
+            }
+        ]
+    },
+    {
+        path: "/post-groups",
+        children: [
+            {
+                name: "post_groups.list",
+                path: "list",
+                meta: {requiresAuth: true},
+                component: PagePostGroupIndex,
+            },
+            {
+                name: "post_groups.create",
+                path: "create",
+                meta: {requiresAuth: true},
+                component: PagePostGroupCreate,
+            },
+            {
+                name: "post_groups.edit",
+                path: ":id/edit",
+                meta: {requiresAuth: true},
+                component: PagePostGroupEdit,
             }
         ]
     },

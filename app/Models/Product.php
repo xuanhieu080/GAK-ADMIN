@@ -8,10 +8,14 @@ use App\Traits\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Image\Enums\Fit;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Product extends Model
+class Product extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory, InteractsWithMedia;
 
     use Searchable, Filterable;
 
@@ -20,8 +24,8 @@ class Product extends Model
     protected $fillable = [
         'id',
         'code',
+        'slug',
         'name',
-        'image',
         'description',
         'price',
         'category_id',
@@ -29,6 +33,10 @@ class Product extends Model
         'is_active',
         'qty_sold',
         'priority',
+        'meta_title',
+        'meta_description',
+        'meta_key',
+        'video_link'
     ];
 
     protected $casts = [
@@ -36,17 +44,8 @@ class Product extends Model
     ];
 
     protected $appends = [
-        'image_url',
         'title',
     ];
-
-    public function getImageUrlAttribute()
-    {
-        if (!empty($this->image)) {
-            return Storage::disk(HasImage::disk())->url($this->image);
-        }
-        return null;
-    }
 
     public function getTitleAttribute()
     {
@@ -63,6 +62,19 @@ class Product extends Model
 
     public function variants()
     {
-        return $this->hasMany(Variant::class, 'product_id', 'id');
+        return $this->hasMany(ProductVariant::class, 'product_id', 'id');
+    }
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this
+            ->addMediaConversion('preview')
+            ->fit(Fit::Contain, 300, 300)
+            ->nonQueued();
+    }
+
+    public function getMediaFolderName()
+    {
+        return 'products';
     }
 }

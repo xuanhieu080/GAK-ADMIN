@@ -46,12 +46,6 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import Information from "@/views/pages/private/products/Information.vue";
 import {rand} from "@vueuse/core";
 
-
-const tabs = ref([
-  {title: 'Thông tin chung', href: '/products/create#first', content: '<p>Content for Tab 1</p>'},
-  {title: 'Thuộc tính', href: '/products/create#second', content: '<p>Content for Tab 2</p>'},
-  {title: 'Biến thể', href: '/products/create#third', content: '<p>Content for Tab 3</p>'}
-]);
 const alertStore = useAlertStore();
 const activeTab = ref(0)
 const category = ref(null)
@@ -67,6 +61,8 @@ const information = reactive({
   meta_description: null,
   meta_key: null,
   slug: null,
+  video_link: null,
+  thumb_image: [],
 });
 const informationCreate = ref({
   name: null,
@@ -78,6 +74,7 @@ const informationCreate = ref({
   meta_title: null,
   meta_description: null,
   meta_key: null,
+  video_link: null,
   slug: null,
 });
 
@@ -138,16 +135,12 @@ function onSubmit() {
   if (category.value && category.value.id) {
     information.category_id = category.value.id;
   }
-  if (file.value != null) {
-    information.file = file.value;
-  }
-  clearData();
-  // service.handleCreate('create-product', reduceProperties(information, 'roles', 'id')).then(() => {
-  //   if (alertStore.type == 'success') {
-  //     clearObject(information)
-  //     clearData();
-  //   }
-  // })
+  service.handleCreate('create-product', reduceProperties(information, 'roles', 'id')).then(() => {
+    if (alertStore.type == 'success') {
+      clearObject(information)
+      clearData();
+    }
+  })
   return false;
 }
 
@@ -164,13 +157,15 @@ function clearData() {
   information.meta_description = null;
   information.slug = null;
   information.meta_key = null;
+  information.video_link = null;
+  information.thumb_image = [];
   informationCreate.value = information;
 }
 
 function informationUpdate(data) {
   information.name = data.name;
-  information.file = data.file;
-  information.image = data.file;
+  information.file = data.image;
+  information.image = data.image;
   information.description = data.description;
   information.category_id = data.category_id;
   information.price = data.price;
@@ -180,6 +175,8 @@ function informationUpdate(data) {
   information.meta_description = data.meta_description;
   information.meta_key = data.meta_key;
   information.slug = data.slug;
+  information.video_link = data.video_link;
+  information.thumb_image = data.thumb_image;
 }
 </script>
 

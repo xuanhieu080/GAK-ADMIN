@@ -13,6 +13,9 @@
 
         <template #default>
             <Table :id="page.id" v-if="table" :headers="table.headers" :sorting="table.sorting" :actions="table.actions" :records="table.records" :pagination="table.pagination" :is-loading="table.loading" @page-changed="onTablePageChange" @action="onTableAction" @sort="onTableSort">
+              <template v-slot:content-is_active="props">
+                <Toggle class="mb-4" disabled :model-value="props.item.is_active" :checked="props.item.is_active"/>
+              </template>
             </Table>
         </template>
     </Page>
@@ -35,9 +38,11 @@ import FiltersRow from "@/views/components/filters/FiltersRow";
 import FiltersCol from "@/views/components/filters/FiltersCol";
 import TextInput from "@/views/components/input/TextInput";
 import Dropdown from "@/views/components/input/Dropdown";
+import Toggle from "@/views/components/input/Toggle.vue";
 
 export default defineComponent({
     components: {
+      Toggle,
         Dropdown,
         TextInput,
         FiltersCol,
@@ -93,8 +98,10 @@ export default defineComponent({
             headers: {
                 id: trans('labels.id_pound'),
                 title: trans('labels.title'),
+                slug: 'Đường dẫn',
                 author_name: trans('labels.author_name'),
-                comment_count: trans('labels.comment_count'),
+                group_name: 'Nhóm',
+                is_active: 'Hiển thị',
             },
             sorting: {
                 title: true,

@@ -116,26 +116,59 @@ export default abstract class ModelService extends BaseService {
     }
 
     public transformPayloadForSubmission(payload) {
+
         let data = new FormData();
-        for (let key in payload) {
-            let val = payload[key];
+
+        const appendToFormData = (data, key, val) => {
             if (Array.isArray(val)) {
-                for (let index in val) {
-                    if (typeof val[index] === 'object' && val[index] !== null) {
-                        const array = this.objectToArray(val[index]);
-                        array.forEach(function(number) {
-                            data.append(key + `[${index}][${number.key}]`, number.value);
-                        });
-                    } else if(val != null) {
-                        data.append(key + `[${index}]`, val[index]);
+                for (let i = 0; i < val.length; i++) {
+                    if(val[i] instanceof File) {
+                        data.append(`${key}[${i}]`, val[i]);
+                    } else if (typeof val[i] === 'object' && val[i] !== null) {
+                        for(let subKey in val[i]) {
+                            if(val[i].hasOwnProperty(subKey)) {
+                                appendToFormData(data, `${key}[${i}][${subKey}]`, val[i][subKey]);
+                            }
+                        }
+                    } else {
+                        data.append(`${key}[${i}]`, val[i]);
                     }
                 }
-            } else if(val != null) {
+            } else if(val !== null && val !== undefined) {
                 data.append(key, val);
             }
         }
+
+        for (let key in payload) {
+            if (payload.hasOwnProperty(key)) {
+                appendToFormData(data, key, payload[key]);
+            }
+        }
+
         return data;
     }
+
+    // public transformPayloadForSubmission(payload) {
+    //     let data = new FormData();
+    //     for (let key in payload) {
+    //         let val = payload[key];
+    //         if (Array.isArray(val)) {
+    //             for (let index in val) {
+    //                 if (typeof val[index] === 'object' && val[index] !== null && val[index] instanceof File == false) {
+    //                     const array = this.objectToArray(val[index]);
+    //                     array.forEach(function(number) {
+    //                         data.append(key + `[${index}][${number.key}]`, number.value);
+    //                     });
+    //                 } else if(val != null) {
+    //                     data.append(key + `[${index}]`, val[index]);
+    //                 }
+    //             }
+    //         } else if(val != null) {
+    //             data.append(key, val);
+    //         }
+    //     }
+    //     return data;
+    // }
 
     public objectToArray(obj) {
         const result = [];

@@ -21,4 +21,8 @@ class ProductDetail extends Model
         'status',
         'user_id',
     ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
 }

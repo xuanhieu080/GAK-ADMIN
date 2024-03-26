@@ -10,6 +10,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerRechargeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\PostGroupController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SupportController;
@@ -47,17 +48,25 @@ Route::middleware(['auth:sanctum', 'apply_locale'])->group(function () {
     Route::resource('recharges', CustomerRechargeController::class);
     Route::get('orders/{id}/details', [OrderController::class,'details']);
     Route::resource('orders', OrderController::class);
-    Route::resource('products', ProductController::class);
+    Route::match(['put', 'patch'], '/products/{product}/attribute', [ProductController::class, 'attribute']);
+
     Route::resource('categories', CategoryController::class);
     Route::resource('attribute-groups', AttributeGroupController::class);
     Route::resource('attributes', AttributeController::class);
     Route::resource('posts', PostController::class);
+    Route::resource('post-groups', PostGroupController::class);
     Route::resource('supports', SupportController::class);
     Route::resource('configs', ConfigController::class);
     Route::post('/customers/{id}/recharge', [CustomerController::class, 'recharge']);
     Route::get('/comments', [CommentController::class, 'index']);
     Route::get('/banks', [BankController::class, 'index']);
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy']);
+
+    Route::resource('products', ProductController::class);
+    Route::get( '/products/{product}/attribute', [ProductController::class, 'getAttribute']);
+    Route::get( '/products/{product}/sync', [ProductController::class, 'productVariantSync']);
+    Route::get( '/products/{product}/variants', [ProductController::class, 'productVariant']);
+    Route::match(['put', 'patch'],'/products/{product}/variants', [ProductController::class, 'updateProductVariant']);
 
     /**
      * Roles

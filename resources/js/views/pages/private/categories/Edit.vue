@@ -9,33 +9,33 @@
                    label="Slug"/>
         <TextInput class="mb-4" type="text" :disabled="true" name="code" v-model="item.code"
                    :label="trans('labels.code')"/>
-       <div class="flex justify-center">
-         <div class="w-[500px]">
-           <FilePond
-               ref="pondElement"
-               class="product-image"
-               label-idle="Kéo thả hoặc chọn hình ảnh tại đây"
-               accepted-file-types="image/*"
-               label-max-file-size-exceeded="File quá lớn"
-               :max-file-size="maxFileSize"
-               allow-file-size-validation="true"
-               class-name="upload-job-image flex items-center justify-center w-full"
-               name="image"
-               :label-max-file-size="'Kích thước tệp tối đa là ' +  maxFileSize"
-               required="true"
-               credits="false"
-               :accepted-file-types="acceptedFileTypes"
-               :label-file-type-not-allowed="'Invalid file format'"
-               :file-validate-type-label-expected-types="'Định dạng cho phép {format}'"
-               v-on:addfile="getImage"
-               v-on:removefile="removeImage"
-               :files="myFile"
-           />
-           <span v-if="alertStore.errors['image']" class="text-xs tracking-wide text-red-600">{{
-               alertStore.errors['image'][0]
-             }}</span>
-         </div>
-       </div>
+        <div class="flex justify-center">
+          <div class="w-[500px]">
+            <FilePond
+                ref="pondElement"
+                class="product-image"
+                label-idle="Kéo thả hoặc chọn hình ảnh tại đây"
+                accepted-file-types="image/*"
+                label-max-file-size-exceeded="File quá lớn"
+                :max-file-size="maxFileSize"
+                allow-file-size-validation="true"
+                class-name="upload-job-image flex items-center justify-center w-full"
+                name="image"
+                :label-max-file-size="'Kích thước tệp tối đa là ' +  maxFileSize"
+                required="true"
+                credits="false"
+                :accepted-file-types="acceptedFileTypes"
+                :label-file-type-not-allowed="'Invalid file format'"
+                :file-validate-type-label-expected-types="'Định dạng cho phép {format}'"
+                v-on:addfile="getImage"
+                v-on:removefile="removeImage"
+                :files="myFile"
+            />
+            <span v-if="alertStore.errors['image']" class="text-xs tracking-wide text-red-600">{{
+                alertStore.errors['image'][0]
+              }}</span>
+          </div>
+        </div>
         <Dropdown class="mb-4" name="category" error-input="parent_id" :multiple="true"
                   server="categories" :label="trans('labels.categories')" :placeholder="trans('labels.categories')"
                   :server-search-min-characters="0"
@@ -43,14 +43,18 @@
                   v-model="category"></Dropdown>
         <TextInput class="mb-4" type="textarea" :rows="5" name="description" v-model="form.description"
                    error-input="description" :label="trans('labels.description')"/>
-        <TextInput class="mb-4" type="text" :required="true" error-input="meta_title" name="name" v-model="form.meta_title"
+        <TextInput class="mb-4" type="text" :required="true" error-input="meta_title" name="name"
+                   v-model="form.meta_title"
                    label="Meta title"/>
-        <TextInput class="mb-4" type="textarea" :required="true" :rows="5" name="meta_description" v-model="form.meta_description"
+        <TextInput class="mb-4" type="textarea" :required="true" :rows="5" name="meta_description"
+                   v-model="form.meta_description"
                    error-input="meta_description" label="Meta description"/>
         <TextInput class="mb-4" type="text" error-input="meta_key" name="name" v-model="form.meta_key"
                    label="Meta key"/>
         <Toggle class="mb-4" v-model="form.show_header" :checked="form.show_header" error-input="show_header"
                 label="Hiển thị ở header" name="show_header"/>
+        <Toggle class="mb-4" v-model="form.is_active" :checked="form.is_active" error-input="is_active"
+                label="Hiển thị" name="is_active"/>
       </Form>
     </Panel>
   </Page>
@@ -112,6 +116,7 @@ const form = reactive({
   meta_key: '',
   meta_description: '',
   show_header: false,
+  is_active: false,
   slug: '',
 });
 
@@ -177,9 +182,6 @@ function onAction(data) {
 }
 
 function onSubmit() {
-  if (file.value != null) {
-    form.image = file.image;
-  }
   if (category.value) {
     form.parent_id = category.value.id
   }
@@ -206,11 +208,11 @@ function onSubmit() {
 }
 
 function getImage(event) {
-  if (isFirstLoad.value) {
+  if (pondElement.value.getFile().file instanceof File == true) {
     form.image = pondElement.value.getFile().file;
-    filePondKey.value = pondElement.value.getFile().file.lastModified;
+    form.remove_image = false;
   }
-  form.remove_image = false;
+  filePondKey.value = pondElement.value.getFile().file.lastModified;
   isFirstLoad.value = true
 }
 

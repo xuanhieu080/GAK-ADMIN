@@ -35,6 +35,10 @@ class Config extends Model
         'image_url'
     ];
 
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
+
     public function getImageUrlAttribute()
     {
         if (!empty($this->image)) {

@@ -33,7 +33,7 @@
 
 <script>
 
-import {computed, defineComponent, ref} from "vue";
+import {computed, defineComponent, ref, watch} from "vue";
 import {useAlertStore} from "@/stores";
 
 import SearchService from "@/services/SearchService";
@@ -151,6 +151,12 @@ export default defineComponent({
         }
 
         handleSearch();
+
+      watch(props, (newTableState) => {
+        if (newTableState.params) {
+          handleSearch();
+        }
+      });
         return {
             value,
             selectOptions,

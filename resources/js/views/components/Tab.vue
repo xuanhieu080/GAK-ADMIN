@@ -22,11 +22,16 @@ export default {
     tabs: {
       type: Array,
       required: true
+    },
+    activeIndex: {
+      type: Number,
+      required: true,
+      default: 0,
     }
   },
   emits: ['setIndex', 'close'],
   setup(props,{emit}) {
-    const activeTab = ref(0);
+    const activeTab = ref(props.activeIndex);
 
     const activateTab = (index) => {
       activeTab.value = index;

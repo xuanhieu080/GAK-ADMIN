@@ -118,8 +118,8 @@ class CustomerController extends Controller
         $this->authorize('edit', Customer::class);
 
         $data = $request->validated();
-        if ($this->customerService->update($customer, $data)) {
-            return $this->responseUpdateSuccess(['model' => $customer->fresh()]);
+        if ($item = $this->customerService->update($customer, $data)) {
+            return $this->responseUpdateSuccess(['model' => $item]);
         } else {
             return $this->responseUpdateFail();
         }

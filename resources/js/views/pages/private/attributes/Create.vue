@@ -7,6 +7,18 @@
         <Dropdown class="mb-4" name="category" error-input="group_id" :required="true"
                   server="attribute-groups" label="Nhóm thuộc tính" placeholder="Nhóm thuộc tính"
                   :server-search-min-characters="0" v-model="group"></Dropdown>
+
+        <Toggle class="mb-4" v-model="form.is_color" :checked="form.is_color" error-input="is_active"
+                label="Hiển thị màu" name="is_color"/>
+        <div v-if="form.is_color == true" class="gap-4 inline-flex">
+         <div class="w-20">
+           <TextInput class="mb-4"
+                      :required="true" name="color" v-model="form.color" error-input="color"
+                      type="color"
+                      label="Chọn màu"/>
+         </div>
+          <button class="px-4 py-2 w-14 h-14 rounded-md shadow-sm opacity-100" :style="'background-color:' + form.color"/>
+        </div>
       </Form>
     </Panel>
   </Page>
@@ -25,12 +37,15 @@ import Form from "@/views/components/Form";
 import {useAlertStore} from "@/stores/alert";
 import attributeService from "@/services/AttributeService";
 import Dropdown from "@/views/components/input/Dropdown.vue";
+import Toggle from "@/views/components/input/Toggle.vue";
 
 
 const alertStore = useAlertStore();
 const form = reactive({
   name: null,
   group_id: null,
+  is_color: false,
+  color: '#000000',
 });
 const group = ref();
 
@@ -92,6 +107,8 @@ function onSubmit() {
 function clearData() {
   form.name = null
   form.group_id = null
+  form.is_color = false
+  form.color = null
   group.value = null
 }
 </script>

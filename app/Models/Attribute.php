@@ -12,6 +12,8 @@ class Attribute extends Model
     protected $fillable = [
         'name',
         'group_id',
+        'color',
+        'is_color',
     ];
 
     public function group(){

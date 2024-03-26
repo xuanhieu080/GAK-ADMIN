@@ -8,7 +8,8 @@
       <!--      <FileInput class="mb-4" name="file" v-model="form.image" error-input="file" accept="image/*"-->
       <!--                 img-style="width:200px;height:200px"-->
       <!--                 :label="trans('labels.avatar')" @clear="clearImage"></FileInput>-->
-
+      <TextInput class="mb-4" type="url" error-input="video_link" name="video_link" v-model="form.video_link"
+                 label="Đường dẫn video"/>
       <div class="flex justify-center">
         <div class="w-[500px]">
           <FilePond
@@ -68,8 +69,38 @@
                  :rows="3" name="meta_key" v-model="form.meta_key"
                  :required="true"
                  error-input="meta_key" label="SEO từ khoá"/>
-      <Toggle class="mb-4" v-model="form.is_active" :checked="form.is_active" error-input="is_active"
-              :label="trans('labels.show')" name="status"/>
+
+      <div class="flex justify-center">
+        <div class="w-[700px]">
+          <FilePond
+              ref="pondElementThumb"
+              class="product-image"
+              label-idle="Kéo thả hoặc chọn hình ảnh tại đây"
+              accepted-file-types="image/*"
+              label-max-file-size-exceeded="File quá lớn"
+              :max-file-size="maxFileSize"
+              allow-file-size-validation="true"
+              class-name="upload-job-image flex items-center justify-center w-full"
+              name="image"
+              :label-max-file-size="'Kích thước tệp tối đa là ' +  maxFileSize"
+              required="true"
+              credits="false"
+              :accepted-file-types="acceptedFileTypes"
+              :label-file-type-not-allowed="'Invalid file format'"
+              :file-validate-type-label-expected-types="'Định dạng cho phép {format}'"
+              allow-multiple="true"
+              max-files="10"
+              v-on:addfile="getThumbImage"
+              v-on:removefile="removeThumbImage"
+              v-bind:files="thumbImage"
+          />
+          <span v-if="alertStore.errors['thumb_image']" class="text-xs tracking-wide text-red-600">{{
+              alertStore.errors['thumb_image'][0]
+            }}</span>
+        </div>
+      </div>
+      <!--      <Toggle class="mb-4" v-model="form.is_active" :checked="form.is_active" error-input="is_active"-->
+      <!--              :label="trans('labels.show')" name="status"/>-->
     </Form>
   </div>
 </template>
@@ -105,6 +136,7 @@ import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
 // Import styles
 import 'filepond/dist/filepond.min.css';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css';
+import QuillEditorWrapper from "@/views/components/QuillEditorWrapper.vue";
 
 
 // Create FilePond component
@@ -115,6 +147,8 @@ const alertStore = useAlertStore();
 const category = ref(null)
 const file = ref(null)
 let pondElement = ref(null);
+let pondElementThumb = ref(null);
+const addFile = ref(0);
 const filePondKey = ref('file-pond');
 const maxFileSize = '5MB';
 const acceptedFileTypes = 'image/*';
@@ -122,6 +156,7 @@ const acceptedFileTypes = 'image/*';
 const form = reactive({
   name: null,
   image: null,
+  thumb_image: [],
   slug: null,
   meta_title: null,
   meta_description: null,
@@ -131,6 +166,7 @@ const form = reactive({
   price: 0,
   priority: 100,
   is_active: false,
+  video_link: null
 });
 
 const props = defineProps({
@@ -151,10 +187,12 @@ if (props.information) {
   form.meta_description = props.information.meta_description;
   form.meta_key = props.information.meta_key;
   form.slug = props.information.slug;
+  form.video_link = props.information.video_link;
 }
 
 const image = ref();
 const images = ref([]);
+const thumbImage = ref([]);
 
 const options = ref({
   debug: 'info',
@@ -175,12 +213,27 @@ function removeImage() {
   image.value = null;
 }
 
+function getThumbImage() {
+  addFile.value++;
+}
+
+function removeThumbImage() {
+  addFile.value--;
+}
+
 watch(() => category.value, (data) => {
   if (category.value) {
     form.category_id = category.value.id
   } else {
     form.category_id = null
   }
+});
+
+watch(() => addFile.value, (data) => {
+  form.thumb_image = [];
+  pondElementThumb.value.getFiles().forEach(function (file) {
+    form.thumb_image.push(file.file)
+  })
 });
 
 watch(form, (data) => {
@@ -191,6 +244,7 @@ watch(() => props.information, (data) => {
   form.name = props.information.name;
   form.file = props.information.file;
   form.image = props.information.image;
+  form.thumb_image = props.information.thumb_image;
   form.description = props.information.description;
   form.category_id = props.information.category_id;
   form.price = props.information.price;
@@ -200,11 +254,15 @@ watch(() => props.information, (data) => {
   form.slug = props.information.slug;
   form.meta_description = props.information.meta_description;
   form.meta_key = props.information.meta_key;
+  form.video_link = props.information.video_link;
   if (!form.category_id) {
     category.value = null
   }
   if (!form.image) {
     images.value = []
+  }
+  if (!form.thumb_image) {
+    thumbImage.value = []
   }
 })
 
@@ -213,7 +271,7 @@ watch(() => props.information, (data) => {
 <style scoped lang="scss">
 #create-product {
   .product-image {
-    max-width: 400px;
+    max-width: 2000px;
   }
 }
 </style>

@@ -27,12 +27,12 @@ class PostService
 
     /**
      * Get a single resource from the database
-     * @param Post $blog
+     * @param Post $post
      * @return PostResource
      */
-    public function get(Post $blog)
+    public function get(Post $post)
     {
-        return new PostResource($blog);
+        return new PostResource($post);
     }
 
     /**
@@ -67,17 +67,19 @@ class PostService
     {
         $data = $this->clean($data);
 
-        $data['slug'] = Str::slug($data['title'], '-');
-        if (!empty($data['file'])) {
-            $data['image'] = HasImage::addImage($data['file'], Post::path);
-        }
-
         $full_columns = $this->model->getFillable();
         $data = array_intersect_key($data, array_flip($full_columns));
         $data['author_id'] = \Auth::id();
-        $data['is_active'] = filter_var($data['is_active'], FILTER_VALIDATE_BOOLEAN);
-
+        $data['is_active'] = filter_var(Arr::get($data, 'is_active'), FILTER_VALIDATE_BOOLEAN);
         $record = Post::query()->create($data);
+
+        if (!empty($data['image'])) {
+            $image = $data['image'];
+            $record->addMedia($image)
+                ->usingName($record->title)
+                ->usingFileName($record->slug . '-' . time() . Str::random(8) . '.' . $image->getClientOriginalExtension())
+                ->toMediaCollection();
+        }
         if (!empty($record)) {
             return new PostResource($record);
         } else {
@@ -87,37 +89,48 @@ class PostService
 
     /**
      * Updates resource in the database
-     * @param Post|Model $blog
+     * @param Post|Model $post
      * @param array $data
      * @return PostResource
      */
-    public function update(Post $blog, array $data)
+    public function updateItem(Post $post, array $data)
     {
         $data = $this->clean($data);
 
-        $title = Arr::get($data, 'title', $blog->title);
-        $blog->title = $title;
-        $blog->slug = Str::slug($title, '-');
-        $blog->content = Arr::get($data, 'content', $blog->content);
-        $blog->is_active = filter_var(Arr::get($data, 'is_active', $blog->is_active), FILTER_VALIDATE_BOOLEAN);
+        $post->meta_title = Arr::get($data, 'meta_title', $post->meta_title);
+        $post->meta_key = Arr::get($data, 'meta_key', $post->meta_key);
+        $post->meta_description = Arr::get($data, 'meta_description', $post->meta_description);
+        $post->group_id = Arr::get($data, 'group_id', $post->group_id);;
+        $post->title = Arr::get($data, 'title', $post->title);
+        $post->slug = Arr::get($data, 'slug', $post->slug);
+        $post->content = Arr::get($data, 'content', $post->content);
+        $post->is_active = filter_var(Arr::get($data, 'is_active', $post->is_active), FILTER_VALIDATE_BOOLEAN);
 
-        if (!empty($data['file'])) {
-            $blog->image = HasImage::updateImage($data['file'], $blog->image, Post::path);
+        $post->save();
+        if (!empty($data['image'])) {
+            $image = $data['image'];
+            $media = $post->getMedia('default')->first();
+            if (!empty($media)) {
+                $media->delete();
+            }
+            $post->addMedia($image)
+                ->usingName($post->title)
+                ->usingFileName($post->slug . '-' . time() . Str::random(8) . '.' . $image->getClientOriginalExtension())
+                ->toMediaCollection();
         }
-        $data['is_active'] = filter_var($data['is_active'], FILTER_VALIDATE_BOOLEAN);
-        $blog->save();
-        return new PostResource($blog);
+        $post->refresh();
+        return new PostResource($post);
     }
 
     /**
      * Deletes resource in the database
-     * @param Post|Model $blog
+     * @param Post|Model $post
      * @return bool
      */
-    public function delete(Post $blog)
+    public function delete(Post $post)
     {
-        HasImage::deleteImage($blog->image);
-        return $blog->delete();
+        HasImage::deleteImage($post->image);
+        return $post->delete();
     }
 
     /**

@@ -15,9 +15,20 @@ class StoreRequest extends BaseRequest
     {
         return [
             'title'     => 'required|string|max:255|unique:posts,title',
-            'file'      => 'nullable|image|max:3024|mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,ogx,oga,ogv,ogg,webm',
+            'image'      => 'nullable|image|max:3024|mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,ogx,oga,ogv,ogg,webm',
             'is_active' => 'required|in:1,0,true,false',
             'content'   => 'required|string',
+            'meta_description' => 'required|max:255',
+            'meta_title'       => 'required|max:255',
+            'group_id'       => 'nullable|exists:post_groups,id',
+            'slug'             => [
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[a-z0-9-]+$/',
+                'unique:posts,slug',
+            ],
+            'meta_key'         => 'required|max:255',
         ];
     }
 }

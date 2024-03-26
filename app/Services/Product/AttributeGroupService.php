@@ -90,6 +90,7 @@ class AttributeGroupService
         $attributeGroup->name = Arr::get($data, 'name', $attributeGroup->name);
 
         $attributeGroup->save();
+        $attributeGroup->refresh();
         return new AttributeGroupResource($attributeGroup);
     }
 

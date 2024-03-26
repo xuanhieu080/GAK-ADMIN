@@ -6,10 +6,14 @@ use App\Traits\Filterable;
 use App\Traits\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Image\Enums\Fit;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Post extends Model
+class Post extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory, InteractsWithMedia;
 
     use Searchable, Filterable;
 
@@ -23,7 +27,15 @@ class Post extends Model
         'image',
         'author_id',
         'comment_count',
-        'is_active'
+        'is_active',
+        'meta_title',
+        'meta_description',
+        'meta_key',
+        'group_id',
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
     ];
 
     /**
@@ -31,5 +43,21 @@ class Post extends Model
      */
     public function author() {
         return $this->hasOne(User::class,'id', 'author_id');
+    }
+    public function group() {
+        return $this->hasOne(PostGroup::class,'id', 'group_id');
+    }
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this
+            ->addMediaConversion('preview')
+            ->fit(Fit::Contain, 300, 300)
+            ->nonQueued();
+    }
+
+    public function getMediaFolderName()
+    {
+        return 'posts';
     }
 }

@@ -119,8 +119,8 @@ class PostController extends Controller
         $this->authorize('edit', Post::class);
 
         $data = $request->validated();
-        if ($this->postService->update($post, $data)) {
-            return $this->responseUpdateSuccess(['model' => $post->fresh()]);
+        if ($item = $this->postService->updateItem($post, $data)) {
+            return $this->responseUpdateSuccess(['model' => $item]);
         } else {
             return $this->responseUpdateFail();
         }

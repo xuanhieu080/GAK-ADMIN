@@ -21,7 +21,10 @@ class PostResource extends JsonResource
     public function toArray($request)
     {
         $data = $this->resource->toArray();
+        $data['image_url'] = $this->getFirstMediaUrl();
         $data['author_name'] = object_get($this, 'author.name');
+        $data['group_name'] = object_get($this->resource, 'group.name');
+
         $data['created_at'] = !empty($this->resource->created_at) ? $this->resource->created_at->diffForHumans() : null;
         $data['updated_at'] = !empty($this->resource->updated_at) ? $this->resource->updated_at->diffForHumans() : null;
 
