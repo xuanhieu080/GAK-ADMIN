@@ -26,28 +26,28 @@ class UsersTableSeeder extends Seeder
 //            ]
 //        );
         $user1 = User::updateOrCreate(
-            ['email' => 'lsang088@gmail.com'],
+            ['email' => 'gak@gmail.com'],
             [
-                'first_name' => 'Sáng',
-                'last_name' => 'Sáng',
-                'name' => 'Sáng Sáng',
+                'first_name' => 'GAK',
+                'last_name' => 'GAK',
+                'name' => 'GAK GAK',
                 'email_verified_at' => null,
-                'password' => bcrypt('lsang088@gmail.com')
+                'password' => bcrypt('gak@gmail.com')
             ]
         );
-        $user2 = User::updateOrCreate(
-            [ 'email' => 'xuanhieu.ht96@gmail.com'],
-            [
-                'first_name' => 'Phan',
-                'last_name' => 'Hiếu',
-                'name' => 'Phan Hiếu',
-                'email_verified_at' => null,
-                'password' => bcrypt('xuanhieu.ht96@gmail.com')
-            ]
-        );
+//        $user2 = User::updateOrCreate(
+//            [ 'email' => 'xuanhieu.ht96@gmail.com'],
+//            [
+//                'first_name' => 'Phan',
+//                'last_name' => 'Hiếu',
+//                'name' => 'Phan Hiếu',
+//                'email_verified_at' => null,
+//                'password' => bcrypt('xuanhieu.ht96@gmail.com')
+//            ]
+//        );
 
         Bouncer::assign('admin')->to($user1);
-        Bouncer::assign('admin')->to($user2);
+//        Bouncer::assign('admin')->to($user2);
 
 //        Bouncer::assign('admin')->to($users->first());
 //
