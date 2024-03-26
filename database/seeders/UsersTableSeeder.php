@@ -47,7 +47,7 @@ class UsersTableSeeder extends Seeder
         );
 
         Bouncer::assign('admin')->to($user1);
-//        Bouncer::assign('admin')->to($user2);
+        Bouncer::assign('admin')->to($user2);
 
 //        Bouncer::assign('admin')->to($users->first());
 //
