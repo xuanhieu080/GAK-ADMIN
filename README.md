@@ -1,92 +1,168 @@
-# ViaFb-Admin
+<p align="center">
+<a href="https://laravel.com" target="_blank"><img src="https://user-images.githubusercontent.com/5760249/132945127-a7d3a4bb-1ffc-4658-8096-c9cfc2f5c3dd.png" width="400"></a>
+</p>
 
+# Laravel Vue Starter
 
+The project was created to save myself time for redoing the same things all over again when starting a new Laravel/Vue project.
 
-## Getting started
+The main goal of this project is to reduce code and make everything simpler for bootstrapping new projects. 
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+The project is built with the following components:
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+- Vue 3 / Pinia / VueRouter
+- Vue 3 Composition API
+- Vite 3
+- Laravel Framework
+- Laravel Sanctum
+- Laravel Fortify
+- Tailwind
+- ForkAwesome
 
-## Add your files
+## ⚡️ How to install
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+Installation is simple. Just like your ordinary Laravel app.
+
+1. `git clone`
+2. `cd laravel-vue-starter`
+3. `composer install`
+4. `cp .env.example .env`
+5. `php artisan key:generate`   
+6. `npm install`
+7. `npm run watch` (or if production `npm run build`)
+
+## ⚡️ How it works
+
+### ➡️ Theming
+
+The project supports theming, you can set a global color for the application theme, it can be done in `tailwind.config.js`.
+
+```js
+module.exports = {
+    // ...
+    theme: {
+        extend: {
+            colors: {
+                theme: colors.teal,
+                danger: colors.red
+            }
+        }
+    },
+    //...
+};
+```
+
+### ➡️ Authentication
+
+The project ships with complete authentication boilerplate including:
+- Login
+- Register
+- Forget Password
+- Reset Password
+
+### ➡️ Authorization
+
+The project is configured to use [Bouncer](https://github.com/JosephSilber/bouncer) package for managing authorization across your routes. Authorization is important security subject, so please consult bouncer's package documentation.
+
+### ➡️ Localization / i18n
+
+The project supports localization / i18n, to translate the front-end use `lang/{code}/frontend.php` file.
+
+### ➡️ Users CRUD 
+
+For your convenience the project comes with complete `users` crud that includes examples of:
+
+- List page with filters and pagination
+- Edit/create pages with form for editing user that includes ajax based role search field
+
+### ➡️ Structure
+
+The front-end code is located in `resources/js`. The code is organized in different directories to make things more readable.
+
+| Directory    | Description                           |
+|--------------|---------------------------------------|
+| views        | The home of views                     |
+| + pages      | The home of the pages                 |
+| + icons      | The home of the icons                 |
+| + layouts    | The home of the global layouts        |
+| + components | The home of the reusable components   |
+| helpers      | The home of the helper utilites       |
+| plugins      | The home of the plugins configuration |
+| router       | The home of the router configuration  |
+| services     | The home of the HTTP services         |
+| stores       | The home of the Pinia stores          |
+| stub         | The home of the static constants      |
+
+### ➡️ Components
+
+The project ships with the most useful components that are required for one application (no bullshit), including:
+
+| Name      | Description                                                | Parameters                                                                                                                                                     | Events                                   | Location               |
+|-----------|------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------|------------------------|
+| Page      | The main page wrapper                                      | title, breadcrumbs (array), actions (array of actions on top), is-loading                                                                                      | n/a                                      | views/layouts          |
+| Panel     | Panel wrapper for displaying panels into the pages         | title, is-loading, body-padding                                                                                                                                | n/a                                      | views/components       |
+| Modal     | Modal wrapper for creating modals                          | is-showing, is-loading, show-close                                                                                                                             | @close                                   | views/components       |
+| Form      | Form wrapper                                               | title, is-loading                                                                                                                                              | n/a                                      | views/components       |
+| Table     | A custom table with sorting and pagination support         | headers (array), records (array), actions (array of row actions), sorting (object of keys with true/false), pagination: (object of Laravel pagination data)    | @page-changed, @action, $sort            | views/components       |
+| Alert     | Alert component that pulls alrts from AlertStore           | n/a                                                                                                                                                            | n/a                                      | views/components       |
+| Badge     | Component that displays highlighted text with background   | theme (success, info, warning, danger, error)                                                                                                                  | n/a                                      | views/components       |
+| TextInput | Custom text field with type={text,..., textarea} support   | name, label, v-model, type (text,...,textarea, etc), show-label, required, disabled, placeholder                                                               | default                                  | views/components/input |
+| FileInput | File input with custom button and multiple choices support | name, label, v-model, show-label, required, disabled, placeholder, multiple, accept                                                                            | default + @click, @error, @input, @clear | views/components/input |
+| Dropdown  | Dropdown field with server side support                    | name, label, v-model, show-label, required, disabled, placeholder, multiple, server (endpoint), server-per-page (items per page), server-search-min-characters | default                                  | views/components/input |
+| Button    | Button/Router link component                               | label, icon, theme (success, info, warning, danger, error), disabled, to (:to is router url, when specified the button is rendered as router-link)             | default                                  | views/components/input |
+| Spinner   | Spinner icon used mostly for loading                       | text, text-new-line (whether to break the text under the spinner)                                                                                              | n/a                                      | views/components/icons |
+| Icon      | Icon wrapper, currently uses fork awesome                  | name (the icon name without the fa- part)                                                                                                                      | n/a                                      | views/components/icons |
+| Avatar    | Default Avatar icon                                        | n/a                                                                                                                                                            | n/a                                      | views/components/icons |
+
+Note: Please always look in the components, this table does not show everything.
+
+From here, you are on your own. Develop new pages, models, components, use professional IDE for development to improve your efficiency.
+
+<p><img width="100%" src="https://user-images.githubusercontent.com/5760249/210167222-e04312ac-46ef-4dcd-a4d5-00c3a207bf32.gif"/></p>
+
+### ➡️ CORS
+
+Please make sure you have APP_URL, SANCTUM_STATEFUL_DOMAINS and SESSION_DOMAIN set correctly in [.env](https://github.com/gdarko/laravel-vue-starter/blob/master/.env.example) file as follows:
+
+#### Normal domain
 
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/XuanHieu196/viafb-admin.git
-git branch -M main
-git push -uf origin main
+APP_URL=http://mywebsite.com
+
+SANCTUM_STATEFUL_DOMAINS=mywebsite.com
+SESSION_DOMAIN=mywebsite.com
 ```
 
-## Integrate with your tools
+#### Localhost with port
 
-- [ ] [Set up project integrations](https://gitlab.com/XuanHieu196/viafb-admin/-/settings/integrations)
+```
+APP_URL=http://localhost:8000
 
-## Collaborate with your team
+SANCTUM_STATEFUL_DOMAINS=localhost:8000
+SESSION_DOMAIN=localhost
+```
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+## ⚡️ Contributions
 
-## Test and Deploy
+Pull requests are welcome, feel free to contribute to this project.
 
-Use the built-in continuous integration in GitLab.
+## ⚡️ License
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+```
+Copyright (C) 2022 Darko Gjorgjijoski (https://darkog.com)
 
-***
+This file is part of Laravel Vue Starter
 
-# Editing this README
+Laravel Vue Starter is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 2 of the License, or
+(at your option) any later version.
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+Laravel Vue Starter is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+You should have received a copy of the GNU General Public License
+along with Laravel Vue Starter. If not, see <https://www.gnu.org/licenses/>.
+```
