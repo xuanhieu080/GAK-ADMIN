@@ -35,16 +35,16 @@ class UsersTableSeeder extends Seeder
                 'password' => bcrypt('gak@gmail.com')
             ]
         );
-//        $user2 = User::updateOrCreate(
-//            [ 'email' => 'xuanhieu.ht96@gmail.com'],
-//            [
-//                'first_name' => 'Phan',
-//                'last_name' => 'Hiếu',
-//                'name' => 'Phan Hiếu',
-//                'email_verified_at' => null,
-//                'password' => bcrypt('xuanhieu.ht96@gmail.com')
-//            ]
-//        );
+        $user2 = User::updateOrCreate(
+            [ 'email' => 'dienmaynavy@gmail.com'],
+            [
+                'first_name' => 'Điện máy',
+                'last_name' => 'Navy',
+                'name' => 'Điện máy Navy',
+                'email_verified_at' => null,
+                'password' => bcrypt('dienmaynavy@gmail.com')
+            ]
+        );
 
         Bouncer::assign('admin')->to($user1);
 //        Bouncer::assign('admin')->to($user2);
