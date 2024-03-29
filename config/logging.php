@@ -51,9 +51,14 @@ return [
     */
 
     'channels' => [
+        'telegram' => [
+            'driver' => 'custom',
+            'via'    => XuanHieu\TelegramLogger\TelegramLogger::class,
+            'level'  => 'debug',
+        ],
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single'],
+            'channels' => ['single', 'telegram'],
             'ignore_exceptions' => false,
         ],
 

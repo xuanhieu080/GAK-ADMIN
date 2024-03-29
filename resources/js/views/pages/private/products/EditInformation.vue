@@ -55,8 +55,16 @@
                 :server-search-min-characters="0" v-model="category"></Dropdown>
       <TextInput class="mb-4" type="number" :min="0" :max="999999999999" name="price" v-model="form.price"
                  error-input="price" :label="trans('labels.price')"/>
+      <TextInput class="mb-4" type="number" :min="0" :max="100" name="ratio" v-model="ratio"
+                 label="% giảm giá"/>
+      <TextInput class="mb-4" type="number" :min="0" :max="999999999999" name="price-discount" v-model="form.discount"
+                 label="Tiền giảm giá"/>
+      <TextInput class="mb-4" type="number" disabled :min="0" :max="999999999999" name="price-current" v-model="priceCurrent"
+                 label="Giá sau khi đã trừ"/>
       <TextInput class="mb-4" type="number" :min="0" :max="10000" name="priority" v-model="form.priority"
                  error-input="priority" :label="trans('labels.priority')"/>
+      <TextInput class="mb-4" type="number" :min="0" :max="100000" name="qty" v-model="form.qty"
+                 error-input="qty" label="Số lượng"/>
 
       <TextInput type="textarea" class="mb-4" :minlength="0" :maxlength="200"
                  :rows="1" name="meta_title" v-model="form.meta_title"
@@ -109,7 +117,7 @@
 </template>
 
 <script setup>
-import {defineComponent, reactive, ref, watch, computed, defineProps, onBeforeMount} from "vue";
+import {defineComponent, reactive, ref, watch, computed, defineProps, onBeforeMount, onMounted} from "vue";
 import {trans} from "@/helpers/i18n";
 import Button from "@/views/components/input/Button";
 import TextInput from "@/views/components/input/TextInput";
@@ -162,6 +170,8 @@ const acceptedFileTypes = 'image/*';
 const isFirstLoad = ref(false);
 
 const item = ref();
+const ratio = ref(0);
+const priceCurrent = ref(0);
 
 const form = reactive({
   name: null,
@@ -176,6 +186,8 @@ const form = reactive({
   video_link: null,
   price: 0,
   priority: 100,
+  qty: 100000,
+  discount: 0,
   is_active: false,
   thumb_image_remove: [],
 });
@@ -206,13 +218,16 @@ onBeforeMount(() => {
     images.value = item.value.image_url
     thumbImage.value = item.value.thumb_image
     form.image = null
+    priceCurrent.value = item.value.price_discount
     if (response.data.model.category_id) {
       category.value = {
         'id': response.data.model.category_id,
         'title': response.data.model.category_name
       };
     }
-    isFirstLoad.value = false
+    setTimeout(() => {
+      isFirstLoad.value = true
+    },500)
   })
 });
 
@@ -279,6 +294,22 @@ function onSubmit() {
   });
   return false;
 }
+
+
+
+watch(() => [form.price,ratio.value], (value) => {
+  if (isFirstLoad.value) {
+    form.discount = form.price * ratio.value / 100;
+    priceCurrent.value = form.price - ratio.value * value / 100;
+  }
+});
+
+
+watch(() => form.discount, (value) => {
+  if (isFirstLoad.value) {
+    priceCurrent.value = form.price - value ;
+  }
+});
 </script>
 
 <style scoped lang="scss">

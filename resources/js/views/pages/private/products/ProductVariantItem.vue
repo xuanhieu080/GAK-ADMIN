@@ -2,8 +2,10 @@
   <div id="edit-product">
     <h3 class="mb-4">Biến thể - {{index}}</h3>
     <Form>
-      <TextInput class="mb-4" type="text" :required="true" e :error-input="'variants.' + index + '.name'" :name="'name-' + index" v-model="form.name"
+      <TextInput class="mb-4" type="text" :required="true" :error-input="'details.' + index + '.name'" :name="'name-' + index" v-model="form.name"
                  label="Tên biến thể"/>
+      <TextInput class="mb-4" type="text" disabled  :name="'name-variant-' + index" v-model="optionName"
+                 label="Biến thể"/>
       <div class="flex justify-center">
         <div class="w-[500px]">
           <FilePond
@@ -39,25 +41,37 @@
             :placeholder="trans('labels.description')"
             :required="true"
         />
-        <span v-if="alertStore.errors['description']" class="text-xs tracking-wide text-red-600">{{
-            alertStore.errors['description'][0]
+        <span v-if="alertStore.errors[`details.${index}.description`]" class="text-xs tracking-wide text-red-600">{{
+            alertStore.errors[`details.${index}.description`][0]
           }}</span>
       </div>
+
       <TextInput class="mb-4" type="number" :min="0" :max="999999999999" name="price" v-model="form.price"
-                 error-input="price" :label="trans('labels.price')"/>
+                 :error-input="'details.' + index + '.price'" :label="trans('labels.price')"/>
+      <TextInput class="mb-4" type="number" :min="0" :max="100" name="ratio" v-model="ratio"
+                 label="% giảm giá"/>
+      <TextInput class="mb-4" type="number" :min="0" :max="999999999999" name="price-discount" v-model="form.discount"
+                 :error-input="'details.' + index + '.discount'"
+                 label="Tiền giảm giá"/>
+      <TextInput class="mb-4" type="number" disabled :min="0" :max="999999999999" name="price-current" v-model="priceCurrent"
+                 label="Giá sau khi đã trừ"/>
+      <TextInput class="mb-4" type="number" :min="0" :max="100000" name="qty" v-model="form.qty"
+                 :error-input="'details.' + index + '.qty'"
+                 error-input="qty" label="Số lượng"/>
+
 
       <TextInput type="textarea" class="mb-4" :minlength="0" :maxlength="200"
                  :rows="1" name="meta_title" v-model="form.meta_title"
                  :required="true"
-                 error-input="meta_title" label="SEO tiêu đề"/>
+                 :error-input="'details.' + index + '.meta_detail'" label="SEO tiêu đề"/>
       <TextInput type="textarea" class="mb-4" :minlength="0" :maxlength="300"
                  :rows="5" name="meta_description" v-model="form.meta_description"
                  :required="true"
-                 error-input="meta_description" label="SEO nội dung"/>
+                 :error-input="'details.' + index + '.meta_description'" label="SEO nội dung"/>
       <TextInput type="textarea" class="mb-4" :minlength="0" :maxlength="200"
                  :rows="3" name="meta_key" v-model="form.meta_key"
                  :required="true"
-                 error-input="meta_key" label="SEO từ khoá"/>
+                 :error-input="'details.' + index + '.meta_key'" label="SEO từ khoá"/>
 
       <div class="flex justify-center">
         <div class="w-[700px]">
@@ -83,12 +97,13 @@
               v-on:removefile="removeThumbImage"
               v-bind:files="thumbImage"
           />
-          <span v-if="alertStore.errors['thumb_image']" class="text-xs tracking-wide text-red-600">{{
+          <span v-if="alertStore.errors[`details.${index}.thumb_image`]" class="text-xs tracking-wide text-red-600">{{
               alertStore.errors['thumb_image'][0]
             }}</span>
         </div>
       </div>
-      <Toggle v-model="form.is_active" :checked="form.is_active" error-input="is_active"
+      <Toggle v-model="form.is_active" :checked="form.is_active"
+              :error-input="'details.' + index + '.is_active'"
               :label="trans('labels.show')" name="status"/>
     </Form>
   </div>
@@ -138,6 +153,7 @@ const emit = defineEmits(['informationUpdate']);
 const alertStore = useAlertStore();
 const category = ref(null)
 const file = ref(null)
+const optionName = ref(null)
 let pondElement = ref(null);
 let pondElementThumb = ref(null);
 const addFile = ref(0);
@@ -157,6 +173,9 @@ const props = defineProps({
   }
 });
 
+const ratio = ref(0);
+const priceCurrent = ref(0);
+
 const form = reactive({
   id: props.item.id,
   name: null,
@@ -169,6 +188,8 @@ const form = reactive({
   description: null,
   // category_id: null,
   price: 0,
+  discount: 0,
+  qty: 0,
   // priority: 100,
   is_active: false,
   thumb_image_remove: [],
@@ -193,10 +214,19 @@ if (props.item) {
   form.meta_key = props.item.meta_key
   form.description = props.item.description
   form.is_active = props.item.is_active
+  form.price = props.item.price
+  form.discount = props.item.discount
+  form.qty = props.item.qty
   images.value = props.item.images
   thumbImage.value = props.item.thumb_image
+  priceCurrent.value = props.item.price_discount
+  optionName.value = props.item.option_name
 
   emit('informationUpdate', form)
+
+  setTimeout(() => {
+    isFirstLoad.value = true
+  },5000)
 }
 
 // onBeforeMount(() => {
@@ -253,6 +283,22 @@ watch(() => addFile.value, (data) => {
 watch(form, (data) => {
   emit('informationUpdate', form)
 })
+
+
+
+watch(() => [form.price,ratio.value], (value) => {
+  if (isFirstLoad.value) {
+    form.discount = form.price * ratio.value / 100;
+    priceCurrent.value = form.price - ratio.value * value / 100;
+  }
+});
+
+
+watch(() => form.discount, (value) => {
+  if (isFirstLoad.value) {
+    priceCurrent.value = form.price - value ;
+  }
+});
 
 </script>
 

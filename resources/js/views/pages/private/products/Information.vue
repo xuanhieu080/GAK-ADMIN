@@ -54,8 +54,16 @@
                 :server-search-min-characters="0" v-model="category"></Dropdown>
       <TextInput class="mb-4" type="number" :min="0" :max="999999999999" name="price" v-model="form.price"
                  error-input="price" :label="trans('labels.price')"/>
+      <TextInput class="mb-4" type="number" :min="0" :max="100" name="ratio" v-model="ratio"
+                 label="% giảm giá"/>
+      <TextInput class="mb-4" type="number" :min="0" :max="999999999999" name="price-discount" v-model="form.discount"
+                 label="Tiền giảm giá"/>
+      <TextInput class="mb-4" type="number" :min="0" :max="999999999999" name="price-current" disabled v-model="priceCurrent"
+                 label="Giá sau khi đã trừ"/>
       <TextInput class="mb-4" type="number" :min="0" :max="10000" name="priority" v-model="form.priority"
                  error-input="priority" :label="trans('labels.priority')"/>
+      <TextInput class="mb-4" type="number" :min="0" :max="100000" name="qty" v-model="form.qty"
+                 error-input="qty" label="Số lượng"/>
 
       <TextInput type="textarea" class="mb-4" :minlength="0" :maxlength="200"
                  :rows="1" name="meta_title" v-model="form.meta_title"
@@ -153,6 +161,9 @@ const filePondKey = ref('file-pond');
 const maxFileSize = '5MB';
 const acceptedFileTypes = 'image/*';
 
+const ratio = ref(0);
+const priceCurrent = ref(0);
+
 const form = reactive({
   name: null,
   image: null,
@@ -164,6 +175,8 @@ const form = reactive({
   description: null,
   category_id: null,
   price: 0,
+  qty: 100000,
+  discount: 0,
   priority: 100,
   is_active: false,
   video_link: null
@@ -181,6 +194,7 @@ if (props.information) {
   form.description = props.information.description;
   form.category_id = props.information.category_id;
   form.price = props.information.price;
+  form.discount = props.information.discount;
   form.priority = props.information.priority;
   form.is_active = props.information.is_active;
   form.meta_title = props.information.meta_title;
@@ -188,6 +202,7 @@ if (props.information) {
   form.meta_key = props.information.meta_key;
   form.slug = props.information.slug;
   form.video_link = props.information.video_link;
+  form.qty = props.information.qty;
 }
 
 const image = ref();
@@ -248,6 +263,7 @@ watch(() => props.information, (data) => {
   form.description = props.information.description;
   form.category_id = props.information.category_id;
   form.price = props.information.price;
+  form.discount = props.information.discount;
   form.priority = props.information.priority;
   form.is_active = props.information.is_active;
   form.meta_title = props.information.meta_title;
@@ -255,6 +271,7 @@ watch(() => props.information, (data) => {
   form.meta_description = props.information.meta_description;
   form.meta_key = props.information.meta_key;
   form.video_link = props.information.video_link;
+  form.qty = props.information.qty;
   if (!form.category_id) {
     category.value = null
   }
@@ -265,6 +282,20 @@ watch(() => props.information, (data) => {
     thumbImage.value = []
   }
 })
+
+watch(() => form.price, (value) => {
+  form.discount = ratio.value * value / 100;
+  priceCurrent.value = value - ratio.value * value / 100;
+});
+
+watch(() => ratio.value, (value) => {
+  form.discount = form.price * value / 100;
+  priceCurrent.value = form.price - form.price * value / 100;
+});
+
+watch(() => form.discount, (value) => {
+  priceCurrent.value = form.price - value ;
+});
 
 </script>
 

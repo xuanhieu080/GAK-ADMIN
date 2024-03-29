@@ -24,7 +24,10 @@ class ProductVariant extends Model implements HasMedia
         'meta_title',
         'meta_description',
         'meta_key',
-        'options'
+        'options',
+        'option_name',
+        'price_discount',
+        'discount'
     ];
 
     protected $casts = [

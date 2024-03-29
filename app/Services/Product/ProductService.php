@@ -76,15 +76,12 @@ class ProductService
             $data['code'] = Support::genCode('products', 'code');
             $image = $data['image'];
             $thumbImage = Arr::get($data, 'thumb_image', []);
-
-            $details = Arr::get($data, 'details', []);
-            $details = array_unique($details);
-            $details = $this->deleteNull($details);
             $full_columns = $this->model->getFillable();
             $data = array_intersect_key($data, array_flip($full_columns));
 
             $data['is_active'] = false;
-            $data['qty'] = count($details);
+            $data['price_discount'] = filter_var(Arr::get($data, 'price'), FILTER_VALIDATE_INT) - filter_var(Arr::get($data, 'discount'), FILTER_VALIDATE_INT);
+
 
             $record = Product::query()->create($data);
             $record->addMedia($image)
@@ -118,11 +115,16 @@ class ProductService
         try {
             DB::beginTransaction();
             $data = $this->clean($data);
+            $price = Arr::get($data, 'price', $product->price);
+            $discount = Arr::get($data, 'discount', $product->discount);
 
             $product->name = Arr::get($data, 'name', $product->name);
             $product->description = Arr::get($data, 'description', $product->description);
-            $product->price = Arr::get($data, 'price', $product->price);
+            $product->price = $price;
+            $product->discount = $discount;
+            $product->price_discount = $price - $discount;
             $product->category_id = Arr::get($data, 'category_id', $product->category_id);
+            $product->qty = Arr::get($data, 'qty', $product->qty);
             $product->is_active = filter_var(Arr::get($data, 'is_active', $product->is_active), FILTER_VALIDATE_BOOLEAN);
             $product->priority = Arr::get($data, 'priority', $product->priority);
             $product->slug = Arr::get($data, 'slug', $product->slug);
@@ -348,6 +350,9 @@ class ProductService
                         'product_id'           => $item['product']['id'],
                         'product_name'         => $item['product']['name'],
                         'price'                => $item['product']['price'],
+                        'qty'                  => $item['product']['qty'],
+                        'discount'             => $item['product']['discount'],
+                        'price_discount'       => $item['product']['price_discount'],
                         'description'          => $item['product']['description'],
                         'meta_description'     => $item['product']['meta_description'],
                         'meta_key'             => $item['product']['meta_key'],
@@ -363,13 +368,10 @@ class ProductService
 
         $result = $this->combining($variants);
 
-        $details = array_map(function ($itemGroup) use ($product){
+        $details = array_map(function ($itemGroup) use ($product) {
             $name = '';
             $attributes = [];
             foreach ($itemGroup as $key => $item) {
-                if ($key === 0) {
-                    $name .= $item['product_name'];
-                }
                 $attributes[] = $item['attribute_id'];
 
                 $name .= sprintf(', %s: %s', $item['attribute_group_name'], $item['attribute_name']);
@@ -377,19 +379,22 @@ class ProductService
 
             sort($attributes);
             return [
-                'name'             => $name,
+                'name'             => "$product->name$name",
                 'product_id'       => $product->id,
+                'option_name'      => trim($name,', '),
                 'options'          => json_encode($attributes),
                 'description'      => $product->description,
                 'meta_description' => $product->meta_description,
                 'meta_key'         => $product->meta_key,
                 'meta_title'       => $product->meta_title,
                 'price'            => $product->price,
+                'qty'              => $product->qty,
+                'discount'         => $product->discount,
+                'price_discount'   => $product->price_discount,
             ];
         }, $result);
 
         $data = ProductVariant::query()
-            ->select('options')
             ->where('product_id', $product->id)
             ->get()
             ->map(function ($item) {
@@ -405,6 +410,12 @@ class ProductService
         $differenceRemove = array_udiff($data, $differences, function ($item1, $item2) {
             return $item1['options'] <=> $item2['options'];
         });
+
+
+        $differenceRemove = array_udiff($differenceRemove, $details, function ($item1, $item2) {
+            return $item1['options'] <=> $item2['options'];
+        });
+
         $ids = array_map(function ($item) {
             return $item['id'];
         }, $differenceRemove);
@@ -453,9 +464,15 @@ class ProductService
             foreach ($details as $data) {
                 $data = $this->clean($data);
                 $productVariant = ProductVariant::find($data['id']);
+
+                $price = Arr::get($data, 'price', $productVariant->price);
+                $discount = Arr::get($data, 'discount', $productVariant->discount);
                 $productVariant->name = Arr::get($data, 'name', $productVariant->name);
                 $productVariant->description = Arr::get($data, 'description', $productVariant->description);
-                $productVariant->price = Arr::get($data, 'price', $productVariant->price);
+                $productVariant->price = $price;
+                $productVariant->discount = $discount;
+                $productVariant->price_discount = $price - $discount;
+                $productVariant->qty = Arr::get($data, 'qty', $productVariant->qty);
                 $productVariant->is_active = filter_var(Arr::get($data, 'is_active', $productVariant->is_active), FILTER_VALIDATE_BOOLEAN);
 //                $productVariant->priority = Arr::get($data, 'priority', $productVariant->priority);
 //                $productVariant->slug = Arr::get($data, 'slug', $productVariant->slug);

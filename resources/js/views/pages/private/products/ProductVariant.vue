@@ -5,7 +5,8 @@
     <div>
       <div class="grid grid-cols-1 divide-y-4">
         <div v-if="item.variants" v-for="(variant, index) in item.variants" class="py-4">
-          <ProductVariantItem :item="variant" :index="index" :key="index" @informationUpdate="(data) => informationUpdate(index, data)"/>
+          <ProductVariantItem :item="variant" :index="index" :key="index"
+                              @informationUpdate="(data) => informationUpdate(index, data)"/>
         </div>
       </div>
       <Button @click.prevent="onSubmit" title="Cập nhật" icon="fa fa-save" label="Cập nhật"/>
@@ -42,6 +43,10 @@ const props = defineProps({
   id: {
     type: String,
   },
+  refresh: {
+    type: Number,
+    default: 0
+  },
 });
 
 const service = new ProductService();
@@ -77,6 +82,13 @@ function informationUpdate(index, data) {
   form.details[index] = data
 }
 
+watch(() => props.refresh,
+    () => {
+      service.find(`${props.id}/variants`).then((response) => {
+        item.value = response.data.model;
+        isFirstLoad.value = false
+      })
+    })
 </script>
 
 <style scoped lang="scss">

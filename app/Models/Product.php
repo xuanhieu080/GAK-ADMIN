@@ -36,7 +36,9 @@ class Product extends Model implements HasMedia
         'meta_title',
         'meta_description',
         'meta_key',
-        'video_link'
+        'video_link',
+        'price_discount',
+        'discount'
     ];
 
     protected $casts = [

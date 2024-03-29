@@ -10,11 +10,11 @@
         </div>
         <div v-show="activeTab === 1"
              :class="{ hidden: activeTab !== 1 }">
-         <EditAttribute  :id="id" />
+         <EditAttribute  :id="id"  @information-attribute="informationAttribute"/>
         </div>
         <div v-show="activeTab === 2"
              :class="{ hidden: activeTab !== 2 }">
-          <ProductVariant :id="id"/>
+          <ProductVariant :id="id" :refresh="refresh"/>
         </div>
       </Tab>
     </Panel>
@@ -77,6 +77,7 @@ const page = reactive({
 
 
 const activeTab = ref(0)
+const refresh = ref(0)
 
 function updateTabIndex(index) {
   activeTab.value = index
@@ -101,6 +102,10 @@ onBeforeMount(() => {
     }
   }
 })
+
+function informationAttribute() {
+  refresh.value++
+}
 </script>
 
 <style scoped>

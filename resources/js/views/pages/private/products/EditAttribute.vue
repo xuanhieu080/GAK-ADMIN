@@ -65,6 +65,8 @@ import Toggle from "@/views/components/input/Toggle.vue";
 import Button from "@/views/components/input/Button.vue";
 import ProductService from "@/services/ProductService";
 
+const emit = defineEmits(['informationAttribute']);
+
 const alertStore = useAlertStore();
 
 const props = defineProps({
@@ -116,6 +118,7 @@ function onSubmit() {
         form.detail_currents = response.data.data;
         form.details = [];
       })
+      emit('informationAttribute')
     }
   });
   return false;

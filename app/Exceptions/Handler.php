@@ -2,7 +2,11 @@
 
 namespace App\Exceptions;
 
+use App\Jobs\Logging;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Carbon;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -41,10 +45,46 @@ class Handler extends ExceptionHandler
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
+        $this->reportable(function (Throwable $ex) {
+            $errorCode = $ex->getCode();
+            $errorCode = empty($errorCode) ? Response::HTTP_BAD_REQUEST : $errorCode;
+
+            //        if (env('APP_DEBUG', false) == true) {
+            //            $request = Request::capture();
+            //            $param = $request->all();
+            //            $data = [
+            //                'server'     => ETC_POS::urlBase(),
+            //                'time'       => date("Y-m-d H:i:s", time()),
             //
+            //                'param'      => json_encode($param),
+            //                'file'       => $ex->getFile(),
+            //                'line'       => $ex->getLine(),
+            //                'error'      => $ex->getMessage(),
+            //            ];
+            //
+            //            //Write Log
+            //        }
+            $user_id = 0;
+
+            $request = Request::capture();
+            $param = $request->all();
+            $requestHost = parse_url($request->headers->get('origin'), PHP_URL_HOST);
+            $data = [
+                'action'  => 'ERROR',
+                //            'browser' => "Parent: $parent - Platform: $platform - Browser: $browser",
+                'link'    => url()->current(),
+                'server'  => env('app_url'),
+                'host'    => $requestHost,
+                'time'    => Carbon::now()->toString(),
+                'user_id' => $user_id,
+                'param'   => json_encode($param),
+                'file'    => $ex->getFile(),
+                'line'    => $ex->getLine(),
+                'error'   => $ex->getMessage(),
+            ];
+            Logging::dispatch($data)->afterResponse();
         });
     }
 }

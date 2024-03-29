@@ -30,7 +30,8 @@ class UpdateRequest extends BaseRequest
             'description'        => 'required|string',
             'category_id'        => 'required|exists:categories,id',
             'is_active'          => 'required|in:1,0,true,false',
-            'price'              => 'required|numeric|min:0|max:999999999999',
+            'price'              => 'nullable|numeric|min:0|max:999999999999',
+            'qty'                => 'nullable|numeric|min:0|max:10000000',
             'priority'           => 'required|numeric|min:0|max:1000',
             'meta_description'   => 'required|max:255',
             'meta_title'         => 'required|max:255',
@@ -43,6 +44,17 @@ class UpdateRequest extends BaseRequest
             ],
             'meta_key'           => 'required|max:255',
             'video_link'         => 'nullable|url|max:350',
+            'discount'           => [
+                'nullable',
+                'max:1000000000000',
+                'min:0',
+                'numeric',
+                function ($attribute, $value, $fail) {
+                    if ($value > $this->price) {
+                        return $fail('Tiền giảm giá không được vượt quá giá tiền gốc');
+                    }
+                }
+            ],
         ];
     }
 
