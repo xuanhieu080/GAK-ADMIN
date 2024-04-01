@@ -30,9 +30,9 @@ class UpdateVariantRequest extends BaseRequest
                 'max:255',
                 //                Rule::unique('product_variants', 'name')->ignore($this->route('product')->id)
             ],
-            'details.*.image'              => 'nullable|image|max:3024|mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,ogx,oga,ogv,ogg,webm',
+            'details.*.image'              => 'nullable|image|max:3145728|mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,ogx,oga,ogv,ogg,webm',
             'details.*.thumb_image'        => 'nullable|array',
-            'details.*.thumb_image.*'      => 'nullable|image|max:3024|mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,ogx,oga,ogv,ogg,webm',
+            'details.*.thumb_image.*'      => 'nullable|image|max:3145728|mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,ogx,oga,ogv,ogg,webm',
             'details.*.thumb_image_remove' => 'nullable|array',
             'details.*.description'        => 'required|string',
             //            'category_id'        => 'required|exists:categories,id',

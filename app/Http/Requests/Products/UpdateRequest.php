@@ -23,9 +23,9 @@ class UpdateRequest extends BaseRequest
                 'max:255',
                 Rule::unique('products', 'name')->ignore($this->route('product')->id)
             ],
-            'image'              => 'nullable|image|max:3024|mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,ogx,oga,ogv,ogg,webm',
+            'image'              => 'nullable|image|max:3145728|mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,ogx,oga,ogv,ogg,webm',
             'thumb_image'        => 'nullable|array',
-            'thumb_image.*'      => 'nullable|image|max:3024|mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,ogx,oga,ogv,ogg,webm',
+            'thumb_image.*'      => 'nullable|image|max:3145728|mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,ogx,oga,ogv,ogg,webm',
             'thumb_image_remove' => 'nullable|array',
             'description'        => 'required|string',
             'category_id'        => 'required|exists:categories,id',

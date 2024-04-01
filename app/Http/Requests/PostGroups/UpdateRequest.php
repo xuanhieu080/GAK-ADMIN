@@ -22,7 +22,7 @@ class UpdateRequest extends BaseRequest
                 Rule::unique('post_groups', 'name')->ignore($this->route('post_group')->id)
             ],
             'description'      => 'nullable|max:255',
-            'image'            => 'nullable|image|max:3024|mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,ogx,oga,ogv,ogg,webm',
+            'image'            => 'nullable|image|max:3145728|mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,ogx,oga,ogv,ogg,webm',
             'meta_description' => 'required|max:255',
             'meta_title'       => 'required|max:255',
             'slug'             => [
@@ -37,7 +37,7 @@ class UpdateRequest extends BaseRequest
         ];
 
         if (filter_var($this->input('remove_image'), FILTER_VALIDATE_BOOLEAN)) {
-            $rules['image'] = 'required|image|max:3024|mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,ogx,oga,ogv,ogg,webm';
+            $rules['image'] = 'required|image|max:3145728|mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,ogx,oga,ogv,ogg,webm';
         }
 
         return $rules;

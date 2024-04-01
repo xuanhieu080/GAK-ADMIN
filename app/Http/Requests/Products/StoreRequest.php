@@ -15,9 +15,9 @@ class StoreRequest extends BaseRequest
     {
         return [
             'name'             => 'required|string|max:255|unique:products,name',
-            'image'            => 'required|image|max:3024|mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,ogx,oga,ogv,ogg,webm',
+            'image'            => 'required|image|max:3145728|mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,ogx,oga,ogv,ogg,webm',
             'thumb_image'      => 'nullable|array',
-            'thumb_image.*'    => 'nullable|image|max:3024|mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,ogx,oga,ogv,ogg,webm',
+            'thumb_image.*'    => 'nullable|image|max:3145728|mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,ogx,oga,ogv,ogg,webm',
             'description'      => 'required|string',
             'category_id'      => 'required|exists:categories,id',
             //            'is_active'   => 'required|in:1,0,true,false',

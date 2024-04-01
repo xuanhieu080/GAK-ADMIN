@@ -16,7 +16,7 @@ class StoreRequest extends BaseRequest
     {
         return [
             'name'             => 'required|string|max:255|unique:categories,name',
-            'image'            => 'required|image|max:3024|mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,ogx,oga,ogv,ogg,webm',
+            'image'            => 'required|image|max:3145728|mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,ogx,oga,ogv,ogg,webm',
             'parent_id'        => 'nullable|exists:categories,id',
             'description'      => 'nullable',
             'meta_description' => 'required|max:255',
