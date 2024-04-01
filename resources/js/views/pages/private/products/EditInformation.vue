@@ -8,9 +8,9 @@
       <TextInput class="mb-4" type="url" error-input="video_link" name="video_link" v-model="form.video_link"
                  label="Đường dẫn video"/>
       <Dropdown class="mb-4" name="group" error-input="group_id" :multiple="false"
-                server="groups" :label="trans('Nhóm bài viết')" :placeholder="trans('Nhóm bài viết')"
+                server="categories" :label="trans('Nhóm bài viết')" :placeholder="trans('Nhóm bài viết')"
                 :server-search-min-characters="0"
-                v-model="group"></Dropdown>
+                v-model="category"></Dropdown>
       <div class="flex justify-center">
         <div class="w-[500px]">
           <FilePond
@@ -225,6 +225,7 @@ onBeforeMount(() => {
         'title': response.data.model.category_name
       };
     }
+
     setTimeout(() => {
       isFirstLoad.value = true
     },500)

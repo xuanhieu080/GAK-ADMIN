@@ -10,7 +10,10 @@ export default class SearchService extends BaseService {
     }
 
     public begin(phrase, page, perPage, params = null) {
-        return this.get(this.url + `/?search=${phrase}&per_page=${perPage}&page=${page}${params}`)
+        if (params) {
+            return this.get(this.url + `/?search=${phrase}&per_page=${perPage}&page=${page}${params}`)
+        }
+        return this.get(this.url + `/?search=${phrase}&per_page=${perPage}&page=${page}`)
     }
 
 }
