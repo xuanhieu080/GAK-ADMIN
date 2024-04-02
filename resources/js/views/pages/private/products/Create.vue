@@ -59,6 +59,7 @@ const information = reactive({
   priority: 100,
   qty: 100000,
   is_active: false,
+  is_hot: false,
   meta_title: null,
   meta_description: null,
   meta_key: null,
@@ -75,6 +76,7 @@ const informationCreate = ref({
   priority: 100,
   qty: 100000,
   is_active: false,
+  is_hot: false,
   meta_title: null,
   meta_description: null,
   meta_key: null,
@@ -159,6 +161,7 @@ function clearData() {
   information.priority = 100;
   information.qty = 100000;
   information.is_active = false;
+  information.is_hot = false;
   information.meta_title = null;
   information.meta_description = null;
   information.slug = null;
@@ -179,6 +182,7 @@ function informationUpdate(data) {
   information.qty = data.qty;
   information.priority = data.priority;
   information.is_active = data.is_active;
+  information.is_hot = data.is_hot;
   information.meta_title = data.meta_title;
   information.meta_description = data.meta_description;
   information.meta_key = data.meta_key;
