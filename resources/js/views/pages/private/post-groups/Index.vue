@@ -25,6 +25,9 @@
             </div>
           </div>
         </template>
+        <template v-slot:content-is_hot="props">
+          <Toggle class="mb-4" disabled :model-value="props.item.is_hot" :checked="props.item.is_hot"/>
+        </template>
         <template v-slot:content-is_active="props">
           <Toggle class="mb-4" disabled :model-value="props.item.is_active" :checked="props.item.is_active"/>
         </template>
@@ -115,6 +118,7 @@ export default defineComponent({
         id: trans('labels.id_pound'),
         slug: 'Đường dẫn',
         name: trans('labels.name'),
+        is_hot: 'Nổi bật',
         is_active: 'Hiển thị',
       },
       sorting: {

@@ -8,6 +8,19 @@ use Illuminate\Support\Facades\Storage;
 
 class HasImage
 {
+    public static final function getImage($path)
+    {
+        if (empty($path)) {
+            return null;
+        }
+
+        if (Storage::exists($path)) {
+            return Storage::url($path);
+        }
+
+        return env('APP_URL') ."/storage/$path";
+    }
+
     public static final function addImage(UploadedFile $file, $subdir = 'uploads')
     {
         return self::store($file, $subdir);

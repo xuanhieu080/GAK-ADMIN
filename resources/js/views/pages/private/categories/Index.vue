@@ -25,6 +25,12 @@
             </div>
           </div>
         </template>
+        <template v-slot:content-show_header="props">
+          <Toggle class="mb-4" disabled :model-value="props.item.show_header" :checked="props.item.show_header"/>
+        </template>
+        <template v-slot:content-show_dashboard="props">
+          <Toggle class="mb-4" disabled :model-value="props.item.show_dashboard" :checked="props.item.show_dashboard"/>
+        </template>
         <template v-slot:content-is_active="props">
           <Toggle class="mb-4" disabled :model-value="props.item.is_active" :checked="props.item.is_active"/>
         </template>
@@ -116,6 +122,8 @@ export default defineComponent({
         slug: 'Đường dẫn',
         name: trans('labels.name'),
         is_active: 'Hiển thị',
+        show_dashboard: 'Hiển thị ở trang chủ',
+        show_header: 'Hiển thị ở header',
       },
       sorting: {
         code: true,

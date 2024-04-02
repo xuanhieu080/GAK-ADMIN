@@ -108,6 +108,8 @@
             }}</span>
         </div>
       </div>
+      <Toggle class="mb-4" v-model="form.is_hot" :checked="form.is_hot" error-input="is_hot"
+              label="Nổi bật" name="is_hot"/>
       <Toggle class="mb-4" v-model="form.is_active" :checked="form.is_active" error-input="is_active"
               :label="trans('labels.show')" name="status"/>
 
@@ -189,6 +191,7 @@ const form = reactive({
   qty: 100000,
   discount: 0,
   is_active: false,
+  is_hot: false,
   thumb_image_remove: [],
 });
 

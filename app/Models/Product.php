@@ -38,11 +38,13 @@ class Product extends Model implements HasMedia
         'meta_key',
         'video_link',
         'price_discount',
-        'discount'
+        'discount',
+        'is_hot',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        'is_hot'    => 'boolean',
     ];
 
     protected $appends = [
@@ -54,12 +56,14 @@ class Product extends Model implements HasMedia
         return $this->name;
     }
 
-    public function category() {
-        return $this->hasOne(Category::class,'id', 'category_id');
+    public function category()
+    {
+        return $this->hasOne(Category::class, 'id', 'category_id');
     }
 
-    public function details() {
-        return $this->hasMany(ProductDetail::class,'product_id', 'id');
+    public function details()
+    {
+        return $this->hasMany(ProductDetail::class, 'product_id', 'id');
     }
 
     public function variants()

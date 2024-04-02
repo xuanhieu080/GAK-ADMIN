@@ -24,6 +24,7 @@ class UpdateRequest extends BaseRequest
             ],
             'group_id' => 'required|exists:attribute_groups,id',
             'is_color' => 'nullable|in:true,false,1,0',
+            'link'     => 'nullable|url|max:350',
         ];
 
         if (filter_var($this->is_color, FILTER_VALIDATE_BOOLEAN)) {
@@ -33,9 +34,6 @@ class UpdateRequest extends BaseRequest
                 new Color()
             ];
         }
-
-        return $rules;
-
 
         return $rules;
     }

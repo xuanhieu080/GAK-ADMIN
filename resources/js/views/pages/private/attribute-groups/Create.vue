@@ -4,6 +4,8 @@
       <Form id="create-attribute-group" @submit.prevent="onSubmit">
         <TextInput class="mb-4" :required="true" name="name" v-model="form.name" error-input="name"
                    :label="trans('labels.name')"/>
+        <TextInput class="mb-4" type="number" :min="0" :max="10000" name="priority" v-model="form.priority"
+                   error-input="priority" :label="trans('labels.priority')"/>
       </Form>
     </Panel>
   </Page>
@@ -26,6 +28,7 @@ import attributeGroupService from "@/services/AttributeGroupService";
 const alertStore = useAlertStore();
 const form = reactive({
   name: null,
+  priority: 1000,
 });
 
 const page = reactive({
@@ -83,6 +86,7 @@ function onSubmit() {
 
 function clearData() {
   form.name = null
+  form.priority = 1000
 }
 </script>
 

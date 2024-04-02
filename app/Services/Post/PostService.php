@@ -71,6 +71,7 @@ class PostService
         $data = array_intersect_key($data, array_flip($full_columns));
         $data['author_id'] = \Auth::id();
         $data['is_active'] = filter_var(Arr::get($data, 'is_active'), FILTER_VALIDATE_BOOLEAN);
+        $data['is_hot'] = filter_var(Arr::get($data, 'is_hot'), FILTER_VALIDATE_BOOLEAN);
         $record = Post::query()->create($data);
 
         if (!empty($data['image'])) {
@@ -105,6 +106,9 @@ class PostService
         $post->slug = Arr::get($data, 'slug', $post->slug);
         $post->content = Arr::get($data, 'content', $post->content);
         $post->is_active = filter_var(Arr::get($data, 'is_active', $post->is_active), FILTER_VALIDATE_BOOLEAN);
+        $post->is_hot = filter_var(Arr::get($data, 'is_hot', $post->is_hot), FILTER_VALIDATE_BOOLEAN);
+        $post->is_new = filter_var(Arr::get($data, 'is_new', $post->is_new), FILTER_VALIDATE_BOOLEAN);
+        $post->view = Arr::get($data, 'view', $post->view);
 
         $post->save();
         if (!empty($data['image'])) {

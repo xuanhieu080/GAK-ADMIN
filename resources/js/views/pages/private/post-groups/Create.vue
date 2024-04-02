@@ -34,13 +34,18 @@
         </div>
         <TextInput class="mb-4" type="textarea" :rows="5" name="description" v-model="form.description"
                    error-input="description" :label="trans('labels.description')"/>
-        <TextInput class="mb-4" type="text" :required="true" error-input="meta_title" name="name" v-model="form.meta_title"
+        <TextInput class="mb-4" type="text" :required="true" error-input="meta_title" name="name"
+                   v-model="form.meta_title"
                    label="Meta title"/>
-        <TextInput class="mb-4" type="textarea" :required="true" :rows="5" name="meta_description" v-model="form.meta_description"
+        <TextInput class="mb-4" type="textarea" :required="true" :rows="5" name="meta_description"
+                   v-model="form.meta_description"
                    error-input="meta_description" label="Meta description"/>
         <TextInput class="mb-4" type="text" error-input="meta_key" name="name" v-model="form.meta_key"
                    label="Meta key"/>
-        <Toggle class="mb-4" v-model="form.is_active" :checked="form.is_active" error-input="is_active" :label="trans('labels.show')"/>
+        <Toggle class="mb-4" v-model="form.is_hot" :checked="form.is_hot" error-input="is_hot" name="is_hot"
+                label="Nổi bật"/>
+        <Toggle class="mb-4" v-model="form.is_active" :checked="form.is_active" error-input="is_active" name="is_active"
+                :label="trans('labels.show')"/>
       </Form>
     </Panel>
   </Page>
@@ -96,6 +101,7 @@ const form = reactive({
   meta_key: '',
   meta_description: '',
   is_active: false,
+  is_hot: false,
   slug: '',
 });
 

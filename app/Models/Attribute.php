@@ -13,6 +13,7 @@ class Attribute extends Model
         'name',
         'group_id',
         'color',
+        'link',
         'is_color',
     ];
 

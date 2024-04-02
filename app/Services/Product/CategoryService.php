@@ -137,6 +137,7 @@ class CategoryService
             }
 
             $category->show_header = filter_var($data['show_header'], FILTER_VALIDATE_BOOLEAN);
+            $category->show_dashboard = filter_var($data['show_dashboard'], FILTER_VALIDATE_BOOLEAN);
             $category->save();
             $category->refresh();
             DB::commit();

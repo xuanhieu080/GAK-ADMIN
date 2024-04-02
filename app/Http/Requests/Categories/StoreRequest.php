@@ -30,6 +30,7 @@ class StoreRequest extends BaseRequest
             ],
             'meta_key'         => 'required|max:255',
             'show_header'      => 'required|in:true,false',
+            'show_dashboard'   => 'required|in:true,false',
         ];
     }
 }

@@ -15,7 +15,7 @@ class UpdateRequest extends BaseRequest
     public function rules()
     {
         $rules = [
-            'name' => [
+            'name'             => [
                 'required',
                 'string',
                 'max:255',
@@ -35,6 +35,7 @@ class UpdateRequest extends BaseRequest
             ],
             'meta_key'         => 'required|max:255',
             'show_header'      => 'required|in:true,false',
+            'show_dashboard'   => 'required|in:true,false',
         ];
 
         if (filter_var($this->input('remove_image'), FILTER_VALIDATE_BOOLEAN)) {

@@ -5,6 +5,8 @@
       <Form id="edit-attribute-group">
         <TextInput class="mb-4" type="text" name="name" v-model="form.name" error-input="name"
                    label="Tên"/>
+        <TextInput class="mb-4" type="number" :min="0" :max="10000" name="priority" v-model="form.priority"
+                   error-input="priority" :label="trans('labels.priority')"/>
       </Form>
     </Panel>
   </Page>
@@ -30,6 +32,7 @@ const route = useRoute();
 const item = ref(null);
 const form = reactive({
   name: '',
+  priority: 1000,
 });
 
 const page = reactive({

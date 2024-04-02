@@ -21,6 +21,7 @@ import htmlEditButton from "quill-html-edit-button";
 import MagicUrl from 'quill-magic-url'
 import AutoLinks from 'quill-auto-links';
 import {ref, watch} from "vue";
+import axios from "@/plugins/axios"
 
 export default {
   name: 'QuillEditorWrapper',
@@ -29,10 +30,9 @@ export default {
   },
   props: {
     value: [String],
-    description: [String],
     placeholder: [String],
   },
-  setup: (props, {emit}) => {
+  setup: (props) => {
     const myEditor = ref()
     const options = ref([
       [{font: []}],
@@ -54,7 +54,35 @@ export default {
 
       ['clean'], // remove formatting button
     ])
-    const modules = [
+    const modules = [{
+      name: "imageUploader",
+      module: ImageUploader,
+      options: {
+        upload: (file) => {
+          const result = new Promise((resolve, reject) => {
+            const formData = new FormData();
+            formData.append("image", file);
+            const axiosInstance = axios.create({
+              baseURL: axios.defaults.baseURL + '/api',
+              withCredentials: true,
+            });
+
+            axiosInstance.post('/upload-image', formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+            }).then((res) => {
+              resolve(res.data.link);
+            }).catch((err) => {
+              reject("Upload failed");
+              console.error("Error:", err);
+            });
+          });
+
+          return result;
+        },
+      },
+    },
       {
         name: 'htmlEditButton',
         module: htmlEditButton,
@@ -82,13 +110,8 @@ export default {
         },
       }];
 
-    watch(() => props.description, () => {
-          emit('input-editor', props.description)
-        }
-    )
-
     function changeEditor() {
-      emit('input-editor', this.$refs.myEditor.getHTML())
+      this.$emit('input-editor', this.$refs.myEditor.getHTML())
     }
 
 
@@ -103,13 +126,13 @@ export default {
   },
   mounted() {
     this.content = this.value // khi này this.$el đã gắn kết với DOM, lúc này có thể truy cập được tới các thành phần trong DOM
-    this.$emit('input-editor', this.value)
+
     setTimeout(() => {
       this.$emit('input-editor', this.value)
       // myEditor.value.pasteHTML(description.value)
       // console.log(articleContent.value )
       // articleContent.value = myEditor.value.getHTML()
     }, 500)
-  },
+  }
 };
 </script>

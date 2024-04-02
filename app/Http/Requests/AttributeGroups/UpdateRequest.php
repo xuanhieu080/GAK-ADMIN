@@ -20,7 +20,9 @@ class UpdateRequest extends BaseRequest
                 'string',
                 'max:255',
                 Rule::unique('attribute_groups', 'name')->ignore($this->route('attribute_group')->id)
-            ]
+            ],
+
+            'priority' => 'required|numeric|min:0|max:1000',
         ];
     }
 

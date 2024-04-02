@@ -19,6 +19,7 @@ class StoreRequest extends BaseRequest
             'name'     => 'required|string|max:255|unique:attributes,name',
             'group_id' => 'nullable|exists:attribute_groups,id',
             'is_color' => 'nullable|in:true,false,1,0',
+            'link'     => 'nullable|url|max:350',
         ];
         if (filter_var($this->is_color, FILTER_VALIDATE_BOOLEAN)) {
             $rules['color'] = [

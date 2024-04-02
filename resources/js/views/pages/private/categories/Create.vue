@@ -45,6 +45,8 @@
                    label="Meta key"/>
         <Toggle class="mb-4" v-model="form.show_header" :checked="form.show_header" error-input="show_header"
                 label="Hiển thị ở header" name="show_header"/>
+        <Toggle class="mb-4" v-model="form.show_dashboard" :checked="form.show_dashboard" error-input="show_dashboard"
+                label="Hiển thị ở trang chủ" name="show_dashboard"/>
         <Toggle class="mb-4" v-model="form.is_active" :checked="form.is_active" error-input="is_active"
                 label="Hiển thị" name="is_active"/>
       </Form>
@@ -103,6 +105,7 @@ const form = reactive({
   meta_key: '',
   meta_description: '',
   show_header: false,
+  show_dashboard: false,
   is_active: false,
   slug: '',
 });

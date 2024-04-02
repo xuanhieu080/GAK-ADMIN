@@ -35,6 +35,7 @@ class StoreRequest extends BaseRequest
             ],
             'meta_key'         => 'required|max:255',
             'video_link'       => 'nullable|url|max:350',
+            'is_hot'           => 'required|in:true,false',
             'discount'         => [
                 'nullable',
                 'max:1000000000000',

@@ -88,6 +88,7 @@ class AttributeGroupService
         $data = $this->clean($data);
 
         $attributeGroup->name = Arr::get($data, 'name', $attributeGroup->name);
+        $attributeGroup->priority = Arr::get($data, 'priority', $attributeGroup->priority);
 
         $attributeGroup->save();
         $attributeGroup->refresh();

@@ -92,6 +92,7 @@ class AttributeService
         $attribute->name = Arr::get($data, 'name', $attribute->name);
         $attribute->group_id = Arr::get($data, 'group_id', $attribute->group_id);
         $attribute->color = Arr::get($data, 'color', $attribute->color);
+        $attribute->link = Arr::get($data, 'link', $attribute->link);
         $attribute->is_color = filter_var(Arr::get($data, 'is_color', $attribute->is_color), FILTER_VALIDATE_BOOLEAN);
         
 

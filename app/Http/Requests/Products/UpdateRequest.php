@@ -35,6 +35,7 @@ class UpdateRequest extends BaseRequest
             'priority'           => 'required|numeric|min:0|max:1000',
             'meta_description'   => 'required|max:255',
             'meta_title'         => 'required|max:255',
+            'is_hot'             => 'required|in:true,false',
             'slug'               => [
                 'required',
                 'string',

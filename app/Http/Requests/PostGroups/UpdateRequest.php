@@ -34,6 +34,7 @@ class UpdateRequest extends BaseRequest
             ],
             'meta_key'         => 'required|max:255',
             'is_active'        => 'nullable|in:1,0,true,false',
+            'is_hot'           => 'required|in:1,0,true,false',
         ];
 
         if (filter_var($this->input('remove_image'), FILTER_VALIDATE_BOOLEAN)) {

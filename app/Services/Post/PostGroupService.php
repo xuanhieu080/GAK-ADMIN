@@ -73,6 +73,7 @@ class PostGroupService
             $data = array_intersect_key($data, array_flip($full_columns));
             $data['user_id'] = Auth::id();
             $data['is_active'] = filter_var(Arr::get($data, 'is_active'), FILTER_VALIDATE_BOOLEAN);
+            $data['is_hot'] = filter_var(Arr::get($data, 'is_hot'), FILTER_VALIDATE_BOOLEAN);
             $record = PostGroup::query()->create($data);
             $record->addMedia($data['image'])
                 ->usingName($record->name)
@@ -110,6 +111,7 @@ class PostGroupService
             $postGroup->meta_key = Arr::get($data, 'meta_key', $postGroup->meta_key);
             $postGroup->meta_description = Arr::get($data, 'meta_description', $postGroup->meta_description);
             $postGroup->is_active = filter_var(Arr::get($data, 'is_active', $postGroup->is_active), FILTER_VALIDATE_BOOLEAN);
+            $postGroup->is_hot = filter_var(Arr::get($data, 'is_hot', $postGroup->is_hot), FILTER_VALIDATE_BOOLEAN);
             if (!empty($data['image'])) {
                 $postGroup->clearMediaCollection();
                 $postGroup->addMedia($data['image'])

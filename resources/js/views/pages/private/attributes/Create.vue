@@ -7,6 +7,8 @@
         <Dropdown class="mb-4" name="category" error-input="group_id" :required="true"
                   server="attribute-groups" label="Nhóm thuộc tính" placeholder="Nhóm thuộc tính"
                   :server-search-min-characters="0" v-model="group"></Dropdown>
+        <TextInput class="mb-4" type="url" error-input="link" name="link" v-model="form.link"
+                   label="Đường dẫn liên kết"/>
 
         <Toggle class="mb-4" v-model="form.is_color" :checked="form.is_color" error-input="is_active"
                 label="Hiển thị màu" name="is_color"/>
@@ -43,6 +45,7 @@ import Toggle from "@/views/components/input/Toggle.vue";
 const alertStore = useAlertStore();
 const form = reactive({
   name: null,
+  link: null,
   group_id: null,
   is_color: false,
   color: '#000000',
@@ -106,6 +109,7 @@ function onSubmit() {
 
 function clearData() {
   form.name = null
+  form.link = null
   form.group_id = null
   form.is_color = false
   form.color = null

@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Traits\Filterable;
-use App\Traits\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Image\Enums\Fit;
@@ -11,48 +9,28 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Post extends Model implements HasMedia
+class Page extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
 
-    use Searchable, Filterable;
-
-    const path = 'posts';
-
     protected $fillable = [
         'id',
-        'title',
+        'name',
         'slug',
-        'content',
+        'description',
         'image',
-        'author_id',
+        'user_id',
         'comment_count',
         'is_active',
+        'show_header',
         'meta_title',
         'meta_description',
         'meta_key',
-        'group_id',
-        'is_hot',
-        'is_new',
-        'view',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
-        'is_hot'    => 'boolean',
-        'is_new'    => 'boolean',
-        'view'      => 'int',
     ];
-
-    public function author()
-    {
-        return $this->hasOne(User::class, 'id', 'author_id');
-    }
-
-    public function group()
-    {
-        return $this->hasOne(PostGroup::class, 'id', 'group_id');
-    }
 
     public function registerMediaConversions(Media $media = null): void
     {
@@ -64,6 +42,6 @@ class Post extends Model implements HasMedia
 
     public function getMediaFolderName()
     {
-        return 'posts';
+        return 'pages';
     }
 }

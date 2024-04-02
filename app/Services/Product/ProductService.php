@@ -79,7 +79,8 @@ class ProductService
             $full_columns = $this->model->getFillable();
             $data = array_intersect_key($data, array_flip($full_columns));
 
-            $data['is_active'] = false;
+            $data['is_active'] = filter_var(Arr::get($data, 'is_active'), FILTER_VALIDATE_BOOLEAN);
+            $data['is_hot'] = filter_var(Arr::get($data, 'is_hot'), FILTER_VALIDATE_BOOLEAN);
             $data['price_discount'] = filter_var(Arr::get($data, 'price'), FILTER_VALIDATE_INT) - filter_var(Arr::get($data, 'discount'), FILTER_VALIDATE_INT);
 
 
@@ -126,6 +127,7 @@ class ProductService
             $product->category_id = Arr::get($data, 'category_id', $product->category_id);
             $product->qty = Arr::get($data, 'qty', $product->qty);
             $product->is_active = filter_var(Arr::get($data, 'is_active', $product->is_active), FILTER_VALIDATE_BOOLEAN);
+            $product->is_hot = filter_var(Arr::get($data, 'is_hot', $product->is_hot), FILTER_VALIDATE_BOOLEAN);
             $product->priority = Arr::get($data, 'priority', $product->priority);
             $product->slug = Arr::get($data, 'slug', $product->slug);
             $product->meta_title = Arr::get($data, 'meta_title', $product->meta_title);
@@ -343,25 +345,26 @@ class ProductService
             ->map(function ($group) {
                 return $group->map(function ($item) {
                     return [
-                        'attribute_group_id'   => $item['attributeGroup']['id'],
-                        'attribute_group_name' => $item['attributeGroup']['name'],
-                        'attribute_id'         => $item['attribute']['id'],
-                        'attribute_name'       => $item['attribute']['name'],
-                        'product_id'           => $item['product']['id'],
-                        'product_name'         => $item['product']['name'],
-                        'price'                => $item['product']['price'],
-                        'qty'                  => $item['product']['qty'],
-                        'discount'             => $item['product']['discount'],
-                        'price_discount'       => $item['product']['price_discount'],
-                        'description'          => $item['product']['description'],
-                        'meta_description'     => $item['product']['meta_description'],
-                        'meta_key'             => $item['product']['meta_key'],
-                        'meta_title'           => $item['product']['meta_title'],
+                        'attribute_group_id'       => $item['attributeGroup']['id'],
+                        'attribute_group_name'     => $item['attributeGroup']['name'],
+                        'attribute_group_priority' => $item['attributeGroup']['priority'],
+                        'attribute_id'             => $item['attribute']['id'],
+                        'attribute_name'           => $item['attribute']['name'],
+                        'product_id'               => $item['product']['id'],
+                        'product_name'             => $item['product']['name'],
+                        'price'                    => $item['product']['price'],
+                        'qty'                      => $item['product']['qty'],
+                        'discount'                 => $item['product']['discount'],
+                        'price_discount'           => $item['product']['price_discount'],
+                        'description'              => $item['product']['description'],
+                        'meta_description'         => $item['product']['meta_description'],
+                        'meta_key'                 => $item['product']['meta_key'],
+                        'meta_title'               => $item['product']['meta_title'],
                     ];
                 })->sortBy('attribute_name');
             })
             ->sortBy(function ($values, $key) {
-                return $values->first()['attribute_group_name']; // Sắp xếp theo attribute group name
+                return $values->first()['attribute_group_priority']; // Sắp xếp theo attribute group name
             })
             ->values()
             ->toArray();
@@ -381,7 +384,7 @@ class ProductService
             return [
                 'name'             => "$product->name$name",
                 'product_id'       => $product->id,
-                'option_name'      => trim($name,', '),
+                'option_name'      => trim($name, ', '),
                 'options'          => json_encode($attributes),
                 'description'      => $product->description,
                 'meta_description' => $product->meta_description,

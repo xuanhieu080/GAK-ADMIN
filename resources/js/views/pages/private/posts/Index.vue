@@ -13,6 +13,15 @@
 
         <template #default>
             <Table :id="page.id" v-if="table" :headers="table.headers" :sorting="table.sorting" :actions="table.actions" :records="table.records" :pagination="table.pagination" :is-loading="table.loading" @page-changed="onTablePageChange" @action="onTableAction" @sort="onTableSort">
+              <template v-slot:content-is_hot="props">
+                <Toggle class="mb-4" disabled :model-value="props.item.is_hot" :checked="props.item.is_hot"/>
+              </template>
+              <template v-slot:content-view="props">
+                <span>{{props.item.view.toLocaleString()}}</span>
+              </template>
+              <template v-slot:content-is_new="props">
+                <Toggle class="mb-4" disabled :model-value="props.item.is_new" :checked="props.item.is_new"/>
+              </template>
               <template v-slot:content-is_active="props">
                 <Toggle class="mb-4" disabled :model-value="props.item.is_active" :checked="props.item.is_active"/>
               </template>
@@ -102,6 +111,9 @@ export default defineComponent({
                 author_name: trans('labels.author_name'),
                 group_name: 'Nhóm',
                 is_active: 'Hiển thị',
+                is_new: 'Nội dung mới',
+                is_hot: 'Nổi bật',
+                view: 'Lượt xem',
             },
             sorting: {
                 title: true,

@@ -58,6 +58,7 @@ Route::middleware(['auth:sanctum', 'apply_locale'])->group(function () {
     Route::resource('supports', SupportController::class);
     Route::resource('configs', ConfigController::class);
     Route::post('/customers/{id}/recharge', [CustomerController::class, 'recharge']);
+    Route::post('/upload-image', [ConfigController::class, 'uploadImage']);
     Route::get('/comments', [CommentController::class, 'index']);
     Route::get('/banks', [BankController::class, 'index']);
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy']);

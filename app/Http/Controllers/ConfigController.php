@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UploadImageRequest;
 use App\Models\Config;
+use App\Supports\HasImage;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -153,5 +155,16 @@ class ConfigController extends Controller
     public function properties()
     {
         return [];
+    }
+
+    public function uploadImage(UploadImageRequest $request)
+    {
+        try {
+            $image = HasImage::addImage($request->file('image'));
+            $link = HasImage::getImage($image);
+        } catch (\Exception $exception) {
+            return response()->json(['message' => $exception->getMessage()], 400);
+        }
+        return response()->json(['link' => $link]);
     }
 }

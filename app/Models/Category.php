@@ -33,6 +33,7 @@ class Category extends Model implements HasMedia
         '_rgt',
         'parent_id',
         'show_header',
+        'show_dashboard',
         'slug',
         'meta_title',
         'meta_description',
@@ -40,7 +41,9 @@ class Category extends Model implements HasMedia
     ];
 
     protected $casts = [
-        'is_active' => 'boolean',
+        'is_active'      => 'boolean',
+        'show_header'    => 'boolean',
+        'show_dashboard' => 'boolean',
     ];
 
 //    protected $appends = [

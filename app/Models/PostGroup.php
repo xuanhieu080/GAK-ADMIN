@@ -24,10 +24,12 @@ class PostGroup extends Model implements HasMedia
         'meta_title',
         'meta_description',
         'meta_key',
+        'is_hot',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        'is_hot'    => 'boolean',
     ];
 
     public function registerMediaConversions(Media $media = null): void

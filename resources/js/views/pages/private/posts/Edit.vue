@@ -58,7 +58,16 @@
                    error-input="meta_description" label="Meta description"/>
         <TextInput class="mb-4" type="text" error-input="meta_key" name="name" v-model="form.meta_key"
                    label="Meta key"/>
+        <TextInput class="mb-4" type="number" :min="0" :max="999999999999" name="view" v-model="form.view"
+                   error-input="view" label="Lượt view"/>
+        <Toggle class="mb-4" v-model="form.is_new" :checked="form.is_new" error-input="is_new"
+                name="is_new"
+                label="Bài viết có nội dung mới"/>
+        <Toggle class="mb-4" v-model="form.is_hot" :checked="form.is_hot" error-input="is_hot"
+                name="is_hot"
+                label="Nổi bật"/>
         <Toggle class="mb-4" v-model="form.is_active" :checked="form.is_active" error-input="is_active"
+                name="is_active"
                 :label="trans('labels.show')"/>
       </Form>
     </Panel>
@@ -122,6 +131,9 @@ const form = reactive({
   content: '',
   group_id: null,
   is_active: false,
+  is_new: false,
+  is_hot: false,
+  view: 0,
   meta_title: null,
   meta_description: null,
   meta_key: null,
