@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\User;
+use Illuminate\Validation\Rule;
 
 class UpdateUserRequest extends BaseRequest
 {
@@ -15,11 +16,16 @@ class UpdateUserRequest extends BaseRequest
     {
         return [
             'first_name' => 'required|string|max:100',
-            'last_name' => 'required|string|max:100',
-            'email' => 'required|email|unique:users,email,'.$this->request->get('email').',email|max:200',
-//            'roles' => 'required|array|exists:roles,name',
-            'avatar' => 'nullable|image',
-            'password' => 'nullable|min:6'
+            'last_name'  => 'required|string|max:100',
+            'email'      => [
+                'required',
+                'email',
+                'max:255',
+                Rule::unique('users', 'email')->ignore($this->route('user')->id)
+            ],
+            //            'roles' => 'required|array|exists:roles,name',
+            'avatar'     => 'nullable|image',
+            'password'   => 'nullable|min:6'
         ];
     }
 

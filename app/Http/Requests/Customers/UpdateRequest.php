@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Customers;
 
 use App\Http\Requests\BaseRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateRequest extends BaseRequest
 {
@@ -16,7 +17,12 @@ class UpdateRequest extends BaseRequest
         return [
             'name'     => 'required|string|max:255',
 //            'username' => 'required|string|max:100',
-            'email'    => 'nullable|email|unique:users,email,' . $this->request->get('email') . ',email|max:200',
+            'email'      => [
+                'nullable',
+                'email',
+                'max:255',
+                Rule::unique('customers', 'email')->ignore($this->route('customer')->id)
+            ],
             //            'roles' => 'required|array|exists:roles,name',
             'password' => 'nullable|min:6'
         ];

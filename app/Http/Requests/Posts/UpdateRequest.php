@@ -15,7 +15,12 @@ class UpdateRequest extends BaseRequest
     public function rules()
     {
         return [
-            'title'            => 'required|string|unique:posts,title,' . $this->request->get('title') . ',title|max:255',
+            'title'            => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('posts', 'title')->ignore($this->route('post')->id)
+            ],
             'image'            => 'nullable|image|max:3145728|mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,ogx,oga,ogv,ogg,webm',
             'is_active'        => 'required|in:1,0,true,false',
             'is_hot'           => 'required|in:1,0,true,false',

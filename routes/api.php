@@ -9,6 +9,8 @@ use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerRechargeController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\PageGroupController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostGroupController;
 use App\Http\Controllers\ProductController;
@@ -55,6 +57,8 @@ Route::middleware(['auth:sanctum', 'apply_locale'])->group(function () {
     Route::resource('attributes', AttributeController::class);
     Route::resource('posts', PostController::class);
     Route::resource('post-groups', PostGroupController::class);
+    Route::resource('pages', PageController::class);
+    Route::resource('page-groups', PageGroupController::class);
     Route::resource('supports', SupportController::class);
     Route::resource('configs', ConfigController::class);
     Route::post('/customers/{id}/recharge', [CustomerController::class, 'recharge']);

@@ -19,6 +19,7 @@ const routeStore = useRoute()
 const routeName = ref(null)
 const isToggleProduct = ref(false)
 const isTogglePost = ref(false)
+const isTogglePage = ref(false)
 
 function toggleProductMenu() {
   isToggleProduct.value = !isToggleProduct.value;
@@ -26,6 +27,10 @@ function toggleProductMenu() {
 
 function togglePostMenu() {
   isTogglePost.value = !isTogglePost.value;
+}
+
+function togglePageMenu() {
+  isTogglePage.value = !isTogglePage.value;
 }
 
 function onBackdropMenu(e) {
@@ -45,14 +50,24 @@ onMounted(() => {
   ) {
     isToggleProduct.value = true
     isTogglePost.value = false
+    isTogglePage.value = false
   } else if (routeStore.name === 'posts.list' || routeStore.name === 'posts.create' ||
       routeStore.name === 'posts.edit' || routeStore.name === 'post_groups.list' ||
       routeStore.name === 'post_groups.create' || routeStore.name === 'post_groups.edit'
   ) {
     isToggleProduct.value = false
+    isTogglePage.value = false
     isTogglePost.value = true
+  } else if (routeStore.name === 'pages.list' || routeStore.name === 'pages.create' ||
+      routeStore.name === 'pages.edit' || routeStore.name === 'page_groups.list' ||
+      routeStore.name === 'page_groups.create' || routeStore.name === 'page_groups.edit'
+  ) {
+    isToggleProduct.value = false
+    isTogglePage.value = true
+    isTogglePost.value = false
   } else {
     isToggleProduct.value = false
+    isTogglePage.value = false
     isTogglePost.value = false
   }
 })
@@ -68,15 +83,25 @@ watch(() => routeStore.name, () => {
   ) {
     isToggleProduct.value = true
     isTogglePost.value = false
+    isTogglePage.value = false
   } else if (routeStore.name === 'posts.list' || routeStore.name === 'posts.create' ||
       routeStore.name === 'posts.edit' || routeStore.name === 'post_groups.list' ||
       routeStore.name === 'post_groups.create' || routeStore.name === 'post_groups.edit'
   ) {
     isToggleProduct.value = false
+    isTogglePage.value = false
     isTogglePost.value = true
+  } else if (routeStore.name === 'pages.list' || routeStore.name === 'pages.create' ||
+      routeStore.name === 'pages.edit' || routeStore.name === 'page_groups.list' ||
+      routeStore.name === 'page_groups.create' || routeStore.name === 'page_groups.edit'
+  ) {
+    isToggleProduct.value = false
+    isTogglePage.value = true
+    isTogglePost.value = false
   } else {
     isToggleProduct.value = false
     isTogglePost.value = false
+    isTogglePage.value = false
   }
 });
 
@@ -265,6 +290,61 @@ watch(() => routeStore.name, () => {
                                         <span class="bullet bullet-dot"></span>
                                     </span>
                     <span>Bài viết</span>
+                  </router-link>
+                </li>
+              </ul>
+            </template>
+          </div>
+        </li>
+
+        <li class="item menu-item cursor-pointer">
+          <div class="menu-link">
+            <div :class="{'text-gray-800': isTogglePage}"
+                 aria-haspopup="true"
+                 class="inline-flex px-7 py-3 items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+                 @click="togglePageMenu">
+                        <span class="inline-flex items-center">
+                          <span class="menu-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+                            </svg>
+                          </span>
+                          <span class="ml-4 menu-name">Trang</span>
+                        </span>
+
+              <svg v-if="isTogglePage" aria-hidden="true" class="w-4 h-4" fill="currentColor"
+                   viewBox="0 0 20 20">
+                <path clip-rule="evenodd"
+                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                      fill-rule="evenodd"></path>
+              </svg>
+              <svg v-else class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5"
+                   viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8.25 4.5l7.5 7.5-7.5 7.5" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <template v-if="isTogglePage">
+              <ul aria-label="submenu" class="submenu overflow-hidden text-sm font-medium text-gray-500">
+                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                  <router-link
+                      :class="{'active text-gray-800': routeName === 'page_groups.list' ||  routeName === 'page_groups.create' || routeName === 'page_groups.edit'}"
+                      class="menu-link w-full"
+                      :to="{name: 'page_groups.list'}">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                    <span>Nhóm trang</span>
+                  </router-link>
+                </li>
+                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                  <router-link
+                      :class="{'active text-gray-800': routeName === 'pages.list' ||  routeName === 'pages.create' || routeName === 'pages.edit'}"
+                      class="menu-link w-full"
+                      :to="{name: 'pages.list'}">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                    <span>Trang</span>
                   </router-link>
                 </li>
               </ul>
@@ -531,31 +611,131 @@ watch(() => routeStore.name, () => {
                     <span>Nhóm thuộc tính</span>
                   </router-link>
                 </li>
+                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                  <router-link
+                      :class="{'active text-gray-800': routeName === 'attribute.list' || routeName === 'attribute.create' || routeName === 'attribute.edit'}"
+                      class="menu-link w-full"
+                      :to="{name: 'attribute.list'}">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                    <span>Thuộc tính</span>
+                  </router-link>
+                </li>
               </ul>
             </template>
           </div>
         </li>
 
-        <li class="item menu-item">
-          <div class="menu-link px-7 py-3">
-              <span
-                  aria-hidden="true"
-                  class="absolute inset-y-0 left-0 w-1 rounded-tr-lg rounded-br-lg"
-              ></span>
-            <router-link
-                :class="{'text-gray-800': routeName === 'posts.list' || routeName === 'posts.edit' || routeName === 'posts.create'}"
-                class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
-                :to="{name: 'posts.list'}"
-            >
-               <span class="menu-icon">
-                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="w-5 h-5">
-                      <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"/>
-                    </svg>
-                </span>
-              <span class="ml-4 menu-name">Bài viết</span>
-            </router-link>
+        <li class="item menu-item cursor-pointer">
+          <div class="menu-link">
+            <div :class="{'text-gray-800': isTogglePost}"
+                 aria-haspopup="true"
+                 class="inline-flex px-7 py-3 items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+                 @click="togglePostMenu">
+                        <span class="inline-flex items-center">
+                          <span class="menu-icon">
+                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                  stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"/>
+                              </svg>
+                          </span>
+                          <span class="ml-4 menu-name">Bài viết</span>
+                        </span>
+
+              <svg v-if="isTogglePost" aria-hidden="true" class="w-4 h-4" fill="currentColor"
+                   viewBox="0 0 20 20">
+                <path clip-rule="evenodd"
+                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                      fill-rule="evenodd"></path>
+              </svg>
+              <svg v-else class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5"
+                   viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8.25 4.5l7.5 7.5-7.5 7.5" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <template v-if="isTogglePost">
+              <ul aria-label="submenu" class="submenu overflow-hidden text-sm font-medium text-gray-500">
+                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                  <router-link
+                      :class="{'active text-gray-800': routeName === 'post_groups.list' ||  routeName === 'post_groups.create' || routeName === 'post_groups.edit'}"
+                      class="menu-link w-full"
+                      :to="{name: 'post_groups.list'}">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                    <span>Nhóm Bài viết</span>
+                  </router-link>
+                </li>
+                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                  <router-link
+                      :class="{'active text-gray-800': routeName === 'posts.list' ||  routeName === 'posts.create' || routeName === 'posts.edit'}"
+                      class="menu-link w-full"
+                      :to="{name: 'posts.list'}">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                    <span>Bài viết</span>
+                  </router-link>
+                </li>
+              </ul>
+            </template>
+          </div>
+        </li>
+
+        <li class="item menu-item cursor-pointer">
+          <div class="menu-link">
+            <div :class="{'text-gray-800': isTogglePage}"
+                 aria-haspopup="true"
+                 class="inline-flex px-7 py-3 items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+                 @click="togglePageMenu">
+                        <span class="inline-flex items-center">
+                          <span class="menu-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+                            </svg>
+                          </span>
+                          <span class="ml-4 menu-name">Trang</span>
+                        </span>
+
+              <svg v-if="isTogglePage" aria-hidden="true" class="w-4 h-4" fill="currentColor"
+                   viewBox="0 0 20 20">
+                <path clip-rule="evenodd"
+                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                      fill-rule="evenodd"></path>
+              </svg>
+              <svg v-else class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5"
+                   viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8.25 4.5l7.5 7.5-7.5 7.5" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <template v-if="isTogglePage">
+              <ul aria-label="submenu" class="submenu overflow-hidden text-sm font-medium text-gray-500">
+                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                  <router-link
+                      :class="{'active text-gray-800': routeName === 'page_groups.list' ||  routeName === 'page_groups.create' || routeName === 'page_groups.edit'}"
+                      class="menu-link w-full"
+                      :to="{name: 'page_groups.list'}">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                    <span>Nhóm trang</span>
+                  </router-link>
+                </li>
+                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                  <router-link
+                      :class="{'active text-gray-800': routeName === 'pages.list' ||  routeName === 'pages.create' || routeName === 'pages.edit'}"
+                      class="menu-link w-full"
+                      :to="{name: 'pages.list'}">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                    <span>Trang</span>
+                  </router-link>
+                </li>
+              </ul>
+            </template>
           </div>
         </li>
 

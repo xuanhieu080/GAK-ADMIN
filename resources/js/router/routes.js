@@ -28,6 +28,14 @@ import {default as PagePostGroupIndex} from "@/views/pages/private/post-groups/I
 import {default as PagePostGroupCreate} from "@/views/pages/private/post-groups/Create";
 import {default as PagePostGroupEdit} from "@/views/pages/private/post-groups/Edit.vue";
 
+import {default as PageGroupIndex} from "@/views/pages/private/page-groups/Index.vue";
+import {default as PageGroupCreate} from "@/views/pages/private/page-groups/Create";
+import {default as PageGroupEdit} from "@/views/pages/private/page-groups/Edit.vue";
+
+import {default as PageIndex} from "@/views/pages/private/pages/Index.vue";
+import {default as PageCreate} from "@/views/pages/private/pages/Create";
+import {default as PageEdit} from "@/views/pages/private/pages/Edit.vue";
+
 import {default as PageSupportIndex} from "@/views/pages/private/supports/Index.vue";
 import {default as PageSupportCreate} from "@/views/pages/private/supports/Create";
 import {default as PageSupportEdit} from "@/views/pages/private/supports/Edit.vue";
@@ -214,6 +222,52 @@ const routes = [
                 path: ":id/edit",
                 meta: {requiresAuth: true},
                 component: PagePostGroupEdit,
+            }
+        ]
+    },
+    {
+        path: "/page-groups",
+        children: [
+            {
+                name: "page_groups.list",
+                path: "list",
+                meta: {requiresAuth: true},
+                component: PageGroupIndex,
+            },
+            {
+                name: "page_groups.create",
+                path: "create",
+                meta: {requiresAuth: true},
+                component: PageGroupCreate,
+            },
+            {
+                name: "page_groups.edit",
+                path: ":id/edit",
+                meta: {requiresAuth: true},
+                component: PageGroupEdit,
+            }
+        ]
+    },
+    {
+        path: "/pages",
+        children: [
+            {
+                name: "pages.list",
+                path: "list",
+                meta: {requiresAuth: true},
+                component: PageIndex,
+            },
+            {
+                name: "pages.create",
+                path: "create",
+                meta: {requiresAuth: true},
+                component: PageCreate,
+            },
+            {
+                name: "pages.edit",
+                path: ":id/edit",
+                meta: {requiresAuth: true},
+                component: PageEdit,
             }
         ]
     },
