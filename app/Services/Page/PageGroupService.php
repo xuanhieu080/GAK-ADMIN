@@ -66,7 +66,7 @@ class PageGroupService
 
         $full_columns = $this->model->getFillable();
         $data = array_intersect_key($data, array_flip($full_columns));
-
+        $data['is_active'] = filter_var(Arr::get($data, 'is_active'), FILTER_VALIDATE_BOOLEAN);
         $record = PageGroup::query()->create($data);
         if (!empty($record)) {
             return new PageGroupResource($record);
@@ -84,9 +84,9 @@ class PageGroupService
     public function update(PageGroup $pageGroup, array $data)
     {
         $data = $this->clean($data);
-
         $pageGroup->name = Arr::get($data, 'name', $pageGroup->name);
         $pageGroup->column = Arr::get($data, 'column', $pageGroup->column);
+        $pageGroup->is_active = filter_var(Arr::get($data, 'is_active', $pageGroup->is_active), FILTER_VALIDATE_BOOLEAN);
 
         $pageGroup->save();
         $pageGroup->refresh();
