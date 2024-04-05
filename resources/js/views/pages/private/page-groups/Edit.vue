@@ -47,7 +47,7 @@ const page = reactive({
   loading: true,
   breadcrumbs: [
     {
-      name: 'Thuộc tính',
+      name: 'Nhóm trang',
       to: toUrl('/page-groups/list'),
     },
     {
