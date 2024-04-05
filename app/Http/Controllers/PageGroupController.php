@@ -82,11 +82,11 @@ class PageGroupController extends Controller
      * @return PageGroupResource|JsonResponse
      * @throws AuthorizationException
      */
-    public function show(PageGroup $pageGroup)
+    public function show(PageGroup $page_group)
     {
         $this->authorize('view', PageGroup::class);
 
-        $model = $this->pageGroupService->get($pageGroup);
+        $model = $this->pageGroupService->get($page_group);
         return $this->responseDataSuccess(['model' => $model, 'properties' => $this->properties()]);
     }
 
@@ -98,11 +98,11 @@ class PageGroupController extends Controller
      * @return JsonResponse|\Illuminate\Http\Response
      * @throws AuthorizationException
      */
-    public function edit(PageGroup $pageGroup)
+    public function edit(PageGroup $page_group)
     {
         $this->authorize('edit', PageGroup::class);
 
-        return $this->show($pageGroup);
+        return $this->show($page_group);
     }
 
     /**
@@ -114,12 +114,12 @@ class PageGroupController extends Controller
      * @return JsonResponse
      * @throws AuthorizationException
      */
-    public function update(UpdateRequest $request, PageGroup $pageGroup)
+    public function update(UpdateRequest $request, PageGroup $page_group)
     {
         $this->authorize('edit', PageGroup::class);
 
         $data = $request->validated();
-        if ($item = $this->pageGroupService->update($pageGroup, $data)) {
+        if ($item = $this->pageGroupService->update($page_group, $data)) {
             return $this->responseUpdateSuccess(['model' => $item]);
         } else {
             return $this->responseUpdateFail();
@@ -134,12 +134,12 @@ class PageGroupController extends Controller
      * @return JsonResponse
      * @throws AuthorizationException
      */
-    public function destroy(DestroyUserRequest $request, PageGroup $pageGroup)
+    public function destroy(DestroyUserRequest $request, PageGroup $page_group)
     {
         $this->authorize('delete', PageGroup::class);
 
-        if ($this->pageGroupService->delete($pageGroup)) {
-            return $this->responseDeleteSuccess(['model' => $pageGroup]);
+        if ($this->pageGroupService->delete($page_group)) {
+            return $this->responseDeleteSuccess(['model' => $page_group]);
         }
 
         return $this->responseDeleteFail();
