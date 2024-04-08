@@ -19,4 +19,8 @@ class PageGroup extends Model
     protected $casts = [
         'is_active' => 'boolean',
     ];
+
+    public function details() {
+        return  $this->hasMany(Page::class, 'group_id', 'id');
+    }
 }

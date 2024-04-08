@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('seo_contents', function (Blueprint $table) {
             $table->id();
+            $table->string('path')->nullable();
+            $table->text('param')->nullable();
+            $table->text('description')->nullable();
+            $table->boolean('is_active')->default(1);
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->timestamps();
         });
     }

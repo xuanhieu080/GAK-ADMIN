@@ -32,6 +32,8 @@ use App\Http\Controllers\TokenController;
 |
 */
 
+require __DIR__ . '/v1/api.php';
+
 Route::post('/sanctum/token', TokenController::class);
 
 Route::middleware(['auth:sanctum', 'apply_locale'])->group(function () {

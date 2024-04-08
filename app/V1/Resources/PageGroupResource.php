@@ -7,9 +7,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * Class UserResource
- * @package App\V1\Resources
+ * @package App\Http\Resources
  */
-class AttributeGroupResource extends JsonResource
+class PageGroupResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -21,10 +21,8 @@ class AttributeGroupResource extends JsonResource
     public function toArray($request)
     {
         $data = $this->resource->toArray();
-        $data['title'] = $this->name;
-        $data['created_at'] = !empty($this->resource->created_at) ? $this->resource->created_at->diffForHumans() : null;
-        $data['updated_at'] = !empty($this->resource->updated_at) ? $this->resource->updated_at->diffForHumans() : null;
-
+//        $data['title'] = $this->name;
+//        $data['details'] = new PageResource($this->details);
         return $data;
     }
 }

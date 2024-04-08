@@ -72,10 +72,12 @@ class PageService
         $data['show_header'] = filter_var(Arr::get($data, 'show_header'), FILTER_VALIDATE_BOOLEAN);
 
         $record = Page::query()->create($data);
-        $record->addMedia($data['image'])
-            ->usingName($record->name)
-            ->usingFileName($record->slug . '-' . time() . '.' . $data['image']->getClientOriginalExtension())
-            ->toMediaCollection();
+        if (!empty($data['image'])) {
+            $record->addMedia($data['image'])
+                ->usingName($record->name)
+                ->usingFileName($record->slug . '-' . time() . '.' . $data['image']->getClientOriginalExtension())
+                ->toMediaCollection();
+        }
         if (!empty($record)) {
             return new PageResource($record);
         } else {

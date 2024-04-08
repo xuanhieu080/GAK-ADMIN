@@ -15,8 +15,9 @@ class StoreRequest extends BaseRequest
     public function rules()
     {
         return [
-            'name'   => 'required|string|max:255|unique:page_groups,name',
-            'column' => 'required|numeric|min:1|max:10',
+            'name'      => 'required|string|max:255|unique:page_groups,name',
+            'column'    => 'required|numeric|min:1|max:10',
+            'is_active' => 'nullable|in:true,false,0,1',
         ];
     }
 }

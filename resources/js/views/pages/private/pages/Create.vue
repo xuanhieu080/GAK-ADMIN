@@ -59,11 +59,11 @@
         <TextInput class="mb-4" type="textarea" :required="true" :rows="5" name="meta_description"
                    v-model="form.meta_description"
                    error-input="meta_description" label="Meta description"/>
-        <TextInput class="mb-4" type="text" error-input="meta_key" name="name" v-model="form.meta_key"
+        <TextInput class="mb-4" type="text" :required="true" error-input="meta_key" name="name" v-model="form.meta_key"
                    label="Meta key"/>
         <Toggle class="mb-4" v-model="form.show_header" :checked="form.show_header" error-input="show_header"
                 name="show_header"
-                label="Hiển thị trang chủ"/>
+                label="Hiển thị ở header"/>
         <Toggle class="mb-4" v-model="form.is_active" :checked="form.is_active" error-input="is_active"
                 name="is_active"
                 :label="trans('labels.show')"/>

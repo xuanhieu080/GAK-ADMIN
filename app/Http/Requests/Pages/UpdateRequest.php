@@ -29,7 +29,7 @@ class UpdateRequest extends BaseRequest
             'description_short' => 'nullable|string|max:255',
             'meta_description'  => 'required|max:255',
             'meta_title'        => 'required|max:255',
-            'group_id'          => 'nullable|exists:post_groups,id',
+            'group_id'          => 'nullable|exists:page_groups,id',
             'slug'               => [
                 'required',
                 'string',

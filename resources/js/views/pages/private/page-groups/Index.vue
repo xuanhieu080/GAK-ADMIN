@@ -86,6 +86,7 @@ const table = reactive({
   headers: {
     name: 'Tên',
     column: 'Thứ tự cột',
+    is_active: 'Hiển thị',
   },
   sorting: {
     name: true,
