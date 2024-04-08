@@ -34,6 +34,13 @@ use App\Http\Controllers\TokenController;
 
 
 Route::group(['prefix' => 'v1'], function () {
+    Route::get('/posts', [\App\V1\Controllers\PostController::class, 'index']);
+    Route::get('/posts/{post}', [\App\V1\Controllers\PostController::class, 'show']);
+    Route::get('/post-groups', [\App\V1\Controllers\PostGroupController::class, 'index']);
+    Route::get('/post-groups/{post_group}', [\App\V1\Controllers\PostGroupController::class, 'show']);
+    Route::get('/categories', [\App\V1\Controllers\CategoryController::class, 'index']);
+    Route::get('/categories/header', [\App\V1\Controllers\CategoryController::class, 'getCategoryHeader']);
+    Route::get('/categories/dashboard', [\App\V1\Controllers\CategoryController::class, 'getCategoryDashboard']);
     Route::get('/pages', [\App\V1\Controllers\PageController::class, 'index']);
     Route::get('/pages/headers', [\App\V1\Controllers\PageController::class, 'getPageHeader']);
     Route::get('/pages/{page}', [\App\V1\Controllers\PageController::class, 'show']);

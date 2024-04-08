@@ -83,6 +83,7 @@ class CategoryService
             $full_columns = $this->model->getFillable();
             $data = array_intersect_key($data, array_flip($full_columns));
             $data['show_header'] = filter_var($data['show_header'], FILTER_VALIDATE_BOOLEAN);
+            $data['show_dashboard'] = filter_var($data['show_dashboard'], FILTER_VALIDATE_BOOLEAN);
             $record = Category::query()->create($data);
             $record->addMedia($data['image'])
                 ->usingName($record->name)

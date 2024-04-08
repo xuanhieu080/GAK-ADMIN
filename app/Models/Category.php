@@ -55,6 +55,11 @@ class Category extends Model implements HasMedia
 //        return $this->getFirstMediaUrl();
 //    }
 
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'category_id', 'id');
+    }
+
     public function upTree()
     {
         return $this->newQuery()->where('_lft', '<', $this->_lft)->where('_rgt', '>', $this->_rgt);

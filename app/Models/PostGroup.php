@@ -32,6 +32,10 @@ class PostGroup extends Model implements HasMedia
         'is_hot'    => 'boolean',
     ];
 
+    public function posts() {
+        return $this->hasMany(Post::class, 'group_id', 'id');
+    }
+
     public function registerMediaConversions(Media $media = null): void
     {
         $this
