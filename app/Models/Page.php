@@ -28,11 +28,14 @@ class Page extends Model implements HasMedia
         'meta_title',
         'meta_description',
         'meta_key',
+        'is_button',
+        'link',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
         'show_header' => 'boolean',
+        'is_button' => 'boolean',
     ];
 
     public function registerMediaConversions(Media $media = null): void

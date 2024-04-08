@@ -14,7 +14,7 @@ class UpdateRequest extends BaseRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'name'               => [
                 'required',
                 'string',
@@ -25,6 +25,7 @@ class UpdateRequest extends BaseRequest
             'image'             => 'nullable|image|max:3145728|mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,ogx,oga,ogv,ogg,webm',
             'is_active'         => 'required|in:1,0,true,false',
             'show_header'       => 'required|in:1,0,true,false',
+            'is_button'       => 'required|in:1,0,true,false',
             'description'       => 'required|string',
             'description_short' => 'nullable|string|max:255',
             'meta_description'  => 'required|max:255',
@@ -39,6 +40,20 @@ class UpdateRequest extends BaseRequest
             ],
             'meta_key'         => 'required|max:255',
         ];
+
+        if (filter_var($this->is_button, FILTER_VALIDATE_BOOLEAN)) {
+            $rules['link'] = 'required|max:255';
+        } else {
+            $rules['slug']           = [
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[a-z0-9-]+$/',
+                'unique:pages,slug',
+            ];
+        }
+
+        return $rules;
     }
 
 }

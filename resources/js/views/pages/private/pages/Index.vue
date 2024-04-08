@@ -21,6 +21,9 @@
         <template v-slot:content-show_header="props">
           <Toggle class="mb-4" disabled :model-value="props.item.show_header" :checked="props.item.show_header"/>
         </template>
+        <template v-slot:content-is_button="props">
+          <Toggle class="mb-4" disabled :model-value="props.item.is_button" :checked="props.item.is_button"/>
+        </template>
         <template v-slot:content-group_name="props">
           <span>{{ props.item.group_name }}</span>
         </template>
@@ -94,9 +97,11 @@ const table = reactive({
     id: trans('labels.id_pound'),
     name: 'Tên',
     slug: 'Đường dẫn',
+    link: 'Liên kết với button',
     group_name: 'Nhóm',
     is_active: 'Hiển thị',
     show_header: 'Hiển thị ở header',
+    is_button: 'Loại button',
   },
   sorting: {
     name: true,

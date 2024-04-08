@@ -6,7 +6,9 @@
                    label="Tên"/>
         <TextInput class="mb-4" type="text" error-input="title" name="title" v-model="form.title"
                    :label="trans('labels.title')"/>
-        <TextInput class="mb-4" type="text" :required="true" error-input="slug" name="slug" v-model="form.slug"
+        <TextInput v-if="form.is_button" class="mb-4" type="text" :required="true" error-input="link" name="link" v-model="form.link"
+                   label="Liên kết button"/>
+        <TextInput v-else class="mb-4" type="text" :required="true" error-input="slug" name="slug" v-model="form.slug"
                    label="Slug"/>
         <Dropdown class="mb-4" name="group" error-input="group_id" :multiple="false"
                   server="page-groups" :label="trans('Nhóm trang')" :placeholder="trans('Nhóm trang')"
@@ -64,6 +66,9 @@
         <Toggle class="mb-4" v-model="form.show_header" :checked="form.show_header" error-input="show_header"
                 name="show_header"
                 label="Hiển thị ở header"/>
+        <Toggle class="mb-4" v-model="form.is_button" :checked="form.is_button" error-input="is_button"
+                name="is_button"
+                label="Loại button"/>
         <Toggle class="mb-4" v-model="form.is_active" :checked="form.is_active" error-input="is_active"
                 name="is_active"
                 :label="trans('labels.show')"/>
@@ -122,10 +127,12 @@ const form = reactive({
   slug: '',
   image: '',
   description: '',
+  link: '',
   description_short: '',
   group_id: null,
   is_active: false,
   show_header: false,
+  is_button: false,
   meta_title: null,
   meta_description: null,
   meta_key: null,

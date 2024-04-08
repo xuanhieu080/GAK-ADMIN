@@ -106,7 +106,9 @@ class PageService
         $page->slug = Arr::get($data, 'slug', $page->slug);
         $page->meta_title = Arr::get($data, 'meta_title', $page->meta_title);
         $page->meta_key = Arr::get($data, 'meta_key', $page->meta_key);
+        $page->link = Arr::get($data, 'link', $page->link);
         $page->is_active = filter_var(Arr::get($data, 'is_active', $page->is_active), FILTER_VALIDATE_BOOLEAN);
+        $page->is_button = filter_var(Arr::get($data, 'is_button', $page->is_button), FILTER_VALIDATE_BOOLEAN);
         $page->show_header = filter_var(Arr::get($data, 'show_header', $page->show_header), FILTER_VALIDATE_BOOLEAN);
 
         if (!empty($data['image'])) {
