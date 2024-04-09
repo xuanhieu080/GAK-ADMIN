@@ -70,6 +70,7 @@ class PageService
         $data = array_intersect_key($data, array_flip($full_columns));
         $data['is_active'] = filter_var(Arr::get($data, 'is_active'), FILTER_VALIDATE_BOOLEAN);
         $data['show_header'] = filter_var(Arr::get($data, 'show_header'), FILTER_VALIDATE_BOOLEAN);
+        $data['is_button'] = filter_var(Arr::get($data, 'is_button'), FILTER_VALIDATE_BOOLEAN);
 
         $record = Page::query()->create($data);
         if (!empty($data['image'])) {
