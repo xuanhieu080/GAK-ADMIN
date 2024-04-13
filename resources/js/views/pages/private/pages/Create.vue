@@ -4,17 +4,17 @@
       <Form id="create-page" @submit.prevent="onSubmit">
         <TextInput class="mb-4" type="text" :required="true" error-input="name" name="name" v-model="form.name"
                    label="Tên"/>
-        <TextInput class="mb-4" type="text" error-input="title" name="title" v-model="form.title"
+        <TextInput v-if="!form.is_button" class="mb-4" type="text" error-input="title" name="title" v-model="form.title"
                    :label="trans('labels.title')"/>
         <TextInput v-if="form.is_button" class="mb-4" type="text" :required="true" error-input="link" name="link" v-model="form.link"
-                   label="Liên kết button"/>
-        <TextInput v-else class="mb-4" type="text" :required="true" error-input="slug" name="slug" v-model="form.slug"
+                   label="Liên kết"/>
+        <TextInput v-if="!form.is_button" class="mb-4" type="text" :required="true" error-input="slug" name="slug" v-model="form.slug"
                    label="Slug"/>
         <Dropdown class="mb-4" name="group" error-input="group_id" :multiple="false"
                   server="page-groups" :label="trans('Nhóm trang')" :placeholder="trans('Nhóm trang')"
                   :server-search-min-characters="0"
                   v-model="group"></Dropdown>
-        <div class="flex justify-center">
+        <div v-if="!form.is_button" class="flex justify-center">
           <div class="w-[1000px]">
             <FilePond
                 ref="pondElement"
@@ -40,7 +40,7 @@
               }}</span>
           </div>
         </div>
-        <div class="mb-4">
+        <div v-if="!form.is_button" class="mb-4">
           <QuillEditorWrapper
               v-model:content="form.description"
               :toolbar="'full'"
@@ -52,23 +52,23 @@
               alertStore.errors['description'][0]
             }}</span>
         </div>
-        <TextInput class="mb-4" type="text" error-input="description_short" name="description_short"
+        <TextInput v-if="!form.is_button" class="mb-4" type="text" error-input="description_short" name="description_short"
                    v-model="form.description_short"
                    label="Mô tả ngắn"/>
-        <TextInput class="mb-4" type="text" :required="true" error-input="meta_title" name="name"
+        <TextInput v-if="!form.is_button" class="mb-4" type="text" :required="true" error-input="meta_title" name="name"
                    v-model="form.meta_title"
                    label="Meta title"/>
-        <TextInput class="mb-4" type="textarea" :required="true" :rows="5" name="meta_description"
+        <TextInput v-if="!form.is_button" class="mb-4" type="textarea" :required="true" :rows="5" name="meta_description"
                    v-model="form.meta_description"
                    error-input="meta_description" label="Meta description"/>
-        <TextInput class="mb-4" type="text" :required="true" error-input="meta_key" name="name" v-model="form.meta_key"
+        <TextInput v-if="!form.is_button" class="mb-4" type="text" :required="true" error-input="meta_key" name="name" v-model="form.meta_key"
                    label="Meta key"/>
         <Toggle class="mb-4" v-model="form.show_header" :checked="form.show_header" error-input="show_header"
                 name="show_header"
                 label="Hiển thị ở header"/>
         <Toggle class="mb-4" v-model="form.is_button" :checked="form.is_button" error-input="is_button"
                 name="is_button"
-                label="Loại button"/>
+                label="Loại liên kết"/>
         <Toggle class="mb-4" v-model="form.is_active" :checked="form.is_active" error-input="is_active"
                 name="is_active"
                 :label="trans('labels.show')"/>

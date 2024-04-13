@@ -14,30 +14,30 @@ class StoreRequest extends BaseRequest
     public function rules()
     {
         $rules = [
-            'name'              => 'required|string|max:255|unique:pages,name',
-            'title'             => 'nullable|string|max:255',
-            'image'             => 'nullable|image|max:3145728|mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,ogx,oga,ogv,ogg,webm',
-            'is_active'         => 'required|in:1,0,true,false',
-            'is_button'         => 'required|in:1,0,true,false',
-            'show_header'       => 'required|in:1,0,true,false',
-            'description'       => 'required|string',
-            'description_short' => 'nullable|string|max:255',
-            'meta_description'  => 'required|max:255',
-            'meta_title'        => 'required|max:255',
-            'group_id'          => 'nullable|exists:page_groups,id',
-            'meta_key'          => 'required|max:255',
+            'name'        => 'required|string|max:255|unique:pages,name',
+            'is_active'   => 'required|in:1,0,true,false',
+            'is_button'   => 'required|in:1,0,true,false',
+            'show_header' => 'required|in:1,0,true,false',
+            'group_id'    => 'nullable|exists:page_groups,id',
         ];
 
         if (filter_var($this->is_button, FILTER_VALIDATE_BOOLEAN)) {
             $rules['link'] = 'required|max:255';
         } else {
-            $rules['slug']           = [
+            $rules['slug'] = [
                 'required',
                 'string',
                 'max:255',
                 'regex:/^[a-z0-9-]+$/',
                 'unique:pages,slug',
             ];
+            $rules['title'] = 'nullable|string|max:255';
+            $rules['image'] = 'nullable|image|max:3145728|mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,ogx,oga,ogv,ogg,webm';
+            $rules['description'] = 'required|string';
+            $rules['description_short'] = 'nullable|string|max:255';
+            $rules['meta_description'] = 'required|max:255';
+            $rules['meta_title'] = 'required|max:255';
+            $rules['meta_key'] = 'required|max:255';
         }
 
         return $rules;
