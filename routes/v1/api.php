@@ -34,6 +34,13 @@ use App\Http\Controllers\TokenController;
 
 
 Route::group(['prefix' => 'v1'], function () {
+    Route::get('/attributes', [\App\V1\Controllers\AttributeController::class, 'index']);
+    Route::get('/attributes/{attribute}', [\App\V1\Controllers\AttributeController::class, 'show']);
+    Route::get('/variants', [\App\V1\Controllers\VariantController::class, 'index']);
+    Route::get('/variants/search', [\App\V1\Controllers\VariantController::class, 'searchGroup']);
+    Route::get('/variants/{variant}', [\App\V1\Controllers\VariantController::class, 'show']);
+    Route::get('/attribute-groups', [\App\V1\Controllers\AttributeGroupController::class, 'index']);
+    Route::get('/attribute-groups/{attribute_groups}', [\App\V1\Controllers\AttributeGroupController::class, 'show']);
     Route::get('/posts', [\App\V1\Controllers\PostController::class, 'index']);
     Route::get('/posts/{post}', [\App\V1\Controllers\PostController::class, 'show']);
     Route::get('/post-groups', [\App\V1\Controllers\PostGroupController::class, 'index']);

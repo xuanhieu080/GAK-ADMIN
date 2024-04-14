@@ -35,7 +35,11 @@ class ProductResource extends JsonResource
             'price_discount'   => $this->price_discount,
             'discount'         => $this->discount,
             'is_hot'           => $this->is_hot,
+            'variants'         => [],
         ];
+        if (!empty($this->resource->toArray()['products'])) {
+            $data['variants'] = ProductVariantResource::collection($this->variants);
+        }
 
         foreach ($this->getMedia("thumb") as $item) {
             $thumb[] = $item->getFullUrl();
