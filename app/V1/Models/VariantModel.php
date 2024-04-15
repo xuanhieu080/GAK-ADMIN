@@ -50,7 +50,7 @@ class VariantModel extends AbstractModel
         $input['sort'] = $sorts;
         $result = $this->_search($input, [], $limit);
 
-        return VariantResource::collection($result);
+        return $result;
     }
 
     public function search($input = [], $with = [], $limit = null)
@@ -159,6 +159,7 @@ class VariantModel extends AbstractModel
 
     public function _search($input = [], $with = [], $limit = null)
     {
+//        $with =
         $query = $this->make($with);
         $orWhere = Arr::get($input, 'orWhere', []);
         $this->sortBuilder($query, $input);
@@ -250,8 +251,16 @@ class VariantModel extends AbstractModel
             }
         });
 
-
-        return $query->get()->groupBy('attribute_group_id')->sortBy('attribute_group_id');;
+        if ($limit) {
+            if ($limit === 1) {
+                return $query->first();
+            } else {
+                return $query->paginate($limit);
+            }
+        } else {
+            return $query->get();
+        }
+//        return $query->get()->groupBy('attribute_group_id')->sortBy('attribute_group_id');;
     }
 
     public function show(Variant $item)
