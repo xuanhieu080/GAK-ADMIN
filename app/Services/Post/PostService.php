@@ -72,6 +72,7 @@ class PostService
         $data['author_id'] = \Auth::id();
         $data['is_active'] = filter_var(Arr::get($data, 'is_active'), FILTER_VALIDATE_BOOLEAN);
         $data['is_hot'] = filter_var(Arr::get($data, 'is_hot'), FILTER_VALIDATE_BOOLEAN);
+        $data['is_new'] = filter_var(Arr::get($data, 'is_new'), FILTER_VALIDATE_BOOLEAN);
         $record = Post::query()->create($data);
 
         if (!empty($data['image'])) {
