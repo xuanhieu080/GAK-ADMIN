@@ -41,15 +41,14 @@ class PageController extends Controller
 
 
 
-    public function show(Page $page)
+    public function show($slug)
     {
 //        $this->authorize('view', Company::class);
-
-        $model = $this->model->show($page);
+        $model = $this->model->getItem($slug);
         if (empty($model)) {
             return $this->responseFail('Dữ liệu không tồn tại',[]);
         }
-        return $this->responseDataSuccess(['data' => $model, 'properties' => $this->properties()]);
+        return $model;
     }
 
     /**

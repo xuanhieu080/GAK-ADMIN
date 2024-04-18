@@ -53,6 +53,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('/categories/{category}', [\App\V1\Controllers\CategoryController::class, 'show']);
     Route::get('/pages', [\App\V1\Controllers\PageController::class, 'index']);
     Route::get('/pages/headers', [\App\V1\Controllers\PageController::class, 'getPageHeader']);
-    Route::get('/pages/{page}', [\App\V1\Controllers\PageController::class, 'show']);
+
+    Route::get('/pages/{slug}', [\App\V1\Controllers\PageController::class, 'show']);
     Route::get('/page-groups', [\App\V1\Controllers\PageGroupController::class, 'index']);
 });

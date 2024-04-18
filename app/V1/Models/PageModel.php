@@ -38,6 +38,19 @@ class PageModel extends AbstractModel
         return new PageResource($item);
     }
 
+    public function getItem($slug)
+    {
+        $item = Page::where('slug', $slug)
+            ->where('is_active', 1)
+            ->first();
+
+        if (empty($item)) {
+            return null;
+        }
+
+        return new PageResource($item);
+    }
+
 
     public function getPageHeader($input)
     {
