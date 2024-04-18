@@ -4,6 +4,7 @@ namespace App\V1\Models;
 
 use App\Models\Category;
 use App\Models\Variant;
+use App\V1\Resources\CategoryHeaderResource;
 use App\V1\Resources\CategoryResource;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -49,13 +50,26 @@ class CategoryModel extends AbstractModel
         $input['is_active'] = 1;
         $input['show_header'] = 1;
 
-        $result = Category::whereIsRoot()->with([
-            'descendants' => function ($query) use ($limit) {
-                $query->where('show_header', 1)->limit($limit);
-            }
-        ])->where('show_header', 1)->get();
+        $result = Category::whereIsRoot()
+            ->with([
+                'descendants' => function ($query) use ($limit) {
+                    $query->where('show_header', 1)->limit(99);
+                },
+                'descendants.products' => function ($query) {
+                    $query->where('products.is_active', 1);
+                },
+                'products' => function ($query) {
+                    $query->where('products.is_active', 1);
+                },
+            ])->where('show_header', 1)
+            ->get()
+            ->map(function ($category) {
+                $products = $category->products->concat($category->descendants->pluck('products')->flatten());
+                $category->setRelation('products', $products);
+                return $category;
+            });
 
-        return CategoryResource::collection($result);
+        return CategoryHeaderResource::collection($result);
     }
 
     public function getCategoryDashboard($input)
