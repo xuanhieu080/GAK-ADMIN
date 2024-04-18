@@ -16,6 +16,11 @@ class ProductResource extends JsonResource
     public function toArray($request)
     {
 
+        $variants = [];
+        foreach ($this->attributeVariants->groupBy('attribute_group_name') as $key => $item) {
+            $variants[$key] = VariantResource::collection($item);
+        }
+
         $thumb = [];
         $data = [
             'code'             => $this->code,
@@ -35,11 +40,13 @@ class ProductResource extends JsonResource
             'price_discount'   => $this->price_discount,
             'discount'         => $this->discount,
             'is_hot'           => $this->is_hot,
-            'variants'         => [],
+//            'variants'         => [],
         ];
-        if (!empty($this->resource->toArray()['products'])) {
+
+//        if (!empty($this->resource->toArray()['variants'])) {
             $data['variants'] = ProductVariantResource::collection($this->variants);
-        }
+            $data['variantAttribute'] = $variants;
+//        }
 
         foreach ($this->getMedia("thumb") as $item) {
             $thumb[] = $item->getFullUrl();

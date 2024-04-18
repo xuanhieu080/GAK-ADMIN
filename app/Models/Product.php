@@ -71,6 +71,11 @@ class Product extends Model implements HasMedia
         return $this->hasMany(ProductVariant::class, 'product_id', 'id');
     }
 
+    public function attributeVariants()
+    {
+        return $this->hasMany(Variant::class, 'product_id', 'id');
+    }
+
     public function registerMediaConversions(Media $media = null): void
     {
         $this

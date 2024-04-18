@@ -26,14 +26,18 @@ class ProductVariant extends Model implements HasMedia
         'meta_description',
         'meta_key',
         'options',
+        'option_all',
+        'option_group',
         'option_name',
         'price_discount',
         'discount'
     ];
 
     protected $casts = [
-        'options' => 'array',
-        'is_active' => 'boolean',
+        'options'      => 'array',
+        'option_all'   => 'array',
+        'option_group' => 'array',
+        'is_active'    => 'boolean',
     ];
 
     public function registerMediaConversions(Media $media = null): void

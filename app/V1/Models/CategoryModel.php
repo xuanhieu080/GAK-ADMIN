@@ -3,6 +3,7 @@
 namespace App\V1\Models;
 
 use App\Models\Category;
+use App\Models\Variant;
 use App\V1\Resources\CategoryResource;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -35,7 +36,9 @@ class CategoryModel extends AbstractModel
             return null;
         }
 
-        return new CategoryResource($item);
+        $productIds = $item->products->where('is_active', 1)->pluck('id');
+        $variants = Variant::whereIn('product_id', $productIds)->get()->unique()->groupBy('attribute_group_name');
+        return response()->json(['item' => new CategoryResource($item), 'variants' => $variants]);
     }
 
     public function getCategoryHeader($input)
@@ -64,7 +67,7 @@ class CategoryModel extends AbstractModel
         $input['show_dashboard'] = 1;
         $result = $this->search($input, [
             'products' => function ($query) use ($limit) {
-                $query->where('products.is_active', 0)->limit($limit);
+                $query->where('products.is_active', 1)->limit($limit);
             }
         ], $limit);
 

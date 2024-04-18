@@ -57,7 +57,7 @@ class CategoryController extends Controller
         if (empty($model)) {
             return $this->responseFail('Dữ liệu không tồn tại',[]);
         }
-        return $this->responseDataSuccess(['data' => $model, 'properties' => $this->properties()]);
+        return $model;
     }
 
     /**

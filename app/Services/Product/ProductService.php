@@ -374,8 +374,15 @@ class ProductService
         $details = array_map(function ($itemGroup) use ($product) {
             $name = '';
             $attributes = [];
+            $attributeAll = [];
+            $attributeGroup = [];
             foreach ($itemGroup as $key => $item) {
                 $attributes[] = $item['attribute_id'];
+                $attributeGroup[] = $item['attribute_group_id'];
+                $attributeAll[] = [
+                    'attribute_group_id' => $item['attribute_group_id'],
+                    'attribute_id'       => $item['attribute_id'],
+                ];
 
                 $name .= sprintf(', %s: %s', $item['attribute_group_name'], $item['attribute_name']);
             }
@@ -386,6 +393,8 @@ class ProductService
                 'product_id'       => $product->id,
                 'option_name'      => trim($name, ', '),
                 'options'          => json_encode($attributes),
+                'option_all'       => json_encode($attributeAll),
+                'option_group'     => json_encode($attributeGroup),
                 'description'      => $product->description,
                 'meta_description' => $product->meta_description,
                 'meta_key'         => $product->meta_key,

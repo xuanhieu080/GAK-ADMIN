@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::table('product_variants', function (Blueprint $table) {
             $table->string('code')->nullable();
+            $table->json('option_all')->nullable();
+            $table->json('option_group')->nullable();
         });
     }
 
@@ -22,7 +24,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('product_variants', function (Blueprint $table) {
-            $table->dropColumn(['code']);
+            $table->dropColumn(['code', 'option_all', 'option_group']);
         });
     }
 };

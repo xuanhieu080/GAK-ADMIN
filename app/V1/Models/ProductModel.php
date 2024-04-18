@@ -23,6 +23,7 @@ class ProductModel extends AbstractModel
     {
         $limit = Arr::get($input, 'limit', 999);
         $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
+        $input['is_active'] = 1;
         $sorts = ['id' => 'desc'];
         if (!empty($sort['desc']) && is_array($sort['desc'])) {
             $sorts = array_merge($sorts, array_fill_keys($sort['desc'], 'desc'));

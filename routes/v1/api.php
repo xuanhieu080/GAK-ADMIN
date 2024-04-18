@@ -34,6 +34,8 @@ use App\Http\Controllers\TokenController;
 
 
 Route::group(['prefix' => 'v1'], function () {
+    Route::get('/products', [\App\V1\Controllers\ProductController::class, 'index']);
+    Route::get('/products/{product}', [\App\V1\Controllers\ProductController::class, 'show']);
     Route::get('/attributes', [\App\V1\Controllers\AttributeController::class, 'index']);
     Route::get('/attributes/{attribute}', [\App\V1\Controllers\AttributeController::class, 'show']);
     Route::get('/variants', [\App\V1\Controllers\VariantController::class, 'index']);
@@ -48,6 +50,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('/categories', [\App\V1\Controllers\CategoryController::class, 'index']);
     Route::get('/categories/header', [\App\V1\Controllers\CategoryController::class, 'getCategoryHeader']);
     Route::get('/categories/dashboard', [\App\V1\Controllers\CategoryController::class, 'getCategoryDashboard']);
+    Route::get('/categories/{category}', [\App\V1\Controllers\CategoryController::class, 'show']);
     Route::get('/pages', [\App\V1\Controllers\PageController::class, 'index']);
     Route::get('/pages/headers', [\App\V1\Controllers\PageController::class, 'getPageHeader']);
     Route::get('/pages/{page}', [\App\V1\Controllers\PageController::class, 'show']);

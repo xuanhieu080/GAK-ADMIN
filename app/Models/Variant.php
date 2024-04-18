@@ -22,6 +22,11 @@ class Variant extends Model
         'is_active' => 'boolean',
     ];
 
+
+    protected $appends = [
+        'attribute_group_name'
+    ];
+
     public function attribute() {
         return $this->hasOne(Attribute::class, 'id', 'attribute_id');
     }
@@ -32,5 +37,10 @@ class Variant extends Model
 
     public function product() {
         return $this->hasOne(Product::class, 'id', 'product_id');
+    }
+
+    public function getAttributeGroupNameAttribute()
+    {
+        return object_get($this,'attributeGroup.name');
     }
 }
