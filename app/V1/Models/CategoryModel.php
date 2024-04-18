@@ -43,7 +43,7 @@ class CategoryModel extends AbstractModel
 
     public function getCategoryHeader($input)
     {
-        $limit = Arr::get($input, 'limit', 24);
+        $limit = Arr::get($input, 'limit', 4);
 
         $input['sort'] = ['id' => 'desc'];
         $input['is_active'] = 1;
