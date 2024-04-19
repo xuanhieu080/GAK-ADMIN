@@ -35,7 +35,7 @@ use App\Http\Controllers\TokenController;
 
 Route::group(['prefix' => 'v1'], function () {
     Route::get('/products', [\App\V1\Controllers\ProductController::class, 'index']);
-    Route::get('/products/{product}', [\App\V1\Controllers\ProductController::class, 'show']);
+    Route::get('/products/{slug}', [\App\V1\Controllers\ProductController::class, 'show']);
     Route::get('/attributes', [\App\V1\Controllers\AttributeController::class, 'index']);
     Route::get('/attributes/{attribute}', [\App\V1\Controllers\AttributeController::class, 'show']);
     Route::get('/variants', [\App\V1\Controllers\VariantController::class, 'index']);
@@ -44,13 +44,13 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('/attribute-groups', [\App\V1\Controllers\AttributeGroupController::class, 'index']);
     Route::get('/attribute-groups/{attribute_groups}', [\App\V1\Controllers\AttributeGroupController::class, 'show']);
     Route::get('/posts', [\App\V1\Controllers\PostController::class, 'index']);
-    Route::get('/posts/{post}', [\App\V1\Controllers\PostController::class, 'show']);
+    Route::get('/posts/{slug}', [\App\V1\Controllers\PostController::class, 'show']);
     Route::get('/post-groups', [\App\V1\Controllers\PostGroupController::class, 'index']);
-    Route::get('/post-groups/{post_group}', [\App\V1\Controllers\PostGroupController::class, 'show']);
+    Route::get('/post-groups/{slug}', [\App\V1\Controllers\PostGroupController::class, 'show']);
     Route::get('/categories', [\App\V1\Controllers\CategoryController::class, 'index']);
     Route::get('/categories/header', [\App\V1\Controllers\CategoryController::class, 'getCategoryHeader']);
     Route::get('/categories/dashboard', [\App\V1\Controllers\CategoryController::class, 'getCategoryDashboard']);
-    Route::get('/categories/{category}', [\App\V1\Controllers\CategoryController::class, 'show']);
+    Route::get('/categories/{slug}', [\App\V1\Controllers\CategoryController::class, 'show']);
     Route::get('/pages', [\App\V1\Controllers\PageController::class, 'index']);
     Route::get('/pages/headers', [\App\V1\Controllers\PageController::class, 'getPageHeader']);
 

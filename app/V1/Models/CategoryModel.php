@@ -31,9 +31,12 @@ class CategoryModel extends AbstractModel
         return CategoryResource::collection($result);
     }
 
-    public function show(Category $item)
+    public function show($slug)
     {
-        if (!$item->is_active) {
+        $item = Category::where('slug', $slug)
+            ->where('is_active',1)
+            ->first();
+        if (empty($item)) {
             return null;
         }
 

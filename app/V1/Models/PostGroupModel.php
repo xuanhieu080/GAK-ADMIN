@@ -142,9 +142,12 @@ class PostGroupModel extends AbstractModel
 
 
 
-    public function show(PostGroup $item)
+    public function show($slug)
     {
-        if (!$item->is_active) {
+        $item = PostGroup::where('slug', $slug)
+            ->where('is_active',1)
+            ->first();
+        if (empty($item)) {
             return null;
         }
 

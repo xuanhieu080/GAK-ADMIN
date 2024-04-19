@@ -49,11 +49,11 @@ class CategoryController extends Controller
 
 
 
-    public function show(Category $category)
+    public function show($slug)
     {
 //        $this->authorize('view', Company::class);
 
-        $model = $this->model->show($category);
+        $model = $this->model->show($slug);
         if (empty($model)) {
             return $this->responseFail('Dữ liệu không tồn tại',[]);
         }

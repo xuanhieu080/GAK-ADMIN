@@ -24,7 +24,8 @@ class Variant extends Model
 
 
     protected $appends = [
-        'attribute_group_name'
+        'attribute_group_name',
+        'attribute_name',
     ];
 
     public function attribute() {
@@ -42,5 +43,10 @@ class Variant extends Model
     public function getAttributeGroupNameAttribute()
     {
         return object_get($this,'attributeGroup.name');
+    }
+
+    public function getAttributeNameAttribute()
+    {
+        return object_get($this,'attribute.name');
     }
 }

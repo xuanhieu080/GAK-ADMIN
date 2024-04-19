@@ -31,11 +31,11 @@ class PostController extends Controller
         return $this->model->index($input);
     }
 
-    public function show(Post $post)
+    public function show($slug)
     {
 //        $this->authorize('view', Company::class);
 
-        $model = $this->model->show($post);
+        $model = $this->model->show($slug);
         if (empty($model)) {
             return $this->responseFail('Dữ liệu không tồn tại',[]);
         }

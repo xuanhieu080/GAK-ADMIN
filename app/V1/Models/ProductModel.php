@@ -143,9 +143,12 @@ class ProductModel extends AbstractModel
 
 
 
-    public function show(Product $item)
+    public function show($slug)
     {
-        if (!$item->is_active) {
+        $item = Product::where('slug', $slug)
+            ->where('is_active', 1)
+            ->first();
+        if (empty($item)) {
             return null;
         }
 

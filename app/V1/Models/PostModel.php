@@ -142,9 +142,12 @@ class PostModel extends AbstractModel
 
 
 
-    public function show(Post $item)
+    public function show($slug)
     {
-        if (!$item->is_active) {
+        $item = Post::where('slug', $slug)
+            ->where('is_active',1)
+            ->first();
+        if (empty($item)) {
             return null;
         }
 

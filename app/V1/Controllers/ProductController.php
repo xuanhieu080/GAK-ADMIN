@@ -31,11 +31,11 @@ class ProductController extends Controller
         return $this->model->index($input);
     }
 
-    public function show(Product $product)
+    public function show($slug)
     {
 //        $this->authorize('view', Company::class);
 
-        $model = $this->model->show($product);
+        $model = $this->model->show($slug);
         if (empty($model)) {
             return $this->responseFail('Dữ liệu không tồn tại',[]);
         }
