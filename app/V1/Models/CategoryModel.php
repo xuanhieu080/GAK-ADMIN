@@ -51,7 +51,7 @@ class CategoryModel extends AbstractModel
             $qr->whereHas('variants', function ($q) use ($productIds){
                 $q->whereIn('product_id', $productIds);
             });
-        })->get();
+        })->orderByDesc('is_color')->get();
 
         return response()->json(['item' => new CategoryResource($item), 'variants' => $variants]);
     }
