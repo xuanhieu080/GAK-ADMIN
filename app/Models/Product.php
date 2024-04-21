@@ -40,6 +40,9 @@ class Product extends Model implements HasMedia
         'price_discount',
         'discount',
         'is_hot',
+        'is_new',
+        'is_upcoming',
+        'is_uniform',
     ];
 
     protected $casts = [

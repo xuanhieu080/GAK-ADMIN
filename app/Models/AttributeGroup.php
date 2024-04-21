@@ -11,5 +11,11 @@ class AttributeGroup extends Model
     protected $fillable = [
         'name',
         'priority',
+        'is_color',
+        'link'
     ];
+
+    public function attributes() {
+        return $this->hasMany(Attribute::class, 'group_id', 'id');
+    }
 }

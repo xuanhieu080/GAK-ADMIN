@@ -20,12 +20,14 @@ class Variant extends Model
 
     protected $casts = [
         'is_active' => 'boolean',
+        'is_color' => 'boolean',
     ];
 
 
     protected $appends = [
         'attribute_group_name',
         'attribute_name',
+        'is_color',
     ];
 
     public function attribute() {
@@ -48,5 +50,10 @@ class Variant extends Model
     public function getAttributeNameAttribute()
     {
         return object_get($this,'attribute.name');
+    }
+
+    public function getIsColorAttribute()
+    {
+        return filter_var(object_get($this,'attributeGroup.is_color'), FILTER_VALIDATE_BOOLEAN);
     }
 }

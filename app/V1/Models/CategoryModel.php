@@ -2,6 +2,7 @@
 
 namespace App\V1\Models;
 
+use App\Models\AttributeGroup;
 use App\Models\Category;
 use App\Models\Variant;
 use App\V1\Resources\CategoryHeaderResource;
@@ -41,7 +42,17 @@ class CategoryModel extends AbstractModel
         }
 
         $productIds = $item->products->where('is_active', 1)->pluck('id');
-        $variants = Variant::whereIn('product_id', $productIds)->get()->unique()->groupBy('attribute_group_name');
+//        $variants = Variant::whereIn('product_id', $productIds)->get()->unique()->groupBy('attribute_group_id')->toArray();
+        $variants = AttributeGroup::with(['attributes' => function($query) use ($productIds) {
+            $query->whereHas('variants', function ($qr) use ($productIds){
+                $qr->whereIn('product_id', $productIds);
+            });
+        }])->whereHas('attributes', function ($qr) use ($productIds){
+            $qr->whereHas('variants', function ($q) use ($productIds){
+                $q->whereIn('product_id', $productIds);
+            });
+        })->get();
+
         return response()->json(['item' => new CategoryResource($item), 'variants' => $variants]);
     }
 
