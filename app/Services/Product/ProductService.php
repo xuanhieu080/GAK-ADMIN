@@ -390,7 +390,7 @@ class ProductService
             sort($attributes);
             return [
                 'name'             => "$product->name$name",
-                'code'             => Support::genCode('ProductVariant', 'code', 16),
+                'code'             => Support::genCode('product_variants', 'code', 16),
                 'product_id'       => $product->id,
                 'option_name'      => trim($name, ', '),
                 'options'          => json_encode($attributes),
