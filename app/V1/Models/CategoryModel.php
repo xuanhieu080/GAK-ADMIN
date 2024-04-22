@@ -34,8 +34,25 @@ class CategoryModel extends AbstractModel
 
     public function show($slug)
     {
-        $item = Category::where('slug', $slug)
-            ->where('is_active',1)
+        $limit = 99;
+        $item = Category::with([
+            'descendants'          => function ($query) use ($limit) {
+                $query->where('show_header', 1)->limit($limit);
+            },
+            'descendants.products' => function ($query) {
+                $query->where('products.is_active', 1);
+            },
+            'products'             => function ($query) {
+                $query->where('products.is_active', 1);
+            },
+        ])->where('show_header', 1)
+            ->get()
+            ->map(function ($category) {
+                $products = $category->products->concat($category->descendants->pluck('products')->flatten());
+                $category->setRelation('products', $products);
+                return $category;
+            })->where('slug', $slug)
+            ->where('is_active', 1)
             ->first();
         if (empty($item)) {
             return null;
@@ -43,12 +60,12 @@ class CategoryModel extends AbstractModel
 
         $productIds = $item->products->where('is_active', 1)->pluck('id');
 //        $variants = Variant::whereIn('product_id', $productIds)->get()->unique()->groupBy('attribute_group_id')->toArray();
-        $variants = AttributeGroup::with(['attributes' => function($query) use ($productIds) {
-            $query->whereHas('variants', function ($qr) use ($productIds){
+        $variants = AttributeGroup::with(['attributes' => function ($query) use ($productIds) {
+            $query->whereHas('variants', function ($qr) use ($productIds) {
                 $qr->whereIn('product_id', $productIds);
             });
-        }])->whereHas('attributes', function ($qr) use ($productIds){
-            $qr->whereHas('variants', function ($q) use ($productIds){
+        }])->whereHas('attributes', function ($qr) use ($productIds) {
+            $qr->whereHas('variants', function ($q) use ($productIds) {
                 $q->whereIn('product_id', $productIds);
             });
         })->orderByDesc('is_color')->get();
@@ -66,13 +83,13 @@ class CategoryModel extends AbstractModel
 
         $result = Category::whereIsRoot()
             ->with([
-                'descendants' => function ($query) use ($limit) {
+                'descendants'          => function ($query) use ($limit) {
                     $query->where('show_header', 1)->limit(99);
                 },
                 'descendants.products' => function ($query) {
                     $query->where('products.is_active', 1);
                 },
-                'products' => function ($query) {
+                'products'             => function ($query) {
                     $query->where('products.is_active', 1);
                 },
             ])->where('show_header', 1)
