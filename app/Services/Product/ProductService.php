@@ -338,106 +338,110 @@ class ProductService
 
     public function sync(Product $product): void
     {
-        $variants = Variant::with(['product', 'attribute', 'attributeGroup'])
-            ->where('product_id', $product->id)
-            ->get()
-            ->groupBy('attribute_group_id')
-            ->map(function ($group) {
-                return $group->map(function ($item) {
-                    return [
-                        'attribute_group_id'       => $item['attributeGroup']['id'],
-                        'attribute_group_name'     => $item['attributeGroup']['name'],
-                        'attribute_group_priority' => $item['attributeGroup']['priority'],
-                        'attribute_id'             => $item['attribute']['id'],
-                        'attribute_name'           => $item['attribute']['name'],
-                        'product_id'               => $item['product']['id'],
-                        'product_name'             => $item['product']['name'],
-                        'price'                    => $item['product']['price'],
-                        'qty'                      => $item['product']['qty'],
-                        'discount'                 => $item['product']['discount'],
-                        'price_discount'           => $item['product']['price_discount'],
-                        'description'              => $item['product']['description'],
-                        'meta_description'         => $item['product']['meta_description'],
-                        'meta_key'                 => $item['product']['meta_key'],
-                        'meta_title'               => $item['product']['meta_title'],
+//        try {
+            $variants = Variant::with(['product', 'attribute', 'attributeGroup'])
+                ->where('product_id', $product->id)
+                ->get()
+                ->groupBy('attribute_group_id')
+                ->map(function ($group) {
+                    return $group->map(function ($item) {
+                        return [
+                            'attribute_group_id'       => $item['attributeGroup']['id'],
+                            'attribute_group_name'     => $item['attributeGroup']['name'],
+                            'attribute_group_priority' => $item['attributeGroup']['priority'],
+                            'attribute_id'             => $item['attribute']['id'],
+                            'attribute_name'           => $item['attribute']['name'],
+                            'product_id'               => $item['product']['id'],
+                            'product_name'             => $item['product']['name'],
+                            'price'                    => $item['product']['price'],
+                            'qty'                      => $item['product']['qty'],
+                            'discount'                 => $item['product']['discount'],
+                            'price_discount'           => $item['product']['price_discount'],
+                            'description'              => $item['product']['description'],
+                            'meta_description'         => $item['product']['meta_description'],
+                            'meta_key'                 => $item['product']['meta_key'],
+                            'meta_title'               => $item['product']['meta_title'],
+                        ];
+                    })->sortBy('attribute_name');
+                })
+                ->sortBy(function ($values, $key) {
+                    return $values->first()['attribute_group_priority']; // Sắp xếp theo attribute group name
+                })
+                ->values()
+                ->toArray();
+
+            $result = $this->combining($variants);
+
+            $details = array_map(function ($itemGroup) use ($product) {
+                $name = '';
+                $attributes = [];
+                $attributeAll = [];
+                $attributeGroup = [];
+                foreach ($itemGroup as $key => $item) {
+                    $attributes[] = $item['attribute_id'];
+                    $attributeGroup[] = $item['attribute_group_id'];
+                    $attributeAll[] = [
+                        'attribute_group_id' => $item['attribute_group_id'],
+                        'attribute_id'       => $item['attribute_id'],
                     ];
-                })->sortBy('attribute_name');
-            })
-            ->sortBy(function ($values, $key) {
-                return $values->first()['attribute_group_priority']; // Sắp xếp theo attribute group name
-            })
-            ->values()
-            ->toArray();
 
-        $result = $this->combining($variants);
+                    $name .= sprintf(', %s: %s', $item['attribute_group_name'], $item['attribute_name']);
+                }
 
-        $details = array_map(function ($itemGroup) use ($product) {
-            $name = '';
-            $attributes = [];
-            $attributeAll = [];
-            $attributeGroup = [];
-            foreach ($itemGroup as $key => $item) {
-                $attributes[] = $item['attribute_id'];
-                $attributeGroup[] = $item['attribute_group_id'];
-                $attributeAll[] = [
-                    'attribute_group_id' => $item['attribute_group_id'],
-                    'attribute_id'       => $item['attribute_id'],
+                sort($attributes);
+                return [
+                    'name'             => "$product->name$name",
+                    'code'             => Support::genCode('product_variants', 'code', 16),
+                    'product_id'       => $product->id,
+                    'option_name'      => trim($name, ', '),
+                    'options'          => json_encode($attributes),
+                    'option_all'       => json_encode($attributeAll),
+                    'option_group'     => json_encode($attributeGroup),
+                    'description'      => $product->description,
+                    'meta_description' => $product->meta_description,
+                    'meta_key'         => $product->meta_key,
+                    'meta_title'       => $product->meta_title,
+                    'price'            => $product->price,
+                    'qty'              => $product->qty,
+                    'discount'         => $product->discount,
+                    'price_discount'   => $product->price_discount,
                 ];
+            }, $result);
 
-                $name .= sprintf(', %s: %s', $item['attribute_group_name'], $item['attribute_name']);
+            $data = ProductVariant::query()
+                ->where('product_id', $product->id)
+                ->get()
+                ->map(function ($item) {
+                    $item->options = json_encode($item->options);
+                    return $item;
+                })
+                ->toArray();
+
+            $differences = array_udiff($details, $data, function ($item1, $item2) {
+                return $item1['options'] <=> $item2['options'];
+            });
+
+            $differenceRemove = array_udiff($data, $differences, function ($item1, $item2) {
+                return $item1['options'] <=> $item2['options'];
+            });
+
+
+            $differenceRemove = array_udiff($differenceRemove, $details, function ($item1, $item2) {
+                return $item1['options'] <=> $item2['options'];
+            });
+
+            $ids = array_map(function ($item) {
+                return $item['id'];
+            }, $differenceRemove);
+
+            ProductVariant::query()->insert($differences);
+            $productVariants = ProductVariant::query()->whereIn('id', $ids)->get();
+            foreach ($productVariants as $productVariant) {
+                $productVariant->delete();
             }
-
-            sort($attributes);
-            return [
-                'name'             => "$product->name$name",
-                'code'             => Support::genCode('product_variants = 1, ', 'code', 16),
-                'product_id'       => $product->id,
-                'option_name'      => trim($name, ', '),
-                'options'          => json_encode($attributes),
-                'option_all'       => json_encode($attributeAll),
-                'option_group'     => json_encode($attributeGroup),
-                'description'      => $product->description,
-                'meta_description' => $product->meta_description,
-                'meta_key'         => $product->meta_key,
-                'meta_title'       => $product->meta_title,
-                'price'            => $product->price,
-                'qty'              => $product->qty,
-                'discount'         => $product->discount,
-                'price_discount'   => $product->price_discount,
-            ];
-        }, $result);
-
-        $data = ProductVariant::query()
-            ->where('product_id', $product->id)
-            ->get()
-            ->map(function ($item) {
-                $item->options = json_encode($item->options);
-                return $item;
-            })
-            ->toArray();
-
-        $differences = array_udiff($details, $data, function ($item1, $item2) {
-            return $item1['options'] <=> $item2['options'];
-        });
-
-        $differenceRemove = array_udiff($data, $differences, function ($item1, $item2) {
-            return $item1['options'] <=> $item2['options'];
-        });
-
-
-        $differenceRemove = array_udiff($differenceRemove, $details, function ($item1, $item2) {
-            return $item1['options'] <=> $item2['options'];
-        });
-
-        $ids = array_map(function ($item) {
-            return $item['id'];
-        }, $differenceRemove);
-
-        ProductVariant::query()->insert($differences);
-        $productVariants = ProductVariant::query()->whereIn('id', $ids)->get();
-        foreach ($productVariants as $productVariant) {
-            $productVariant->delete();
-        }
+//        } catch (\Exception $e) {
+//            dd($e);
+//        }
     }
 
 
