@@ -34,7 +34,7 @@ class UpdateVariantRequest extends BaseRequest
             'details.*.thumb_image'        => 'nullable|array',
             'details.*.thumb_image.*'      => 'nullable|image|max:3145728|mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,ogx,oga,ogv,ogg,webm',
             'details.*.thumb_image_remove' => 'nullable|array',
-            'details.*.description'        => 'required|string',
+//            'details.*.description'        => 'required|string',
             //            'category_id'        => 'required|exists:categories,id',
             'details.*.is_active'          => 'required|in:1,0,true,false',
             'details.*.price'              => 'nullable|numeric|min:0|max:999999999999',
@@ -42,8 +42,8 @@ class UpdateVariantRequest extends BaseRequest
 
             'details.*.discount'         => 'nullable|max:1000000000000|min:0|numeric',
             //            'priority'           => 'required|numeric|min:0|max:1000',
-            'details.*.meta_description' => 'required|max:255',
-            'details.*.meta_title'       => 'required|max:255',
+//            'details.*.meta_description' => 'required|max:255',
+//            'details.*.meta_title'       => 'required|max:255',
             //            'slug'               => [
             //                'required',
             //                'string',
@@ -51,7 +51,7 @@ class UpdateVariantRequest extends BaseRequest
             //                'regex:/^[a-z0-9-]+$/',
             //                Rule::unique('products', 'slug')->ignore($this->route('product')->id)
             //            ],
-            'details.*.meta_key'         => 'required|max:255',
+//            'details.*.meta_key'         => 'required|max:255',
         ];
     }
 

@@ -33,18 +33,18 @@
 <!--            }}</span>-->
         </div>
       </div>
-      <div class="mb-4">
-        <QuillEditorWrapper
-            v-model:content="form.description"
-            :toolbar="'full'"
-            contentType="html"
-            :placeholder="trans('labels.description')"
-            :required="true"
-        />
-        <span v-if="alertStore.errors[`details.${index}.description`]" class="text-xs tracking-wide text-red-600">{{
-            alertStore.errors[`details.${index}.description`][0]
-          }}</span>
-      </div>
+<!--      <div class="mb-4">-->
+<!--        <QuillEditorWrapper-->
+<!--            v-model:content="form.description"-->
+<!--            :toolbar="'full'"-->
+<!--            contentType="html"-->
+<!--            :placeholder="trans('labels.description')"-->
+<!--            :required="true"-->
+<!--        />-->
+<!--        <span v-if="alertStore.errors[`details.${index}.description`]" class="text-xs tracking-wide text-red-600">{{-->
+<!--            alertStore.errors[`details.${index}.description`][0]-->
+<!--          }}</span>-->
+<!--      </div>-->
 
       <TextInput class="mb-4" type="number" :min="0" :max="999999999999" name="price" v-model="form.price"
                  :error-input="'details.' + index + '.price'" :label="trans('labels.price')"/>
@@ -60,18 +60,18 @@
                  error-input="qty" label="Số lượng"/>
 
 
-      <TextInput type="textarea" class="mb-4" :minlength="0" :maxlength="200"
-                 :rows="1" name="meta_title" v-model="form.meta_title"
-                 :required="true"
-                 :error-input="'details.' + index + '.meta_detail'" label="SEO tiêu đề"/>
-      <TextInput type="textarea" class="mb-4" :minlength="0" :maxlength="300"
-                 :rows="5" name="meta_description" v-model="form.meta_description"
-                 :required="true"
-                 :error-input="'details.' + index + '.meta_description'" label="SEO nội dung"/>
-      <TextInput type="textarea" class="mb-4" :minlength="0" :maxlength="200"
-                 :rows="3" name="meta_key" v-model="form.meta_key"
-                 :required="true"
-                 :error-input="'details.' + index + '.meta_key'" label="SEO từ khoá"/>
+<!--      <TextInput type="textarea" class="mb-4" :minlength="0" :maxlength="200"-->
+<!--                 :rows="1" name="meta_title" v-model="form.meta_title"-->
+<!--                 :required="true"-->
+<!--                 :error-input="'details.' + index + '.meta_detail'" label="SEO tiêu đề"/>-->
+<!--      <TextInput type="textarea" class="mb-4" :minlength="0" :maxlength="300"-->
+<!--                 :rows="5" name="meta_description" v-model="form.meta_description"-->
+<!--                 :required="true"-->
+<!--                 :error-input="'details.' + index + '.meta_description'" label="SEO nội dung"/>-->
+<!--      <TextInput type="textarea" class="mb-4" :minlength="0" :maxlength="200"-->
+<!--                 :rows="3" name="meta_key" v-model="form.meta_key"-->
+<!--                 :required="true"-->
+<!--                 :error-input="'details.' + index + '.meta_key'" label="SEO từ khoá"/>-->
 
       <div class="flex justify-center">
         <div class="w-[700px]">
@@ -102,9 +102,9 @@
             }}</span>
         </div>
       </div>
-      <Toggle v-model="form.is_active" :checked="form.is_active"
-              :error-input="'details.' + index + '.is_active'"
-              :label="trans('labels.show')" name="status"/>
+<!--      <Toggle v-model="form.is_active" :checked="form.is_active"-->
+<!--              :error-input="'details.' + index + '.is_active'"-->
+<!--              :label="trans('labels.show')" name="status"/>-->
     </Form>
   </div>
 </template>
@@ -182,16 +182,16 @@ const form = reactive({
   image: '',
   thumb_image: [],
   // slug: null,
-  meta_title: null,
-  meta_description: null,
-  meta_key: null,
-  description: null,
+  // meta_title: null,
+  // meta_description: null,
+  // meta_key: null,
+  // description: null,
   // category_id: null,
   price: 0,
   discount: 0,
   qty: 0,
   // priority: 100,
-  is_active: false,
+  is_active: true,
   thumb_image_remove: [],
 });
 
@@ -209,11 +209,12 @@ const service = new ProductService();
 
 if (props.item) {
   form.name = props.item.name
-  form.meta_title = props.item.meta_title
-  form.meta_description = props.item.meta_description
-  form.meta_key = props.item.meta_key
-  form.description = props.item.description
-  form.is_active = props.item.is_active
+  // form.meta_title = props.item.meta_title
+  // form.meta_description = props.item.meta_description
+  // form.meta_key = props.item.meta_key
+  // form.description = props.item.description
+  form.is_active = true
+  // form.is_active = props.item.is_active
   form.price = props.item.price
   form.discount = props.item.discount
   form.qty = props.item.qty
