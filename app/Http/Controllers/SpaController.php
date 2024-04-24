@@ -13,6 +13,7 @@ class SpaController extends BaseController
      */
     public function __invoke()
     {
+    \Illuminate\Support\Facades\Config::set('app.locale', 'vi');
         return view('index', ['config' => Config::pluck('description', 'code')]);
     }
 }
