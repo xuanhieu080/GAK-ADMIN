@@ -110,6 +110,12 @@
       </div>
       <Toggle class="mb-4" v-model="form.is_hot" :checked="form.is_hot" error-input="is_hot"
               label="Nổi bật" name="is_hot"/>
+      <Toggle class="mb-4" v-model="form.is_upcoming" :checked="form.is_upcoming" error-input="is_upcoming"
+              label="Sắp ra mắt" name="is_upcoming"/>
+      <Toggle class="mb-4" v-model="form.is_new" :checked="form.is_new" error-input="is_new"
+              label="Mới" name="is_new"/>
+      <Toggle class="mb-4" v-model="form.is_uniform" :checked="form.is_uniform" error-input="is_uniform"
+              label="Đồng phục" name="is_uniform"/>
       <Toggle class="mb-4" v-model="form.is_active" :checked="form.is_active" error-input="is_active"
               :label="trans('labels.show')" name="status"/>
     </Form>
@@ -183,6 +189,9 @@ const form = reactive({
   priority: 100,
   is_active: false,
   is_hot: false,
+  is_upcoming: false,
+  is_new: false,
+  is_uniform: false,
   video_link: null
 });
 
@@ -202,6 +211,9 @@ if (props.information) {
   form.priority = props.information.priority;
   form.is_active = props.information.is_active;
   form.is_hot = props.information.is_hot;
+  form.is_hot = props.information.is_upcoming;
+  form.is_new = props.information.is_new;
+  form.is_upcoming = props.information.is_upcoming;
   form.meta_title = props.information.meta_title;
   form.meta_description = props.information.meta_description;
   form.meta_key = props.information.meta_key;
@@ -272,6 +284,9 @@ watch(() => props.information, (data) => {
   form.priority = props.information.priority;
   form.is_active = props.information.is_active;
   form.is_hot = props.information.is_hot;
+  form.is_hot = props.information.is_upcoming;
+  form.is_new = props.information.is_new;
+  form.is_upcoming = props.information.is_upcoming;
   form.meta_title = props.information.meta_title;
   form.slug = props.information.slug;
   form.meta_description = props.information.meta_description;

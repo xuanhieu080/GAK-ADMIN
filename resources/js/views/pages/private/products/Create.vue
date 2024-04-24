@@ -169,6 +169,9 @@ function clearData() {
   information.video_link = null;
   information.thumb_image = [];
   informationCreate.value = information;
+  form.is_hot = false;
+  form.is_new = false;
+  form.is_upcoming = false;
 }
 
 function informationUpdate(data) {
@@ -189,6 +192,9 @@ function informationUpdate(data) {
   information.slug = data.slug;
   information.video_link = data.video_link;
   information.thumb_image = data.thumb_image;
+  form.is_hot = data.is_upcoming;
+  form.is_new = data.is_new;
+  form.is_upcoming = data.is_upcoming;
 }
 </script>
 
