@@ -46,9 +46,14 @@ class Product extends Model implements HasMedia
     ];
 
     protected $casts = [
-        'is_active' => 'boolean',
-        'is_hot'    => 'boolean',
+        'is_active'   => 'boolean',
+        'is_hot'      => 'boolean',
+        'is_uniform'  => 'boolean',
+        'is_new'      => 'boolean',
+        'is_upcoming' => 'boolean',
     ];
+
+    protected $searchFields = ['name'];
 
     protected $appends = [
         'title',

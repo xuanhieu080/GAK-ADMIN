@@ -3,13 +3,17 @@
     <Form id="edit-attribute-group">
       <div v-if="form.details.length > 0 || form.detail_currents.length > 0" class="w-full">
         <div v-for="(detail, index) in form.detail_currents"
-             class="flex flex-row flex-nowrap gap-4 items-center mb-4">
-          <Dropdown class="mb-4" :name="'detail-current-'+ index + '.-attribute-group'"
+             class="flex flex-row flex-nowrap gap-4 items-center mb-8">
+          <a @click="deleteDetail(index,'current')" class="uppercase cursor-pointer text-lg text-danger-400 mt-6"
+             :title="trans('labels.delete')">
+            <i class="fa fa-trash"></i>
+          </a>
+          <Dropdown class="mb-0" :name="'detail-current-'+ index + '.-attribute-group'"
                     :error-input="'detail_currents.' + index + '.attribute_group_id'" :required="true" :multiple="false"
                     server="attribute-groups" label="Nhóm thuôc tính" placeholder="Nhóm thuôc tính"
                     :server-search-min-characters="0"
                     v-model="form.detail_currents[index].attribute_group"></Dropdown>
-          <Dropdown v-if="form.detail_currents[index].attribute_group" class="mb-4"
+          <Dropdown v-if="form.detail_currents[index].attribute_group" class="mb-0"
                     :name="'detail-current-'+ index + '.-attribute'"
                     :error-input="'detail_currents.' + index + '.attribute_id'" :required="true" :multiple="false"
                     server="attributes"
@@ -17,27 +21,27 @@
                     label="Thuôc tính" placeholder="Thuôc tính"
                     :server-search-min-characters="0"
                     v-model="form.detail_currents[index].attribute"></Dropdown>
-          <a @click="deleteDetail(index,'current')" class="uppercase cursor-pointer text-lg text-danger-400"
+          <Toggle v-if="form.detail_currents[index].attribute_group && form.detail_currents[index].attribute_group.is_color" class="mt-6" v-model="form.detail_currents[index].is_hot" :checked="form.detail_currents[index].is_hot" :error-input="'detail_currents.' + index + '.is_hot'"
+                  label="Màu nổi bật"  :name="'detail-current-'+ index + '.-is_hot'"/>
+        </div>
+        <div v-for="(detail, index) in form.details"
+             class="flex flex-row flex-nowrap gap-4 items-center mb-8">
+          <a @click="deleteDetail(index)" class="uppercase cursor-pointer text-lg text-danger-400 mt-6"
              :title="trans('labels.delete')">
             <i class="fa fa-trash"></i>
           </a>
-        </div>
-        <div v-for="(detail, index) in form.details"
-             class="flex flex-row flex-nowrap gap-4 items-center mb-4">
-          <Dropdown class="mb-4" :name="'detail-'+ index + '.-attribute-group'"
+          <Dropdown class="mb-0" :name="'detail-'+ index + '.-attribute-group'"
                     :error-input="'details.' + index + '.attribute_group_id'" :required="true" :multiple="false"
                     server="attribute-groups" label="Nhóm thuôc tính" placeholder="Nhóm thuôc tính"
                     :server-search-min-characters="0" v-model="form.details[index].attribute_group"></Dropdown>
-          <Dropdown v-if="form.details[index].attribute_group" class="mb-4" :name="'detail-'+ index + '.-attribute'"
+          <Dropdown v-if="form.details[index].attribute_group" class="mb-0" :name="'detail-'+ index + '.-attribute'"
                     :error-input="'details.' + index + '.attribute_id'" :required="true" :multiple="false"
                     server="attributes"
                     :params="'&group_id='+ form.details[index].attribute_group.id"
                     label="Thuôc tính" placeholder="Thuôc tính"
                     :server-search-min-characters="0" v-model="form.details[index].attribute"></Dropdown>
-          <a @click="deleteDetail(index)" class="uppercase cursor-pointer text-lg text-danger-400"
-             :title="trans('labels.delete')">
-            <i class="fa fa-trash"></i>
-          </a>
+          <Toggle v-if="form.details[index].attribute_group && form.details[index].attribute_group.is_color" class="mt-6" v-model="form.detail_currents[index].is_hot" :checked="form.detail_currents[index].is_hot" :error-input="'detail_currents.' + index + '.is_hot'"
+                  label="Màu nổi bật"  :name="'details-'+ index + '.-is_hot'"/>
         </div>
       </div>
       <div class="inline-flex gap-4">
@@ -103,6 +107,7 @@ function onSubmit() {
     data.details[index] = {
       attribute_id: item.attribute?.id,
       attribute_group_id: item.attribute_group?.id,
+      is_hot: item.is_hot,
     }
   })
   form.detail_currents.forEach(function (item, index) {
@@ -110,6 +115,7 @@ function onSubmit() {
       id: item?.id,
       attribute_id: item.attribute?.id,
       attribute_group_id: item.attribute_group?.id,
+      is_hot: item.is_hot,
     }
   })
   service.handleUpdate('edit-attribute', `${props.id}/attribute`, reduceProperties(data, 'roles', 'id')).then((response) => {

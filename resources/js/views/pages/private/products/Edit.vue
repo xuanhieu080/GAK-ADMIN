@@ -10,7 +10,7 @@
         </div>
         <div v-show="activeTab === 1"
              :class="{ hidden: activeTab !== 1 }">
-         <EditAttribute  :id="id"  @information-attribute="informationAttribute"/>
+         <EditAttribute :id="id"  @information-attribute="informationAttribute"/>
         </div>
         <div v-show="activeTab === 2"
              :class="{ hidden: activeTab !== 2 }">

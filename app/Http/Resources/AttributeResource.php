@@ -23,6 +23,7 @@ class AttributeResource extends JsonResource
         $data = $this->resource->toArray();
         $data['title'] = $this->name;
         $data['group_name'] = object_get($this->resource, 'group.name');
+        $data['group'] = object_get($this->resource, 'group');
         $data['created_at'] = !empty($this->resource->created_at) ? $this->resource->created_at->diffForHumans() : null;
         $data['updated_at'] = !empty($this->resource->updated_at) ? $this->resource->updated_at->diffForHumans() : null;
 

@@ -45,6 +45,7 @@ class Category extends Model implements HasMedia
         'show_header'    => 'boolean',
         'show_dashboard' => 'boolean',
     ];
+    protected $searchFields = ['name'];
 
 //    protected $appends = [
 //        'image_url'

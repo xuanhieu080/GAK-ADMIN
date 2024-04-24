@@ -37,6 +37,8 @@ class Post extends Model implements HasMedia
         'view',
     ];
 
+    protected $searchFields = ['title', 'slug'];
+
     protected $casts = [
         'is_active' => 'boolean',
         'is_hot'    => 'boolean',

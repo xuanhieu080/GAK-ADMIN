@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Attributes;
 
 use App\Http\Requests\BaseRequest;
+use App\Models\AttributeGroup;
 use App\Rules\Color;
 use Illuminate\Validation\Rule;
 
@@ -23,16 +24,16 @@ class UpdateRequest extends BaseRequest
                 Rule::unique('attributes', 'name')->ignore($this->route('attribute')->id)
             ],
             'group_id' => 'required|exists:attribute_groups,id',
-            'is_color' => 'nullable|in:true,false,1,0',
-            'link'     => 'nullable|url|max:350',
         ];
-
-        if (filter_var($this->is_color, FILTER_VALIDATE_BOOLEAN)) {
-            $rules['color'] = [
-                'required',
-                'max:255',
-                new Color()
-            ];
+        if (!empty($this->group_id)) {
+            $group = AttributeGroup::find($this->group_id);
+            if (!empty($group) && filter_var($group->is_color, FILTER_VALIDATE_BOOLEAN)) {
+                $rules['color'] = [
+                    'required',
+                    'max:255',
+                    new Color()
+                ];
+            }
         }
 
         return $rules;

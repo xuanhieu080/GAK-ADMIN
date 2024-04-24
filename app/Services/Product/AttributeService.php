@@ -69,7 +69,6 @@ class AttributeService
 
         $full_columns = $this->model->getFillable();
         $data = array_intersect_key($data, array_flip($full_columns));
-        $data['is_color'] = filter_var(Arr::get($data, 'is_color'), FILTER_VALIDATE_BOOLEAN);
 
         $record = Attribute::query()->create($data);
         if (!empty($record)) {
@@ -92,9 +91,6 @@ class AttributeService
         $attribute->name = Arr::get($data, 'name', $attribute->name);
         $attribute->group_id = Arr::get($data, 'group_id', $attribute->group_id);
         $attribute->color = Arr::get($data, 'color', $attribute->color);
-        $attribute->link = Arr::get($data, 'link', $attribute->link);
-        $attribute->is_color = filter_var(Arr::get($data, 'is_color', $attribute->is_color), FILTER_VALIDATE_BOOLEAN);
-        
 
         $attribute->save();
         return new AttributeResource($attribute);

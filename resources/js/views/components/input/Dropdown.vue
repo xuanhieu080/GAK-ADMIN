@@ -112,7 +112,7 @@ export default defineComponent({
             let val = [];
             for (let i in selectOptionsArr.value) {
                 if (typeof selectOptionsArr.value[i] === 'object') {
-                    val.push({id: selectOptionsArr.value[i].id, title: selectOptionsArr.value[i].title});
+                    val.push(selectOptionsArr.value[i]);
                 } else {
                     val.push(selectOptionsArr.value[i])
                 }
@@ -142,7 +142,7 @@ export default defineComponent({
             service.begin(search, 1, props.serverPerPage, props.params).then((response) => {
                 selectOptionsArr.value = [];
                 for (let i in response.data.data) {
-                    selectOptionsArr.value.push({id: response.data.data[i].id, title: response.data.data[i].title});
+                    selectOptionsArr.value.push(response.data.data[i]);
                 }
                 isLoading.value = false;
             }).catch((error) => {

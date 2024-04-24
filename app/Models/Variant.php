@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Traits\Filterable;
+use App\Traits\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Variant extends Model
 {
     use HasFactory;
+    use Searchable, Filterable;
 
     protected $fillable = [
         'product_id',
@@ -16,11 +19,13 @@ class Variant extends Model
         'is_active',
         'priority',
         'id',
+        'is_hot',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
         'is_color' => 'boolean',
+        'is_hot'   => 'boolean',
     ];
 
 

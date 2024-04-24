@@ -35,7 +35,10 @@ class UpdateRequest extends BaseRequest
             'priority'           => 'required|numeric|min:0|max:1000',
             'meta_description'   => 'required|max:255',
             'meta_title'         => 'required|max:255',
-            'is_hot'             => 'required|in:true,false',
+            'is_hot'             => 'nullable|in:true,false,1,0',
+            'is_upcoming'        => 'nullable|in:true,false,1,0',
+            'is_new'             => 'nullable|in:true,false,1,0',
+            'is_uniform'         => 'nullable|in:true,false,1,0',
             'slug'               => [
                 'required',
                 'string',

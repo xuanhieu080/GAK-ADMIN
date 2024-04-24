@@ -38,6 +38,7 @@ class Config extends Model
     protected $casts = [
         'is_active' => 'boolean',
     ];
+    protected $searchFields = ['code'];
 
     public function getImageUrlAttribute()
     {

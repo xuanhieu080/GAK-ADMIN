@@ -20,6 +20,7 @@ class ProductVariantResource extends JsonResource
         $data = [
             'id'             => $this->id,
             'code'           => $this->code,
+            'name'           => $this->name,
             'product_id'     => $this->product_id,
             'product_name'   => object_get($this, 'product.name'),
             'slug'           => object_get($this, 'product.slug'),

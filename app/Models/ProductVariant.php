@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Traits\Filterable;
+use App\Traits\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Image\Enums\Fit;
@@ -12,6 +14,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 class ProductVariant extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
+    use Searchable, Filterable;
 
     protected $fillable = [
         'id',
@@ -30,6 +33,7 @@ class ProductVariant extends Model implements HasMedia
         'option_group',
         'option_name',
         'price_discount',
+        'params',
         'discount'
     ];
 

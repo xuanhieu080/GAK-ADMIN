@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Traits\Filterable;
+use App\Traits\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Image\Enums\Fit;
@@ -12,6 +14,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 class Page extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
+    use Searchable, Filterable;
 
     protected $fillable = [
         'id',
@@ -33,10 +36,12 @@ class Page extends Model implements HasMedia
     ];
 
     protected $casts = [
-        'is_active' => 'boolean',
+        'is_active'   => 'boolean',
         'show_header' => 'boolean',
-        'is_button' => 'boolean',
+        'is_button'   => 'boolean',
     ];
+
+    protected $searchFields = ['name', 'title'];
 
     public function registerMediaConversions(Media $media = null): void
     {
