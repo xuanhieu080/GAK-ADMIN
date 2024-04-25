@@ -23,6 +23,7 @@ class AttributeResource extends JsonResource
         $data = [
             'id'       => $this->id,
             'name'     => $this->name,
+            'slug'     => $this->slug,
             'color'    => $this->color,
             'is_color' => filter_var(object_get($this, 'group.is_color'), FILTER_VALIDATE_BOOLEAN),
             'link'     => $this->link,

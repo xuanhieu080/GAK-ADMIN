@@ -23,6 +23,7 @@ class AttributeGroupResource extends JsonResource
         $data = [
             'id'         => $this->id,
             'name'       => $this->name,
+            'slug'       => $this->slug,
             'attributes' => AttributeResource::collection($this->attributes),
         ];
 

@@ -22,6 +22,9 @@ class Attribute extends Model
     protected $casts = [
         'is_color' => 'boolean',
     ];
+    protected $appends = [
+        'slug','title'
+    ];
 
     protected $searchFields = ['name'];
 
@@ -33,5 +36,9 @@ class Attribute extends Model
     public function variants()
     {
         return $this->hasMany(Variant::class, 'attribute_id', 'id');
+    }
+
+    public function getSlugAttribute() {
+        return \Str::slug($this->name);
     }
 }

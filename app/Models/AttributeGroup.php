@@ -23,7 +23,7 @@ class AttributeGroup extends Model
         'is_color'   => 'boolean',
     ];
     protected $appends = [
-        'title'
+        'title','slug'
     ];
     protected $searchFields = ['name'];
 
@@ -34,5 +34,9 @@ class AttributeGroup extends Model
     public function getTitleAttribute()
     {
         return $this->name;
+    }
+
+    public function getSlugAttribute() {
+        return \Str::slug($this->name);
     }
 }
