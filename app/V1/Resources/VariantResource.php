@@ -26,10 +26,12 @@ class VariantResource extends JsonResource
             'product_id'           => $this->product_id,
             'product_name'         => object_get($this, 'product.name'),
             'attribute_id'         => $this->attribute_id,
+            'attribute_slug'       => $this->attribute_slug,
             'attribute_name'       => object_get($this, 'attribute.name'),
             'attribute_is_color'   => filter_var(object_get($this, 'attribute.is_color'), FILTER_VALIDATE_BOOLEAN),
             'attribute_color'      => object_get($this, 'attribute.color'),
-            'attribute_group_id'   => $this->attribute_id,
+            'attribute_group_id'   => $this->attribute_group_id,
+            'attribute_group_slug' => $this->attribute_group_slug,
             'attribute_group_name' => object_get($this, 'attributeGroup.name'),
             'priority'             => $this->priority,
         ];

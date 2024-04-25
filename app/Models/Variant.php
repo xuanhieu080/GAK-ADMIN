@@ -31,7 +31,9 @@ class Variant extends Model
 
     protected $appends = [
         'attribute_group_name',
+        'attribute_group_slug',
         'attribute_name',
+        'attribute_slug',
         'is_color',
     ];
 
@@ -52,9 +54,19 @@ class Variant extends Model
         return object_get($this,'attributeGroup.name');
     }
 
+    public function getAttributeGroupSlugAttribute()
+    {
+        return \Str::slug(object_get($this,'attributeGroup.name'));
+    }
+
     public function getAttributeNameAttribute()
     {
         return object_get($this,'attribute.name');
+    }
+
+    public function getAttributeSlugAttribute()
+    {
+        return \Str::slug(object_get($this,'attribute.name'));
     }
 
     public function getIsColorAttribute()

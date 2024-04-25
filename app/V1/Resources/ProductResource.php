@@ -18,9 +18,10 @@ class ProductResource extends JsonResource
         $variants = [];
         foreach ($this->attributeVariants->sortByDesc('is_color')->groupBy('attribute_group_id') as $key => $item) {
             $variants[] = [
-                'id' => $key,
-                'name' => $item[0]['attribute_group_name'],
-                'is_color' => $item[0]['is_color'],
+                'id'         => $key,
+                'name'       => $item[0]['attribute_group_name'],
+                'slug'       => $item[0]['attribute_group_slug'],
+                'is_color'   => $item[0]['is_color'],
                 'attributes' => VariantResource::collection($item)
             ];
         }
@@ -44,12 +45,12 @@ class ProductResource extends JsonResource
             'price_discount'   => $this->price_discount,
             'discount'         => $this->discount,
             'is_hot'           => $this->is_hot,
-//            'variants'         => [],
+            //            'variants'         => [],
         ];
 
 //        if (!empty($this->resource->toArray()['variants'])) {
-            $data['variants'] = ProductVariantResource::collection($this->variants);
-            $data['variantAttribute'] = (array)$variants;
+        $data['variants'] = ProductVariantResource::collection($this->variants);
+        $data['variantAttribute'] = (array)$variants;
 //        }
 
         foreach ($this->getMedia("thumb") as $item) {
