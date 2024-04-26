@@ -34,6 +34,7 @@ class VariantResource extends JsonResource
             'attribute_group_slug' => $this->attribute_group_slug,
             'attribute_group_name' => object_get($this, 'attributeGroup.name'),
             'priority'             => $this->priority,
+            'is_hot'               => $this->is_hot,
         ];
 
         return $data;
