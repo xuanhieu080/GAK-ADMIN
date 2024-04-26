@@ -27,7 +27,7 @@ class ProductVariantResource extends JsonResource
             'description'    => $this->description,
             'price'          => $this->price,
             'category_id'    => object_get($this, 'product.category.id'),
-            'qty'            => $this->coqtyde,
+            'qty'            => $this->qty,
             'is_active'      => $this->is_active,
             'price_discount' => $this->price_discount,
             'discount'       => $this->discount,

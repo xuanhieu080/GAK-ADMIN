@@ -12,6 +12,7 @@ use App\Models\Variant;
 use App\Services\Media\MediaService;
 use App\Supports\HasImage;
 use App\Supports\Support;
+use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
@@ -546,4 +547,5 @@ class ProductService
 
         return true;
     }
+
 }
