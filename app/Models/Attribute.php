@@ -41,4 +41,9 @@ class Attribute extends Model
     public function getSlugAttribute() {
         return \Str::slug($this->name);
     }
+
+    public function getTitleAttribute()
+    {
+        return $this->name;
+    }
 }
