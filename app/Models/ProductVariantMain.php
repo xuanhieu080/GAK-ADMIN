@@ -2,28 +2,20 @@
 
 namespace App\Models;
 
-use App\Traits\Filterable;
-use App\Traits\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class ProductVariant extends Model implements HasMedia
+class ProductVariantMain extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
-    use Searchable, Filterable;
-
     protected $fillable = [
         'id',
         'code',
         'product_id',
         'is_active',
         'name',
-        'price',
-        'qty',
         'description',
         'meta_title',
         'meta_description',
@@ -32,10 +24,7 @@ class ProductVariant extends Model implements HasMedia
         'option_all',
         'option_group',
         'option_name',
-        'price_discount',
         'params',
-        'discount',
-        'product_main_id',
     ];
 
     protected $casts = [
@@ -45,25 +34,14 @@ class ProductVariant extends Model implements HasMedia
         'is_active'    => 'boolean',
     ];
 
-    public function registerMediaConversions(Media $media = null): void
-    {
-        $this
-            ->addMediaConversion('preview')
-            ->fit(Fit::Contain, 300, 300)
-            ->nonQueued();
-    }
-
     public function getMediaFolderName()
     {
-        return 'product-variants';
+        return 'product-variant-mains';
     }
 
-    public function productVariantMain() {
-        return $this->hasOne(ProductVariantMain::class, 'id', 'product_main_id');
-    }
+    public function variants()
+    {
+        return $this->hasMany(ProductVariant::class, 'product_main_id', 'id');
 
-    public function product() {
-        return $this->hasOne(Product::class, 'id', 'product_id');
     }
-
 }

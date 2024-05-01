@@ -28,6 +28,7 @@ class AttributeRequest extends BaseRequest
             'detail_currents.*.attribute_id'       => 'required|exists:attributes,id',
             'detail_currents.*.attribute_group_id' => 'required|exists:attribute_groups,id',
             'detail_currents.*.is_hot'             => 'nullable|in:true,false,1,0',
+            'detail_currents.*.is_main'            => 'nullable|in:true,false,1,0',
         ];
     }
 

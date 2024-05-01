@@ -14,7 +14,14 @@
     <template #default>
       <Table :id="page.id" v-if="table" :headers="table.headers" :sorting="table.sorting" :actions="table.actions"
              :records="table.records" :pagination="table.pagination" :is-loading="table.loading"
-             @page-changed="onTablePageChange" @action="onTableAction" @sort="onTableSort"/>
+             @page-changed="onTablePageChange" @action="onTableAction" @sort="onTableSort">
+        <template v-slot:content-is_color="props">
+          <Toggle class="mb-4" disabled :model-value="props.item.is_color" :checked="props.item.is_color"/>
+        </template>
+        <template v-slot:content-is_main="props">
+          <Toggle class="mb-4" disabled :model-value="props.item.is_main" :checked="props.item.is_main"/>
+        </template>
+      </Table>
     </template>
   </Page>
 </template>
@@ -34,6 +41,7 @@ import Filters from "@/views/components/filters/Filters";
 import FiltersRow from "@/views/components/filters/FiltersRow";
 import FiltersCol from "@/views/components/filters/FiltersCol";
 import TextInput from "@/views/components/input/TextInput";
+import Toggle from "@/views/components/input/Toggle.vue";
 
 const service = new AttributeGroupService();
 const alertStore = useAlertStore();
@@ -79,6 +87,8 @@ const page = reactive({
 const table = reactive({
   headers: {
     name: 'Tên',
+    is_color: 'Nhóm màu sắc',
+    is_main: 'Nhóm chính',
   },
   sorting: {
     name: true,

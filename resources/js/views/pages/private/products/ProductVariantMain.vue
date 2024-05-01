@@ -1,16 +1,16 @@
 <template>
   <div id="edit-product-variant">
+    <TextInput class="mb-4" type="text" disabled v-model="item.name"
+               label="Tên sản phẩm"/>
     <div>
-      <div class="py-2">Biến thể chính</div>
       <div class="flex flex-wrap gap-4">
         <div v-if="item.variantMains" v-for="(variant, index) in item.variantMains" class="">
-          <Button @click="() =>active = index" :label="variant.option_name" :theme="active != index ? 'outline' : ''"></Button>
+              <Button @click="() =>active = index" :label="variant.option_name" :theme="active != index ? 'outline' : ''"></Button>
         </div>
       </div>
-      <div class="grid grid-cols-1 py-4">
-        <div class="py-2">Biến thể phụ</div>
-        <div v-if="item.variantMains" v-for="(variant, index) in item.variantMains" :class="active != index ? 'hidden' : ''">
-          <ProductVariantItemMainEdit :item="variant" :index="index" :key="index"/>
+      <div class="grid grid-cols-1">
+        <div v-if="item.variantMains" v-for="(variant, index) in item.variantMains" class="py-4" :class="active != index ? 'hidden' : ''">
+          <ProductVariantMainItem :item="variant" :index="index" :key="index"/>
         </div>
       </div>
     </div>
@@ -29,8 +29,6 @@ import {clearObject, fillObject, reduceProperties} from "@/helpers/data";
 import ProductService from "@/services/ProductService";
 import ProductVariantMainItem from "@/views/pages/private/products/ProductVariantMainItem.vue";
 import Button from "@/views/components/input/Button.vue";
-import ProductVariantItemMain from "@/views/pages/private/products/ProductVariantItemMain.vue";
-import ProductVariantItemMainEdit from "@/views/pages/private/products/ProductVariantItemMainEdit.vue";
 
 const alertStore = useAlertStore();
 
@@ -63,6 +61,13 @@ onBeforeMount(() => {
     isFirstLoad.value = false
   })
 });
+
+
+
+
+// function informationUpdate(index, data) {
+//   form.details[index] = data
+// }
 
 watch(() => props.refresh,
     () => {

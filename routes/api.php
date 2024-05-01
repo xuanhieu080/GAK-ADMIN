@@ -73,7 +73,10 @@ Route::middleware(['auth:sanctum', 'apply_locale'])->group(function () {
     Route::get( '/products/{product}/attribute', [ProductController::class, 'getAttribute']);
     Route::get( '/products/{product}/sync', [ProductController::class, 'productVariantSync']);
     Route::get( '/products/{product}/variants', [ProductController::class, 'productVariant']);
+    Route::get( '/products/{product}/variant-mains', [ProductController::class, 'productVariantMain']);
+    Route::match(['put', 'patch'],'/products/{product}/variants/{product_variant_main}', [ProductController::class, 'updateProductVariantMainItem']);
     Route::match(['put', 'patch'],'/products/{product}/variants', [ProductController::class, 'updateProductVariant']);
+    Route::match(['put', 'patch'],'/products/product-variants/{product_variant}', [ProductController::class, 'updateProductVariantItem']);
 
     /**
      * Roles

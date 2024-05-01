@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Products\AttributeRequest;
+use App\Http\Requests\Products\UpdateVariantItemRequest;
+use App\Http\Requests\Products\UpdateVariantMainItemRequest;
 use App\Http\Requests\Products\UpdateVariantRequest;
 use App\Models\Product;
 use App\Models\ProductVariant;
+use App\Models\ProductVariantMain;
 use App\Models\Variant;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
@@ -198,6 +201,12 @@ class ProductController extends Controller
         return $this->productService->productVariant($product);
     }
 
+    public function productVariantMain(Product $product) {
+        $this->authorize('product-variant', Product::class);
+
+        return $this->productService->productVariantMain($product);
+    }
+
     /**
      * @throws \Exception
      */
@@ -207,6 +216,36 @@ class ProductController extends Controller
 
         $input = $request->validated();
         if ($this->productService->updateProductVariant($product,$input)) {
+            return $this->responseUpdateSuccess();
+        }
+
+        return $this->responseUpdateFail();
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function updateProductVariantItem(UpdateVariantItemRequest $request, ProductVariant $product_variant)
+    {
+        $this->authorize('product-variant', Product::class);
+
+        $input = $request->validated();
+        if ($this->productService->updateProductVariantItem($product_variant,$input)) {
+            return $this->responseUpdateSuccess();
+        }
+
+        return $this->responseUpdateFail();
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function updateProductVariantMainItem(UpdateVariantMainItemRequest $request, Product $product, ProductVariantMain $product_variant_main)
+    {
+        $this->authorize('product-variant', Product::class);
+        $input = $request->validated();
+
+        if ($this->productService->updateProductVariantMainItem($product,$product_variant_main,$input)) {
             return $this->responseUpdateSuccess();
         }
 

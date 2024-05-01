@@ -20,12 +20,14 @@ class Variant extends Model
         'priority',
         'id',
         'is_hot',
+        'is_main',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
-        'is_color' => 'boolean',
-        'is_hot'   => 'boolean',
+        'is_color'  => 'boolean',
+        'is_hot'    => 'boolean',
+        'is_main'   => 'boolean',
     ];
 
 
@@ -37,40 +39,43 @@ class Variant extends Model
         'is_color',
     ];
 
-    public function attribute() {
+    public function attribute()
+    {
         return $this->hasOne(Attribute::class, 'id', 'attribute_id');
     }
 
-    public function attributeGroup() {
+    public function attributeGroup()
+    {
         return $this->hasOne(AttributeGroup::class, 'id', 'attribute_group_id');
     }
 
-    public function product() {
+    public function product()
+    {
         return $this->hasOne(Product::class, 'id', 'product_id');
     }
 
     public function getAttributeGroupNameAttribute()
     {
-        return object_get($this,'attributeGroup.name');
+        return object_get($this, 'attributeGroup.name');
     }
 
     public function getAttributeGroupSlugAttribute()
     {
-        return \Str::slug(object_get($this,'attributeGroup.name'));
+        return \Str::slug(object_get($this, 'attributeGroup.name'));
     }
 
     public function getAttributeNameAttribute()
     {
-        return object_get($this,'attribute.name');
+        return object_get($this, 'attribute.name');
     }
 
     public function getAttributeSlugAttribute()
     {
-        return \Str::slug(object_get($this,'attribute.name'));
+        return \Str::slug(object_get($this, 'attribute.name'));
     }
 
     public function getIsColorAttribute()
     {
-        return filter_var(object_get($this,'attributeGroup.is_color'), FILTER_VALIDATE_BOOLEAN);
+        return filter_var(object_get($this, 'attributeGroup.is_color'), FILTER_VALIDATE_BOOLEAN);
     }
 }

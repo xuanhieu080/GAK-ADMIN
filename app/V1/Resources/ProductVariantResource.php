@@ -18,29 +18,41 @@ class ProductVariantResource extends JsonResource
 
         $thumb = [];
         $data = [
-            'id'             => $this->id,
-            'code'           => $this->code,
-            'name'           => $this->name,
-            'product_id'     => $this->product_id,
-            'product_name'   => object_get($this, 'product.name'),
-            'slug'           => object_get($this, 'product.slug'),
-            'description'    => $this->description,
-            'price'          => $this->price,
-            'category_id'    => object_get($this, 'product.category.id'),
-            'qty'            => $this->qty,
-            'is_active'      => $this->is_active,
-            'price_discount' => $this->price_discount,
-            'discount'       => $this->discount,
-            'options'        => $this->options,
-            'option_all'     => $this->option_all,
-            'option_group'   => $this->option_group,
+            'id'                      => $this->id,
+            'code'                    => $this->code,
+            'name'                    => object_get($this,'productVariantMain.name'),
+            'product_id'              => $this->product_id,
+            'product_name'            => object_get($this, 'product.name'),
+            'slug'                    => object_get($this, 'product.slug'),
+            'description'             => $this->description,
+            'price'                   => $this->price,
+            'category_id'             => object_get($this, 'product.category.id'),
+            'qty'                     => $this->qty,
+            'is_active'               => $this->is_active,
+            'price_discount'          => $this->price_discount,
+            'discount'                => $this->discount,
+            'options'                 => $this->options,
+            'option_all'              => $this->option_all,
+            'option_group'            => $this->option_group,
+            'product_variant_main_id' => object_get($this, 'productVariantMain.id'),
         ];
 
-        foreach ($this->getMedia("thumb") as $item) {
-            $thumb[] = $item->getFullUrl();
+        if (!empty($this->productVariantMain)) {
+            foreach ($this->productVariantMain->getMedia("thumb") as $item) {
+                $thumb[] = $item->getFullUrl();
+            }
+            $data['image'] = $this->productVariantMain->getFirstMediaUrl() ?: $this->product->getFirstMediaUrl();
+            $data['image_url'] = $this->productVariantMain->getFirstMediaUrl() ?: $this->product->getFirstMediaUrl();
+        } else {
+            $data['image'] = $this->product->getFirstMediaUrl();
+            $data['image_url'] = $this->product->getFirstMediaUrl();
         }
-        $data['image'] = $this->getFirstMediaUrl();
-        $data['image_url'] = $this->getFirstMediaUrl();
+
+        if (empty($thumb)) {
+            foreach ($this->product->getMedia("thumb") as $item) {
+                $thumb[] = $item->getFullUrl();
+            }
+        }
         $data['thumb_image'] = $thumb;
         $data['created_at'] = !empty($this->resource->created_at) ? $this->resource->created_at->diffForHumans() : null;
         $data['updated_at'] = !empty($this->resource->updated_at) ? $this->resource->updated_at->diffForHumans() : null;

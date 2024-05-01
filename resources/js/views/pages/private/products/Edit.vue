@@ -14,6 +14,10 @@
         </div>
         <div v-show="activeTab === 2"
              :class="{ hidden: activeTab !== 2 }">
+          <ProductVariantMain :id="id" :refresh="refresh"/>
+        </div>
+        <div v-show="activeTab === 3"
+             :class="{ hidden: activeTab !== 3 }">
           <ProductVariant :id="id" :refresh="refresh"/>
         </div>
       </Tab>
@@ -37,6 +41,7 @@ import EditInformation from "@/views/pages/private/products/EditInformation.vue"
 import Tab from "@/views/components/Tab.vue";
 import EditAttribute from "@/views/pages/private/products/EditAttribute.vue";
 import ProductVariant from "@/views/pages/private/products/ProductVariant.vue";
+import ProductVariantMain from "@/views/pages/private/products/ProductVariantMain.vue";
 
 
 const alertStore = useAlertStore();
@@ -90,7 +95,8 @@ function informationUpdate(bool) {
 const tabs = ref([
   {title: 'Thông tin chung', href: `/products/${route.params.id}/edit#first`, content: '<p>Content for Tab 1</p>'},
   {title: 'Thuộc tính', href: `/products/${route.params.id}/edit#second`, content: '<p>Content for Tab 2</p>'},
-  {title: 'Biến thể', href: `/products/${route.params.id}/edit#third`, content: '<p>Content for Tab 3</p>'}
+  {title: 'Biến thể chính', href: `/products/${route.params.id}/edit#third`, content: '<p>Content for Tab 3</p>'},
+  {title: 'Biến thể', href: `/products/${route.params.id}/edit#four`, content: '<p>Content for Tab 3</p>'}
 ]);
 
 onBeforeMount(() => {
@@ -99,6 +105,8 @@ onBeforeMount(() => {
       activeTab.value = 1
     } else if (route.hash == '#third') {
       activeTab.value = 2
+    } else if (route.hash == '#four') {
+      activeTab.value = 3
     }
   }
 })

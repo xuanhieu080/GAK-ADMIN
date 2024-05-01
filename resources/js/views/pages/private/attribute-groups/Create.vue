@@ -10,6 +10,8 @@
                    error-input="priority" :label="trans('labels.priority')"/>
         <Toggle class="mb-4" v-model="form.is_color" :checked="form.is_color" error-input="is_color"
                 label="Có phải là nhóm màu không" name="is_color"/>
+        <Toggle class="mb-4" v-model="form.is_main" :checked="form.is_main" error-input="is_main"
+                label="Có phải là nhóm chính không" name="is_main"/>
       </Form>
     </Panel>
   </Page>
@@ -35,6 +37,7 @@ const form = reactive({
   name: null,
   priority: 1000,
   is_color: false,
+  is_main: false,
   link: null,
 });
 

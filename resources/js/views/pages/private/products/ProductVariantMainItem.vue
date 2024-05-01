@@ -8,19 +8,81 @@
                  label="Biến thể"/>
       <TextInput class="mb-4" type="text" :required="true" :error-input="'details.' + index + '.params'" :name="'params-' + index" v-model="form.params"
                  label="Param hiển thị (san-pham?param trong đó param:mau=do&...)"/>
+      <div class="flex justify-center">
+        <div class="w-[500px]">
+          <FilePond
+              ref="pondElement"
+              class="product-image"
+              label-idle="Kéo thả hoặc chọn hình ảnh tại đây"
+              accepted-file-types="image/*"
+              label-max-file-size-exceeded="File quá lớn"
+              :max-file-size="maxFileSize"
+              allow-file-size-validation="true"
+              class-name="upload-job-image flex items-center justify-center w-full"
+              name="image"
+              :label-max-file-size="'Kích thước tệp tối đa là ' +  maxFileSize"
+              required="true"
+              credits="false"
+              :accepted-file-types="acceptedFileTypes"
+              :label-file-type-not-allowed="'Invalid file format'"
+              :file-validate-type-label-expected-types="'Định dạng cho phép {format}'"
+              v-on:addfile="getImage"
+              v-on:removefile="removeImage"
+              v-bind:files="images"
+          />
+<!--          <span v-if="alertStore.errors['image']" class="text-xs tracking-wide text-red-600">{{-->
+<!--              alertStore.errors['image'][0]-->
+<!--            }}</span>-->
+        </div>
+      </div>
 
-      <TextInput class="mb-4" type="number" :min="0" :max="999999999999" name="price" v-model="form.price"
-                 :error-input="'details.' + index + '.price'" :label="trans('labels.price')"/>
-      <TextInput class="mb-4" type="number" :min="0" :max="100" name="ratio" v-model="ratio"
-                 label="% giảm giá"/>
-      <TextInput class="mb-4" type="number" :min="0" :max="999999999999" name="price-discount" v-model="form.discount"
-                 :error-input="'details.' + index + '.discount'"
-                 label="Tiền giảm giá"/>
-      <TextInput class="mb-4" type="number" disabled :min="0" :max="999999999999" name="price-current" v-model="priceCurrent"
-                 label="Giá sau khi đã trừ"/>
-      <TextInput class="mb-4" type="number" :min="0" :max="100000" name="qty" v-model="form.qty"
-                 :error-input="'details.' + index + '.qty'"
-                 error-input="qty" label="Số lượng"/>
+
+      <TextInput type="textarea" class="mb-4" :minlength="0" :maxlength="200"
+                 :rows="1" name="meta_title" v-model="form.meta_title"
+                 :required="true"
+                 :error-input="'details.' + index + '.meta_detail'" label="SEO tiêu đề"/>
+      <TextInput type="textarea" class="mb-4" :minlength="0" :maxlength="300"
+                 :rows="5" name="meta_description" v-model="form.meta_description"
+                 :required="true"
+                 :error-input="'details.' + index + '.meta_description'" label="SEO nội dung"/>
+      <TextInput type="textarea" class="mb-4" :minlength="0" :maxlength="200"
+                 :rows="3" name="meta_key" v-model="form.meta_key"
+                 :required="true"
+                 :error-input="'details.' + index + '.meta_key'" label="SEO từ khoá"/>
+
+      <div class="flex justify-center">
+        <div class="w-[700px]">
+          <FilePond
+              ref="pondElementThumb"
+              class="product-image"
+              label-idle="Kéo thả hoặc chọn hình ảnh tại đây"
+              accepted-file-types="image/*"
+              label-max-file-size-exceeded="File quá lớn"
+              :max-file-size="maxFileSize"
+              allow-file-size-validation="true"
+              class-name="upload-job-image flex items-center justify-center w-full"
+              name="image"
+              :label-max-file-size="'Kích thước tệp tối đa là ' +  maxFileSize"
+              required="true"
+              credits="false"
+              :accepted-file-types="acceptedFileTypes"
+              :label-file-type-not-allowed="'Invalid file format'"
+              :file-validate-type-label-expected-types="'Định dạng cho phép {format}'"
+              allow-multiple="true"
+              max-files="10"
+              v-on:addfile="getThumbImage"
+              v-on:removefile="removeThumbImage"
+              v-bind:files="thumbImage"
+          />
+          <span v-if="alertStore.errors[`details.${index}.thumb_image`]" class="text-xs tracking-wide text-red-600">{{
+              alertStore.errors['thumb_image'][0]
+            }}</span>
+        </div>
+      </div>
+<!--      <Toggle v-model="form.is_active" :checked="form.is_active"-->
+<!--              :error-input="'details.' + index + '.is_active'"-->
+<!--              :label="trans('labels.show')" name="status"/>-->
+      <Button @click.prevent="onSubmit" title="Cập nhật" icon="fa fa-save" label="Cập nhật"/>
     </Form>
   </div>
 </template>
@@ -199,11 +261,24 @@ watch(() => addFile.value, (data) => {
   })
 });
 
-watch(form, (data) => {
-  emit('informationUpdate', form)
-})
-
-
+function onSubmit() {
+  service.handleUpdate('edit-product-variant', `${props.item.product_id}/variants/${props.item.id}`, reduceProperties(form, 'roles', 'id')).then((response) => {
+    if (alertStore.type == 'success') {
+      // fillObject(form, response.data.model);
+      // item.value = response.data.model;
+      // images.value = item.value.image_url
+      // thumbImage.value = item.value.thumb_image
+      // form.image = null
+      // if (response.data.model.category_id) {
+      //   category.value = {
+      //     'id': response.data.model.category_id,
+      //     'title': response.data.model.category_name
+      //   };
+      // }
+    }
+  });
+  return false;
+}
 
 watch(() => [form.price,ratio.value], (value) => {
   if (isFirstLoad.value) {
@@ -211,7 +286,6 @@ watch(() => [form.price,ratio.value], (value) => {
     priceCurrent.value = form.price - ratio.value * value / 100;
   }
 });
-
 
 watch(() => form.discount, (value) => {
   if (isFirstLoad.value) {

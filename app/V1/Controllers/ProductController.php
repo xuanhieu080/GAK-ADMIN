@@ -36,6 +36,7 @@ class ProductController extends Controller
 //        $this->authorize('view', Company::class);
 
         $model = $this->model->show($slug);
+
         if (empty($model)) {
             return $this->responseFail('Dữ liệu không tồn tại',[]);
         }

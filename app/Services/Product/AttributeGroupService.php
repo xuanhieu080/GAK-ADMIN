@@ -69,6 +69,7 @@ class AttributeGroupService
         $full_columns = $this->model->getFillable();
         $data = array_intersect_key($data, array_flip($full_columns));
         $data['is_color'] = filter_var(Arr::get($data, 'is_color'), FILTER_VALIDATE_BOOLEAN);
+        $data['is_main'] = filter_var(Arr::get($data, 'is_main'), FILTER_VALIDATE_BOOLEAN);
 
         $record = AttributeGroup::query()->create($data);
         if (!empty($record)) {
@@ -92,6 +93,7 @@ class AttributeGroupService
         $attributeGroup->priority = Arr::get($data, 'priority', $attributeGroup->priority);
         $attributeGroup->link = Arr::get($data, 'link', $attributeGroup->link);
         $attributeGroup->is_color = filter_var(Arr::get($data, 'is_color',$attributeGroup->is_color), FILTER_VALIDATE_BOOLEAN);
+        $attributeGroup->is_main = filter_var(Arr::get($data, 'is_main',$attributeGroup->is_main), FILTER_VALIDATE_BOOLEAN);
 
         $attributeGroup->save();
         $attributeGroup->refresh();

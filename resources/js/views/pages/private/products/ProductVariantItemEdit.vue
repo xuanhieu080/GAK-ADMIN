@@ -21,6 +21,8 @@
       <TextInput class="mb-4" type="number" :min="0" :max="100000" name="qty" v-model="form.qty"
                  :error-input="'details.' + index + '.qty'"
                  error-input="qty" label="Số lượng"/>
+      <Button @click.prevent="onSubmit" title="Cập nhật" icon="fa fa-save" label="Cập nhật"/>
+
     </Form>
   </div>
 </template>
@@ -141,54 +143,11 @@ if (props.item) {
   priceCurrent.value = props.item.price_discount
   optionName.value = props.item.option_name
 
-  emit('informationUpdate', form)
-
   setTimeout(() => {
     isFirstLoad.value = true
   },5000)
 }
 
-// onBeforeMount(() => {
-//   service.edit(props.id).then((response) => {
-//     fillObject(form, response.data.model);
-//     item.value = response.data.model;
-//     images.value = item.value.image_url
-//     thumbImage.value = item.value.thumb_image
-//     form.image = null
-//     if (response.data.model.category_id) {
-//       category.value = {
-//         'id': response.data.model.category_id,
-//         'title': response.data.model.category_name
-//       };
-//     }
-//     isFirstLoad.value = false
-//   })
-// });
-
-function getImage(event) {
-  if (pondElement.value.getFile().file instanceof File == true) {
-    form.image = pondElement.value.getFile().file;
-  }
-  image.value = pondElement.value.getFile().file;
-  filePondKey.value = pondElement.value.getFile().file.lastModified;
-}
-
-function removeImage() {
-  form.image = null;
-  form.file = null;
-  image.value = null;
-}
-
-function getThumbImage() {
-  addFile.value++;
-}
-
-function removeThumbImage(event, file) {
-  if (file.file instanceof File == false) {
-    form.thumb_image_remove.push(file.file.name)
-  }
-  addFile.value--;
-}
 
 watch(() => addFile.value, (data) => {
   form.thumb_image = [];
@@ -198,12 +157,6 @@ watch(() => addFile.value, (data) => {
     }
   })
 });
-
-watch(form, (data) => {
-  emit('informationUpdate', form)
-})
-
-
 
 watch(() => [form.price,ratio.value], (value) => {
   if (isFirstLoad.value) {
@@ -218,6 +171,26 @@ watch(() => form.discount, (value) => {
     priceCurrent.value = form.price - value ;
   }
 });
+
+
+function onSubmit() {
+  service.handleUpdate('edit-product-variant', `product-variants/${props.item.id}`, reduceProperties(form, 'roles', 'id')).then((response) => {
+    if (alertStore.type == 'success') {
+      // fillObject(form, response.data.model);
+      // item.value = response.data.model;
+      // images.value = item.value.image_url
+      // thumbImage.value = item.value.thumb_image
+      // form.image = null
+      // if (response.data.model.category_id) {
+      //   category.value = {
+      //     'id': response.data.model.category_id,
+      //     'title': response.data.model.category_name
+      //   };
+      // }
+    }
+  });
+  return false;
+}
 
 </script>
 

@@ -2,12 +2,14 @@
 
 namespace App\Services\Product;
 
+use App\Http\Resources\ProductDetailMainResource;
 use App\Http\Resources\ProductDetailResource;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\VariantResource;
 use App\Models\Product;
 use App\Models\ProductDetail;
 use App\Models\ProductVariant;
+use App\Models\ProductVariantMain;
 use App\Models\Variant;
 use App\Services\Media\MediaService;
 use App\Supports\HasImage;
@@ -204,6 +206,7 @@ class ProductService
             foreach ($detailCurrents as $subArray) {
                 $subArray['product_id'] = $product->id;
                 $subArray['is_hot'] = filter_var(Arr::get($subArray, 'is_hot'), FILTER_VALIDATE_BOOLEAN);
+                $subArray['is_main'] = filter_var(Arr::get($subArray, 'is_main'), FILTER_VALIDATE_BOOLEAN);
 
                 $hash = '';
                 foreach ($keys as $key) {
@@ -217,7 +220,7 @@ class ProductService
             }
 
             if (!empty($result)) {
-                Variant::upsert($result, ['id'], ['attribute_id', 'attribute_group_id', 'product_id', 'is_hot']);
+                Variant::upsert($result, ['id'], ['attribute_id', 'attribute_group_id', 'product_id', 'is_hot', 'is_main']);
             }
 
             $params = [];
@@ -227,16 +230,18 @@ class ProductService
                     'attribute_id'       => $detail['attribute_id'],
                     'attribute_group_id' => $detail['attribute_group_id'],
                     'product_id'         => $product->id,
-                    'is_hot'             => $product->is_hot,
+                    'is_hot'             => filter_var(Arr::get($detail, 'is_hot'), FILTER_VALIDATE_BOOLEAN),
+                    'is_main'            => filter_var(Arr::get($detail, 'is_main'), FILTER_VALIDATE_BOOLEAN),
                 ];
             }
 
-            $keys = ['attribute_id', 'attribute_group_id', 'product_id', 'is_hot'];
+            $keys = ['attribute_id', 'attribute_group_id', 'product_id', 'is_hot', 'is_main'];
             $values = [];
             $result = [];
 
             foreach ($params as $subArray) {
                 $subArray['is_hot'] = filter_var(Arr::get($subArray, 'is_hot'), FILTER_VALIDATE_BOOLEAN);
+                $subArray['is_main'] = filter_var(Arr::get($subArray, 'is_main'), FILTER_VALIDATE_BOOLEAN);
                 $hash = '';
                 foreach ($keys as $key) {
                     $hash .= $subArray[$key] . '|';
@@ -248,10 +253,11 @@ class ProductService
                 }
             }
             if (!empty($result)) {
-                Variant::upsert($result, ['attribute_id', 'attribute_group_id', 'product_id', 'is_hot']);
+                Variant::upsert($result, ['attribute_id', 'attribute_group_id', 'product_id', 'is_hot', 'is_main']);
             }
 
             $this->sync($product);
+            $this->syncProductVariantMain($product);
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
@@ -325,6 +331,8 @@ class ProductService
     {
         $data = Variant::query()
             ->where('product_id', $product->id)
+            ->orderByDesc('is_hot')
+            ->orderByDesc('is_main')
             ->orderBy('attribute_group_id')
             ->orderBy('attribute_id')
             ->get();
@@ -336,6 +344,7 @@ class ProductService
     {
         try {
             DB::beginTransaction();
+            $this->syncProductVariantMain($product);
             $this->sync($product);
             DB::commit();
         } catch (\Exception $exception) {
@@ -349,7 +358,6 @@ class ProductService
 
     public function sync(Product $product): void
     {
-//        try {
         $variants = Variant::with(['product', 'attribute', 'attributeGroup'])
             ->where('product_id', $product->id)
             ->get()
@@ -439,7 +447,6 @@ class ProductService
             return $item1['options'] <=> $item2['options'];
         });
 
-
         $differenceRemove = array_udiff($differenceRemove, $details, function ($item1, $item2) {
             return $item1['options'] <=> $item2['options'];
         });
@@ -449,7 +456,131 @@ class ProductService
         }, $differenceRemove);
 
         ProductVariant::query()->insert($differences);
-        $productVariants = ProductVariant::query()->whereIn('id', $ids)->get();
+        ProductVariant::query()->whereIn('id', $ids)->delete();
+
+        $productMains = ProductVariantMain::query()->where('product_id', $product->id)
+            ->pluck('options', 'id')
+            ->toArray();
+
+        $productVariants = ProductVariant::query()
+            ->where('product_id', $product->id)
+            ->get();
+
+        // Lặp qua từng `variant` một lần duy nhất.
+        foreach ($productVariants as $variant) {
+            // Lặp qua các `productMains` và kiểm tra điều kiện.
+            foreach ($productMains as $productVariantId => $productMain) {
+                if (empty(array_diff($productMain, $variant['options']))) {
+                    // Nếu `options` của `productMain` đều có trong `variant`, thêm `variant` vào kết quả.
+                    $variant->product_main_id = $productVariantId;
+                    $variant->save();
+                    // Chỉ cần phù hợp với một `productMain` là đủ, không cần kiểm tra thêm.
+                    break;
+                }
+            }
+        }
+    }
+
+    public function syncProductVariantMain(Product $product): void
+    {
+//        try {
+        $variants = Variant::with(['product', 'attribute', 'attributeGroup'])
+            ->where('product_id', $product->id)
+            ->where('is_main', 1)
+            ->get()
+            ->groupBy('attribute_group_id')
+            ->map(function ($group) {
+                return $group->map(function ($item) {
+                    return [
+                        'attribute_group_id'       => $item['attributeGroup']['id'],
+                        'attribute_group_name'     => $item['attributeGroup']['name'],
+                        'attribute_group_priority' => $item['attributeGroup']['priority'],
+                        'attribute_id'             => $item['attribute']['id'],
+                        'attribute_name'           => $item['attribute']['name'],
+                        'product_id'               => $item['product']['id'],
+                        'product_name'             => $item['product']['name'],
+                        'price'                    => $item['product']['price'],
+                        'qty'                      => $item['product']['qty'],
+                        'discount'                 => $item['product']['discount'],
+                        'price_discount'           => $item['product']['price_discount'],
+                        'description'              => $item['product']['description'],
+                        'meta_description'         => $item['product']['meta_description'],
+                        'meta_key'                 => $item['product']['meta_key'],
+                        'meta_title'               => $item['product']['meta_title'],
+                    ];
+                })->sortBy('attribute_name');
+            })
+            ->sortBy(function ($values, $key) {
+                return $values->first()['attribute_group_priority']; // Sắp xếp theo attribute group name
+            })
+            ->values()
+            ->toArray();
+
+        $result = $this->combining($variants);
+
+        $details = array_map(function ($itemGroup) use ($product) {
+            $name = '';
+            $params = '';
+            $attributes = [];
+            $attributeAll = [];
+            $attributeGroup = [];
+            foreach ($itemGroup as $key => $item) {
+                $attributes[] = $item['attribute_id'];
+                $attributeGroup[] = $item['attribute_group_id'];
+                $attributeAll[] = [
+                    'attribute_group_id' => $item['attribute_group_id'],
+                    'attribute_id'       => $item['attribute_id'],
+                ];
+
+                $name .= sprintf(', %s: %s', $item['attribute_group_name'], $item['attribute_name']);
+                $params .= sprintf('&%s=%s', Str::slug($item['attribute_group_name']), Str::slug($item['attribute_name']));
+            }
+
+            sort($attributes);
+            return [
+                'name'             => "$product->name$name",
+                'code'             => Support::genCode('product_variant_mains', 'code', 16),
+                'product_id'       => $product->id,
+                'option_name'      => trim($name, ', '),
+                'params'           => trim($params, '&'),
+                'options'          => json_encode($attributes),
+                'option_all'       => json_encode($attributeAll),
+                'option_group'     => json_encode($attributeGroup),
+                'description'      => $product->description,
+                'meta_description' => $product->meta_description,
+                'meta_key'         => $product->meta_key,
+                'meta_title'       => $product->meta_title,
+            ];
+        }, $result);
+
+        $data = ProductVariantMain::query()
+            ->where('product_id', $product->id)
+            ->get()
+            ->map(function ($item) {
+                $item->options = json_encode($item->options);
+                return $item;
+            })
+            ->toArray();
+
+        $differences = array_udiff($details, $data, function ($item1, $item2) {
+            return $item1['options'] <=> $item2['options'];
+        });
+
+        $differenceRemove = array_udiff($data, $differences, function ($item1, $item2) {
+            return $item1['options'] <=> $item2['options'];
+        });
+
+
+        $differenceRemove = array_udiff($differenceRemove, $details, function ($item1, $item2) {
+            return $item1['options'] <=> $item2['options'];
+        });
+
+        $ids = array_map(function ($item) {
+            return $item['id'];
+        }, $differenceRemove);
+
+        ProductVariantMain::query()->insert($differences);
+        $productVariants = ProductVariantMain::query()->whereIn('id', $ids)->get();
         foreach ($productVariants as $productVariant) {
             $productVariant->delete();
         }
@@ -485,6 +616,11 @@ class ProductService
     public function productVariant(Product $product)
     {
         return response()->json(['model' => new ProductDetailResource($product)]);
+    }
+
+    public function productVariantMain(Product $product)
+    {
+        return response()->json(['model' => new ProductDetailMainResource($product)]);
     }
 
     public function updateProductVariant(Product $product, $input)
@@ -539,6 +675,82 @@ class ProductService
 
                 $productVariant->save();
             }
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw new \Exception($e->getMessage());
+        }
+
+        return true;
+    }
+
+    public function updateProductVariantItem(ProductVariant $productVariant, $input)
+    {
+        try {
+            DB::beginTransaction();
+                $data = $this->clean($input);
+
+                $price = Arr::get($data, 'price', $productVariant->price);
+                $discount = Arr::get($data, 'discount', $productVariant->discount);
+                $productVariant->name = Arr::get($data, 'name', $productVariant->name);
+                $productVariant->description = Arr::get($data, 'description', $productVariant->description);
+                $productVariant->price = $price;
+                $productVariant->discount = $discount;
+                $productVariant->price_discount = $price - $discount;
+                $productVariant->qty = Arr::get($data, 'qty', $productVariant->qty);
+//                $productVariant->is_active = filter_var(Arr::get($data, 'is_active', $productVariant->is_active), FILTER_VALIDATE_BOOLEAN);
+                $productVariant->save();
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw new \Exception($e->getMessage());
+        }
+
+        return true;
+    }
+    public function updateProductVariantMainItem(Product $product, ProductVariantMain $productVariant, $input)
+    {
+        try {
+            DB::beginTransaction();
+                $data = $this->clean($input);
+
+                $productVariant->name = Arr::get($data, 'name', $productVariant->name);
+                $productVariant->description = Arr::get($data, 'description', $productVariant->description);
+
+                $productVariant->is_active = filter_var(Arr::get($data, 'is_active', $productVariant->is_active), FILTER_VALIDATE_BOOLEAN);
+//                $productVariant->priority = Arr::get($data, 'priority', $productVariant->priority);
+//                $productVariant->slug = Arr::get($data, 'slug', $productVariant->slug);
+                $productVariant->meta_title = Arr::get($data, 'meta_title', $productVariant->meta_title);
+                $productVariant->meta_description = Arr::get($data, 'meta_description', $productVariant->meta_description);
+                $productVariant->meta_key = Arr::get($data, 'meta_key', $productVariant->meta_key);
+                $productVariant->params = Arr::get($data, 'params', $productVariant->params);
+                if (!empty($data['image'])) {
+                    $image = $data['image'];
+                    $mediaItem = $productVariant->getMedia('default')->first();
+                    if (!empty($mediaItem)) {
+                        $mediaItem->delete();
+                    }
+                    $productVariant->addMedia($image)
+                        ->usingName($productVariant->name)
+                        ->usingFileName("$productVariant->slug-$productVariant->id" . time() . Str::random(8) . '.' . $image->getClientOriginalExtension())
+                        ->toMediaCollection();
+                }
+
+                foreach ((array)Arr::get($data, 'thumb_image_remove', []) as $file) {
+                    $media = $productVariant->getMedia('thumb')->where('file_name', $file)->first();
+                    if (!empty($media)) {
+                        $media->delete();
+                    }
+                }
+
+                foreach ((array)Arr::get($data, 'thumb_image', []) as $image) {
+                    $productVariant->addMedia($image)
+                        ->usingName($product->name)
+                        ->usingFileName($product->slug . '-' . time() . Str::random(8) . '.' . $image->getClientOriginalExtension())
+                        ->toMediaCollection('thumb');
+                }
+
+                $productVariant->save();
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();

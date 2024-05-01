@@ -17,17 +17,20 @@ class AttributeGroup extends Model
         'name',
         'priority',
         'is_color',
-        'link'
+        'link',
+        'is_main',
     ];
     protected $casts = [
-        'is_color'   => 'boolean',
+        'is_color' => 'boolean',
+        'is_main' => 'boolean',
     ];
     protected $appends = [
-        'title','slug'
+        'title', 'slug'
     ];
     protected $searchFields = ['name'];
 
-    public function attributes() {
+    public function attributes()
+    {
         return $this->hasMany(Attribute::class, 'group_id', 'id');
     }
 
@@ -36,7 +39,8 @@ class AttributeGroup extends Model
         return $this->name;
     }
 
-    public function getSlugAttribute() {
+    public function getSlugAttribute()
+    {
         return \Str::slug($this->name);
     }
 }
