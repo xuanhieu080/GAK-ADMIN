@@ -1,6 +1,6 @@
 <template>
-  <div v-if="item" id="edit-product-variant">
-    <div v-if="item.variantMains > 0">
+  <div v-if="isFirstLoad" id="edit-product-variant">
+    <div v-if="item.variantMains.length > 0">
       <div class="py-2">Biến thể chính</div>
       <div class="flex flex-wrap gap-4">
         <div v-if="item.variantMains" v-for="(variant, index) in item.variantMains" class="">
@@ -77,7 +77,7 @@ const service = new ProductService();
 onBeforeMount(() => {
   service.find(`${props.id}/variant-mains`).then((response) => {
     item.value = response.data.model;
-    isFirstLoad.value = false
+    isFirstLoad.value = true
   })
 });
 
@@ -85,7 +85,7 @@ watch(() => props.refresh,
     () => {
       service.find(`${props.id}/variant-mains`).then((response) => {
         item.value = response.data.model;
-        isFirstLoad.value = false
+        isFirstLoad.value = true
       })
     })
 </script>
