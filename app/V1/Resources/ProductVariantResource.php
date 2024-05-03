@@ -39,22 +39,22 @@ class ProductVariantResource extends JsonResource
             'meta_key'                => $this->meta_key,
         ];
 
-        if (!empty($this->productVariantMain)) {
+//        if (!empty($this->productVariantMain)) {
             foreach ($this->productVariantMain->getMedia("thumb") as $item) {
                 $thumb[] = $item->getFullUrl();
             }
-            $data['image'] = $this->productVariantMain->getFirstMediaUrl() ?: $this->product->getFirstMediaUrl();
-            $data['image_url'] = $this->productVariantMain->getFirstMediaUrl() ?: $this->product->getFirstMediaUrl();
-        } else {
-            $data['image'] = $this->product->getFirstMediaUrl();
-            $data['image_url'] = $this->product->getFirstMediaUrl();
-        }
+            $data['image'] = $this->productVariantMain->getFirstMediaUrl();
+            $data['image_url'] = $this->productVariantMain->getFirstMediaUrl();
+//        } else {
+//            $data['image'] = $this->product->getFirstMediaUrl();
+//            $data['image_url'] = $this->product->getFirstMediaUrl();
+//        }
 
-        if (empty($thumb)) {
-            foreach ($this->product->getMedia("thumb") as $item) {
-                $thumb[] = $item->getFullUrl();
-            }
-        }
+//        if (empty($thumb)) {
+//            foreach ($this->product->getMedia("thumb") as $item) {
+//                $thumb[] = $item->getFullUrl();
+//            }
+//        }
         $data['thumb_image'] = $thumb;
         $data['created_at'] = !empty($this->resource->created_at) ? $this->resource->created_at->diffForHumans() : null;
         $data['updated_at'] = !empty($this->resource->updated_at) ? $this->resource->updated_at->diffForHumans() : null;

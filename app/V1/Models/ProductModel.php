@@ -32,7 +32,12 @@ class ProductModel extends AbstractModel
         }
 
         $input['sort'] = $sorts;
-        $result = $this->search($input, [], $limit);
+        $result = $this->search($input,
+            ['attributeVariants',
+             'variants' => function ($query) {
+                 $query->where('qty', '>', 0);
+             }
+            ], $limit);
 
         return ProductResource::collection($result);
     }
@@ -142,10 +147,13 @@ class ProductModel extends AbstractModel
     }
 
 
-
     public function show($slug)
     {
-        $item = Product::where('slug', $slug)
+        $item = Product::with(['attributeVariants',
+                               'variants' => function ($query) {
+                                   $query->where('qty', '>', 0);
+                               }
+        ])->where('slug', $slug)
             ->where('is_active', 1)
             ->first();
         if (empty($item)) {
