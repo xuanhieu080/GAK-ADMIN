@@ -16,7 +16,7 @@ class ProductResource extends JsonResource
     public function toArray($request)
     {
         $variants = [];
-        foreach ($this->attributeVariants->sortByDesc('is_color')->sortByDesc('is_hot')->groupBy('attribute_group_id') as $key => $item) {
+        foreach ($this->attributeVariants->sortByDesc('is_color')->sortByDesc('is_hot')->sortByDesc('is_main')->groupBy('attribute_group_id') as $key => $item) {
             $variants[] = [
                 'id'         => $key,
                 'name'       => $item[0]['attribute_group_name'],
