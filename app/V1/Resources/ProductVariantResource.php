@@ -15,12 +15,11 @@ class ProductVariantResource extends JsonResource
      */
     public function toArray($request)
     {
-
         $thumb = [];
         $data = [
             'id'                      => $this->id,
             'code'                    => $this->code,
-            'name'                    => object_get($this,'productVariantMain.name', object_get($this, 'product.name')),
+            'name'                    => object_get($this, 'productVariantMain.name', object_get($this, 'product.name')),
             'product_id'              => $this->product_id,
             'product_name'            => object_get($this, 'product.name'),
             'slug'                    => object_get($this, 'product.slug'),
@@ -35,6 +34,9 @@ class ProductVariantResource extends JsonResource
             'option_all'              => $this->option_all,
             'option_group'            => $this->option_group,
             'product_variant_main_id' => object_get($this, 'productVariantMain.id'),
+            'meta_title'              => $this->meta_title,
+            'meta_description'        => $this->meta_description,
+            'meta_key'                => $this->meta_key,
         ];
 
         if (!empty($this->productVariantMain)) {
