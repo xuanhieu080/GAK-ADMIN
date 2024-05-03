@@ -26,6 +26,7 @@ class ProductDetailMainResource extends JsonResource
         $data['image_url'] = $this->getFirstMediaUrl();
         $data['thumb_image'] = $thumb;
         $data['variantMains'] = ProductVariantMainResource::collection($this->variantMains);
+        $data['variants'] = count($this->variantMains) != 0 ? [] : ProductVariantResource::collection($this->variants);
         $data['category_name'] = object_get($this, 'category.name');
         $data['created_at'] = !empty($this->resource->created_at) ? $this->resource->created_at->diffForHumans() : null;
         $data['updated_at'] = !empty($this->resource->updated_at) ? $this->resource->updated_at->diffForHumans() : null;
