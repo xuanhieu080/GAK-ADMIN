@@ -105,7 +105,6 @@ onBeforeMount(() => {
   })
 });
 
-
 function onSubmit() {
   form.details.forEach(function (item, index) {
     data.details[index] = {
@@ -121,7 +120,7 @@ function onSubmit() {
       attribute_id: item.attribute?.id,
       attribute_group_id: item.attribute_group?.id,
       is_hot: item.is_hot,
-      is_main: item.is_mainf,
+      is_main: item.is_main,
     }
   })
   service.handleUpdate('edit-attribute', `${props.id}/attribute`, reduceProperties(data, 'roles', 'id')).then((response) => {

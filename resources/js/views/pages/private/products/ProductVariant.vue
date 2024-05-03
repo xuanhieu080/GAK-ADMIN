@@ -1,6 +1,6 @@
 <template>
-  <div id="edit-product-variant">
-    <div>
+  <div v-if="item" id="edit-product-variant">
+    <div v-if="item.variantMains > 0">
       <div class="py-2">Biến thể chính</div>
       <div class="flex flex-wrap gap-4">
         <div v-if="item.variantMains" v-for="(variant, index) in item.variantMains" class="">
@@ -11,6 +11,22 @@
         <div class="py-2">Biến thể phụ</div>
         <div v-if="item.variantMains" v-for="(variant, index) in item.variantMains" :class="active != index ? 'hidden' : ''">
           <ProductVariantItemMainEdit :item="variant" :index="index" :key="index"/>
+        </div>
+      </div>
+    </div>
+    <div v-else>
+      <div id="edit-product-variant">
+        <div>
+          <div class="flex flex-wrap gap-4">
+            <div v-if="item.variants" v-for="(variant, index) in item.variants" class="">
+              <Button @click="() =>active = index" :label="variant.option_name" :theme="active != index ? 'outline' : ''"></Button>
+            </div>
+          </div>
+          <div class="grid grid-cols-1">
+            <div v-if="item.variants" v-for="(variant, index) in item.variants" class="py-4" :class="active != index ? 'hidden' : ''">
+              <ProductVariantItemEdit :item="variant" :index="index" :key="index"/>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -31,6 +47,7 @@ import ProductVariantMainItem from "@/views/pages/private/products/ProductVarian
 import Button from "@/views/components/input/Button.vue";
 import ProductVariantItemMain from "@/views/pages/private/products/ProductVariantItemMain.vue";
 import ProductVariantItemMainEdit from "@/views/pages/private/products/ProductVariantItemMainEdit.vue";
+import ProductVariantItemEdit from "@/views/pages/private/products/ProductVariantItemEdit.vue";
 
 const alertStore = useAlertStore();
 

@@ -72,6 +72,5 @@ export const reduceProperties = (data, properties, singleProperty) => {
             obj[properties[i]] = newVal;
         }
     }
-    console.log(obj)
     return obj;
 };

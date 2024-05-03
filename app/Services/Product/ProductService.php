@@ -256,8 +256,8 @@ class ProductService
                 Variant::upsert($result, ['attribute_id', 'attribute_group_id', 'product_id', 'is_hot', 'is_main']);
             }
 
-            $this->sync($product);
             $this->syncProductVariantMain($product);
+            $this->sync($product);
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
@@ -561,7 +561,6 @@ class ProductService
                 return $item;
             })
             ->toArray();
-
         $differences = array_udiff($details, $data, function ($item1, $item2) {
             return $item1['options'] <=> $item2['options'];
         });

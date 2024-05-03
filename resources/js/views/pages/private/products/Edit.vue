@@ -4,20 +4,16 @@
     <Panel>
 
       <Tab :tabs="tabs" @set-index="updateTabIndex" :active-index="activeTab">
-        <div v-show="activeTab === 0"
-             :class="{ hidden: activeTab !== 0 }">
+        <div v-if="activeTab === 0">
           <EditInformation :id="id"/>
         </div>
-        <div v-show="activeTab === 1"
-             :class="{ hidden: activeTab !== 1 }">
+        <div v-if="activeTab === 1">
          <EditAttribute :id="id"  @information-attribute="informationAttribute"/>
         </div>
-        <div v-show="activeTab === 2"
-             :class="{ hidden: activeTab !== 2 }">
+        <div v-if="activeTab === 2">
           <ProductVariantMain :id="id" :refresh="refresh"/>
         </div>
-        <div v-show="activeTab === 3"
-             :class="{ hidden: activeTab !== 3 }">
+        <div v-if="activeTab === 3">
           <ProductVariant :id="id" :refresh="refresh"/>
         </div>
       </Tab>

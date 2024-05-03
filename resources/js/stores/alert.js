@@ -16,7 +16,6 @@ export const useAlertStore = defineStore({
             this.type = 'success'
         },
         error(message, status = 400) {
-            console.log(status)
             this.clear();
             this.push(message, status);
             this.type = 'error'

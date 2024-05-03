@@ -90,7 +90,6 @@ export const useStore = defineStore('sidebar', {
             this.isToggleMenu = !this.isToggleMenu
         },
         toggleProfileMenu() {
-            console.log('s')
             this.isProfileMenuOpen = !this.isProfileMenuOpen
             this.isToggleMenu = true
         },
