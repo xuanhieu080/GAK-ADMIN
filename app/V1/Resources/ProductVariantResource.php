@@ -48,6 +48,9 @@ class ProductVariantResource extends JsonResource
         } else {
             $data['image'] = $this->product->getFirstMediaUrl();
             $data['image_url'] = $this->product->getFirstMediaUrl();
+            foreach ($this->product->getMedia("thumb") as $item) {
+                $thumb[] = $item->getFullUrl();
+            }
         }
 
 //        if (empty($thumb)) {
@@ -56,6 +59,7 @@ class ProductVariantResource extends JsonResource
 //            }
 //        }
         $data['thumb_image'] = $thumb;
+        $data['out_of_stock'] = empty($thumb) || $data['image'] || $this->qty <= 0;
         $data['created_at'] = !empty($this->resource->created_at) ? $this->resource->created_at->diffForHumans() : null;
         $data['updated_at'] = !empty($this->resource->updated_at) ? $this->resource->updated_at->diffForHumans() : null;
 

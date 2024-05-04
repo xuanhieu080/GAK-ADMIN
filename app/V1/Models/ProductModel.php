@@ -135,6 +135,15 @@ class ProductModel extends AbstractModel
             }
         });
 
+        $query->whereHas('media', function ($query) {
+            // Điều kiện cho hình ảnh
+            $query->where('collection_name', 'default');
+        })->whereHas('media', function ($query) {
+            // Điều kiện cho hình thu nhỏ
+            $query->where('collection_name', 'thumb');
+        });
+
+
         if ($limit) {
             if ($limit === 1) {
                 return $query->first();
@@ -155,6 +164,13 @@ class ProductModel extends AbstractModel
                                }
         ])->where('slug', $slug)
             ->where('is_active', 1)
+            ->whereHas('media', function ($query) {
+                // Điều kiện cho hình ảnh
+                $query->where('collection_name', 'default');
+            })->whereHas('media', function ($query) {
+                // Điều kiện cho hình thu nhỏ
+                $query->where('collection_name', 'thumb');
+            })
             ->first();
         if (empty($item)) {
             return null;
