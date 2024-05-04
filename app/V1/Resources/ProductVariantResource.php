@@ -59,7 +59,7 @@ class ProductVariantResource extends JsonResource
 //            }
 //        }
         $data['thumb_image'] = $thumb;
-        $data['out_of_stock'] = empty($thumb) && !empty($data['image']) && $this->qty <= 0;
+        $data['out_of_stock'] = empty($thumb) || empty($data['image']) || $this->qty <= 0;
         $data['created_at'] = !empty($this->resource->created_at) ? $this->resource->created_at->diffForHumans() : null;
         $data['updated_at'] = !empty($this->resource->updated_at) ? $this->resource->updated_at->diffForHumans() : null;
 
