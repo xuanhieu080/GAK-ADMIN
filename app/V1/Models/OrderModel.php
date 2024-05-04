@@ -187,7 +187,13 @@ class OrderModel extends AbstractModel
             if (!empty($nullProductIds)) {
                 $query->orWhereIn('id', $nullProductIds);
             }
-        })->orderBy('name')->get();
+        })->whereHas('media', function ($query) {
+        // Điều kiện cho hình ảnh
+        $query->where('collection_name', 'default');
+    })->whereHas('media', function ($query) {
+        // Điều kiện cho hình thu nhỏ
+        $query->where('collection_name', 'thumb');
+    })->orderBy('name')->get();
 
         return ProductStockResource::collection($products);
     }
