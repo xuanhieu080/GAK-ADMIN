@@ -2,12 +2,14 @@
 
 namespace App\V1\Models;
 
-use App\Models\Post;
-use App\V1\Resources\PostResource;
+use App\Models\Order;
+use App\Models\Product;
+use App\V1\Resources\OrderResource;
+use App\V1\Resources\ProductStockResource;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
-class PostModel extends AbstractModel
+class OrderModel extends AbstractModel
 {
 
     /**
@@ -15,7 +17,7 @@ class PostModel extends AbstractModel
      */
     public function __construct()
     {
-        $model = new Post();
+        $model = new Order();
         parent::__construct($model);
     }
 
@@ -33,7 +35,7 @@ class PostModel extends AbstractModel
         $input['sort'] = $sorts;
         $result = $this->search($input, [], $limit);
 
-        return PostResource::collection($result);
+        return OrderResource::collection($result);
     }
 
     public function search($input = [], $with = [], $limit = null)
@@ -140,15 +142,53 @@ class PostModel extends AbstractModel
         }
     }
 
-    public function show($slug)
+    public function show($code)
     {
-        $item = Post::where('slug', $slug)
-            ->where('is_active',1)
+        $item = Order::where('code', $code)
             ->first();
         if (empty($item)) {
             return null;
         }
 
-        return new PostResource($item);
+        return new OrderResource($item);
+    }
+
+    public function checkStock($input)
+    {
+        $nonNullDetails = array_filter($input['items'], function ($condition) {
+            return !is_null($condition['product_variant_id']);
+        });
+
+        $nullProductIds = array_reduce($input['items'], function ($carry, $condition) {
+            if (is_null($condition['product_variant_id'])) {
+                $carry[] = $condition['product_id'];
+            }
+            return $carry;
+        }, []);
+
+        $products = Product::with(['variants' => function ($query) use ($nonNullDetails) {
+            $query->where(function ($query) use ($nonNullDetails) {
+                foreach ($nonNullDetails as $conditions) {
+                    $query->orWhere(function ($query) use ($conditions) {
+                        $query->where('product_id', $conditions['product_id'])
+                            ->where('id', $conditions['product_variant_id']);
+                    });
+                }
+            })->orderBy('name');
+        }])->where(function ($query) use ($nonNullDetails, $nullProductIds) {
+            foreach ($nonNullDetails as $conditions) {
+                $query->orWhere(function ($query) use ($conditions) {
+                    $query->where('id', $conditions['product_id'])
+                        ->whereHas('variants', function ($query) use ($conditions) {
+                            $query->where('id', $conditions['product_variant_id']);
+                        });
+                });
+            }
+            if (!empty($nullProductIds)) {
+                $query->orWhereIn('id', $nullProductIds);
+            }
+        })->orderBy('name')->get();
+
+        return ProductStockResource::collection($products);
     }
 }
