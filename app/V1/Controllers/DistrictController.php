@@ -3,21 +3,19 @@
 namespace App\V1\Controllers;
 
 
-use App\Models\Order;
-use App\V1\Models\OrderModel;
-use App\V1\Requests\Orders\CheckStockRequest;
-use App\V1\Requests\Orders\CreateRequest;
+use App\Models\District;
+use App\V1\Models\DistrictModel;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class OrderController extends Controller
+class DistrictController extends Controller
 {
     protected $model;
 
     public function __construct()
     {
-        $this->model = new OrderModel();
+        $this->model = new DistrictModel();
     }
 
     /**
@@ -33,11 +31,11 @@ class OrderController extends Controller
         return $this->model->index($input);
     }
 
-    public function show($order)
+    public function show(District $district)
     {
 //        $this->authorize('view', Company::class);
 
-        $model = $this->model->show($order);
+        $model = $this->model->show($district);
         if (empty($model)) {
             return $this->responseFail('Dữ liệu không tồn tại',[]);
         }
@@ -51,23 +49,5 @@ class OrderController extends Controller
     public function properties()
     {
         return [];
-    }
-
-
-
-    /// Stock
-    public function checkStock(CheckStockRequest $request)
-    {
-//        $this->authorize('list', Company::class);
-        $input = $request->validated();
-
-        return $this->model->checkStock($input);
-    }
-
-
-    public function create(CreateRequest $request)
-    {
-        $request->validated();
-        return $this->responseDataSuccess(['model' => $this->properties(),'message' => 'Tạo hoá đơn thành công']);
     }
 }
