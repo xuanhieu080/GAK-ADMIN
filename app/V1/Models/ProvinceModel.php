@@ -2,14 +2,12 @@
 
 namespace App\V1\Models;
 
-use App\Models\Order;
-use App\Models\Product;
-use App\V1\Resources\OrderResource;
-use App\V1\Resources\ProductStockResource;
+use App\Models\Province;
+use App\V1\Resources\ProvinceResource;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
-class OrderModel extends AbstractModel
+class ProvinceModel extends AbstractModel
 {
 
     /**
@@ -17,15 +15,15 @@ class OrderModel extends AbstractModel
      */
     public function __construct()
     {
-        $model = new Order();
+        $model = new Province();
         parent::__construct($model);
     }
 
     public function index($input)
     {
         $limit = Arr::get($input, 'limit', 999);
-        $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
-        $sorts = ['id' => 'desc'];
+        $sort = Arr::get($input, 'sort', ['asc' => ['name']]);
+        $sorts = ['name' => 'desc'];
         if (!empty($sort['desc']) && is_array($sort['desc'])) {
             $sorts = array_merge($sorts, array_fill_keys($sort['desc'], 'desc'));
         } elseif (!empty($sort['asc']) && is_array($sort['asc'])) {
@@ -33,9 +31,12 @@ class OrderModel extends AbstractModel
         }
 
         $input['sort'] = $sorts;
+        if (!empty($input['name'])) {
+            $input['name'] = ['LIKE', '%' . $input['name'] . '%'];
+        }
         $result = $this->search($input, [], $limit);
 
-        return OrderResource::collection($result);
+        return ProvinceResource::collection($result);
     }
 
     public function search($input = [], $with = [], $limit = null)
@@ -142,64 +143,14 @@ class OrderModel extends AbstractModel
         }
     }
 
-    public function show($code)
+
+
+    public function show(Province $item)
     {
-        $item = Order::where('code', $code)
-            ->first();
-        if (empty($item)) {
-            return null;
-        }
+//        if (!$item->is_active) {
+//            return null;
+//        }
 
-        return new OrderResource($item);
-    }
-
-    public function checkStock($input)
-    {
-        $nonNullDetails = array_filter($input['items'], function ($condition) {
-            return !is_null($condition['product_variant_id']);
-        });
-
-        $nullProductIds = array_reduce($input['items'], function ($carry, $condition) {
-            if (is_null($condition['product_variant_id'])) {
-                $carry[] = $condition['product_id'];
-            }
-            return $carry;
-        }, []);
-
-        $products = Product::with(['variants' => function ($query) use ($nonNullDetails) {
-            $query->where(function ($query) use ($nonNullDetails) {
-                foreach ($nonNullDetails as $conditions) {
-                    $query->orWhere(function ($query) use ($conditions) {
-                        $query->where('product_id', $conditions['product_id'])
-                            ->where('id', $conditions['product_variant_id']);
-                    });
-                }
-            })->orderBy('name');
-        }])->where(function ($query) use ($nonNullDetails, $nullProductIds) {
-            foreach ($nonNullDetails as $conditions) {
-                $query->orWhere(function ($query) use ($conditions) {
-                    $query->where('id', $conditions['product_id'])
-                        ->whereHas('variants', function ($query) use ($conditions) {
-                            $query->where('id', $conditions['product_variant_id']);
-                        });
-                });
-            }
-            if (!empty($nullProductIds)) {
-                $query->orWhereIn('id', $nullProductIds);
-            }
-        })->whereHas('media', function ($query) {
-        // Điều kiện cho hình ảnh
-        $query->where('collection_name', 'default');
-    })->whereHas('media', function ($query) {
-        // Điều kiện cho hình thu nhỏ
-        $query->where('collection_name', 'thumb');
-    })->orderBy('name')->get();
-
-        return ProductStockResource::collection($products);
-    }
-
-    public function store($input)
-    {
-//        return ProductStockResource::collection($products);
+        return new ProvinceResource($item);
     }
 }
