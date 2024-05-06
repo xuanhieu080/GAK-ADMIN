@@ -21,6 +21,7 @@ class ProductResource extends JsonResource
             $thumb[] = $item->getFullUrl();
         }
         $data = $this->resource->toArray();
+        $data['id'] = $this->id;
         $data['image'] = $this->getFirstMediaUrl();
         $data['image_url'] = $this->getFirstMediaUrl();
         $data['thumb_image'] = $thumb;
