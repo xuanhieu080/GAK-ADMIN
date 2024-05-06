@@ -98,7 +98,7 @@
               :label-file-type-not-allowed="'Invalid file format'"
               :file-validate-type-label-expected-types="'Định dạng cho phép {format}'"
               allow-multiple="true"
-              max-files="10"
+              max-files="50"
               v-on:addfile="getThumbImage"
               v-on:removefile="removeThumbImage"
               v-bind:files="thumbImage"
