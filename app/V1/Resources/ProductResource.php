@@ -58,7 +58,7 @@ class ProductResource extends JsonResource
             $thumb[] = $item->getFullUrl();
         }
         $data['image'] = $this->getFirstMediaUrl();
-        $data['image_url'] = $this->getFirstMediaUrl();
+        $data['image_url'] = !empty($thumb[0]) ? $thumb[0] : $this->getFirstMediaUrl();
         $data['thumb_image'] = $thumb;
         $data['category_name'] = object_get($this, 'category.name');
         $data['created_at'] = !empty($this->resource->created_at) ? $this->resource->created_at->diffForHumans() : null;
