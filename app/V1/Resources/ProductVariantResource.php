@@ -43,11 +43,11 @@ class ProductVariantResource extends JsonResource
             foreach ($this->productVariantMain->getMedia("thumb") as $item) {
                 $thumb[] = $item->getFullUrl();
             }
+            $image = $this->productVariantMain->getFirstMediaUrl();
             $data['image'] = $this->productVariantMain->getFirstMediaUrl();
-            $data['image_url'] = $this->productVariantMain->getFirstMediaUrl();
         } else {
+            $image = $this->product->getFirstMediaUrl();
             $data['image'] = $this->product->getFirstMediaUrl();
-            $data['image_url'] = $this->product->getFirstMediaUrl();
             foreach ($this->product->getMedia("thumb") as $item) {
                 $thumb[] = $item->getFullUrl();
             }
@@ -58,6 +58,7 @@ class ProductVariantResource extends JsonResource
 //                $thumb[] = $item->getFullUrl();
 //            }
 //        }
+        $data['image_url'] = !empty($thumb[0]) ? $thumb[0] : $image;
         $data['thumb_image'] = $thumb;
         $data['out_of_stock'] = empty($thumb) || empty($data['image']) || $this->qty <= 0;
         $data['created_at'] = !empty($this->resource->created_at) ? $this->resource->created_at->diffForHumans() : null;
