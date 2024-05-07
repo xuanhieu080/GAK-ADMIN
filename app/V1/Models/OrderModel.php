@@ -4,6 +4,7 @@ namespace App\V1\Models;
 
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\ProductVariant;
 use App\V1\Resources\OrderResource;
 use App\V1\Resources\ProductStockResource;
 use Illuminate\Support\Arr;
@@ -188,18 +189,77 @@ class OrderModel extends AbstractModel
                 $query->orWhereIn('id', $nullProductIds);
             }
         })->whereHas('media', function ($query) {
-        // Điều kiện cho hình ảnh
-        $query->where('collection_name', 'default');
-    })->whereHas('media', function ($query) {
-        // Điều kiện cho hình thu nhỏ
-        $query->where('collection_name', 'thumb');
-    })->orderBy('name')->get();
+            // Điều kiện cho hình ảnh
+            $query->where('collection_name', 'default');
+        })->whereHas('media', function ($query) {
+            // Điều kiện cho hình thu nhỏ
+            $query->where('collection_name', 'thumb');
+        })->orderBy('name')->get();
 
         return ProductStockResource::collection($products);
     }
 
     public function store($input)
     {
-//        return ProductStockResource::collection($products);
+        try {
+            DB::transaction(function () use ($input) {
+                $items = $input['items'];
+                $data = $input;
+                foreach ($items as $index => $detail) {
+                    if (!empty($detail['product_variant_id'])) {
+                        $productVariantId = $detail['product_variant_id'];
+                        $productId = $detail['product_id'];
+
+                        $item = ProductVariant::with(['product'])
+                            ->whereHas('product')
+                            ->where('id', $productVariantId)->where('product_id', $productId)->lockForUpdate()->first();
+                        if (empty($item)) {
+                            throw new \Exception('Sản phẩm không tồn tại');
+                        }
+                        if ($item->qty < $detail['qty']) {
+                            throw new \Exception('Số lượng sản phẩm trong kho không đủ');
+                        }
+
+                        $product = $item->product;
+                        $data['product_variant_id'] = $item->id;
+                        $data['product_variant_code'] = $item->code;
+                        $data['product_variant_name'] = $item->name;
+                    }
+                    if (empty($detail['product_variant_id'])) {
+                        $productId = $detail['product_id'];
+                        $item = Product::where('id', $productId)->whereDoesntHave('variants')->lockForUpdate()->first();
+                        if (empty($item)) {
+                            throw new \Exception('Sản phẩm không tồn tại');
+                        }
+                        if ($item->qty < $detail['qty']) {
+                            throw new \Exception('Số lượng sản phẩm trong kho không đủ');
+                        }
+                        $product = $item;
+                    }
+                    $data['product_name'] = $product->name;
+                    $data['product_code'] = $product->code;
+                    $item->decrement('qty', $detail['qty']);
+                }
+
+                $product->decrement('stock_quantity', $orderDetails['quantity']);
+
+                // Insert dữ liệu đơn hàng vào database
+                $order = Order::create([
+                    // Thông tin đơn hàng, ví dụ
+                    'user_id' => $orderDetails['user_id'],
+                    // thêm các thông tin khác của đơn hàng từ $orderDetails
+                ]);
+
+                // Insert chi tiết đơn hàng (order items) vào database
+                // Giả sử có một model OrderItem là chi tiết đơn hàng liên kết với Order
+                $orderItem = $order->orderItems()->create([
+                    'product_id' => $orderDetails['product_id'],
+                    'quantity'   => $orderDetails['quantity'],
+                    // thêm các thông tin khác của chi tiết đơn hàng từ $orderDetails
+                ]);
+            });
+        } catch (\Exception $exception) {
+
+        }
     }
 }

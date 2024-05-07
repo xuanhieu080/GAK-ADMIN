@@ -36,11 +36,11 @@ use App\Http\Controllers\TokenController;
 Route::group(['prefix' => 'v1'], function () {
     Route::post('/orders', [\App\V1\Controllers\OrderController::class, 'create']);
     Route::get('/provinces', [\App\V1\Controllers\ProvinceController::class, 'index']);
-    Route::get('/provinces/{slug}', [\App\V1\Controllers\ProvinceController::class, 'show']);
+    Route::get('/provinces/{province}', [\App\V1\Controllers\ProvinceController::class, 'show']);
     Route::get('/districts', [\App\V1\Controllers\DistrictController::class, 'index']);
-    Route::get('/districts/{slug}', [\App\V1\Controllers\DistrictController::class, 'show']);
+    Route::get('/districts/{district}', [\App\V1\Controllers\DistrictController::class, 'show']);
     Route::get('/wards', [\App\V1\Controllers\WardController::class, 'index']);
-    Route::get('/wards/{slug}', [\App\V1\Controllers\WardController::class, 'show']);
+    Route::get('/wards/{ward}', [\App\V1\Controllers\WardController::class, 'show']);
     Route::get('/products', [\App\V1\Controllers\ProductController::class, 'index']);
     Route::get('/products/{slug}', [\App\V1\Controllers\ProductController::class, 'show']);
     Route::get('/attributes', [\App\V1\Controllers\AttributeController::class, 'index']);
