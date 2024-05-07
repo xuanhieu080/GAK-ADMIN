@@ -17,6 +17,7 @@ class ProductStockResource extends JsonResource
     {
         $thumb = [];
         $data = [
+            'id'               => $this->id,
             'code'             => $this->code,
             'slug'             => $this->slug,
             'name'             => $this->name,
