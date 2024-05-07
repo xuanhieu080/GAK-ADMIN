@@ -64,4 +64,5 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('/pages/{slug}', [\App\V1\Controllers\PageController::class, 'show']);
     Route::get('/page-groups', [\App\V1\Controllers\PageGroupController::class, 'index']);
     Route::post('/check-stock', [\App\V1\Controllers\OrderController::class, 'checkStock']);
+    Route::post('/orders', [\App\V1\Controllers\OrderController::class, 'create']);
 });
