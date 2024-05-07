@@ -33,7 +33,7 @@ class ProductStockResource extends JsonResource
             'video_link'       => $this->video_link,
             'price_discount'   => $this->price_discount,
             'discount'         => $this->discount,
-            'percent'          => round($this->discount / $this->price, 2) * 100,
+            'percent'          => $this->price <= 0 ? 0 : round($this->discount / $this->price, 2) * 100,
             'is_hot'           => $this->is_hot,
             //            'variants'         => [],
         ];
