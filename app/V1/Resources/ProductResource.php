@@ -45,6 +45,7 @@ class ProductResource extends JsonResource
             'video_link'       => $this->video_link,
             'price_discount'   => $this->price_discount,
             'discount'         => $this->discount,
+            'present'          => route($this->discount / $this->price, 2) * 100,
             'is_hot'           => $this->is_hot,
             //            'variants'         => [],
         ];
