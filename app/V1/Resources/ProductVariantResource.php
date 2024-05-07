@@ -30,7 +30,7 @@ class ProductVariantResource extends JsonResource
             'is_active'               => $this->is_active,
             'price_discount'          => $this->price_discount,
             'discount'                => $this->discount,
-            'percent'                 => route($this->discount / $this->price, 2) * 100,
+            'percent'                 => round($this->discount / $this->price, 2) * 100,
             'options'                 => $this->options,
             'option_all'              => $this->option_all,
             'option_group'            => $this->option_group,
