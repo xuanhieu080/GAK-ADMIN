@@ -56,8 +56,9 @@ class OrderController extends Controller
 
 
     /// Stock
-    public function checkStock(CheckStockRequest $request)
+    public function checkStock(Request $request)
     {
+        return response()->json($request->all());
 //        $this->authorize('list', Company::class);
         $input = $request->validated();
 
