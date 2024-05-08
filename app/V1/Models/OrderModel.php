@@ -227,6 +227,7 @@ class OrderModel extends AbstractModel
                     $items = $input['items'];
                     $data = [];
                     $total = 0;
+                    $product = null;
                     foreach ($items as $index => $detail) {
                         $productId = $detail['product_id'];
                         if (!empty($detail['product_variant_id'])) {
@@ -267,14 +268,14 @@ class OrderModel extends AbstractModel
                         $data[$index]['total'] = $totalDetail;
                         $data[$index]['order_id'] = $order->id;
                         $data[$index]['qty'] = $detail['qty'];
-                        $item->decrement('qty', $detail['qty']);
+                        $product->decrement('qty', $detail['qty']);
                         $total += $totalDetail;
                     }
 
                     OrderDetail::insert($data);
                     $order->total = $total;
                     $order->save();
-                    return new OrderResource($order);
+                    return $order;
                 });
             } catch (\Exception $e) {
                 GAK_ERROR::handle($e,'orders');
