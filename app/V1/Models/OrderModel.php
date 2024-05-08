@@ -3,6 +3,7 @@
 namespace App\V1\Models;
 
 use App\Models\Order;
+use App\Models\OrderDetail;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Supports\Support;
@@ -222,7 +223,7 @@ class OrderModel extends AbstractModel
 
                 $order = Order::create($params);
                 $items = $input['items'];
-                $data = $input;
+                $data = [];
                 $total = 0;
                 foreach ($items as $index => $detail) {
                     $productId = $detail['product_id'];
@@ -240,10 +241,10 @@ class OrderModel extends AbstractModel
                         }
 
                         $product = $item->product;
-                        $data['product_variant_id'] = $item->id;
-                        $data['product_variant_code'] = $item->code;
-                        $data['product_variant_name'] = $item->name;
-                        $data['option_name'] = $item->option_name;
+                        $data[$index]['product_variant_id'] = $item->id;
+                        $data[$index]['product_variant_code'] = $item->code;
+                        $data[$index]['product_variant_name'] = $item->name;
+                        $data[$index]['option_name'] = $item->option_name;
                     }
                     if (empty($detail['product_variant_id'])) {
                         $item = Product::where('id', $productId)->whereDoesntHave('variants')->lockForUpdate()->first();
@@ -256,15 +257,19 @@ class OrderModel extends AbstractModel
                         $product = $item;
                     }
                     $totalDetail = $product->price_discount * $detail['qty'];
-                    $data['product_id'] = $productId;
-                    $data['product_name'] = $product->name;
-                    $data['product_code'] = $product->code;
-                    $data['price'] = $product->price_discount;
-                    $data['cost'] = $product->price;
-                    $data['total'] = $totalDetail;
+                    $data[$index]['product_id'] = $productId;
+                    $data[$index]['product_name'] = $product->name;
+                    $data[$index]['product_code'] = $product->code;
+                    $data[$index]['price'] = $product->price_discount;
+                    $data[$index]['cost'] = $product->price;
+                    $data[$index]['total'] = $totalDetail;
+                    $data[$index]['order_id'] = $order->id;
+                    $data[$index]['qty'] = $detail['qty'];
                     $item->decrement('qty', $detail['qty']);
                     $total += $totalDetail;
                 }
+
+                OrderDetail::insert($data);
                 $order->total = $total;
                 $order->save();
                 return new OrderResource($order);

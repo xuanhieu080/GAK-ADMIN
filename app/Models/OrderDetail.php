@@ -17,14 +17,21 @@ class OrderDetail extends Model
         'id',
         'order_id',
         'product_id',
-        'product_detail_id'
+        'product_name',
+        'product_code',
+        'product_variant_id',
+        'product_variant_name',
+        'product_variant_code',
+        'option_name',
+        'note',
+        'qty',
+        'price',
+        'total',
+        'discount',
+        'cost'
     ];
 
     function product() {
         return $this->hasOne(Product::class,'id', 'product_id');
-    }
-
-    function productDetail() {
-        return $this->hasOne(ProductDetail::class,'id', 'product_detail_id');
     }
 }
