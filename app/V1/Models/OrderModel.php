@@ -210,8 +210,8 @@ class OrderModel extends AbstractModel
                     $params = [
                         "code" => Support::genCode('orders',16),
                         "date" => Carbon::now(),
-                        "user_id" => \Auth::id(),
-                        "user_name" => \Auth::user()->name,
+//                        "user_id" => \Auth::id(),
+//                        "user_name" => \Auth::user()->name,
                         "customer_name" => $input['customer_name'],
                         "customer_email" => $input['customer_email'],
                         "customer_phone" => $input['customer_phone'],
