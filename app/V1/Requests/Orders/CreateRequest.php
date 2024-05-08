@@ -35,12 +35,12 @@ class CreateRequest extends ValidatorBase
             ],
             'customer_name'              => 'required|string|max:255',
             'customer_email'             => 'required|email|max:255',
-            'customer_phone'             => 'required|email|max:20|min:8',
+            'customer_phone'             => 'required|string|max:20|min:8',
             'address'                    => 'required|string|max:255',
             'ward_id'                    => 'required|exists:wards,id',
             'district_id'                => 'required|exists:districts,id',
             'province_id'                => 'required|exists:provinces,id',
-            'node'                       => 'required|string|max:255',
+            'note'                       => 'nullable|string|max:255',
             'payment_method'             => 'required|in:COD,Zalopay,Momo,ShopeePay,VNPAY',
         ];
     }
