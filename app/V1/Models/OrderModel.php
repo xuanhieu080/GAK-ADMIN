@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Product;
 use App\Models\ProductVariant;
+use App\Supports\GAK_ERROR;
 use App\Supports\Support;
 use App\V1\Resources\OrderResource;
 use App\V1\Resources\ProductStockResource;
@@ -204,75 +205,79 @@ class OrderModel extends AbstractModel
 
     public function store($input)
     {
-            DB::transaction(function () use ($input) {
-                $params = [
-                    "code" => Support::genCode('orders',16),
-                    "date" => Carbon::now(),
-                    "user_id" => \Auth::id(),
-                    "user_name" => \Auth::user()->name,
-                    "customer_name" => $input['customer_name'],
-                    "customer_email" => $input['customer_email'],
-                    "customer_phone" => $input['customer_phone'],
-                    "address" => $input['address'],
-                    "province_id" => $input['province_id'],
-                    "district_id" => $input['district_id'],
-                    "ward_id" => $input['ward_id'],
-                    "note" => Arr::get($input, 'note'),
-                ];
+            try {
+                DB::transaction(function () use ($input) {
+                    $params = [
+                        "code" => Support::genCode('orders',16),
+                        "date" => Carbon::now(),
+                        "user_id" => \Auth::id(),
+                        "user_name" => \Auth::user()->name,
+                        "customer_name" => $input['customer_name'],
+                        "customer_email" => $input['customer_email'],
+                        "customer_phone" => $input['customer_phone'],
+                        "address" => $input['address'],
+                        "province_id" => $input['province_id'],
+                        "district_id" => $input['district_id'],
+                        "ward_id" => $input['ward_id'],
+                        "note" => Arr::get($input, 'note'),
+                    ];
 
 
-                $order = Order::create($params);
-                $items = $input['items'];
-                $data = [];
-                $total = 0;
-                foreach ($items as $index => $detail) {
-                    $productId = $detail['product_id'];
-                    if (!empty($detail['product_variant_id'])) {
-                        $productVariantId = $detail['product_variant_id'];
+                    $order = Order::create($params);
+                    $items = $input['items'];
+                    $data = [];
+                    $total = 0;
+                    foreach ($items as $index => $detail) {
+                        $productId = $detail['product_id'];
+                        if (!empty($detail['product_variant_id'])) {
+                            $productVariantId = $detail['product_variant_id'];
 
-                        $item = ProductVariant::with(['product'])
-                            ->whereHas('product')
-                            ->where('id', $productVariantId)->where('product_id', $productId)->lockForUpdate()->first();
-                        if (empty($item)) {
-                            throw new \Exception('Sản phẩm không tồn tại');
+                            $item = ProductVariant::with(['product'])
+                                ->whereHas('product')
+                                ->where('id', $productVariantId)->where('product_id', $productId)->lockForUpdate()->first();
+                            if (empty($item)) {
+                                throw new \Exception('Sản phẩm không tồn tại');
+                            }
+                            if ($item->qty < $detail['qty']) {
+                                throw new \Exception('Số lượng sản phẩm trong kho không đủ');
+                            }
+
+                            $product = $item->product;
+                            $data[$index]['product_variant_id'] = $item->id;
+                            $data[$index]['product_variant_code'] = $item->code;
+                            $data[$index]['product_variant_name'] = $item->name;
+                            $data[$index]['option_name'] = $item->option_name;
                         }
-                        if ($item->qty < $detail['qty']) {
-                            throw new \Exception('Số lượng sản phẩm trong kho không đủ');
+                        if (empty($detail['product_variant_id'])) {
+                            $item = Product::where('id', $productId)->whereDoesntHave('variants')->lockForUpdate()->first();
+                            if (empty($item)) {
+                                throw new \Exception('Sản phẩm không tồn tại');
+                            }
+                            if ($item->qty < $detail['qty']) {
+                                throw new \Exception('Số lượng sản phẩm trong kho không đủ');
+                            }
+                            $product = $item;
                         }
-
-                        $product = $item->product;
-                        $data[$index]['product_variant_id'] = $item->id;
-                        $data[$index]['product_variant_code'] = $item->code;
-                        $data[$index]['product_variant_name'] = $item->name;
-                        $data[$index]['option_name'] = $item->option_name;
+                        $totalDetail = $product->price_discount * $detail['qty'];
+                        $data[$index]['product_id'] = $productId;
+                        $data[$index]['product_name'] = $product->name;
+                        $data[$index]['product_code'] = $product->code;
+                        $data[$index]['price'] = $product->price_discount;
+                        $data[$index]['cost'] = $product->price;
+                        $data[$index]['total'] = $totalDetail;
+                        $data[$index]['order_id'] = $order->id;
+                        $data[$index]['qty'] = $detail['qty'];
+                        $item->decrement('qty', $detail['qty']);
+                        $total += $totalDetail;
                     }
-                    if (empty($detail['product_variant_id'])) {
-                        $item = Product::where('id', $productId)->whereDoesntHave('variants')->lockForUpdate()->first();
-                        if (empty($item)) {
-                            throw new \Exception('Sản phẩm không tồn tại');
-                        }
-                        if ($item->qty < $detail['qty']) {
-                            throw new \Exception('Số lượng sản phẩm trong kho không đủ');
-                        }
-                        $product = $item;
-                    }
-                    $totalDetail = $product->price_discount * $detail['qty'];
-                    $data[$index]['product_id'] = $productId;
-                    $data[$index]['product_name'] = $product->name;
-                    $data[$index]['product_code'] = $product->code;
-                    $data[$index]['price'] = $product->price_discount;
-                    $data[$index]['cost'] = $product->price;
-                    $data[$index]['total'] = $totalDetail;
-                    $data[$index]['order_id'] = $order->id;
-                    $data[$index]['qty'] = $detail['qty'];
-                    $item->decrement('qty', $detail['qty']);
-                    $total += $totalDetail;
-                }
 
-                OrderDetail::insert($data);
-                $order->total = $total;
-                $order->save();
-                return new OrderResource($order);
-            });
+                    OrderDetail::insert($data);
+                    $order->total = $total;
+                    $order->save();
+                    return new OrderResource($order);
+                });
+            } catch (\Exception $e) {
+                GAK_ERROR::handle($e,'orders');
+            }
     }
 }
