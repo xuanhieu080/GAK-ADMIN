@@ -278,6 +278,7 @@ class OrderModel extends AbstractModel
                 });
             } catch (\Exception $e) {
                 GAK_ERROR::handle($e,'orders');
+                dd($e);
             }
     }
 }

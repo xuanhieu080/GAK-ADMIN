@@ -27,7 +27,7 @@ class GAK_ERROR
         //
         //            //Write Log
         //        }
-        $user_id = auth('api')->id() ?? 0;
+//        $user_id = auth('api')->id() ?? 0;
 
         $request = Request::capture();
         $param = $request->all();
@@ -40,7 +40,7 @@ class GAK_ERROR
             'link'    => url()->current(),
             'domain'  => $requestHost,
             'time'    => date("Y-m-d H:i:s", time()),
-            'user_id' => $user_id,
+//            'user_id' => $user_id,
             'param'   => json_encode($param),
             'file'    => $ex->getFile(),
             'line'    => $ex->getLine(),
