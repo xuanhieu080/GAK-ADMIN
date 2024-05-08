@@ -5,8 +5,10 @@ namespace App\V1\Models;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\ProductVariant;
+use App\Supports\Support;
 use App\V1\Resources\OrderResource;
 use App\V1\Resources\ProductStockResource;
+use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
@@ -201,14 +203,31 @@ class OrderModel extends AbstractModel
 
     public function store($input)
     {
-        try {
             DB::transaction(function () use ($input) {
+                $params = [
+                    "code" => Support::genCode('orders',16),
+                    "date" => Carbon::now(),
+                    "user_id" => \Auth::id(),
+                    "user_name" => \Auth::user()->name,
+                    "customer_name" => $input['customer_name'],
+                    "customer_email" => $input['customer_email'],
+                    "customer_phone" => $input['customer_phone'],
+                    "address" => $input['address'],
+                    "province_id" => $input['province_id'],
+                    "district_id" => $input['district_id'],
+                    "ward_id" => $input['ward_id'],
+                    "note" => Arr::get($input, 'note'),
+                ];
+
+
+                $order = Order::create($params);
                 $items = $input['items'];
                 $data = $input;
+                $total = 0;
                 foreach ($items as $index => $detail) {
+                    $productId = $detail['product_id'];
                     if (!empty($detail['product_variant_id'])) {
                         $productVariantId = $detail['product_variant_id'];
-                        $productId = $detail['product_id'];
 
                         $item = ProductVariant::with(['product'])
                             ->whereHas('product')
@@ -224,9 +243,9 @@ class OrderModel extends AbstractModel
                         $data['product_variant_id'] = $item->id;
                         $data['product_variant_code'] = $item->code;
                         $data['product_variant_name'] = $item->name;
+                        $data['option_name'] = $item->option_name;
                     }
                     if (empty($detail['product_variant_id'])) {
-                        $productId = $detail['product_id'];
                         $item = Product::where('id', $productId)->whereDoesntHave('variants')->lockForUpdate()->first();
                         if (empty($item)) {
                             throw new \Exception('Sản phẩm không tồn tại');
@@ -236,30 +255,19 @@ class OrderModel extends AbstractModel
                         }
                         $product = $item;
                     }
+                    $totalDetail = $product->price_discount * $detail['qty'];
+                    $data['product_id'] = $productId;
                     $data['product_name'] = $product->name;
                     $data['product_code'] = $product->code;
+                    $data['price'] = $product->price_discount;
+                    $data['cost'] = $product->price;
+                    $data['total'] = $totalDetail;
                     $item->decrement('qty', $detail['qty']);
+                    $total += $totalDetail;
                 }
-
-                $product->decrement('stock_quantity', $orderDetails['quantity']);
-
-                // Insert dữ liệu đơn hàng vào database
-                $order = Order::create([
-                    // Thông tin đơn hàng, ví dụ
-                    'user_id' => $orderDetails['user_id'],
-                    // thêm các thông tin khác của đơn hàng từ $orderDetails
-                ]);
-
-                // Insert chi tiết đơn hàng (order items) vào database
-                // Giả sử có một model OrderItem là chi tiết đơn hàng liên kết với Order
-                $orderItem = $order->orderItems()->create([
-                    'product_id' => $orderDetails['product_id'],
-                    'quantity'   => $orderDetails['quantity'],
-                    // thêm các thông tin khác của chi tiết đơn hàng từ $orderDetails
-                ]);
+                $order->total = $total;
+                $order->save();
+                return new OrderResource($order);
             });
-        } catch (\Exception $exception) {
-
-        }
     }
 }

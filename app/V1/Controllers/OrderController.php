@@ -66,7 +66,7 @@ class OrderController extends Controller
 
     public function create(CreateRequest $request)
     {
-        $request->validated();
-        return $this->responseDataSuccess(['model' => $this->properties(),'message' => 'Tạo hoá đơn thành công']);
+        $input = $request->validated();
+        return $this->model->store($input);
     }
 }
