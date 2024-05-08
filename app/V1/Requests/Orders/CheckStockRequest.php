@@ -17,8 +17,8 @@ class CheckStockRequest extends ValidatorBase
         return [
             'items'                      => 'required|array',
             'items.*'                    => 'required',
-            'items.*.product_id'         => 'required|exists:products,id,is_active,1',
-            'items.*.product_variant_id' => 'nullable|exists:product_variants,id',
+            'items.*.product_id'         => 'required|numeric',
+            'items.*.product_variant_id' => 'nullable|numeric',
         ];
     }
 }
