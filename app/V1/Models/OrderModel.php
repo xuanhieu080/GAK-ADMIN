@@ -268,7 +268,7 @@ class OrderModel extends AbstractModel
                         $data[$index]['total'] = $totalDetail;
                         $data[$index]['order_id'] = $order->id;
                         $data[$index]['qty'] = $detail['qty'];
-                        $item->decrement('qty', $detail['qty']);
+                        $product->decrement('qty', $detail['qty']);
                         $total += $totalDetail;
                     }
 
