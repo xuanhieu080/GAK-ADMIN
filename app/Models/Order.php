@@ -15,21 +15,27 @@ class Order extends Model
 
     protected $fillable = [
         'id',
-        'title',
         'code',
         'status',
         'date',
         'customer_name',
         'customer_phone',
+        'customer_email',
         'customer_id',
+        'user_id',
+        'user_name',
+        'user_phone',
         'product_id',
         'note',
-        'reason_rejected',
-        'qty',
-        'price',
+        'address',
+        'province_id',
+        'district_id',
+        'ward_id',
         'total',
         'discount',
-        'is_active',
+        'shipping_cos',
+        'savings',
+        'payment_method',
     ];
 
     function details() {
