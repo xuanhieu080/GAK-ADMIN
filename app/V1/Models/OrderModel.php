@@ -190,7 +190,10 @@ class OrderModel extends AbstractModel
                 });
             }
             if (!empty($nullProductIds)) {
-                $query->orWhereIn('id', $nullProductIds);
+                $query->orWhere(function ($query) use ($nullProductIds) {
+                    $query->whereIn('id', $nullProductIds)
+                        ->whereDoesntHave('variants');
+                });
             }
         })->whereHas('media', function ($query) {
             // Điều kiện cho hình ảnh
