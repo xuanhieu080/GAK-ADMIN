@@ -67,6 +67,7 @@ class OrderController extends Controller
     public function create(CreateRequest $request)
     {
         $input = $request->validated();
+
         return $this->model->store($input);
     }
 }
