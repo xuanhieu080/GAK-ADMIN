@@ -205,10 +205,11 @@ class OrderModel extends AbstractModel
 
     public function store($input)
     {
+        $order = null;
             try {
-                DB::transaction(function () use ($input) {
+                DB::transaction(function () use ($input, &$order) {
                     $params = [
-                        "code" => Support::genCode('orders',16),
+                        "code" => Support::genCode('orders','code',16),
                         "date" => Carbon::now(),
 //                        "user_id" => \Auth::id(),
 //                        "user_name" => \Auth::user()->name,
@@ -258,6 +259,10 @@ class OrderModel extends AbstractModel
                                 throw new \Exception('Số lượng sản phẩm trong kho không đủ');
                             }
                             $product = $item;
+                            $data[$index]['product_variant_id'] = null;
+                            $data[$index]['product_variant_code'] = null;
+                            $data[$index]['product_variant_name'] = null;
+                            $data[$index]['option_name'] = null;
                         }
                         $totalDetail = $product->price_discount * $detail['qty'];
                         $data[$index]['product_id'] = $productId;
@@ -275,11 +280,15 @@ class OrderModel extends AbstractModel
                     OrderDetail::insert($data);
                     $order->total = $total;
                     $order->save();
-                    return $order;
                 });
+
+                if ($order) {
+                    return new OrderResource($order);
+                } else {
+                    // Xử lý trường hợp không tạo được đơn hàng hoặc lỗi xảy ra
+                    return response()->json(['error' => 'Dữ liệu không chính xác'], 500);
+                }
             } catch (\Exception $e) {
-                \Log::info($e->getMessage());
-                \Log::info($e->getLine());
                 GAK_ERROR::handle($e,'orders');
             }
     }
