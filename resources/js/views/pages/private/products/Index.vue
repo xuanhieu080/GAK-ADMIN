@@ -128,6 +128,7 @@ export default defineComponent({
         id: trans('labels.id_pound'),
         code: trans('labels.code'),
         name: trans('labels.name'),
+        slug: "Đường dẫn",
         is_active: 'Hiển thị',
         is_hot: 'Nổi bật'
       },
