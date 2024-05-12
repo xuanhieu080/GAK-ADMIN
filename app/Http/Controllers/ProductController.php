@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Products\AttributeRequest;
+use App\Http\Requests\Products\StoreReviewRequest;
+use App\Http\Requests\Products\UpdateReviewRequest;
 use App\Http\Requests\Products\UpdateVariantItemRequest;
 use App\Http\Requests\Products\UpdateVariantMainItemRequest;
 use App\Http\Requests\Products\UpdateVariantRequest;
 use App\Models\Product;
+use App\Models\ProductReview;
 use App\Models\ProductVariant;
 use App\Models\ProductVariantMain;
 use App\Models\Variant;
@@ -189,19 +192,22 @@ class ProductController extends Controller
         return $this->responseDeleteFail();
     }
 
-    public function productVariantSync(Product $product) {
+    public function productVariantSync(Product $product)
+    {
         $this->authorize('product-variant', Product::class);
 
         return $this->productService->productVariantSync($product);
     }
 
-    public function productVariant(Product $product) {
+    public function productVariant(Product $product)
+    {
         $this->authorize('product-variant', Product::class);
 
         return $this->productService->productVariant($product);
     }
 
-    public function productVariantMain(Product $product) {
+    public function productVariantMain(Product $product)
+    {
         $this->authorize('product-variant', Product::class);
 
         return $this->productService->productVariantMain($product);
@@ -215,11 +221,75 @@ class ProductController extends Controller
         $this->authorize('product-variant', Product::class);
 
         $input = $request->validated();
-        if ($this->productService->updateProductVariant($product,$input)) {
+        if ($this->productService->updateProductVariant($product, $input)) {
             return $this->responseUpdateSuccess();
         }
 
         return $this->responseUpdateFail();
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function createReview(StoreReviewRequest $request, Product $product)
+    {
+        $this->authorize('product-variant', Product::class);
+
+        $input = $request->validated();
+        if ($this->productService->createReview($product, $input)) {
+            return $this->responseStoreSuccess();
+        }
+
+        return $this->responseUpdateFail();
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function getReview(Product $product, Request $request)
+    {
+//        $this->authorizeize('attribute', Product::class);
+
+        $input = $request->all();
+        return $this->productService->getReview($product, $input);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function getReviewItem(Product $product, ProductReview $productReview)
+    {
+//        $this->authorizeize('attribute', Product::class);
+        $this->authorize('view', Product::class);
+
+        $model = $this->productService->getReviewItem($product,$productReview);
+        return $this->responseDataSuccess(['model' => $model, 'properties' => $this->properties()]);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function updateReview(UpdateReviewRequest $request, Product $product, ProductReview $product_review)
+    {
+        $this->authorize('product-variant', Product::class);
+
+        $input = $request->validated();
+        if ($this->productService->updateReview($product, $product_review, $input)) {
+            return $this->responseUpdateSuccess();
+        }
+
+        return $this->responseUpdateFail();
+    }
+
+    public function deleteReview(Product $product, ProductReview $product_review)
+    {
+        $this->authorize('delete', Product::class);
+
+        if ($this->productService->deleteReview($product, $product_review)) {
+            return $this->responseDeleteSuccess(['model' => $product_review]);
+        }
+
+        return $this->responseDeleteFail();
     }
 
     /**
@@ -230,7 +300,7 @@ class ProductController extends Controller
         $this->authorize('product-variant', Product::class);
 
         $input = $request->validated();
-        if ($this->productService->updateProductVariantItem($product_variant,$input)) {
+        if ($this->productService->updateProductVariantItem($product_variant, $input)) {
             return $this->responseUpdateSuccess();
         }
 
@@ -245,7 +315,7 @@ class ProductController extends Controller
         $this->authorize('product-variant', Product::class);
         $input = $request->validated();
 
-        if ($this->productService->updateProductVariantMainItem($product,$product_variant_main,$input)) {
+        if ($this->productService->updateProductVariantMainItem($product, $product_variant_main, $input)) {
             return $this->responseUpdateSuccess();
         }
 

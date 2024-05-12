@@ -2,10 +2,11 @@
 
 namespace App\Http\Resources;
 
+use App\Models\ProductVariant;
 use App\Utilities\Data;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProductVariantResource extends JsonResource
+class ProductReviewResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -21,17 +22,8 @@ class ProductVariantResource extends JsonResource
             $thumb[] = $item->getFullUrl();
         }
         $data = $this->resource->toArray();
-        $data['image'] = $this->getFirstMediaUrl();
-        $data['title'] = $this->name;
-        $data['images'] = [];
-        if ($this->getFirstMediaUrl()) {
-            $data['images'] = [$this->getFirstMediaUrl()];
-        }
-        $data['image_url'] = $this->getFirstMediaUrl();
-        $data['thumb_image'] = $thumb;
-        $data['rel'] = "pondElement$this->id";
-        $data['relThumb'] = "pondElementThumb$this->id";
-
+        $data['thumb'] = $thumb;
+        $data['productVariant'] = new ProductVariantResource($this->productVariant);
         return $data;
     }
 }

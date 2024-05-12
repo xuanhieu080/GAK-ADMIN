@@ -23,6 +23,7 @@ class ProductResource extends JsonResource
         $data = $this->resource->toArray();
         $data['id'] = $this->id;
         $data['image'] = $this->getFirstMediaUrl();
+        $data['average_rate'] = $this->rate_count == 0 ? 0 : round($this->rate / $this->rate_count, 1);
         $data['image_url'] = $this->getFirstMediaUrl();
         $data['thumb_image'] = $thumb;
         $data['category_name'] = object_get($this, 'category.name');
