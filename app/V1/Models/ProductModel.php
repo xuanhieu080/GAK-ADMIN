@@ -3,7 +3,9 @@
 namespace App\V1\Models;
 
 use App\Models\Product;
+use App\Models\ProductReview;
 use App\V1\Resources\ProductResource;
+use App\V1\Resources\ProductReviewResource;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
@@ -177,5 +179,21 @@ class ProductModel extends AbstractModel
         }
 
         return new ProductResource($item);
+    }
+
+    public function getReview($input)
+    {
+        $limit = Arr::get($input, 'limit', 10);
+        $slug = Arr::get($input, 'slug');
+        $query = ProductReview::query()
+            ->whereHas('product', function ($query) use ($slug) {
+                $query->when($slug ,function ($q, $slug) {
+                    $q->where('slug', $slug);
+                });
+            })
+            ->orderByDesc('date')
+            ->paginate($limit);
+
+        return ProductReviewResource::collection($query);
     }
 }

@@ -43,6 +43,14 @@ class ProductController extends Controller
         return $this->responseDataSuccess(['data' => $model, 'properties' => $this->properties()]);
     }
 
+    public function getReview($slug, Request $request)
+    {
+//        $this->authorizeize('attribute', Product::class);
+
+        $input = $request->all();
+        $input['product_slug'] = $slug;
+        return $this->model->getReview( $input);
+    }
     /**
      * Render properties
      * @return array

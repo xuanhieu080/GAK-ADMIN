@@ -42,6 +42,8 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('/wards', [\App\V1\Controllers\WardController::class, 'index']);
     Route::get('/wards/{ward}', [\App\V1\Controllers\WardController::class, 'show']);
     Route::get('/products', [\App\V1\Controllers\ProductController::class, 'index']);
+
+    Route::get('/products/{slug}/reviews', [\App\V1\Controllers\ProductController::class, 'getReview']);
     Route::get('/products/{slug}', [\App\V1\Controllers\ProductController::class, 'show']);
     Route::get('/attributes', [\App\V1\Controllers\AttributeController::class, 'index']);
     Route::get('/attributes/{attribute}', [\App\V1\Controllers\AttributeController::class, 'show']);

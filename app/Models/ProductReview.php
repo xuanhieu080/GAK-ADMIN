@@ -39,6 +39,12 @@ class ProductReview extends Model implements HasMedia
         return $this->hasOne(ProductVariant::class, 'id', 'product_variant_id');
     }
 
+
+    public function product()
+    {
+        return $this->hasOne(Product::class, 'id', 'product_id');
+    }
+
     public function registerMediaConversions(Media $media = null): void
     {
         $this
