@@ -5,15 +5,18 @@ namespace App\Services\Product;
 use App\Http\Resources\ProductDetailMainResource;
 use App\Http\Resources\ProductDetailResource;
 use App\Http\Resources\ProductResource;
+use App\Http\Resources\ProductReviewResource;
 use App\Http\Resources\VariantResource;
 use App\Models\Product;
 use App\Models\ProductDetail;
+use App\Models\ProductReview;
 use App\Models\ProductVariant;
 use App\Models\ProductVariantMain;
 use App\Models\Variant;
 use App\Services\Media\MediaService;
 use App\Supports\HasImage;
 use App\Supports\Support;
+use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -42,6 +45,19 @@ class ProductService
     public function get(Product $product)
     {
         return new ProductResource($product);
+    }
+
+    /**
+     * Get a single resource from the database
+     * @param Product $product
+     * @return ProductResource
+     */
+    public function getReviewItem(Product $product, ProductReview $productReview)
+    {
+        if ($productReview->product_id != $product->id) {
+            return null;
+        }
+        return new ProductReviewResource($productReview);
     }
 
     /**
@@ -683,22 +699,137 @@ class ProductService
         return true;
     }
 
+    public function createReview(Product $product, $input)
+    {
+        try {
+            DB::beginTransaction();
+
+            $data = $this->clean($input);
+            $param = [
+                'customer_name' => $data['customer_name'],
+                'description'   => $data['description'],
+                'rate'          => $data['rate'],
+                'reply'         => Arr::get($data, 'reply'),
+                'date'          => Carbon::parse($data['date']),
+                'product_id'    => $product->id,
+                'product_code'  => $product->code,
+            ];
+            if (!empty($data['product_variant_id'])) {
+                $productVariant = ProductVariant::find($data['product_variant_id']);
+                $param['product_variant_id'] = $productVariant->id;
+                $param['product_variant_code'] = $productVariant->code;
+                $param['option_name'] = $productVariant->option_name;
+            }
+
+            $item = ProductReview::create($param);
+            foreach ((array)Arr::get($data, 'thumb_image', []) as $image) {
+                $item->addMedia($image)
+                    ->usingName($product->name)
+                    ->usingFileName($product->slug . '-' . time() . Str::random(8) . '.' . $image->getClientOriginalExtension())
+                    ->toMediaCollection('thumb');
+            }
+
+            $product->rate += $data['rate'];
+            $product->rate_count += 1;
+            $product->save();
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw new \Exception($e->getMessage());
+        }
+        return true;
+    }
+
+    public function updateReview(Product $product, ProductReview $productReview, $input)
+    {
+        try {
+            DB::beginTransaction();
+
+            $data = $this->clean($input);
+            if ($data['rate'] != $productReview->rate) {
+                $product->rate += $data['rate'] - $productReview->rate;
+                $product->save();
+            }
+            $productReview->customer_name = Arr::get($data, 'customer_name', $productReview->customer_name);
+            $productReview->description = Arr::get($data, 'description', $productReview->description);
+            $productReview->rate = Arr::get($data, 'rate', $productReview->rate);
+            $productReview->reply = Arr::get($data, 'reply', $productReview->reply);
+            $productReview->date = Carbon::parse($data['date']);
+
+
+            if (!empty($data['product_variant_id'])) {
+                $productVariant = ProductVariant::find($data['product_variant_id']);
+                $productReview->product_variant_id = $productVariant->id;
+                $productReview->product_variant_code = $productVariant->code;
+                $productReview->option_name = $productVariant->option_name;
+            } else {
+                $productReview->product_variant_id = null;
+                $productReview->product_variant_code = null;
+                $productReview->option_name = null;
+            }
+
+            $productReview->save();
+            foreach ((array)Arr::get($data, 'thumb_image_remove', []) as $file) {
+                $media = $productReview->getMedia('thumb')->where('file_name', $file)->first();
+                if (!empty($media)) {
+                    $media->delete();
+                }
+            }
+
+            foreach ((array)Arr::get($data, 'thumb_image', []) as $image) {
+                $productReview->addMedia($image)
+                    ->usingName($product->name)
+                    ->usingFileName($product->slug . '-' . time() . Str::random(8) . '.' . $image->getClientOriginalExtension())
+                    ->toMediaCollection('thumb');
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw new \Exception($e->getMessage());
+        }
+        return true;
+    }
+
+    public function deleteReview(Product $product, ProductReview $productReview)
+    {
+        $product->rate -= $productReview->rate;
+        $product->rate_count -= 1;
+        $product->save();
+        return $productReview->delete();
+    }
+
+    public function getReview(Product $product, $input)
+    {
+        $customerName = Arr::get($input, 'customer_name');
+        $limit = Arr::get($input, 'limit', 10);
+        $query = ProductReview::query()
+            ->where('product_id', $product->id)
+            ->when($customerName, function ($query, string $customerName) {
+                return $query->where('customer_name', 'like', "%$customerName%");
+            })
+            ->orderByDesc('date')
+            ->paginate($limit);
+
+        return ProductReviewResource::collection($query);
+    }
+
     public function updateProductVariantItem(ProductVariant $productVariant, $input)
     {
         try {
             DB::beginTransaction();
-                $data = $this->clean($input);
+            $data = $this->clean($input);
 
-                $price = Arr::get($data, 'price', $productVariant->price);
-                $discount = Arr::get($data, 'discount', $productVariant->discount);
-                $productVariant->name = Arr::get($data, 'name', $productVariant->name);
-                $productVariant->description = Arr::get($data, 'description', $productVariant->description);
-                $productVariant->price = $price;
-                $productVariant->discount = $discount;
-                $productVariant->price_discount = $price - $discount;
-                $productVariant->qty = Arr::get($data, 'qty', $productVariant->qty);
+            $price = Arr::get($data, 'price', $productVariant->price);
+            $discount = Arr::get($data, 'discount', $productVariant->discount);
+            $productVariant->name = Arr::get($data, 'name', $productVariant->name);
+            $productVariant->description = Arr::get($data, 'description', $productVariant->description);
+            $productVariant->price = $price;
+            $productVariant->discount = $discount;
+            $productVariant->price_discount = $price - $discount;
+            $productVariant->qty = Arr::get($data, 'qty', $productVariant->qty);
 //                $productVariant->is_active = filter_var(Arr::get($data, 'is_active', $productVariant->is_active), FILTER_VALIDATE_BOOLEAN);
-                $productVariant->save();
+            $productVariant->save();
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
@@ -707,49 +838,50 @@ class ProductService
 
         return true;
     }
+
     public function updateProductVariantMainItem(Product $product, ProductVariantMain $productVariant, $input)
     {
         try {
             DB::beginTransaction();
-                $data = $this->clean($input);
+            $data = $this->clean($input);
 
-                $productVariant->name = Arr::get($data, 'name', $productVariant->name);
-                $productVariant->description = Arr::get($data, 'description', $productVariant->description);
+            $productVariant->name = Arr::get($data, 'name', $productVariant->name);
+            $productVariant->description = Arr::get($data, 'description', $productVariant->description);
 
-                $productVariant->is_active = filter_var(Arr::get($data, 'is_active', $productVariant->is_active), FILTER_VALIDATE_BOOLEAN);
+            $productVariant->is_active = filter_var(Arr::get($data, 'is_active', $productVariant->is_active), FILTER_VALIDATE_BOOLEAN);
 //                $productVariant->priority = Arr::get($data, 'priority', $productVariant->priority);
 //                $productVariant->slug = Arr::get($data, 'slug', $productVariant->slug);
-                $productVariant->meta_title = Arr::get($data, 'meta_title', $productVariant->meta_title);
-                $productVariant->meta_description = Arr::get($data, 'meta_description', $productVariant->meta_description);
-                $productVariant->meta_key = Arr::get($data, 'meta_key', $productVariant->meta_key);
-                $productVariant->params = Arr::get($data, 'params', $productVariant->params);
-                if (!empty($data['image'])) {
-                    $image = $data['image'];
-                    $mediaItem = $productVariant->getMedia('default')->first();
-                    if (!empty($mediaItem)) {
-                        $mediaItem->delete();
-                    }
-                    $productVariant->addMedia($image)
-                        ->usingName($productVariant->name)
-                        ->usingFileName("$productVariant->slug-$productVariant->id" . time() . Str::random(8) . '.' . $image->getClientOriginalExtension())
-                        ->toMediaCollection();
+            $productVariant->meta_title = Arr::get($data, 'meta_title', $productVariant->meta_title);
+            $productVariant->meta_description = Arr::get($data, 'meta_description', $productVariant->meta_description);
+            $productVariant->meta_key = Arr::get($data, 'meta_key', $productVariant->meta_key);
+            $productVariant->params = Arr::get($data, 'params', $productVariant->params);
+            if (!empty($data['image'])) {
+                $image = $data['image'];
+                $mediaItem = $productVariant->getMedia('default')->first();
+                if (!empty($mediaItem)) {
+                    $mediaItem->delete();
                 }
+                $productVariant->addMedia($image)
+                    ->usingName($productVariant->name)
+                    ->usingFileName("$productVariant->slug-$productVariant->id" . time() . Str::random(8) . '.' . $image->getClientOriginalExtension())
+                    ->toMediaCollection();
+            }
 
-                foreach ((array)Arr::get($data, 'thumb_image_remove', []) as $file) {
-                    $media = $productVariant->getMedia('thumb')->where('file_name', $file)->first();
-                    if (!empty($media)) {
-                        $media->delete();
-                    }
+            foreach ((array)Arr::get($data, 'thumb_image_remove', []) as $file) {
+                $media = $productVariant->getMedia('thumb')->where('file_name', $file)->first();
+                if (!empty($media)) {
+                    $media->delete();
                 }
+            }
 
-                foreach ((array)Arr::get($data, 'thumb_image', []) as $image) {
-                    $productVariant->addMedia($image)
-                        ->usingName($product->name)
-                        ->usingFileName($product->slug . '-' . time() . Str::random(8) . '.' . $image->getClientOriginalExtension())
-                        ->toMediaCollection('thumb');
-                }
+            foreach ((array)Arr::get($data, 'thumb_image', []) as $image) {
+                $productVariant->addMedia($image)
+                    ->usingName($product->name)
+                    ->usingFileName($product->slug . '-' . time() . Str::random(8) . '.' . $image->getClientOriginalExtension())
+                    ->toMediaCollection('thumb');
+            }
 
-                $productVariant->save();
+            $productVariant->save();
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();

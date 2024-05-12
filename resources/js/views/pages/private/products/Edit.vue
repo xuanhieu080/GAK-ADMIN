@@ -1,24 +1,29 @@
 <template>
-  <Page :title="page.title" :breadcrumbs="page.breadcrumbs" :actions="page.actions"
-        :is-loading="page.loading">
-    <Panel>
+  <div class="product-edit">
+    <Page :title="page.title" :breadcrumbs="page.breadcrumbs" :actions="page.actions"
+          :is-loading="page.loading">
+      <Panel>
 
-      <Tab :tabs="tabs" @set-index="updateTabIndex" :active-index="activeTab">
-        <div v-if="activeTab === 0">
-          <EditInformation :id="id"/>
-        </div>
-        <div v-if="activeTab === 1">
-         <EditAttribute :id="id"  @information-attribute="informationAttribute"/>
-        </div>
-        <div v-if="activeTab === 2">
-          <ProductVariantMain :id="id" :refresh="refresh"/>
-        </div>
-        <div v-if="activeTab === 3">
-          <ProductVariant :id="id" :refresh="refresh"/>
-        </div>
-      </Tab>
-    </Panel>
-  </Page>
+        <Tab :tabs="tabs" @set-index="updateTabIndex" :active-index="activeTab">
+          <div v-if="activeTab === 0">
+            <EditInformation :id="id"/>
+          </div>
+          <div v-if="activeTab === 1">
+            <EditAttribute :id="id"  @information-attribute="informationAttribute"/>
+          </div>
+          <div v-if="activeTab === 2">
+            <ProductVariantMain :id="id" :refresh="refresh"/>
+          </div>
+          <div v-if="activeTab === 3">
+            <ProductVariant :id="id" :refresh="refresh"/>
+          </div>
+          <div v-if="activeTab === 4">
+            <Review :id="id" :refresh="refresh"/>
+          </div>
+        </Tab>
+      </Panel>
+    </Page>
+  </div>
 </template>
 
 <script setup>
@@ -38,6 +43,7 @@ import Tab from "@/views/components/Tab.vue";
 import EditAttribute from "@/views/pages/private/products/EditAttribute.vue";
 import ProductVariant from "@/views/pages/private/products/ProductVariant.vue";
 import ProductVariantMain from "@/views/pages/private/products/ProductVariantMain.vue";
+import Review from "@/views/pages/private/products/review/Index.vue";
 
 
 const alertStore = useAlertStore();
@@ -92,7 +98,8 @@ const tabs = ref([
   {title: 'Thông tin chung', href: `/products/${route.params.id}/edit#first`, content: '<p>Content for Tab 1</p>'},
   {title: 'Thuộc tính', href: `/products/${route.params.id}/edit#second`, content: '<p>Content for Tab 2</p>'},
   {title: 'Biến thể chính', href: `/products/${route.params.id}/edit#third`, content: '<p>Content for Tab 3</p>'},
-  {title: 'Biến thể', href: `/products/${route.params.id}/edit#four`, content: '<p>Content for Tab 3</p>'}
+  {title: 'Biến thể', href: `/products/${route.params.id}/edit#four`, content: '<p>Content for Tab 3</p>'},
+  {title: 'Review', href: `/products/${route.params.id}/edit#review`, content: '<p>Content for Tab 3</p>'}
 ]);
 
 onBeforeMount(() => {
@@ -103,6 +110,8 @@ onBeforeMount(() => {
       activeTab.value = 2
     } else if (route.hash == '#four') {
       activeTab.value = 3
+    } else if (route.hash == '#review') {
+      activeTab.value = 4
     }
   }
 })

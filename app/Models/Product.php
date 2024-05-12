@@ -43,6 +43,8 @@ class Product extends Model implements HasMedia
         'is_new',
         'is_upcoming',
         'is_uniform',
+        'rate',
+        'rate_count'
     ];
 
     protected $casts = [
