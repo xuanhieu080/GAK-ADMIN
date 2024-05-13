@@ -48,7 +48,7 @@ class ProductController extends Controller
 //        $this->authorizeize('attribute', Product::class);
 
         $input = $request->all();
-        $input['product_slug'] = $slug;
+        $input['slug'] = $slug;
         return $this->model->getReview( $input);
     }
     /**
