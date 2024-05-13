@@ -47,7 +47,9 @@ class ProductResource extends JsonResource
             'discount'         => $this->discount,
             'percent'          => $this->price <= 0 ? 0 : round($this->discount / $this->price, 2) * 100,
             'is_hot'           => $this->is_hot,
-            //            'variants'         => [],
+            'rate'             => $this->rate,
+            'rate_count'       => $this->rate_count,
+            'average_rate'     => $this->rate_count == 0 ? 0 : round($this->rate / $this->rate_count, 1);//            'variants'         => [],
         ];
 
 //        if (!empty($this->resource->toArray()['variants'])) {
