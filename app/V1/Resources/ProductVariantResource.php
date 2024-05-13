@@ -47,11 +47,11 @@ class ProductVariantResource extends JsonResource
             $image = $this->productVariantMain->getFirstMediaUrl();
             $data['image'] = $this->productVariantMain->getFirstMediaUrl();
         } else {
-            $image = $this->product->getFirstMediaUrl();
-            $data['image'] = $this->product->getFirstMediaUrl();
-            foreach ($this->product->getMedia("thumb") as $item) {
-                $thumb[] = $item->getFullUrl();
-            }
+//            $image = $this->product->getFirstMediaUrl();
+//            $data['image'] = $this->product->getFirstMediaUrl();
+//            foreach ($this->product->getMedia("thumb") as $item) {
+//                $thumb[] = $item->getFullUrl();
+//            }
         }
 
 //        if (empty($thumb)) {
