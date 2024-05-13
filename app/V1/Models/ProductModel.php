@@ -145,7 +145,6 @@ class ProductModel extends AbstractModel
             $query->where('collection_name', 'thumb');
         });
 
-
         if ($limit) {
             if ($limit === 1) {
                 return $query->first();

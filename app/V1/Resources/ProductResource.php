@@ -56,11 +56,12 @@ class ProductResource extends JsonResource
         $productVariants = [];
 
         foreach ($this->variants as $item) {
-            if (!empty($item->getFirstMediaUrl() && count($item->getMedia("thumb")) > 0)) {
-                $productVariants[] = new ProductVariantResource($item);
+            if (!empty($item->productVariantMain)) {
+                if (!empty($item->productVariantMain->getFirstMediaUrl() && count($item->productVariantMain->getMedia("thumb")) > 0)) {
+                    $productVariants[] = new ProductVariantResource($item);
+                }
             }
         }
-
 
 //        if (!empty($this->resource->toArray()['variants'])) {
         $data['variants'] = $productVariants;
