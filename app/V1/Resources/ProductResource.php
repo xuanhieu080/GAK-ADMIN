@@ -50,21 +50,21 @@ class ProductResource extends JsonResource
             'rate'             => $this->rate,
             'rate_count'       => $this->rate_count,
             'average_rate'     => $this->rate_count == 0 ? 0 : round($this->rate / $this->rate_count, 1),
-            //            'variants'         => [],
+            'variants'         => ProductVariantResource::collection($variants),
         ];
 
-        $productVariants = [];
-
-        foreach ($this->variants as $item) {
-            if (!empty($item->productVariantMain)) {
-                if (!empty($item->productVariantMain->getFirstMediaUrl() && count($item->productVariantMain->getMedia("thumb")) > 0)) {
-                    $productVariants[] = new ProductVariantResource($item);
-                }
-            }
-        }
-
-//        if (!empty($this->resource->toArray()['variants'])) {
-        $data['variants'] = $productVariants;
+//        $productVariants = [];
+//
+//        foreach ($this->variants as $item) {
+//            if (!empty($item->productVariantMain)) {
+//                if (!empty($item->productVariantMain->getFirstMediaUrl() && count($item->productVariantMain->getMedia("thumb")) > 0)) {
+//                    $productVariants[] = new ProductVariantResource($item);
+//                }
+//            }
+//        }
+//
+////        if (!empty($this->resource->toArray()['variants'])) {
+//        $data['variants'] = $productVariants;
         $data['variantAttribute'] = (array)$variants;
 //        }
 
