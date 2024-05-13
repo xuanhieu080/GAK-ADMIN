@@ -50,7 +50,7 @@ class ProductResource extends JsonResource
             'rate'             => $this->rate,
             'rate_count'       => $this->rate_count,
             'average_rate'     => $this->rate_count == 0 ? 0 : round($this->rate / $this->rate_count, 1),
-            'variants'         => ProductVariantResource::collection($variants),
+            'variants'         => ProductVariantResource::collection($this->variants),
         ];
 
 //        $productVariants = [];
