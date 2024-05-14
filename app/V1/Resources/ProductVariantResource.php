@@ -40,6 +40,7 @@ class ProductVariantResource extends JsonResource
             'meta_key'                => $this->meta_key,
         ];
 
+        $image = null;
         if (!empty($this->productVariantMain)) {
             foreach ($this->productVariantMain->getMedia("thumb") as $item) {
                 $thumb[] = $item->getFullUrl();
