@@ -25,6 +25,8 @@ class ProductResource extends JsonResource
         $data['image'] = $this->getFirstMediaUrl();
         $data['average_rate'] = $this->rate_count == 0 ? 0 : round($this->rate / $this->rate_count, 1);
         $data['image_url'] = $this->getFirstMediaUrl();
+        $data['highlight_image_url'] = $this->getFirstMediaUrl('highlight');
+        $data['highlight_image'] = $this->getFirstMediaUrl('highlight');
         $data['thumb_image'] = $thumb;
         $data['category_name'] = object_get($this, 'category.name');
         $data['created_at'] = !empty($this->resource->created_at) ? $this->resource->created_at->diffForHumans() : null;

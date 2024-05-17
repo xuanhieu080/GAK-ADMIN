@@ -891,4 +891,42 @@ class ProductService
         return true;
     }
 
+
+
+    public function updateHighlight(Product $product, $input)
+    {
+        try {
+            DB::beginTransaction();
+
+                $data = $this->clean($input);
+                $product->highlight = Arr::get($data, 'highlight', $product->highlight);
+                if (!empty($data['highlight_image'])) {
+                    $image = $data['highlight_image'];
+                    $mediaItem = $product->getMedia('highlight')->first();
+                    if (!empty($mediaItem)) {
+                        $mediaItem->delete();
+                    }
+                    $product->addMedia($image)
+                        ->usingName($product->name)
+                        ->usingFileName("$product->slug-$product->id" . time() . Str::random(8) . '.' . $image->getClientOriginalExtension())
+                        ->toMediaCollection('highlight');
+                } elseif (filter_var(Arr::get($data, 'highlight_image_remove'), FILTER_VALIDATE_BOOLEAN)) {
+                    $mediaItem = $product->getMedia('highlight')->first();
+                    if (!empty($mediaItem)) {
+                        $mediaItem->delete();
+                    }
+                }
+
+
+            $product->save();
+            $product->load(['media']);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw new \Exception($e->getMessage());
+        }
+
+        return new ProductResource($product);
+    }
+
 }

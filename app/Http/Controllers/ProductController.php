@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Products\AttributeRequest;
 use App\Http\Requests\Products\StoreReviewRequest;
+use App\Http\Requests\Products\UpdateHighlightRequest;
 use App\Http\Requests\Products\UpdateReviewRequest;
 use App\Http\Requests\Products\UpdateVariantItemRequest;
 use App\Http\Requests\Products\UpdateVariantMainItemRequest;
@@ -317,6 +318,21 @@ class ProductController extends Controller
 
         if ($this->productService->updateProductVariantMainItem($product, $product_variant_main, $input)) {
             return $this->responseUpdateSuccess();
+        }
+
+        return $this->responseUpdateFail();
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function updateHighlight(UpdateHighlightRequest $request, Product $product)
+    {
+        $this->authorize('product-variant', Product::class);
+
+        $input = $request->validated();
+        if ($item = $this->productService->updateHighlight($product, $input)) {
+            return $this->responseUpdateSuccess(['model' => $item]);
         }
 
         return $this->responseUpdateFail();
