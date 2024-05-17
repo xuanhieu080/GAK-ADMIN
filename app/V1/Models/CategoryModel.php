@@ -93,12 +93,17 @@ class CategoryModel extends AbstractModel
                     $query->where('products.is_active', 1);
                 },
             ])->where('show_header', 1)
-            ->get()
-            ->map(function ($category) {
-                $products = $category->products->concat($category->descendants->pluck('products')->flatten());
-                $category->setRelation('products', $products);
-                return $category;
-            });
+            ->paginate($limit);
+        $result->getCollection()->transform(function ($category) use ($limit) {
+            $products = $category->products->concat($category->descendants->pluck('products')->flatten());
+
+            // Có thể cần áp dụng phân trang cho sản phẩm ở đây, tùy thuộc vào yêu cầu:
+            // $products = $products->slice(0, $limit);
+
+            $category->setRelation('products', $products);
+
+            return $category;
+        });
 
         return CategoryHeaderResource::collection($result);
     }
