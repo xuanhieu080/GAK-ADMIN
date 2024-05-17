@@ -20,6 +20,9 @@
           <div v-if="activeTab === 4">
             <Review :id="id" :refresh="refresh"/>
           </div>
+          <div v-if="activeTab === 5">
+            <EditHighlight :id="id" :refresh="refresh"/>
+          </div>
         </Tab>
       </Panel>
     </Page>
@@ -44,6 +47,7 @@ import EditAttribute from "@/views/pages/private/products/EditAttribute.vue";
 import ProductVariant from "@/views/pages/private/products/ProductVariant.vue";
 import ProductVariantMain from "@/views/pages/private/products/ProductVariantMain.vue";
 import Review from "@/views/pages/private/products/review/Index.vue";
+import EditHighlight from "@/views/pages/private/products/EditHighlight.vue";
 
 
 const alertStore = useAlertStore();
@@ -99,7 +103,8 @@ const tabs = ref([
   {title: 'Thuộc tính', href: `/products/${route.params.id}/edit#second`, content: '<p>Content for Tab 2</p>'},
   {title: 'Biến thể chính', href: `/products/${route.params.id}/edit#third`, content: '<p>Content for Tab 3</p>'},
   {title: 'Biến thể', href: `/products/${route.params.id}/edit#four`, content: '<p>Content for Tab 3</p>'},
-  {title: 'Review', href: `/products/${route.params.id}/edit#review`, content: '<p>Content for Tab 3</p>'}
+  {title: 'Review', href: `/products/${route.params.id}/edit#review`, content: '<p>Content for Tab 3</p>'},
+  {title: 'Thông tin nổi bật', href: `/products/${route.params.id}/edit#highlight`, content: '<p>Content for Tab 3</p>'}
 ]);
 
 onBeforeMount(() => {
@@ -112,6 +117,8 @@ onBeforeMount(() => {
       activeTab.value = 3
     } else if (route.hash == '#review') {
       activeTab.value = 4
+    } else if (route.hash == '#highlight') {
+      activeTab.value = 5
     }
   }
 })
