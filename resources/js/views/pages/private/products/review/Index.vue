@@ -135,7 +135,7 @@ function getData() {
         </div>
         <div v-if="review.thumb.length > 0" class="flex whitespace-normal gap-4">
           <div v-for="image in review.thumb" class="image-review">
-            <img class="object-cover" height="60" width="60" :src="image"/>
+            <img class="object-cover image" height="60" width="60" :src="image" alt=""/>
           </div>
         </div>
         <div v-if="review.reply" class="feedback-review whitespace-normal bg-gray-300 p-4 rounded-lg font-semibold">
@@ -151,12 +151,11 @@ function getData() {
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .image-review {
   width: 60px;
   height: 60px;
   border-radius: 10px;
-
   img {
     width: 60px;
     height: 60px;
