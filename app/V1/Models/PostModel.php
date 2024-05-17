@@ -30,6 +30,14 @@ class PostModel extends AbstractModel
             $sorts = array_merge($sorts, array_fill_keys($sort['asc'], 'asc'));
         }
 
+        if (isset($input['is_hot'])) {
+            $input['is_hot'] = filter_var($input['is_hot'], FILTER_VALIDATE_BOOLEAN);
+        }
+
+        if (isset($input['is_new'])) {
+            $input['is_new'] = filter_var($input['is_new'], FILTER_VALIDATE_BOOLEAN);
+        }
+
         $input['sort'] = $sorts;
         $result = $this->search($input, [], $limit);
 
@@ -45,7 +53,6 @@ class PostModel extends AbstractModel
 
         $input = array_intersect_key($input, array_flip($full_columns));
         $orWhere = array_intersect_key($orWhere, array_flip($full_columns));
-
         foreach ($input as $field => $value) {
             if ($value === "") {
                 continue;
