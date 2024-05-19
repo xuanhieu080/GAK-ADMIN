@@ -44,7 +44,7 @@ class GenerateSitemap extends Command
             "changefreq" => "daily",
         ];
 
-        $this->generateSitemap($data, "/home/Hegka-UI/public/static-pages.xml", 0.8);
+        $this->generateSitemap($data, "/home/DEV-GAK-UI/public/static-pages.xml", 0.8);
         $this->urls[] = "static-pages.xml";
         
         $this->product();
