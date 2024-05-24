@@ -2,6 +2,7 @@
 
 namespace App\V1\Models;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductReview;
 use App\V1\Resources\ProductResource;
@@ -174,8 +175,15 @@ class ProductModel extends AbstractModel
 
         if (!empty($categorySlug)) {
             $query->whereHas('category', function ($query) use ($categorySlug) {
-                // Điều kiện cho hình ảnh
-                $query->where('slug', $categorySlug);
+                $category = Category::with(['descendants'])
+                    ->where('slug', $categorySlug)
+                    ->first();
+                if ($category) {
+                    // Lấy ID của tất cả descendants và thêm ID của cha vào đầu mảng
+                    $ids = $category->descendants->pluck('id')->prepend($category->id);
+
+                    $query->whereIn('category_id', $ids);
+                }
             });
         }
 
