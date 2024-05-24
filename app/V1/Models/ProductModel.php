@@ -34,11 +34,14 @@ class ProductModel extends AbstractModel
         }
 
         $input['sort'] = $sorts;
+        if (empty($input['search'])) {
+            $input['name'] = ['like' => $input['search']];
+        }
         $result = $this->search($input,
             ['attributeVariants',
-             'variants' => function ($query) {
-                 $query->where('qty', '>', 0);
-             }
+                'variants' => function ($query) {
+                    $query->where('qty', '>', 0);
+                }
             ], $limit);
 
         return ProductResource::collection($result);
@@ -46,6 +49,8 @@ class ProductModel extends AbstractModel
 
     public function search($input = [], $with = [], $limit = null)
     {
+        $attributes = (array)Arr::get($input, 'attributes');
+        $categoryName = Arr::get($input, 'category_name');
         $query = $this->make($with);
         $orWhere = Arr::get($input, 'orWhere', []);
         $this->sortBuilder($query, $input);
@@ -145,6 +150,27 @@ class ProductModel extends AbstractModel
             $query->where('collection_name', 'thumb');
         });
 
+        if (!empty($attributes)) {
+            $query->whereHas('variants', function ($qr) use ($attributes) {
+                $attributeQuery = function ($query) use ($attributes) {
+                    foreach ($attributes as $attribute) {
+                        $attributeJson = json_encode($attribute);
+                        $query->whereRaw("JSON_CONTAINS(options, '{$attributeJson}')");
+                    }
+                };
+                $qr->where(function ($qr1) use ($attributeQuery, $attributes) {
+                    $qr1->when($attributes, $attributeQuery);
+                });
+            });
+        }
+
+        if (!empty($categoryName)) {
+            $query->whereHas('category', function ($query) use ($categoryName) {
+                // Điều kiện cho hình ảnh
+                $query->where('name', 'like', "%$categoryName%");
+            });
+        }
+
         if ($limit) {
             if ($limit === 1) {
                 return $query->first();
@@ -160,9 +186,9 @@ class ProductModel extends AbstractModel
     public function show($slug)
     {
         $item = Product::with(['attributeVariants',
-                               'variants' => function ($query) {
-                                   $query->where('qty', '>', 0);
-                               }
+            'variants' => function ($query) {
+                $query->where('qty', '>', 0);
+            }
         ])->where('slug', $slug)
             ->where('is_active', 1)
             ->whereHas('media', function ($query) {
@@ -186,7 +212,7 @@ class ProductModel extends AbstractModel
         $slug = Arr::get($input, 'slug');
         $query = ProductReview::query()
             ->whereHas('product', function ($query) use ($slug) {
-                $query->when($slug ,function ($q, $slug) {
+                $query->when($slug, function ($q, $slug) {
                     $q->where('slug', $slug);
                 });
             })
