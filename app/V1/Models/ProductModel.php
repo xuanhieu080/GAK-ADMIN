@@ -51,6 +51,7 @@ class ProductModel extends AbstractModel
     {
         $attributes = (array)Arr::get($input, 'attributes');
         $categoryName = Arr::get($input, 'category_name');
+        $categorySlug = Arr::get($input, 'category_slug');
         $query = $this->make($with);
         $orWhere = Arr::get($input, 'orWhere', []);
         $this->sortBuilder($query, $input);
@@ -168,6 +169,13 @@ class ProductModel extends AbstractModel
             $query->whereHas('category', function ($query) use ($categoryName) {
                 // Điều kiện cho hình ảnh
                 $query->where('name', 'like', "%$categoryName%");
+            });
+        }
+
+        if (!empty($categorySlug)) {
+            $query->whereHas('category', function ($query) use ($categorySlug) {
+                // Điều kiện cho hình ảnh
+                $query->where('slug', $categorySlug);
             });
         }
 
