@@ -154,7 +154,7 @@ class ProductModel extends AbstractModel
             $query->whereHas('variants', function ($qr) use ($attributes) {
                 $attributeQuery = function ($query) use ($attributes) {
                     foreach ($attributes as $attribute) {
-                        $query->where("options", (int)$attribute);
+                        $query->whereJsonContains("options", (int)$attribute);
                     }
                 };
 
