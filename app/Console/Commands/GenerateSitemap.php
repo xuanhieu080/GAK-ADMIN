@@ -46,7 +46,7 @@ class GenerateSitemap extends Command
 
         $this->generateSitemap($data, "/home/DEV-GAK-UI/public/static-pages.xml", 0.8);
         $this->urls[] = "static-pages.xml";
-        
+
         $this->product();
         $this->catrgory();
         $this->post();
@@ -152,6 +152,7 @@ class GenerateSitemap extends Command
     {
         $result = Page::query()
             ->where('is_active', 1)
+            ->where('is_button', 0)
             ->get();
         $data = [];
 
