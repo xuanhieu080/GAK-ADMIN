@@ -31,6 +31,9 @@ class PostGroupModel extends AbstractModel
         }
 
         $input['sort'] = $sorts;
+        if (!empty($input['name'])) {
+            $input['name'] = ['like', "%{$input['name']}%"];
+        }
         $result = $this->search($input, [], $limit);
 
         return PostGroupResource::collection($result);
