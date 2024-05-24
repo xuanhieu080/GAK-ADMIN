@@ -34,7 +34,7 @@ class ProductModel extends AbstractModel
         }
 
         $input['sort'] = $sorts;
-        if (empty($input['search'])) {
+        if (!empty($input['search'])) {
             $input['name'] = ['like' => $input['search']];
         }
         $result = $this->search($input,
