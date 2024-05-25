@@ -20,8 +20,8 @@ class Color implements ValidationRule
         $hsl = '^hsl\((\s*\d+\s*,){2}\s*[\d\.]%\)$';
         $hsla = '^hsla\((\s*\d+\s*,){3}[\d\.]+\)$';
 
-        $patterns = "/$hex|$rgb|$rgba|$hsl|$hsla/";
-        $bool = preg_match($patterns, $attribute);
+        $patterns = "/$hex|$rgb|$rgba|$hsl|$hsla/i";
+        $bool = preg_match($patterns, $value);
         if (!$bool) {
             $fail("$attribute phải là một mã màu hợp lệ.");
         }
@@ -35,7 +35,7 @@ class Color implements ValidationRule
         $hsl = '^hsl\((\s*\d+\s*,){2}\s*[\d\.]%\)$';
         $hsla = '^hsla\((\s*\d+\s*,){3}[\d\.]+\)$';
 
-        $patterns = "/$hex|$rgb|$rgba|$hsl|$hsla/";
+        $patterns = "/$hex|$rgb|$rgba|$hsl|$hsla/i";
 
         return preg_match($patterns, $value);
     }
