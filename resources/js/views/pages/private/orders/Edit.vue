@@ -9,65 +9,201 @@
                     </div>
                     <div class="px-2 md:px-6 py-4">
                         <div class="relative px-2 md:px-10 rounded mb-2">
-                            <div class="flex flex-col space-y-3 xl:flex-row xl:space-x-4 xl:space-y-0 xl:items-center">
-                                <div class="relative w-full text-left"><!--v-if-->
-                                    <div class="flex flex-col mt-1">
+                            <main class="order-main overflow-y-auto md:h-screen">
+                                <div class="overflow-y-auto main-invoice pb-5">
+                                    <div class="container mx-auto">
                                         <div>
-                                            <div class="mb-3 flex">
-                                                <span class="mr-5 w-1/3">Mã đơn:</span>
-                                                <span class="w-2/3">{{ item.code }}</span>
-                                            </div>
-                                            <div class="mb-3 flex">
-                                                <span class="mr-5 w-1/3">Sản phẩm:</span>
-                                                <span class="w-2/3">{{ item.product_name }}</span>
-                                            </div>
-                                            <div class="mb-3 flex">
-                                                <span class="mr-5 w-1/3">Người mua:</span>
-                                                <span class="w-2/3">{{ item.customer_name }}</span>
-                                            </div>
-                                            <div class="mb-3 flex">
-                                                <span class="mr-5 w-1/3">Mã người mua:</span>
-                                                <span class="w-2/3">{{ item.customer_code }}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="relative w-full text-left"><!--v-if-->
-                                    <div class="flex flex-col mt-1">
-                                        <div>
-                                            <div class="mb-3 flex">
-                                                <span class="mr-5 w-1/3">Số lượng:</span>
-                                                <span class="w-2/3">{{ item.qty.toLocaleString() }}</span>
-                                            </div>
-                                            <div class="mb-3 flex">
-                                                <span class="mr-5 w-1/3">Tổng tiền:</span>
-                                                <span class="w-2/3">{{ item.total.toLocaleString() }}</span>
-                                            </div>
-                                            <div class="mb-3 flex">
-                                                <span class="mr-5 w-1/3">Thời gian:</span>
-                                                <span class="w-2/3">{{ item.time }}</span>
-                                            </div>
-                                            <div class="mb-3 flex">
-                                                <span class="mr-5 w-1/3">Trạng thái:</span>
-                                                <div>
-                                                    <span v-if="item.status == 'SUCCESS'"
-                                                          class="w-2/3 px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
-                                                          v-html="trans('labels.list_status.success')"></span>
-                                                    <span v-else
-                                                          class="w-2/3 px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800"
-                                                          v-html="trans('labels.list_status.failed')"></span>
+                                            <div class="px-4 overflow-auto">
+                                                <div
+                                                    class="inline-block min-w-full shadow-md rounded-lg overflow-hidden"
+                                                >
+                                                    <table class="min-w-full leading-normal">
+                                                        <thead>
+                                                        <tr class="block">
+                                                            <th
+                                                                class="w-3/12 px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-bold text-gray-700 uppercase tracking-wider"
+                                                            >
+                                                                Tên SP
+                                                            </th>
+                                                            <th
+                                                                class="w-2/12 px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-bold text-gray-700 uppercase tracking-wider"
+                                                            >
+                                                                Giá tiền (giá gốc)
+                                                            </th>
+                                                            <th
+                                                                class="w-2/12 px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-bold text-gray-700 uppercase tracking-wider"
+                                                            >
+                                                                Giá tiền
+                                                            </th>
+                                                            <th
+                                                                class="w-1/12 px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-bold text-gray-700 uppercase tracking-wider"
+                                                            >
+                                                                Đơn vị tính
+                                                            </th>
+                                                            <th
+                                                                class="w-1/12 px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-bold text-gray-700 uppercase tracking-wider"
+                                                            >
+                                                                Số lượng
+                                                            </th>
+                                                            <th
+                                                                class="w-w-2/12 px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-bold text-gray-700 uppercase tracking-wider"
+                                                            >
+                                                                Thành tiền
+                                                            </th>
+                                                            <th
+                                                                class="w-1/12 px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-bold text-gray-700 uppercase tracking-wider"
+                                                            >
+                                                                Xoá
+                                                            </th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody class="flex flex-col">
+                                                        <tr class="block p-1 border-b border-gray-200">
+                                                            <td
+                                                                class="w-3/12 p-2 bg-white text-sm"
+                                                            >
+                                                                <div class="product-name text-gray-600 whitespace-no-wrap">
+                                                                    {{ 'df' }}
+                                                                </div>
+                                                            </td>
+                                                            <td class="w-2/12 p-2 bg-white text-sm text-right">
+                                                                <span
+                                                                    class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight"
+                                                                >
+                                                                  <span
+                                                                      aria-hidden
+                                                                      class="absolute inset-0 bg-green-200 opacity-50 rounded-full"
+                                                                  ></span>
+                                                                  <span class="relative">{{ 'asd' }}</span>
+                                                                </span>
+                                                            </td>
+                                                            <td class="w-2/12 p-2 bg-white text-sm text-right">
+                                                                <span
+                                                                    class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight"
+                                                                >
+                                                                  <span
+                                                                      aria-hidden
+                                                                      class="absolute inset-0 bg-green-200 opacity-50 rounded-full"
+                                                                  ></span>
+                                                                  <span class="relative">{{ 'asd' }}</span>
+                                                                </span>
+                                                            </td>
+                                                            <th
+                                                                class="w-1/12 px-5 py-3 text-center text-xs font-bold text-gray-700 uppercase tracking-wider"
+                                                            >
+                                                                Đơn vị tính
+                                                            </th>
+                                                            <th
+                                                                class="w-1/12 px-5 py-3 text-center text-xs font-bold text-gray-700 uppercase tracking-wider"
+                                                            >
+                                                                Số lượng
+                                                            </th>
+                                                            <th
+                                                                class="w-w-2/12 px-5 py-3 text-center text-xs font-bold text-gray-700 uppercase tracking-wider"
+                                                            >
+                                                                Thành tiền
+                                                            </th>
+                                                            <th
+                                                                class="w-1/12 px-5 py-3 text-center text-xs font-bold text-gray-700 uppercase tracking-wider"
+                                                            >
+                                                                Xoá
+                                                            </th>
+                                                        </tr>
+                                                        <tr v-for="(item, index) in order.details" class="p-1 border-b border-gray-200 ">
+                                                            <td class="w-3/12 p-2 bg-white text-sm">
+                                                                <div>
+                                                                    <div class="product-name text-gray-600 whitespace-no-wrap">
+                                                                        {{ item.name }}
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+
+                                                            <td class="w-2/12 p-2 bg-white text-sm text-right">
+                                                                <span
+                                                                    class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight"
+                                                                >
+                                                                  <span
+                                                                      aria-hidden
+                                                                      class="absolute inset-0 bg-green-200 opacity-50 rounded-full"
+                                                                  ></span>
+                                                                  <span class="relative">{{ item.cost.toLocaleString() }}</span>
+                                                                </span>
+                                                            </td>
+                                                            <td class="w-2/12 p-2 bg-white text-sm">
+                                                                 <span
+                                                                     class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight"
+                                                                 >
+                                                                  <span
+                                                                      aria-hidden
+                                                                      class="absolute inset-0 bg-green-200 opacity-50 rounded-full"
+                                                                  ></span>
+                                                                  <span class="relative">{{ item.cost.toLocaleString() }}</span>
+                                                                </span>
+                                                            </td>
+                                                            <td class="w-1/12 p-2 bg-white text-sm text-center">
+                                                              <span
+                                                                  class="relative inline-block px-3 py-1 font-semibold text-orange-900 leading-tight"
+                                                              >
+                                                                  <span
+                                                                      aria-hidden
+                                                                      class="absolute inset-0 bg-orange-200 opacity-50 rounded-full"
+                                                                  ></span>
+                                                                  <span class="relative">456</span>
+                                                                </span>
+                                                            </td>
+                                                            <td class="w-1/12 p-2 bg-white text-sm">
+                                                                <span>sdf</span>
+                                                            </td>
+
+                                                            <td class="w-2/12 p-2 bg-white text-sm text-right">
+                                                                <span
+                                                                    class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight"
+                                                                >
+                                                                  <span
+                                                                      aria-hidden
+                                                                      class="absolute inset-0 bg-blue-200 opacity-50 rounded-full"
+                                                                  ></span>
+                                                                  <span class="relative">{{ (item.price * item.qty).toLocaleString() }}</span>
+                                                                </span>
+                                                            </td>
+                                                            <td
+                                                                class="w-1/12 p-2 bg-white text-sm text-right"
+                                                            >
+                                                                <button
+                                                                    class="inline-block text-gray-500 hover:text-gray-700"
+                                                                    type="button"
+                                                                >
+                                                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5"
+                                                                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                                        <path
+                                                                            d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                                                                            stroke-linecap="round"
+                                                                            stroke-linejoin="round"/>
+                                                                    </svg>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                             </div>
+                                            <div class="px-4">
+                          <Textarea
+                              autocomplete="description"
+                              class="mt-1 block w-full"
+                              placeholder="Nhập mô tả"
+                              type="text"
+                          />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </main>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <Detail :order-id="item.id" />
     </Page>
 </template>
 
@@ -103,7 +239,7 @@ export default defineComponent({
     },
     setup() {
         const route = useRoute();
-        const item = ref(null);
+        const order = ref(null);
 
         const page = reactive({
             id: 'edit_user',
@@ -135,7 +271,7 @@ export default defineComponent({
 
         onBeforeMount(() => {
             service.edit(route.params.id).then((response) => {
-                item.value = response.data.model;
+                order.value = response.data.model;
                 page.loading = false;
             })
         });
@@ -143,7 +279,7 @@ export default defineComponent({
         return {
             trans,
             page,
-            item,
+            order,
         }
     }
 })

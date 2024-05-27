@@ -21,6 +21,7 @@ class OrderResource extends JsonResource
     public function toArray($request)
     {
         $data = $this->resource->toArray();
+        $data['details'] = OrderDetailResource::collection($this->details);
         $data['customer_code'] = object_get($this, 'customer.code');
         $data['created_at'] = !empty($this->resource->created_at) ? $this->resource->created_at->diffForHumans() : null;
         $data['updated_at'] = !empty($this->resource->updated_at) ? $this->resource->updated_at->diffForHumans() : null;

@@ -84,7 +84,7 @@ class CategoryModel extends AbstractModel
         $result = Category::whereIsRoot()
             ->with([
                 'descendants'          => function ($query) use ($limit) {
-                    $query->where('show_header', 1)->limit(99);
+                    $query->where('show_header', 1);
                 },
                 'descendants.products' => function ($query) {
                     $query->where('products.is_active', 1);
