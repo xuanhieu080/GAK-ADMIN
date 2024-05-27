@@ -5,7 +5,7 @@ namespace App\V1\Resources;
 use App\Utilities\Data;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProductResource extends JsonResource
+class ProductDetailResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -50,6 +50,7 @@ class ProductResource extends JsonResource
             'rate'                => $this->rate,
             'rate_count'          => $this->rate_count,
             'average_rate'        => $this->rate_count == 0 ? 0 : round($this->rate / $this->rate_count, 1),
+            'variants'            => ProductVariantResource::collection($this->variants),
             'highlight'           => $this->highlight,
             'highlight_image_url' => $this->getFirstMediaUrl('highlight'),
             'highlight_image'     => $this->getFirstMediaUrl('highlight'),

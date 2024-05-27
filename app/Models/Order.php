@@ -13,6 +13,11 @@ class Order extends Model
 
     use Searchable, Filterable;
 
+    const STATUS_PENDING = 'pending';
+    const STATUS_PROCESSING = 'processing';
+    const STATUS_COMPLETED = 'completed';
+    const STATUS_CANCELLED = 'cancelled';
+
     protected $fillable = [
         'id',
         'code',

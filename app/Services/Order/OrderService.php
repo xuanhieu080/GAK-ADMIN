@@ -8,8 +8,10 @@ use App\Models\OrderDetail;
 use App\Models\Product;
 use App\Models\ProductDetail;
 use App\Services\Media\MediaService;
+use App\Supports\GAK_ERROR;
 use App\Supports\HasImage;
 use App\Supports\Support;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
@@ -64,61 +66,96 @@ class OrderService
      * @param array $data
      * @return OrderResource
      */
-    public function create(array $data)
+
+
+    public function store($input)
     {
-//        try {
-//            DB::beginTransaction();
-//            $data = $this->clean($data);
-//
-//            $data['code'] = Support::genCode('orders', 'code');
-//
-//            $product = Product::find($data['product_id']);
-//            $data['product_name'] = $product->name;
-//            $data['customer_id'] = request()->user()->id;
-//            $data['customer_name'] = request()->user()->name;
-//            $data['customer_phone'] = request()->user()->phone;
-//            $data['price'] = $product->price;
-//            $data['total'] = $product->price * $data['qty'];
-//            $data['is_active'] = 1;
-//            $data['status'] = 'APPROVED';
-//
-//
-//            $full_columns = $this->model->getFillable();
-//            $data = array_intersect_key($data, array_flip($full_columns));
-//
-//
-//            $record = Order::query()->create($data);
-//            $params = [];
-//            $productDetailIds = [];
-//            $details = ProductDetail::inRandomOrder()
-//                ->where('product_id', $product->id)
-//                ->limit($data['qty'])
-//                ->get();
-//
-//            foreach ($details as $detail) {
-//                $params[] = [
-//                    'order_id'          => $record->id,
-//                    'product_detail_id' => $detail->id,
-//                    'product_id'       => $product->id,
-//                ];
-//                $productDetailIds[] = $detail->id;
-//            }
-//
-//            ProductDetail::query()->whereId('id', $productDetailIds)
-//            ->update(['customer_id' => request()->user()->id]);
-//
-//            if (!empty($details)) {
-//                $record->details()->createMany($params);
-//            }
-//            $product->qty -= $data['qty'];
-//            $product->save();
-//            DB::commit();
-//        } catch (\Exception $e) {
-//            DB::rollback();
-//            throw new \Exception($e->getMessage());
-//        }
-//
-//        return new OrderResource($record);
+        $order = null;
+        try {
+            DB::transaction(function () use ($input, &$order) {
+                $params = [
+                    "code"           => Support::genCode('orders', 'code', 16),
+                    "date"           => Carbon::now(),
+                    "user_id"        => \Auth::id(),
+                    "user_name"      => \Auth::user()->name,
+                    "customer_name"  => $input['customer_name'],
+                    "customer_email" => $input['customer_email'],
+                    "customer_phone" => $input['customer_phone'],
+                    "address"        => $input['address'],
+                    "province_id"    => $input['province_id'],
+                    "district_id"    => $input['district_id'],
+                    "ward_id"        => $input['ward_id'],
+                    "note"           => Arr::get($input, 'note'),
+                ];
+
+
+                $order = Order::create($params);
+                $items = $input['items'];
+                $data = [];
+                $total = 0;
+                $product = null;
+                foreach ($items as $index => $detail) {
+                    $productId = $detail['product_id'];
+                    if (!empty($detail['product_variant_id'])) {
+                        $productVariantId = $detail['product_variant_id'];
+
+                        $item = ProductVariant::with(['product'])
+                            ->whereHas('product')
+                            ->where('id', $productVariantId)->where('product_id', $productId)->lockForUpdate()->first();
+                        if (empty($item)) {
+                            throw new \Exception('Sản phẩm không tồn tại');
+                        }
+                        if ($item->qty < $detail['qty']) {
+                            throw new \Exception('Số lượng sản phẩm trong kho không đủ');
+                        }
+
+                        $product = $item->product;
+                        $data[$index]['product_variant_id'] = $item->id;
+                        $data[$index]['product_variant_code'] = $item->code;
+                        $data[$index]['product_variant_name'] = $item->name;
+                        $data[$index]['option_name'] = $item->option_name;
+                    }
+                    if (empty($detail['product_variant_id'])) {
+                        $item = Product::where('id', $productId)->whereDoesntHave('variants')->lockForUpdate()->first();
+                        if (empty($item)) {
+                            throw new \Exception('Sản phẩm không tồn tại');
+                        }
+                        if ($item->qty < $detail['qty']) {
+                            throw new \Exception('Số lượng sản phẩm trong kho không đủ');
+                        }
+                        $product = $item;
+                        $data[$index]['product_variant_id'] = null;
+                        $data[$index]['product_variant_code'] = null;
+                        $data[$index]['product_variant_name'] = null;
+                        $data[$index]['option_name'] = null;
+                    }
+                    $totalDetail = $product->price_discount * $detail['qty'];
+                    $data[$index]['product_id'] = $productId;
+                    $data[$index]['product_name'] = $product->name;
+                    $data[$index]['product_code'] = $product->code;
+                    $data[$index]['price'] = $product->price_discount;
+                    $data[$index]['cost'] = $product->price;
+                    $data[$index]['total'] = $totalDetail;
+                    $data[$index]['order_id'] = $order->id;
+                    $data[$index]['qty'] = $detail['qty'];
+                    $product->decrement('qty', $detail['qty']);
+                    $total += $totalDetail;
+                }
+
+                OrderDetail::insert($data);
+                $order->total = $total;
+                $order->save();
+            });
+
+            if ($order) {
+                return new OrderResource($order);
+            } else {
+                // Xử lý trường hợp không tạo được đơn hàng hoặc lỗi xảy ra
+                return response()->json(['error' => 'Dữ liệu không chính xác'], 500);
+            }
+        } catch (\Exception $e) {
+            GAK_ERROR::handle($e, 'orders');
+        }
     }
 
     /**
@@ -184,6 +221,23 @@ class OrderService
 //        }
 //
 //        return new OrderResource($order);
+    }
+
+
+    public function updateStatus(Order $order, $status)
+    {
+        if ($order->status !== $status && ($order->status !== Order::STATUS_COMPLETED || $order->status === Order::STATUS_CANCELLED)) {
+            if ($status == Order::STATUS_CANCELLED) {
+                foreach ($order->details as $detail) {
+                    if ($detail->product) {
+                        $detail->product->increment('qty', $detail->qty);
+                        $detail->product->save();
+                    }
+                }
+            }
+            $order->status = $status;
+        }
+        return $order->save();
     }
 
     /**

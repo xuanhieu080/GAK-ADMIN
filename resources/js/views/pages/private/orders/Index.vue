@@ -8,26 +8,29 @@
                         <TextInput name="code" :label="trans('labels.code')" v-model="mainQuery.filters.code.value"></TextInput>
                     </FiltersCol>
                     <FiltersCol>
-                        <Dropdown name="products" server="products" :multiple="true" :label="trans('labels.product')" v-model="mainQuery.filters.product_id.value"></Dropdown>
+                        <TextInput name="customer" label="Số điện thoại hoặc email" v-model="mainQuery.filters.customer.value"></TextInput>
                     </FiltersCol>
-                    <FiltersCol>
-                        <Dropdown name="customers" server="customers" :multiple="true" :label="trans('labels.customer')" v-model="mainQuery.filters.customer_id.value"></Dropdown>
-                    </FiltersCol>
+                    <Dropdown class="mb-4" name="status"
+                              label="Trạng thái" placeholder="Trạng thái"
+                              :options="statusArray"
+                              :server-search-min-characters="0" v-model="mainQuery.filters.status.value"></Dropdown>
                 </FiltersRow>
             </Filters>
         </template>
 
         <template #default>
             <Table :id="page.id" v-if="table" :headers="table.headers" :sorting="table.sorting" :actions="table.actions" :records="table.records" :pagination="table.pagination" :is-loading="table.loading" @page-changed="onTablePageChange" @action="onTableAction" @sort="onTableSort">
-                <template v-slot:content-price="props">
-                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800" v-html="props.item.price.toLocaleString()"></span>
+                <template v-slot:content-discount="props">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800" v-html="props.item.discount.toLocaleString()"></span>
                 </template>
                 <template v-slot:content-total="props">
                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800" v-html="props.item.total.toLocaleString()"></span>
                 </template>
                 <template v-slot:content-status="props">
-                    <span v-if="props.item.status == 'SUCCESS'" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800" v-html="trans('labels.list_status.success')"></span>
-                    <span v-else class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800" v-html="trans('labels.list_status.failed')"></span>
+                    <span v-if="props.item.status == 'pending'" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">Đơn hàng mới</span>
+                    <span v-if="props.item.status == 'processing'" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-sky-100 text-sky-800">Đang chờ xử lý</span>
+                    <span v-if="props.item.status == 'completed'" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Đã hoàn thành</span>
+                    <span v-else class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Thất bại</span>
                 </template>
             </Table>
         </template>
@@ -65,6 +68,24 @@ export default defineComponent({
     },
     setup() {
         const service = new OrderService();
+        const statusArray = ref([
+            {
+                id: 'pending',
+                title: 'Đơn hàng mới'
+            },
+            {
+                id: 'processing',
+                title: 'Đang chờ xử lý'
+            },
+            {
+                id: 'completed',
+                title: 'Đã hoàn thành'
+            },
+            {
+                id: 'cancelled',
+                title: 'Đã huỷ'
+            }
+        ]);
         const alertStore = useAlertStore();
         const mainQuery = reactive({
             page: 1,
@@ -75,11 +96,11 @@ export default defineComponent({
                     value: '',
                     comparison: '='
                 },
-                customer_id: {
+                customer: {
                     value: '',
                     comparison: '='
                 },
-                product_id: {
+                status: {
                     value: '',
                     comparison: '='
                 },
@@ -111,13 +132,11 @@ export default defineComponent({
             headers: {
                 id: trans('labels.id_pound'),
                 code: trans('labels.code'),
-                title: trans('labels.title'),
                 date: trans('labels.date'),
                 customer_name: trans('labels.customer_name'),
-                customer_code: trans('labels.customer_code'),
-                product_name: trans('labels.product'),
-                qty: trans('labels.qty'),
-                price: trans('labels.price'),
+                customer_phone: 'Số điện thoại',
+                customer_email: 'Email',
+                discount: 'Giảm giá',
                 total: trans('labels.total'),
                 status: trans('labels.status'),
             },

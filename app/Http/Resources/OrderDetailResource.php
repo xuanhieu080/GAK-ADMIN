@@ -21,8 +21,12 @@ class OrderDetailResource extends JsonResource
     public function toArray($request)
     {
         $data = $this->resource->toArray();
+        $data['name'] = $this->product_name;
+        if (!empty($this->product_detail_id)) {
+            $data['name'] = $this->product_variant_name;
+        }
         $data['product_id'] = $this->product_id;
-        $data['product_detail_id'] = $this->product_detail_id;
+        $data['ç'] = $this->product_detail_id;
         $data['product_name'] = object_get($this, 'product.name');
         $data['product_image'] = object_get($this, 'product.image_url');
         $data['product_price'] = object_get($this, 'product.price');

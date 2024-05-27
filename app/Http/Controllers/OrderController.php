@@ -62,15 +62,15 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-//        $this->authorize('create', Order::class);
-//
-//        $input = $request->validated();
-//        $record = $this->orderService->create($input);
-//        if (!is_null($record)) {
-//            return $this->responseStoreSuccess(['model' => $record]);
-//        } else {
-//            return $this->responseStoreFail();
-//        }
+        $this->authorize('create', Order::class);
+
+        $input = $request->validated();
+        $record = $this->orderService->store($input);
+        if (!is_null($record)) {
+            return $this->responseStoreSuccess(['model' => $record]);
+        } else {
+            return $this->responseStoreFail();
+        }
     }
 
     /**
@@ -123,6 +123,27 @@ class OrderController extends Controller
 //        } else {
 //            return $this->responseUpdateFail();
 //        }
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  Request  $request
+     * @param  Order  $order
+     *
+     * @return JsonResponse
+     * @throws AuthorizationException
+     */
+    public function updateStatus(Request $request, Order $order)
+    {
+        $this->authorize('edit', Order::class);
+//
+        $data = $request->validated();
+        if ($this->orderService->updateStatus($order, $data['status'])) {
+            return $this->responseUpdateSuccess(['model' => $order->fresh()]);
+        } else {
+            return $this->responseUpdateFail();
+        }
     }
 
     /**

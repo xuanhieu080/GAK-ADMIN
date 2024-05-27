@@ -5,6 +5,7 @@ namespace App\V1\Models;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductReview;
+use App\V1\Resources\ProductDetailResource;
 use App\V1\Resources\ProductResource;
 use App\V1\Resources\ProductReviewResource;
 use Illuminate\Support\Arr;
@@ -39,10 +40,11 @@ class ProductModel extends AbstractModel
             $input['name'] = ['like' => $input['search']];
         }
         $result = $this->search($input,
-            ['attributeVariants',
-                'variants' => function ($query) {
-                    $query->where('qty', '>', 0);
-                }
+            [
+                'attributeVariants',
+//                'variants' => function ($query) {
+//                    $query->where('qty', '>', 0);
+//                }
             ], $limit);
 
         return ProductResource::collection($result);
@@ -201,7 +203,8 @@ class ProductModel extends AbstractModel
 
     public function show($slug)
     {
-        $item = Product::with(['attributeVariants',
+        $item = Product::with([
+            'attributeVariants',
             'variants' => function ($query) {
                 $query->where('qty', '>', 0);
             }
@@ -219,7 +222,7 @@ class ProductModel extends AbstractModel
             return null;
         }
 
-        return new ProductResource($item);
+        return new ProductDetailResource($item);
     }
 
     public function getReview($input)
