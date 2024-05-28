@@ -48,6 +48,15 @@ class CategoryController extends Controller
     }
 
 
+    public function getCategoryAll(Request $request)
+    {
+//        $this->authorize('list', Company::class);
+        $input = $request->all();
+
+        return $this->model->getAll($input);
+    }
+
+
 
     public function show($slug)
     {

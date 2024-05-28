@@ -73,6 +73,37 @@ class CategoryModel extends AbstractModel
         return response()->json(['item' => new CategoryResource($item), 'variants' => $variants]);
     }
 
+    public function getAll($input)
+    {
+        $limit = Arr::get($input, 'limit', 4);
+        $categories = Category::with([
+            'descendants' => function ($query) {
+                $query->where('show_header', 1);
+            },
+            'products' => function ($query) use ($limit) {
+                $query->where('is_active', 1)->limit($limit);
+            }
+        ])->where('is_active', 1)
+            ->get();
+
+// Đối với mỗi category, sẽ load thêm các products từ descendants
+        $categories->load([
+            'descendants.products' => function ($query) use ($limit) {
+                $query->where('is_active', 1)->limit($limit);
+            }
+        ])->each(function ($category) use ($limit) {
+            // Kết hợp các sản phẩm từ chính category này và các descendants một cách hiệu quả
+            $allProducts = collect();
+            foreach ($category->descendants as $descendant) {
+                $allProducts = $allProducts->concat($descendant->products);
+            }
+
+            $category->setRelation('products', $category->products->concat($allProducts)->take($limit));
+        });
+
+        return CategoryResource::collection($categories);
+    }
+
     public function getCategoryHeader($input)
     {
         $limit = Arr::get($input, 'limit', 4);
@@ -81,8 +112,7 @@ class CategoryModel extends AbstractModel
         $input['is_active'] = 1;
         $input['show_header'] = 1;
 
-        $result = Category::whereIsRoot()
-            ->with([
+        $result = Category::with([
                 'descendants'          => function ($query) use ($limit) {
                     $query->where('show_header', 1);
                 },
