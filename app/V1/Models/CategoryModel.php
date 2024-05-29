@@ -5,6 +5,7 @@ namespace App\V1\Models;
 use App\Models\AttributeGroup;
 use App\Models\Category;
 use App\Models\Variant;
+use App\V1\Resources\CategoryDetailResource;
 use App\V1\Resources\CategoryHeaderResource;
 use App\V1\Resources\CategoryResource;
 use Illuminate\Support\Arr;
@@ -34,10 +35,9 @@ class CategoryModel extends AbstractModel
 
     public function show($slug)
     {
-        $limit = 99;
         $item = Category::with([
-            'descendants'          => function ($query) use ($limit) {
-                $query->where('is_active', 1)->limit($limit);
+            'descendants'          => function ($query) {
+                $query->where('is_active', 1);
             },
             'descendants.products' => function ($query) {
                 $query->where('products.is_active', 1)
@@ -57,18 +57,31 @@ class CategoryModel extends AbstractModel
                         $query->where('collection_name', 'thumb');
                     });
             },
-        ])->where('is_active', 1)
-            ->first()
-            ->map(function ($category) {
-                $products = $category->products->concat($category->descendants->pluck('products')->flatten());
-                $category->setRelation('products', $products);
-                return $category;
-            })->where('slug', $slug)
+        ])->where('slug', $slug)
             ->where('is_active', 1)
             ->first();
         if (empty($item)) {
             return null;
         }
+
+        $item->load([
+            'descendants.products' => function ($query) {
+                $query->where('is_active', 1)
+                    ->whereHas('media', function ($query) {
+                        $query->where('collection_name', 'default');
+                    })->whereHas('media', function ($query) {
+                        $query->where('collection_name', 'thumb');
+                    });
+            }
+        ])->each(function ($category) {
+            // Kết hợp các sản phẩm từ chính category này và các descendants một cách hiệu quả
+            $allProducts = collect();
+            foreach ($category->descendants as $descendant) {
+                $allProducts = $allProducts->concat($descendant->products);
+            }
+
+            $category->setRelation('products', $category->products->concat($allProducts));
+        });
 
         $productIds = $item->products->where('is_active', 1)->pluck('id');
 //        $variants = Variant::whereIn('product_id', $productIds)->get()->unique()->groupBy('attribute_group_id')->toArray();
@@ -84,7 +97,7 @@ class CategoryModel extends AbstractModel
             });
         })->orderByDesc('is_color')->get();
 
-        return response()->json(['item' => new CategoryResource($item), 'variants' => $variants]);
+        return response()->json(['item' => new CategoryDetailResource($item), 'variants' => $variants]);
     }
 
     public function getAll($input)
