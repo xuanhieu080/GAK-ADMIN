@@ -106,36 +106,40 @@ class CategoryModel extends AbstractModel
 
     public function getCategoryHeader($input)
     {
-        $limit = Arr::get($input, 'limit', 4);
+        $limit = Arr::get($input, 'limit', 20);
 
         $input['sort'] = ['id' => 'desc'];
         $input['is_active'] = 1;
         $input['show_header'] = 1;
 
-        $result = Category::with([
-                'descendants'          => function ($query) use ($limit) {
-                    $query->where('show_header', 1);
-                },
-                'descendants.products' => function ($query) {
-                    $query->where('products.is_active', 1);
-                },
-                'products'             => function ($query) {
-                    $query->where('products.is_active', 1);
-                },
-            ])->where('show_header', 1)
-            ->paginate($limit);
-        $result->getCollection()->transform(function ($category) use ($limit) {
-            $products = $category->products->concat($category->descendants->pluck('products')->flatten());
+        $limit = Arr::get($input, 'limit', 4);
+        $categories = Category::with([
+            'descendants' => function ($query) {
+                $query->where('show_header', 1);
+            },
+            'products' => function ($query) use ($limit) {
+                $query->where('is_active', 1)->limit($limit);
+            }
+        ])->where('show_header', 1)
+            ->where('is_active', 1)
+            ->get();
 
-            // Có thể cần áp dụng phân trang cho sản phẩm ở đây, tùy thuộc vào yêu cầu:
-            // $products = $products->slice(0, $limit);
+// Đối với mỗi category, sẽ load thêm các products từ descendants
+        $categories->load([
+            'descendants.products' => function ($query) use ($limit) {
+                $query->where('is_active', 1)->limit($limit);
+            }
+        ])->each(function ($category) use ($limit) {
+            // Kết hợp các sản phẩm từ chính category này và các descendants một cách hiệu quả
+            $allProducts = collect();
+            foreach ($category->descendants as $descendant) {
+                $allProducts = $allProducts->concat($descendant->products);
+            }
 
-            $category->setRelation('products', $products);
-
-            return $category;
+            $category->setRelation('products', $category->products->concat($allProducts)->take($limit));
         });
 
-        return CategoryHeaderResource::collection($result);
+        return CategoryHeaderResource::collection($categories);
     }
 
     public function getCategoryDashboard($input)
