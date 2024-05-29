@@ -46,6 +46,7 @@ class PostModel extends AbstractModel
 
     public function search($input = [], $with = [], $limit = null)
     {
+        $groupSlug = Arr::get($input, 'group_slug');
         $query = $this->make($with);
         $orWhere = Arr::get($input, 'orWhere', []);
         $this->sortBuilder($query, $input);
@@ -135,6 +136,12 @@ class PostModel extends AbstractModel
                 }
             }
         });
+
+        if (!empty($group_slug)) {
+            $query->whereHas('group', function ($q) use ($groupSlug) {
+                $q->where('slug', $groupSlug);
+            });
+        }
 
         if ($limit) {
             if ($limit === 1) {
