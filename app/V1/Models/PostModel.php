@@ -137,7 +137,7 @@ class PostModel extends AbstractModel
             }
         });
 
-        if (!empty($group_slug)) {
+        if (!empty($groupSlug)) {
             $query->whereHas('group', function ($q) use ($groupSlug) {
                 $q->where('slug', $groupSlug);
             });
