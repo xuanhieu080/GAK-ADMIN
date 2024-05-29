@@ -22,7 +22,10 @@ class CategoryDetailResource extends JsonResource
     {
         $data = $this->resource->toArray();
         $data['image_url'] = $this->getFirstMediaUrl();
-        $data['variants'] = $this->getFirstMediaUrl();
+        if (!empty($this->resource->toArray()['descendants'])) {
+            $data['descendants'] = CategoryDescendantResource::collection($this->descendants);
+        }
+//        $data['variants'] = $this->getFirstMediaUrl();
 //        if (!empty($this->resource->toArray()['products'])) {
 //            $data['products'] = ProductResource::collection($this->products);
 //        }
