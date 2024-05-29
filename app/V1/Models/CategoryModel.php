@@ -195,10 +195,10 @@ class CategoryModel extends AbstractModel
     {
         $limit = Arr::get($input, 'limit', 20);
         $categories = Category::with([
-            'descendants'          => function ($query){
+            'descendants'          => function ($query) {
                 $query->where('is_active', 1);
             },
-            'descendants.products' => function ($query){
+            'descendants.products' => function ($query) use ($limit) {
                 $query->where('products.is_active', 1)
                     ->whereHas('media', function ($query) {
                         // Điều kiện cho hình ảnh
@@ -214,7 +214,7 @@ class CategoryModel extends AbstractModel
                         $query->where('collection_name', 'default');
                     })->whereHas('media', function ($query) {
                         $query->where('collection_name', 'thumb');
-                    })->limit($limit;
+                    })->limit($limit);
             },
         ])->where('is_active', 1)
             ->where('show_dashboard', 1)
@@ -223,7 +223,7 @@ class CategoryModel extends AbstractModel
 
 // Đối với mỗi category, sẽ load thêm các products từ descendants
         $categories->load([
-            'descendants.products' => function ($query){
+            'descendants.products' => function ($query) {
                 $query->where('is_active', 1)
                     ->whereHas('media', function ($query) {
                         $query->where('collection_name', 'default');
