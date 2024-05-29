@@ -23,9 +23,9 @@ class CategoryDetailResource extends JsonResource
         $data = $this->resource->toArray();
         $data['image_url'] = $this->getFirstMediaUrl();
         $data['variants'] = $this->getFirstMediaUrl();
-        if (!empty($this->resource->toArray()['products'])) {
-            $data['products'] = ProductResource::collection($this->products);
-        }
+//        if (!empty($this->resource->toArray()['products'])) {
+//            $data['products'] = ProductResource::collection($this->products);
+//        }
 
         $data['created_at'] = !empty($this->resource->created_at) ? $this->resource->created_at->diffForHumans() : null;
         $data['updated_at'] = !empty($this->resource->updated_at) ? $this->resource->updated_at->diffForHumans() : null;
