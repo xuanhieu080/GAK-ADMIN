@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::dropIfExists('seo_contents');
         Schema::create('seo_contents', function (Blueprint $table) {
             $table->id();
-            $table->string('path')->nullable();
-            $table->text('description')->nullable();
+            $table->string('link', 355)->nullable();
+            $table->text('content')->nullable();
             $table->boolean('is_active')->default(1);
             $table->unsignedBigInteger('user_id')->nullable();
             $table->timestamps();
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('seo_contents');
+
     }
 };

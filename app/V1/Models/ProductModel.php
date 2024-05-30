@@ -207,6 +207,9 @@ class ProductModel extends AbstractModel
             'attributeVariants',
             'variants' => function ($query) {
                 $query->where('qty', '>', 0);
+            },
+            'reviews' => function ($query) {
+                $query->orderByDesc('rate')->first();
             }
         ])->where('slug', $slug)
             ->where('is_active', 1)

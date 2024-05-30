@@ -93,6 +93,11 @@ class Product extends Model implements HasMedia
         return $this->hasMany(Variant::class, 'product_id', 'id');
     }
 
+    public function reviews()
+    {
+        return $this->hasMany(ProductReview::class, 'product_id', 'id');
+    }
+
     public function registerMediaConversions(Media $media = null): void
     {
         $this

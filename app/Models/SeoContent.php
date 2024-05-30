@@ -11,4 +11,11 @@ class SeoContent extends Model
 {
     use HasFactory;
     use Searchable, Filterable;
+
+    protected $fillable = [
+        'link',
+        'description',
+        'is_active',
+        'user_id'
+    ];
 }

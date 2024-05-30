@@ -54,6 +54,7 @@ class ProductDetailResource extends JsonResource
             'highlight'           => $this->highlight,
             'highlight_image_url' => $this->getFirstMediaUrl('highlight'),
             'highlight_image'     => $this->getFirstMediaUrl('highlight'),
+            'reviews'             => $this->reviews,
         ];
 
 //        $productVariants = [];
