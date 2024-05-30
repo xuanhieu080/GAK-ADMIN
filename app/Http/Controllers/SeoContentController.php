@@ -2,30 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Page;
+use App\Http\Requests\SeoContents\StoreRequest;
+use App\Models\SeoContent;
+use App\Services\SeoContent\SeoContentService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Http\Resources\PageResource;
-use App\Http\Requests\Pages\StoreRequest;
-use App\Http\Requests\Pages\UpdateRequest;
-use App\Http\Requests\DestroyUserRequest;
-use App\Services\Page\PageContent;
 
-class PageController extends Controller
+class SeoContentController extends Controller
 {
     /**
      * The service instance
-     * @var PageContent
+     * @var SeoContentService
      */
-    protected PageContent $pageService;
+    protected SeoContentService $seoContentService;
 
     /**
      * Constructor
      */
-    public function __construct(PageContent $pageService)
+    public function __construct(SeoContentService $seoContentService)
     {
-        $this->pageService = $pageService;
+        $this->seoContentService = $seoContentService;
     }
 
     /**
@@ -35,9 +32,9 @@ class PageController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('list', Page::class);
+        $this->authorize('list', SeoContent::class);
 
-        return $this->pageService->index($request->all());
+        return $this->seoContentService->index($request->all());
     }
 
     /**
@@ -48,7 +45,7 @@ class PageController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', Page::class);
+        $this->authorize('create', SeoContent::class);
 
         return $this->responseDataSuccess(['properties' => $this->properties()]);
     }
@@ -63,10 +60,10 @@ class PageController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $this->authorize('create', Page::class);
+        $this->authorize('create', SeoContent::class);
 
         $input = $request->validated();
-        $record = $this->pageService->create($input);
+        $record = $this->seoContentService->create($input);
         if (!is_null($record)) {
             return $this->responseStoreSuccess(['model' => $record]);
         } else {
@@ -77,49 +74,49 @@ class PageController extends Controller
     /**
      *  Show the form for editing the specified resource.
      *
-     * @param  Page  $page
+     * @param  SeoContent  $seoContent
      *
-     * @return PageResource|JsonResponse
+     * @return SeoContentResource|JsonResponse
      * @throws AuthorizationException
      */
-    public function show(Page $page)
+    public function show(SeoContent $seoContent)
     {
-        $this->authorize('view', Page::class);
+        $this->authorize('view', SeoContent::class);
 
-        $model = $this->pageService->get($page);
+        $model = $this->seoContentService->get($seoContent);
         return $this->responseDataSuccess(['model' => $model, 'properties' => $this->properties()]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Page  $page
+     * @param  SeoContent  $seoContent
      *
      * @return JsonResponse|\Illuminate\Http\Response
      * @throws AuthorizationException
      */
-    public function edit(Page $page)
+    public function edit(SeoContent $seoContent)
     {
-        $this->authorize('edit', Page::class);
+        $this->authorize('edit', SeoContent::class);
 
-        return $this->show($page);
+        return $this->show($seoContent);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  UpdateRequest  $request
-     * @param  Page  $page
+     * @param  SeoContent  $seoContent
      *
      * @return JsonResponse
      * @throws AuthorizationException
      */
-    public function update(UpdateRequest $request, Page $page)
+    public function update(UpdateRequest $request, SeoContent $seoContent)
     {
-        $this->authorize('edit', Page::class);
+        $this->authorize('edit', SeoContent::class);
 
         $data = $request->validated();
-        if ($item = $this->pageService->updateItem($page, $data)) {
+        if ($item = $this->seoContentService->updateItem($seoContent, $data)) {
             return $this->responseUpdateSuccess(['model' => $item]);
         } else {
             return $this->responseUpdateFail();
@@ -134,12 +131,12 @@ class PageController extends Controller
      * @return JsonResponse
      * @throws AuthorizationException
      */
-    public function destroy(DestroyUserRequest $request, Page $page)
+    public function destroy(DestroyUserRequest $request, SeoContent $seoContent)
     {
-        $this->authorize('delete', Page::class);
+        $this->authorize('delete', SeoContent::class);
 
-        if ($this->pageService->delete($page)) {
-            return $this->responseDeleteSuccess(['model' => $page]);
+        if ($this->seoContentService->delete($seoContent)) {
+            return $this->responseDeleteSuccess(['model' => $seoContent]);
         }
 
         return $this->responseDeleteFail();
