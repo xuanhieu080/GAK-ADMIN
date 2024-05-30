@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Page;
+use App\Services\Page\PageService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -10,20 +11,19 @@ use App\Http\Resources\PageResource;
 use App\Http\Requests\Pages\StoreRequest;
 use App\Http\Requests\Pages\UpdateRequest;
 use App\Http\Requests\DestroyUserRequest;
-use App\Services\Page\PageContent;
 
 class PageController extends Controller
 {
     /**
      * The service instance
-     * @var PageContent
+     * @var PageService
      */
-    protected PageContent $pageService;
+    protected $pageService;
 
     /**
      * Constructor
      */
-    public function __construct(PageContent $pageService)
+    public function __construct(PageService $pageService)
     {
         $this->pageService = $pageService;
     }
