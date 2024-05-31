@@ -37,7 +37,7 @@ class CategoryModel extends AbstractModel
     {
         $item = Category::with([
             'descendants'          => function ($query) {
-                $query->where('is_active', 1);
+                $query->where('is_active', 1)->orderBy('name');
             },
             'descendants.products' => function ($query) {
                 $query->where('products.is_active', 1)
