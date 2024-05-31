@@ -178,7 +178,7 @@ class CategoryModel extends AbstractModel
             },
         ])->where('is_active', 1)
             ->where('show_header', 1)
-            ->orderBy('name')
+            ->orderBy('order')
             ->get();
 
 // Đối với mỗi category, sẽ load thêm các products từ descendants
