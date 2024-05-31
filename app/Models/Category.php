@@ -37,7 +37,8 @@ class Category extends Model implements HasMedia
         'slug',
         'meta_title',
         'meta_description',
-        'meta_key'
+        'meta_key',
+        'order',
     ];
 
     protected $casts = [
