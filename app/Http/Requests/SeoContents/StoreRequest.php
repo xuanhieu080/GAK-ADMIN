@@ -14,9 +14,9 @@ class StoreRequest extends BaseRequest
     public function rules()
     {
         return [
-            'is_active' => 'required|in:1,0,true,false',
-            'link'      => 'required|active_url|max:355|unique:seo_contents,link',
-            'content'   => 'required|string',
+            'is_active'   => 'required|in:1,0,true,false',
+            'link'        => 'required|active_url|max:355|unique:seo_contents,link',
+            'description' => 'required|string',
         ];
     }
 }

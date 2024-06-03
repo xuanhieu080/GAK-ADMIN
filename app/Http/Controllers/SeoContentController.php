@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SeoContents\StoreRequest;
+use App\Http\Requests\SeoContents\UpdateRequest;
 use App\Models\SeoContent;
 use App\Services\SeoContent\SeoContentService;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -74,49 +75,49 @@ class SeoContentController extends Controller
     /**
      *  Show the form for editing the specified resource.
      *
-     * @param  SeoContent  $seoContent
+     * @param  SeoContent  $seo_content
      *
      * @return SeoContentResource|JsonResponse
      * @throws AuthorizationException
      */
-    public function show(SeoContent $seoContent)
+    public function show(SeoContent $seo_content)
     {
         $this->authorize('view', SeoContent::class);
 
-        $model = $this->seoContentService->get($seoContent);
+        $model = $this->seoContentService->get($seo_content);
         return $this->responseDataSuccess(['model' => $model, 'properties' => $this->properties()]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  SeoContent  $seoContent
+     * @param  SeoContent  $seo_content
      *
      * @return JsonResponse|\Illuminate\Http\Response
      * @throws AuthorizationException
      */
-    public function edit(SeoContent $seoContent)
+    public function edit(SeoContent $seo_content)
     {
         $this->authorize('edit', SeoContent::class);
 
-        return $this->show($seoContent);
+        return $this->show($seo_content);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  UpdateRequest  $request
-     * @param  SeoContent  $seoContent
+     * @param  SeoContent  $seo_content
      *
      * @return JsonResponse
      * @throws AuthorizationException
      */
-    public function update(UpdateRequest $request, SeoContent $seoContent)
+    public function update(UpdateRequest $request, SeoContent $seo_content)
     {
         $this->authorize('edit', SeoContent::class);
 
         $data = $request->validated();
-        if ($item = $this->seoContentService->updateItem($seoContent, $data)) {
+        if ($item = $this->seoContentService->updateItem($seo_content, $data)) {
             return $this->responseUpdateSuccess(['model' => $item]);
         } else {
             return $this->responseUpdateFail();
@@ -131,12 +132,12 @@ class SeoContentController extends Controller
      * @return JsonResponse
      * @throws AuthorizationException
      */
-    public function destroy(DestroyUserRequest $request, SeoContent $seoContent)
+    public function destroy(SeoContent $seo_content)
     {
         $this->authorize('delete', SeoContent::class);
 
-        if ($this->seoContentService->delete($seoContent)) {
-            return $this->responseDeleteSuccess(['model' => $seoContent]);
+        if ($this->seoContentService->delete($seo_content)) {
+            return $this->responseDeleteSuccess(['model' => $seo_content]);
         }
 
         return $this->responseDeleteFail();

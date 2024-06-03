@@ -15,14 +15,14 @@ class UpdateRequest extends BaseRequest
     public function rules()
     {
         return [
-            'link'      => [
+            'link'        => [
                 'required',
                 'active_url',
                 'max:355',
-                Rule::unique('seo_contents', 'link')->ignore($this->route('seo_contents')->id)
+                Rule::unique('seo_contents', 'link')->ignore($this->route('seo_content')->id)
             ],
-            'content'   => 'required|string',
-            'is_active' => 'required|in:1,0,true,false',
+            'description' => 'required|string',
+            'is_active'   => 'required|in:1,0,true,false',
         ];
     }
 
