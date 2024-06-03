@@ -44,9 +44,6 @@ class SeoContentService
         if (!empty($data['search'])) {
             $query = $query->where('name','like', '%'.$data['search'].'%');
         }
-        if (!empty($data['group_id'])) {
-            $query = $query->where('group_id', $data['group_id']);
-        }
         if (!empty($data['filters'])) {
             $this->filter($query, $data['filters']);
         }
@@ -90,7 +87,7 @@ class SeoContentService
     {
         $data = $this->clean($data);
         $seoContent->link = Arr::get($data, 'link', $seoContent->link);
-        $seoContent->content = Arr::get($data, 'content', $seoContent->content);
+        $seoContent->description = Arr::get($data, 'content', $seoContent->description);
         $seoContent->is_active = filter_var(Arr::get($data, 'is_active', $seoContent->is_active), FILTER_VALIDATE_BOOLEAN);
         $seoContent->user_id = \Auth::id();
         $seoContent->save();

@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\Category;
 use App\Models\Page;
 use App\Models\Post;
+use App\Models\PostGroup;
 use App\Models\Product;
 use App\V1\Models\ProductModel;
 use Illuminate\Console\Command;
@@ -38,28 +39,196 @@ class GenerateSitemap extends Command
     {
         $data[] = [
             "url" => "https://gak.vn/vi",
-            "updated_at" => Carbon::parse("2024-05-26 09:00"),
+            "updated_at" => Carbon::now(),
             "priority" => 0.8,
             "freq" => "daily",
             "changefreq" => "daily",
         ];
         $data[] = [
             "url" => "https://gak.vn/en",
-            "updated_at" => Carbon::parse("2024-05-26 09:00"),
+            "updated_at" => Carbon::now(),
+            "priority" => 0.8,
+            "freq" => "daily",
+            "changefreq" => "daily",
+        ];
+        $data[] = [
+            "url" => "https://gak.vn/vi/collection/dong-phuc-cong-ty",
+            "updated_at" => Carbon::now(),
+            "priority" => 0.8,
+            "freq" => "daily",
+            "changefreq" => "daily",
+        ];
+        $data[] = [
+            "url" => "https://gak.vn/en/collection/dong-phuc-cong-ty",
+            "updated_at" => Carbon::now(),
+            "priority" => 0.8,
+            "freq" => "daily",
+            "changefreq" => "daily",
+        ];
+        $data[] = [
+            "url" => "https://gak.vn/vi/collection/quan-ao-ghi-le-bao-ho-chat-luong",
+            "updated_at" => Carbon::now(),
+            "priority" => 0.8,
+            "freq" => "daily",
+            "changefreq" => "daily",
+        ];
+        $data[] = [
+            "url" => "https://gak.vn/en/collection/quan-ao-ghi-le-bao-ho-chat-luong",
+            "updated_at" => Carbon::now(),
+            "priority" => 0.8,
+            "freq" => "daily",
+            "changefreq" => "daily",
+        ];
+        $data[] = [
+            "url" => "https://gak.vn/vi/ve-chung-toi",
+            "updated_at" => Carbon::now(),
+            "priority" => 0.8,
+            "freq" => "daily",
+            "changefreq" => "daily",
+        ];
+        $data[] = [
+            "url" => "https://gak.vn/en/ve-chung-toi",
+            "updated_at" => Carbon::now(),
+            "priority" => 0.8,
+            "freq" => "daily",
+            "changefreq" => "daily",
+        ];
+        $data[] = [
+            "url" => "https://gak.vn/vi/van-hoa-san-pham",
+            "updated_at" => Carbon::now(),
+            "priority" => 0.8,
+            "freq" => "daily",
+            "changefreq" => "daily",
+        ];
+        $data[] = [
+            "url" => "https://gak.vn/en/van-hoa-san-pham",
+            "updated_at" => Carbon::now(),
             "priority" => 0.8,
             "freq" => "daily",
             "changefreq" => "daily",
         ];
         $data[] = [
             "url" => "https://gak.vn/vi/tat-ca-san-pham",
-            "updated_at" => Carbon::parse("2024-05-26 09:00"),
+            "updated_at" => Carbon::now(),
             "priority" => 0.8,
             "freq" => "daily",
             "changefreq" => "daily",
         ];
         $data[] = [
             "url" => "https://gak.vn/en/tat-ca-san-pham",
-            "updated_at" => Carbon::parse("2024-05-26 09:00"),
+            "updated_at" => Carbon::now(),
+            "priority" => 0.8,
+            "freq" => "daily",
+            "changefreq" => "daily",
+        ];
+        $data[] = [
+            "url" => "https://gak.vn/vi/nha-may",
+            "updated_at" => Carbon::now(),
+            "priority" => 0.8,
+            "freq" => "daily",
+            "changefreq" => "daily",
+        ];
+        $data[] = [
+            "url" => "https://gak.vn/en/nha-may",
+            "updated_at" => Carbon::now(),
+            "priority" => 0.8,
+            "freq" => "daily",
+            "changefreq" => "daily",
+        ];
+        $data[] = [
+            "url" => "https://gak.vn/vi/dvkh-tan-tam",
+            "updated_at" => Carbon::now(),
+            "priority" => 0.8,
+            "freq" => "daily",
+            "changefreq" => "daily",
+        ];
+        $data[] = [
+            "url" => "https://gak.vn/en/dvkh-tan-tam",
+            "updated_at" => Carbon::now(),
+            "priority" => 0.8,
+            "freq" => "daily",
+            "changefreq" => "daily",
+        ];
+        $data[] = [
+            "url" => "https://gak.vn/vi/dieu-khoan-su-dung",
+            "updated_at" => Carbon::now(),
+            "priority" => 0.8,
+            "freq" => "daily",
+            "changefreq" => "daily",
+        ];
+        $data[] = [
+            "url" => "https://gak.vn/en/dieu-khoan-su-dung",
+            "updated_at" => Carbon::now(),
+            "priority" => 0.8,
+            "freq" => "daily",
+            "changefreq" => "daily",
+        ];
+        $data[] = [
+            "url" => "https://gak.vn/vi/chinh-sach-khuyen-mai",
+            "updated_at" => Carbon::now(),
+            "priority" => 0.8,
+            "freq" => "daily",
+            "changefreq" => "daily",
+        ];
+        $data[] = [
+            "url" => "https://gak.vn/en/chinh-sach-khuyen-mai",
+            "updated_at" => Carbon::now(),
+            "priority" => 0.8,
+            "freq" => "daily",
+            "changefreq" => "daily",
+        ];
+        $data[] = [
+            "url" => "https://gak.vn/vi/chinh-sach-giao-hang",
+            "updated_at" => Carbon::now(),
+            "priority" => 0.8,
+            "freq" => "daily",
+            "changefreq" => "daily",
+        ];
+        $data[] = [
+            "url" => "https://gak.vn/en/chinh-sach-giao-hang",
+            "updated_at" => Carbon::now(),
+            "priority" => 0.8,
+            "freq" => "daily",
+            "changefreq" => "daily",
+        ];
+        $data[] = [
+            "url" => "https://gak.vn/vi/chinh-sach-cookie",
+            "updated_at" => Carbon::now(),
+            "priority" => 0.8,
+            "freq" => "daily",
+            "changefreq" => "daily",
+        ];
+        $data[] = [
+            "url" => "https://gak.vn/en/chinh-sach-cookie",
+            "updated_at" => Carbon::now(),
+            "priority" => 0.8,
+            "freq" => "daily",
+            "changefreq" => "daily",
+        ];
+        $data[] = [
+            "url" => "https://gak.vn/vi/chinh-sach-bao-mat",
+            "updated_at" => Carbon::now(),
+            "priority" => 0.8,
+            "freq" => "daily",
+            "changefreq" => "daily",
+        ];
+        $data[] = [
+            "url" => "https://gak.vn/en/chinh-sach-bao-mat",
+            "updated_at" => Carbon::now(),
+            "priority" => 0.8,
+            "freq" => "daily",
+            "changefreq" => "daily",
+        ];
+        $data[] = [
+            "url" => "https://gak.vn/vi/tat-ca-san-pham",
+            "updated_at" => Carbon::now(),
+            "priority" => 0.8,
+            "freq" => "daily",
+            "changefreq" => "daily",
+        ];
+        $data[] = [
+            "url" => "https://gak.vn/en/tat-ca-san-pham",
+            "updated_at" => Carbon::now(),
             "priority" => 0.8,
             "freq" => "daily",
             "changefreq" => "daily",
@@ -194,6 +363,62 @@ class GenerateSitemap extends Command
             ];
             $dataEn[] = [
                 "url" => "https://gak.vn/en/articles/$item->slug",
+                //                "image"      => getImageCustom($item->image, '/images/building.png'),
+                //                "title"      => "$item->title",
+                "created_at" => Carbon::parse($item->created_at),
+                "updated_at" => Carbon::parse($item->updated_at),
+
+            ];
+        }
+
+        $data = array_chunk($data, 200);
+        $dataEn = array_chunk($dataEn, 200);
+
+        foreach ($data as $key => $item) {
+            $this->generateSitemap($item, "/home/DEV-GAK-UI/public/vi/article$key.xml", $priority);
+            $this->urls[] = "vi/article$key.xml";
+        }
+
+        foreach ($dataEn as $key => $item) {
+            $this->generateSitemap($item, "/home/DEV-GAK-UI/public/en/article$key.xml", $priority);
+            $this->urls[] = "en/article$key.xml";
+        }
+    }
+
+    public function postGroup($priority = 0.5)
+    {
+        $result = PostGroup::query()
+            ->where('is_active', 1)
+            ->get();
+        $data = [];
+        $dataEn = [];
+
+        $data[] = [
+            "url" => "https://gak.vn/vi/blog",
+            //                "image"      => getImageCustom($item->image, '/images/building.png'),
+            //                "title"      => "$item->title",
+            "created_at" => Carbon::now(),
+            "updated_at" => Carbon::now(),
+
+        ];
+        $dataEn[] = [
+            "url" => "https://gak.vn/en/blog",
+            //                "image"      => getImageCustom($item->image, '/images/building.png'),
+            //                "title"      => "$item->title",
+            "created_at" => Carbon::now(),
+            "updated_at" => Carbon::now(),
+        ];
+        foreach ($result as $item) {
+            $data[] = [
+                "url" => "https://gak.vn/vi/blog/$item->slug",
+                //                "image"      => getImageCustom($item->image, '/images/building.png'),
+                //                "title"      => "$item->title",
+                "created_at" => Carbon::parse($item->created_at),
+                "updated_at" => Carbon::parse($item->updated_at),
+
+            ];
+            $dataEn[] = [
+                "url" => "https://gak.vn/en/blog/$item->slug",
                 //                "image"      => getImageCustom($item->image, '/images/building.png'),
                 //                "title"      => "$item->title",
                 "created_at" => Carbon::parse($item->created_at),

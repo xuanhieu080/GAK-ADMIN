@@ -15,6 +15,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostGroupController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SeoContentController;
 use App\Http\Controllers\SupportController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -63,6 +64,7 @@ Route::middleware(['auth:sanctum', 'apply_locale'])->group(function () {
     Route::resource('page-groups', PageGroupController::class);
     Route::resource('supports', SupportController::class);
     Route::resource('configs', ConfigController::class);
+    Route::resource('seo-contents', SeoContentController::class);
     Route::post('/customers/{id}/recharge', [CustomerController::class, 'recharge']);
     Route::post('/upload-image', [ConfigController::class, 'uploadImage']);
     Route::get('/comments', [CommentController::class, 'index']);

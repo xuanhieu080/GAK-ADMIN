@@ -48,6 +48,10 @@ import {default as PageAttributeIndex} from "@/views/pages/private/attributes/In
 import {default as PageAttributeCreate} from "@/views/pages/private/attributes/Create";
 import {default as PageAttributeEdit} from "@/views/pages/private/attributes/Edit.vue";
 
+import {default as SeoContentIndex} from "@/views/pages/private/seo-contents/Index.vue";
+import {default as SeoContentCreate} from "@/views/pages/private/seo-contents/Create";
+import {default as SeoContentEdit} from "@/views/pages/private/seo-contents/Edit.vue";
+
 import {default as PageConfigIndex} from "@/views/pages/private/configs/Index.vue";
 import {default as PageConfigEdit} from "@/views/pages/private/configs/Edit.vue";
 
@@ -360,6 +364,29 @@ const routes = [
                 path: ":id/edit",
                 meta: {requiresAuth: true},
                 component: PageAttributeEdit,
+            }
+        ]
+    },
+    {
+        path: "/seo-contents",
+        children: [
+            {
+                name: "seo_contents.list",
+                path: "list",
+                meta: {requiresAuth: true},
+                component: SeoContentIndex,
+            },
+            {
+                name: "seo_contents.create",
+                path: "create",
+                meta: {requiresAuth: true},
+                component: SeoContentCreate,
+            },
+            {
+                name: "seo_contents.edit",
+                path: ":id/edit",
+                meta: {requiresAuth: true},
+                component: SeoContentEdit,
             }
         ]
     },
