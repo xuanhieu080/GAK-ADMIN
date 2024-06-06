@@ -153,7 +153,7 @@ class CategoryModel extends AbstractModel
 
     public function getSearchAll($input)
     {
-        $limit = Arr::get($input, 'limit', 4);
+        $limit = 4;
         $categories = Category::with([
             'products' => function ($query) use ($limit) {
                 $query->where('products.is_active', 1)
