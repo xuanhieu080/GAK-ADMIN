@@ -151,6 +151,51 @@ class CategoryModel extends AbstractModel
         return CategoryResource::collection($categories);
     }
 
+    public function getSearchAll($input)
+    {
+        $limit = Arr::get($input, 'limit', 4);
+        $categories = Category::with([
+            'products' => function ($query) use ($limit) {
+                $query->where('products.is_active', 1)
+                    ->whereHas('media', function ($query) {
+                        $query->where('collection_name', 'default');
+                    })->whereHas('media', function ($query) {
+                        $query->where('collection_name', 'thumb');
+                    })->limit($limit);
+            },
+        ])->where('is_active', 1)
+            ->whereIn('slug', [
+                'ao-phan-quang-thun-2-ben',
+                'ao-phang-quang-ha-noi',
+                'ao-phang-quang-kieu-3m',
+                'ao-phan-quang-palize',
+                'dong-phuc-cong-nhan',
+            ])
+            ->get();
+
+// Đối với mỗi category, sẽ load thêm các products từ descendants
+//        $categories->load([
+//            'descendants.products' => function ($query) use ($limit) {
+//                $query->where('is_active', 1)
+//                    ->whereHas('media', function ($query) {
+//                        $query->where('collection_name', 'default');
+//                    })->whereHas('media', function ($query) {
+//                        $query->where('collection_name', 'thumb');
+//                    })->limit($limit);
+//            }
+//        ])->each(function ($category) use ($limit) {
+//            // Kết hợp các sản phẩm từ chính category này và các descendants một cách hiệu quả
+//            $allProducts = collect();
+//            foreach ($category->descendants as $descendant) {
+//                $allProducts = $allProducts->concat($descendant->products);
+//            }
+//
+//            $category->setRelation('products', $category->products->concat($allProducts)->take($limit));
+//        });
+
+        return CategoryResource::collection($categories);
+    }
+
     public function getCategoryHeader($input)
     {
         $limit = Arr::get($input, 'limit', 20);
