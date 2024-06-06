@@ -15,8 +15,9 @@ class SeoContentController extends Controller
         $this->model = new SeoContentModel();
     }
 
-    public function show($link)
+    public function show(Request $request): JsonResponse
     {
+        $link = $request->get('link');
         $model = $this->model->show($link);
         return $this->responseDataSuccess(['data' => $model]);
     }

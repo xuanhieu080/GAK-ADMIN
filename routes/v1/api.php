@@ -62,7 +62,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('/categories/header', [\App\V1\Controllers\CategoryController::class, 'getCategoryHeader']);
     Route::get('/categories/dashboard', [\App\V1\Controllers\CategoryController::class, 'getCategoryDashboard']);
     Route::get('/categories/{slug}', [\App\V1\Controllers\CategoryController::class, 'show']);
-    Route::get('/seo-contents/{link}', [\App\V1\Controllers\SeoContentController::class, 'show']);
+    Route::get('/seo-contents}', [\App\V1\Controllers\SeoContentController::class, 'show']);
     Route::get('/pages', [\App\V1\Controllers\PageController::class, 'index']);
     Route::get('/pages/headers', [\App\V1\Controllers\PageController::class, 'getPageHeader']);
 
