@@ -163,8 +163,8 @@ class CategoryModel extends AbstractModel
                         $query->where('collection_name', 'thumb');
                     })->limit($limit);
             },
-        ])->where('is_active', 1)
-            ->whereIn('slug', [
+        ])->where('categories.is_active', 1)
+            ->whereIn('categories.slug', [
                 'ao-phan-quang-thun-2-ben',
                 'ao-phang-quang-ha-noi',
                 'ao-phang-quang-kieu-3m',
