@@ -146,10 +146,10 @@ class ProductModel extends AbstractModel
             }
         });
 
-        $query->whereHas('media', function ($query) {
+        $query->whereHas('products.media', function ($query) {
             // Điều kiện cho hình ảnh
-            $query->where('collection_name', 'default');
-        })->whereHas('media', function ($query) {
+            $query->where('products.collection_name', 'default');
+        })->whereHas('products.media', function ($query) {
             // Điều kiện cho hình thu nhỏ
             $query->where('collection_name', 'thumb');
         });
