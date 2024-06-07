@@ -146,10 +146,10 @@ class ProductModel extends AbstractModel
             }
         });
 
-        $query->whereHas('products.media', function ($query) {
+        $query->whereHas('media', function ($query) {
             // Điều kiện cho hình ảnh
-            $query->where('products.collection_name', 'default');
-        })->whereHas('products.media', function ($query) {
+            $query->where('collection_name', 'default');
+        })->whereHas('media', function ($query) {
             // Điều kiện cho hình thu nhỏ
             $query->where('collection_name', 'thumb');
         });
@@ -184,7 +184,7 @@ class ProductModel extends AbstractModel
                     // Lấy ID của tất cả descendants và thêm ID của cha vào đầu mảng
                     $ids = $category->descendants->pluck('id')->prepend($category->id);
 
-                    $query->whereIn('category_id', $ids);
+                    $query->whereIn('id', $ids);
                 }
             });
         }
