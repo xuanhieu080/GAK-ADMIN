@@ -22,11 +22,13 @@ class ProductVariantMainResource extends JsonResource
         }
         $data = $this->resource->toArray();
         $data['image'] = $this->getFirstMediaUrl();
+        $data['price'] = object_get($this, 'variantItem.price', 0);
         $data['images'] = [];
         if ($this->getFirstMediaUrl()) {
             $data['images'] = [$this->getFirstMediaUrl()];
         }
         $data['image_url'] = $this->getFirstMediaUrl();
+        $data['percent'] = $this->price <= 0 ? 0 : round($this->discount / $this->price, 2) * 100;
         $data['thumb_image'] = $thumb;
         $data['rel'] = "pondElement$this->id";
         $data['relThumb'] = "pondElementThumb$this->id";

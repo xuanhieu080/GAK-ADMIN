@@ -44,4 +44,10 @@ class ProductVariantMain extends Model implements HasMedia
         return $this->hasMany(ProductVariant::class, 'product_main_id', 'id');
 
     }
+
+    public function variantItem()
+    {
+        return $this->hasOne(ProductVariant::class, 'product_main_id', 'id');
+
+    }
 }

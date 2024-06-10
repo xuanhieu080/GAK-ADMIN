@@ -7,6 +7,7 @@ use App\Traits\Filterable;
 use App\Traits\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Facades\Storage;
 use Kalnoy\Nestedset\NodeTrait;
 use Spatie\Image\Enums\Fit;
@@ -60,6 +61,18 @@ class Category extends Model implements HasMedia
     public function products()
     {
         return $this->hasMany(Product::class, 'category_id', 'id');
+    }
+
+    public function variantMains(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            ProductVariantMain::class,
+            Product::class,
+            'category_id', // Foreign key on the environments table...
+            'product_id', // Foreign key on the deployments table...
+            'id', // Local key on the projects table...
+            'id' // Local key on the environments table...
+        );
     }
 
     public function upTree()

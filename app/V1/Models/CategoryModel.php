@@ -8,6 +8,7 @@ use App\Models\Variant;
 use App\V1\Resources\CategoryDetailResource;
 use App\V1\Resources\CategoryHeaderResource;
 use App\V1\Resources\CategoryResource;
+use App\V1\Resources\CategorySearchAllResource;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
@@ -153,15 +154,44 @@ class CategoryModel extends AbstractModel
 
     public function getSearchAll($input)
     {
+        $categories = Category::with([
+            'variantMains.variantItem',
+            'variantMains' => function ($query) {
+                $query->where('product_variant_mains.is_active', 1)->limit(4);
+            },
+        ])->whereHas('variantMains.variantItem')
+            ->where('categories.is_active', 1)
+            ->whereIn('categories.slug', [
+                'ao-phan-quang-thun-2-ben',
+                'ao-phang-quang-ha-noi',
+                'ao-phang-quang-kieu-3m',
+                'ao-phan-quang-palize',
+                'dong-phuc-cong-nhan',
+            ])->get();
+
+
+        return CategorySearchAllResource::collection($categories);
+    }
+
+    public function getSearchAll1($input)
+    {
         $limit = 4;
         $categories = Category::with([
             'products' => function ($query) use ($limit) {
-                $query->where('products.is_active', 1)
-                    ->whereHas('media', function ($query) {
-                        $query->where('collection_name', 'default');
-                    })->whereHas('media', function ($query) {
-                        $query->where('collection_name', 'thumb');
-                    })->limit($limit);
+                $query->where('products.is_active', 1);
+//                    ->whereHas('media', function ($query) {
+//                        $query->where('collection_name', 'default');
+//                    })->whereHas('media', function ($query) {
+//                        $query->where('collection_name', 'thumb');
+//                    })->limit($limit);
+            },
+            'products.variantMains' => function ($query) use ($limit) {
+                $query->where('is_active', 1);
+//                    ->whereHas('media', function ($query) {
+//                        $query->where('collection_name', 'default');
+//                    })->whereHas('media', function ($query) {
+//                        $query->where('collection_name', 'thumb');
+//                    })->limit($limit);
             },
         ])->where('categories.is_active', 1)
             ->whereIn('categories.slug', [
