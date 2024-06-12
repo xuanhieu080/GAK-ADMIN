@@ -75,6 +75,18 @@ class Category extends Model implements HasMedia
         );
     }
 
+    public function variants(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            ProductVariant::class,
+            Product::class,
+            'category_id', // Foreign key on the environments table...
+            'product_id', // Foreign key on the deployments table...
+            'id', // Local key on the projects table...
+            'id' // Local key on the environments table...
+        );
+    }
+
     public function upTree()
     {
         return $this->newQuery()->where('_lft', '<', $this->_lft)->where('_rgt', '>', $this->_rgt);

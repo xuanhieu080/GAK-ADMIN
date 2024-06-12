@@ -155,11 +155,12 @@ class CategoryModel extends AbstractModel
     public function getSearchAll($input)
     {
         $categories = Category::with([
-            'variantMains.variantItem',
-            'variantMains' => function ($query) {
-                $query->where('product_variant_mains.is_active', 1)->limit(4);
+            'variants' => function ($query) {
+                $query->where('is_active', 1)->limit(4);
             },
-        ])->whereHas('variantMains.variantItem')
+        ])->whereHas('variants', function ($query) {
+            $query->where('is_active', 1);
+        })
             ->where('categories.is_active', 1)
             ->whereIn('categories.slug', [
                 'ao-phan-quang-thun-2-ben',
@@ -177,7 +178,7 @@ class CategoryModel extends AbstractModel
     {
         $limit = 4;
         $categories = Category::with([
-            'products' => function ($query) use ($limit) {
+            'products'              => function ($query) use ($limit) {
                 $query->where('products.is_active', 1);
 //                    ->whereHas('media', function ($query) {
 //                        $query->where('collection_name', 'default');
