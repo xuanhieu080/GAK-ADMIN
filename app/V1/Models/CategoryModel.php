@@ -156,7 +156,7 @@ class CategoryModel extends AbstractModel
     {
         $categories = Category::with([
             'variants' => function ($query) {
-                $query->where('product_variants.is_active', 1)->limit(4);
+                $query->limit(4);
             },
         ])
             ->where('categories.is_active', 1)
