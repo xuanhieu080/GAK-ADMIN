@@ -154,19 +154,27 @@ class CategoryModel extends AbstractModel
 
     public function getSearchAll($input)
     {
-        $categories = Category::with([
-            'variantMains' => function ($query) {
-                $query->where('product_variant_mains.is_active', 1)->limit(4);
-            },
-        ])->whereHas('variantMains')
-            ->where('categories.is_active', 1)
-            ->whereIn('categories.slug', [
+        $categories = Category::whereHas('variantMains')
+            ->where('is_active', 1)
+            ->whereIn('slug', [
                 'ao-phan-quang-thun-2-ben',
                 'ao-phang-quang-ha-noi',
                 'ao-phang-quang-kieu-3m',
                 'ao-phan-quang-palize',
                 'dong-phuc-cong-nhan',
-            ])->get();
+            ])
+            ->with('variantMains.media')
+            ->get()
+            ->map(function ($category) {
+                // Giữ chỉ 4 variantMains cho mỗi category.
+                $category->variantMains = $category->variantMains->filter(function ($variantMain) {
+                    return $variantMain->media->contains(function ($media) {
+                        return in_array($media->collection_name, ['thumb']);
+                    });
+                })->take(4);
+
+                return $category;
+            });
 
 
         return CategorySearchAllResource::collection($categories);
