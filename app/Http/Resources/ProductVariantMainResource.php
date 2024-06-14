@@ -24,6 +24,7 @@ class ProductVariantMainResource extends JsonResource
         $data['image'] = $this->getFirstMediaUrl();
         $data['price'] = object_get($this, 'variantItem.price', $this->product->price);
         $data['discount'] = object_get($this, 'variantItem.discount', $this->product->discount);
+        $data['price_discount'] = object_get($this, 'variantItem.price_discount', $this->product->price_discount);
         $data['slug'] = $this->product->slug;
         $data['code'] = object_get($this, 'variantItem.code', $this->product->code);
         $data['images'] = [];
