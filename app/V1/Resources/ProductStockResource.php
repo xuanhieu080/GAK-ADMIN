@@ -43,35 +43,12 @@ class ProductStockResource extends JsonResource
         $data['variants'] = ProductVariantResource::collection($this->variants);
 //        }
 
-
-        if (!empty($this->productVariantMain)) {
-            foreach ($this->productVariantMain->getMedia("thumb") as $item) {
-                $thumb[] = $item->getFullUrl();
-            }
-            $image = $this->productVariantMain->getFirstMediaUrl();
-            $data['image'] = $this->productVariantMain->getFirstMediaUrl();
-        } else {
-            $image = $this->product->getFirstMediaUrl();
-            $data['image'] = $this->product->getFirstMediaUrl();
-            foreach ($this->product->getMedia("thumb") as $item) {
-                $thumb[] = $item->getFullUrl();
-            }
+        foreach ($this->getMedia("thumb") as $item) {
+            $thumb[] = $item->getFullUrl();
         }
-
-        if (empty($thumb)) {
-            foreach ($this->product->getMedia("thumb") as $item) {
-                $thumb[] = $item->getFullUrl();
-            }
-        }
-        $data['image_url'] = !empty($thumb[0]) ? $thumb[0] : $image;
+        $data['image'] = $this->getFirstMediaUrl();
+        $data['image_url'] = $this->getFirstMediaUrl();
         $data['thumb_image'] = $thumb;
-
-//        foreach ($this->getMedia("thumb") as $item) {
-//            $thumb[] = $item->getFullUrl();
-//        }
-//        $data['image'] = $this->getFirstMediaUrl();
-//        $data['image_url'] = $this->getFirstMediaUrl();
-//        $data['thumb_image'] = $thumb;
         $data['category_name'] = object_get($this, 'category.name');
         $data['created_at'] = !empty($this->resource->created_at) ? $this->resource->created_at->diffForHumans() : null;
         $data['updated_at'] = !empty($this->resource->updated_at) ? $this->resource->updated_at->diffForHumans() : null;
