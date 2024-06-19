@@ -23,7 +23,7 @@ class ProductVariantResource extends JsonResource
             'product_id'              => $this->product_id,
             'product_name'            => object_get($this, 'product.name'),
             'slug'                    => object_get($this, 'product.slug'),
-            'description'             => $this->description,
+//            'description'             => $this->description,
             'price'                   => $this->price,
             'category_id'             => object_get($this, 'product.category.id'),
             'qty'                     => $this->qty,
@@ -48,18 +48,18 @@ class ProductVariantResource extends JsonResource
             $image = $this->productVariantMain->getFirstMediaUrl();
             $data['image'] = $this->productVariantMain->getFirstMediaUrl();
         } else {
-//            $image = $this->product->getFirstMediaUrl();
-//            $data['image'] = $this->product->getFirstMediaUrl();
-//            foreach ($this->product->getMedia("thumb") as $item) {
-//                $thumb[] = $item->getFullUrl();
-//            }
+            $image = $this->product->getFirstMediaUrl();
+            $data['image'] = $this->product->getFirstMediaUrl();
+            foreach ($this->product->getMedia("thumb") as $item) {
+                $thumb[] = $item->getFullUrl();
+            }
         }
 
-//        if (empty($thumb)) {
-//            foreach ($this->product->getMedia("thumb") as $item) {
-//                $thumb[] = $item->getFullUrl();
-//            }
-//        }
+        if (empty($thumb)) {
+            foreach ($this->product->getMedia("thumb") as $item) {
+                $thumb[] = $item->getFullUrl();
+            }
+        }
         $data['image_url'] = !empty($thumb[0]) ? $thumb[0] : $image;
         $data['thumb_image'] = $thumb;
         $data['out_of_stock'] = empty($thumb) || empty($data['image']) || $this->qty <= 0;

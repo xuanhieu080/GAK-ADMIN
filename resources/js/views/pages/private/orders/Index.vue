@@ -156,13 +156,13 @@ export default defineComponent({
                     showName: false,
                     to: toUrl('/orders/{id}/edit')
                 },
-                // delete: {
-                //     id: 'delete',
-                //     name: trans('global.actions.delete'),
-                //     icon: "fa fa-trash",
-                //     showName: false,
-                //     danger: true,
-                // }
+                delete: {
+                    id: 'delete',
+                    name: trans('global.actions.delete'),
+                    icon: "fa fa-trash",
+                    showName: false,
+                    danger: true,
+                }
             },
             loading: false,
             records: null
