@@ -22,6 +22,7 @@ class OrderResource extends JsonResource
     {
         $data = $this->resource->toArray();
         $data['details'] = OrderDetailResource::collection($this->details);
+        $data['full_address'] = $this->address . ", " . object_get($this,'ward.full_name') . ", " . object_get($this,'district.full_name'). ", " . object_get($this,'province.full_name');
         $data['customer_code'] = object_get($this, 'customer.code');
         $data['created_at'] = !empty($this->resource->created_at) ? $this->resource->created_at->diffForHumans() : null;
         $data['updated_at'] = !empty($this->resource->updated_at) ? $this->resource->updated_at->diffForHumans() : null;

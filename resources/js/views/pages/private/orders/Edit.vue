@@ -64,6 +64,7 @@
                                                                   <span class="relative">{{
                                                                           item.cost.toLocaleString()
                                                                       }}</span>
+                                                                 <sup class="sup">đ</sup>
                                                                 </span>
                                                             </td>
                                                             <td class="p-2 bg-white text-sm text-right">
@@ -77,6 +78,7 @@
                                                                   <span class="relative">{{
                                                                           item.price.toLocaleString()
                                                                       }}</span>
+                                                                 <sup class="sup">đ</sup>
                                                                 </span>
                                                             </td>
                                                             <td class="p-2 bg-white text-sm text-center">
@@ -101,8 +103,28 @@
                                                                   <span class="relative">{{
                                                                           (item.price * item.qty).toLocaleString()
                                                                       }}</span>
+                                                                   <sup class="sup">đ</sup>
                                                                 </span>
                                                             </td>
+                                                        </tr>
+                                                        <tr class="p-1 border-b border-gray-200">
+                                                          <td class="p-2 bg-white text-sm product-name text-gray-600 whitespace-no-wrap">
+                                                            Tổng cộng
+                                                          </td>
+                                                          <td colspan="4" class="p-2 bg-white text-sm text-right">
+                                                                <span
+                                                                    class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight"
+                                                                >
+                                                                  <span
+                                                                      aria-hidden
+                                                                      class="absolute inset-0 bg-blue-200 opacity-50 rounded-full"
+                                                                  ></span>
+                                                                  <span class="relative">{{
+                                                                      order.total.toLocaleString()
+                                                                    }}</span>
+                                                                  <sup class="sup">đ</sup>
+                                                                </span>
+                                                          </td>
                                                         </tr>
                                                         </tbody>
                                                     </table>
@@ -112,10 +134,32 @@
                                               <Textarea
                                                   autocomplete="description"
                                                   class="mt-1 block w-full resize rounded-md p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                  placeholder="Nhập mô tả"
                                                   type="text"
-                                              />
+                                                  autocapitalize="false"
+                                              > {{order.note}} </Textarea>
                                             </div>
+
+                                          <div class="px-4 mt-4">
+                                            <h2>
+                                              <strong>Thông tin khách hàng</strong>
+                                            </h2>
+                                            <div class="flex flex-row gap-12 overflow-auto">
+                                              <div>
+                                                <div class="mt-1">Tên khách hàng</div>
+                                                <div class="mt-1">Số điện thoại</div>
+                                                <div class="mt-1">Email</div>
+                                                <div class="mt-1">Địa chỉ</div>
+                                                <div class="mt-1">Thời gian đặt hàng</div>
+                                              </div>
+                                              <div>
+                                                <div class="mt-1">{{order.customer_name}}</div>
+                                                <div class="mt-1">{{order.customer_phone}}</div>
+                                                <div class="mt-1">{{order.customer_email}}</div>
+                                                <div class="mt-1">{{order.full_address}}</div>
+                                                <div class="mt-1">{{order.time}}</div>
+                                              </div>
+                                            </div>
+                                          </div>
                                         </div>
                                     </div>
                                 </div>

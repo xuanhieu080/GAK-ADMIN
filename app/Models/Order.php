@@ -50,4 +50,16 @@ class Order extends Model
     function customer() {
         return $this->hasOne(Customer::class, 'id', 'customer_id');
     }
+
+    function ward() {
+        return $this->hasOne(Ward::class, 'id', 'ward_id');
+    }
+
+    function district() {
+        return $this->hasOne(District::class, 'id', 'district_id');
+    }
+
+    function province() {
+        return $this->hasOne(Province::class, 'id', 'province_id');
+    }
 }
