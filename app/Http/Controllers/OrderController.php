@@ -156,13 +156,13 @@ class OrderController extends Controller
      */
     public function destroy(DestroyUserRequest $request, Order $order)
     {
-//        $this->authorize('delete', Order::class);
-//
-//        if ($this->orderService->delete($order)) {
-//            return $this->responseDeleteSuccess(['model' => $order]);
-//        }
-//
-//        return $this->responseDeleteFail();
+        $this->authorize('delete', Order::class);
+
+        if ($this->orderService->delete($order)) {
+            return $this->responseDeleteSuccess(['model' => $order]);
+        }
+
+        return $this->responseDeleteFail();
 
     }
 

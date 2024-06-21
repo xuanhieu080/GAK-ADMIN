@@ -132,7 +132,7 @@ export default defineComponent({
             headers: {
                 id: trans('labels.id_pound'),
                 code: trans('labels.code'),
-                date: trans('labels.date'),
+                time: trans('labels.date'),
                 customer_name: trans('labels.customer_name'),
                 customer_phone: 'Số điện thoại',
                 customer_email: 'Email',

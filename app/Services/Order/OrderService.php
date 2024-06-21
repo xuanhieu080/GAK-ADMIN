@@ -248,7 +248,8 @@ class OrderService
     public function delete(Order $order)
     {
 //        HasImage::deleteImage($order->image);
-//        return $order->delete();
+        OrderDetail::where('order_id', $order->id)->delete();
+        return $order->delete();
     }
 
     /**
