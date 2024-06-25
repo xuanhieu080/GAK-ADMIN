@@ -22,7 +22,7 @@ class ProductResource extends JsonResource
                 'name'       => $item[0]['attribute_group_name'],
                 'slug'       => $item[0]['attribute_group_slug'],
                 'is_color'   => $item[0]['is_color'],
-                'link'       => $item[0]['link'],
+                'link'       => $item[0]['attribute_group_link'],
                 'attributes' => VariantResource::collection($item)
             ];
         }
