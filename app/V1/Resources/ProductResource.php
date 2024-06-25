@@ -22,6 +22,7 @@ class ProductResource extends JsonResource
                 'name'       => $item[0]['attribute_group_name'],
                 'slug'       => $item[0]['attribute_group_slug'],
                 'is_color'   => $item[0]['is_color'],
+                'link'       => $item[0]['link'],
                 'attributes' => VariantResource::collection($item)
             ];
         }
@@ -32,7 +33,7 @@ class ProductResource extends JsonResource
             'code'                => $this->code,
             'slug'                => $this->slug,
             'name'                => $this->name,
-//            'description'         => $this->description,
+            //            'description'         => $this->description,
             'price'               => $this->price,
             'category_id'         => $this->category_id,
             'qty'                 => $this->qty,
