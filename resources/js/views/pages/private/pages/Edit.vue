@@ -43,7 +43,7 @@
           </div>
         </div>
         <div v-if="!form.is_button" class="mb-4">
-          <ck-editor :content="form.description" @updateData="(value) => updateData(value)" />
+          <CkEditor :content="form.description" @updateData="(value) => updateData(value)" />
           <span v-if="alertStore.errors['description']" class="text-xs tracking-wide text-red-600">{{
               alertStore.errors['description'][0]
             }}</span>

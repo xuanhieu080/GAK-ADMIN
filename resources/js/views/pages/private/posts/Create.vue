@@ -37,13 +37,7 @@
           </div>
         </div>
         <div class="mb-4">
-          <QuillEditorWrapper
-              v-model:content="form.content"
-              :toolbar="'full'"
-              contentType="html"
-              placeholder="Nội dung"
-              :required="true"
-          />
+          <CkEditor :content="form.content" @updateData="(value) => updateData(value)" />
           <span v-if="alertStore.errors['content']" class="text-xs tracking-wide text-red-600">{{
               alertStore.errors['content'][0]
             }}</span>
@@ -104,6 +98,7 @@ import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
 import 'filepond/dist/filepond.min.css';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css';
 import QuillEditorWrapper from "@/views/components/QuillEditorWrapper.vue";
+import CkEditor from "@/views/components/CkEditor.vue";
 
 
 // Create FilePond component
@@ -202,6 +197,10 @@ function getImage(event) {
 
 function removeImage() {
   form.image = null;
+}
+
+function updateData(value) {
+  form.content = value
 }
 
 watch(() => group.value, (data) => {
