@@ -80,7 +80,7 @@ class Variant extends Model
         return filter_var(object_get($this, 'attributeGroup.is_color'), FILTER_VALIDATE_BOOLEAN);
     }
 
-    public function getAttributeLinkAttribute()
+    public function getAttributeGroupLinkAttribute()
     {
         return object_get($this, 'attributeGroup.link');
     }
