@@ -41,13 +41,7 @@
           </div>
         </div>
         <div v-if="!form.is_button" class="mb-4">
-          <QuillEditorWrapper
-              v-model:content="form.description"
-              :toolbar="'full'"
-              contentType="html"
-              placeholder="Nội dung"
-              :required="true"
-          />
+          <ck-editor :content="form.description" @updateData="(value) => updateData(value)" />
           <span v-if="alertStore.errors['description']" class="text-xs tracking-wide text-red-600">{{
               alertStore.errors['description'][0]
             }}</span>
@@ -209,6 +203,10 @@ function getImage(event) {
 
 function removeImage() {
   form.image = null;
+}
+
+function updateData(value) {
+  form.description = value
 }
 
 watch(() => group.value, (data) => {

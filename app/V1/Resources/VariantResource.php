@@ -28,7 +28,7 @@ class VariantResource extends JsonResource
             'attribute_id'         => $this->attribute_id,
             'attribute_slug'       => $this->attribute_slug,
             'attribute_name'       => object_get($this, 'attribute.name'),
-            'attribute_is_color'   => filter_var(object_get($this, 'attribute.is_color'), FILTER_VALIDATE_BOOLEAN),
+            'attribute_is_color'   => filter_var(object_get($this, 'attributeGroup.is_color'), FILTER_VALIDATE_BOOLEAN),
             'attribute_color'      => object_get($this, 'attribute.color'),
             'attribute_group_id'   => $this->attribute_group_id,
             'attribute_group_slug' => $this->attribute_group_slug,
