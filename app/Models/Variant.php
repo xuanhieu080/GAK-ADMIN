@@ -34,6 +34,7 @@ class Variant extends Model
     protected $appends = [
         'attribute_group_name',
         'attribute_group_slug',
+        'attribute_group_link',
         'attribute_name',
         'attribute_slug',
         'is_color',
@@ -77,5 +78,10 @@ class Variant extends Model
     public function getIsColorAttribute()
     {
         return filter_var(object_get($this, 'attributeGroup.is_color'), FILTER_VALIDATE_BOOLEAN);
+    }
+
+    public function getAttributeLinkAttribute()
+    {
+        return object_get($this, 'attributeGroup.link');
     }
 }
