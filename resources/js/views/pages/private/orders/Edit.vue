@@ -160,6 +160,10 @@
                                               </div>
                                             </div>
                                           </div>
+                                          <div class="px-4 mt-4">
+                                            fdg
+                                            <ck-editor />
+                                          </div>
                                         </div>
                                     </div>
                                 </div>
@@ -189,9 +193,11 @@ import FiltersRow from "@/views/components/filters/FiltersRow.vue";
 import Filters from "@/views/components/filters/Filters.vue";
 import FiltersCol from "@/views/components/filters/FiltersCol.vue";
 import Detail from "@/views/pages/private/orders/Detail.vue";
+import CkEditor from "@/views/components/CkEditor.vue";
 
 export default defineComponent({
     components: {
+      CkEditor,
         Detail,
         FiltersCol, Filters, FiltersRow,
         Form,
