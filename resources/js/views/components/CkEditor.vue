@@ -1,22 +1,41 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import CustomUploadAdapter from '@/helpers/ckeditor.js';
-import UploadAdapter from '@/helpers/upload';
+import {ref, onMounted, defineProps, watch, watchEffect} from 'vue';
+import * as Editor from '@ckeditor/ckeditor-custom-build/build/ckeditor';
 
-const editorData = ref('');
+import CustomUploadAdapter from '@/helpers/ckeditor.js';
+
+const props = defineProps({
+  content: {
+    type: String,
+  },
+})
+
+const emits = defineEmits(['updateData']);
+
+const editorData = ref(props.content);
 const editorConfig = {
-  toolbar: [
-    'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', '|',
-    'indent', 'outdent', '|', 'imageUpload', 'blockQuote',
-    'insertTable', 'mediaEmbed', 'undo', 'redo' // Add more items as needed
-  ],
+  toolbar: {
+    items: [
+      'heading', '|',
+      'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', '|',
+      'undo', 'redo',
+      '-',
+      'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', '|',
+      'insertTable', 'tableColumn', 'tableRow', 'mergeTableCells', '|',
+      'outdent', 'indent', '|',
+      'imageUpload', 'mediaEmbed', '|',
+      'alignment', 'horizontalLine', 'specialCharacters'
+    ]
+  },
+  menuBar: {
+    isVisible: true
+  },
+  enableGrip: false,
   extraPlugins: [CustomUploader]
-  // Add more configuration as needed
 };
 
 // Ref for editor instance
-const editor = ref(ClassicEditor);
+const editor = ref(Editor);
 
 function CustomUploader(editor) {
   editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
@@ -24,13 +43,25 @@ function CustomUploader(editor) {
   };
 }
 
+
+watchEffect(() => {
+  editorData.value = props.content;
+});
+
+watch(() => editorData.value, (newValue) => {
+  console.log('sd')
+  emits('updateData', newValue);
+});
+
 onMounted(() => {
-  editor.value = ClassicEditor;
+  editor.value = Editor;
 });
 </script>
 
 <template>
-  <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
+  <div class="ck-editor-component">
+    <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
+  </div>
 </template>
 
 <style scoped>

@@ -38,13 +38,7 @@
         </div>
       </div>
       <div class="mb-4">
-        <QuillEditorWrapper
-            v-model:content="form.description"
-            :toolbar="'full'"
-            contentType="html"
-            :placeholder="trans('labels.description')"
-            :required="true"
-        />
+        <ck-editor :content="form.description" @updateData="(value) => updateData(value)" />
         <span v-if="alertStore.errors['description']" class="text-xs tracking-wide text-red-600">{{
             alertStore.errors['description'][0]
           }}</span>
@@ -154,6 +148,7 @@ import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
 import 'filepond/dist/filepond.min.css';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css';
 import QuillEditorWrapper from "@/views/components/QuillEditorWrapper.vue";
+import CkEditor from "@/views/components/CkEditor.vue";
 
 
 // Create FilePond component
@@ -303,6 +298,11 @@ watch(() => props.information, (data) => {
     thumbImage.value = []
   }
 })
+
+function updateData(value) {
+  form.description = value
+}
+
 
 watch(() => form.price, (value) => {
   form.discount = ratio.value * value / 100;
