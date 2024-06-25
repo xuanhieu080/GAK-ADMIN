@@ -21,6 +21,7 @@ class ProductDetailResource extends JsonResource
                 'id'         => $key,
                 'name'       => $item[0]['attribute_group_name'],
                 'slug'       => $item[0]['attribute_group_slug'],
+                'link'       => $item[0]['attribute_group_link'],
                 'is_color'   => $item[0]['is_color'],
                 'attributes' => VariantResource::collection($item)
             ];
