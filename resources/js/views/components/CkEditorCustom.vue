@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import {ref, onMounted, defineProps, watch, watchEffect} from 'vue';
-import Editor from '@ckeditor/ckeditor-custom-build/build/ckeditor';
-
+// import * as Editor from 'ckeditor-custom-build/build/ckeditor';
+import Editor from 'ckeditor5-custom-build/build/ckeditor';
+// import {ClassicEditor} from "@ckeditor/ckeditor5-editor-classic";
 import CustomUploadAdapter from '@/helpers/ckeditor.js';
 
 const props = defineProps({
@@ -36,7 +37,7 @@ const editorConfig = {
 };
 
 // Ref for editor instance
-const editor = ref();
+const editor = ref(Editor);
 
 function CustomUploader(editor) {
   editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
@@ -60,9 +61,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="ck-editor-component" v-if="!loading">
-    <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
-  </div>
+    <div class="ck-editor-component" v-if="!loading">
+      <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
+    </div>
+
 </template>
 
 <style scoped>

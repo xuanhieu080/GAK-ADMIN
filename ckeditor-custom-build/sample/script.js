@@ -12,7 +12,7 @@ function handleSampleError( error ) {
 
 	const message = [
 		'Oops, something went wrong!',
-		`Please, report the following error on ${ issueUrl } with the build id "castm22cz9a0-s4ncjw3fyl9y" and the error stack trace:`
+		`Please, report the following error on ${ issueUrl } with the build id "ofeqd0wu3q05-g6kb25ye6u77" and the error stack trace:`
 	].join( '\n' );
 
 	console.error( message );

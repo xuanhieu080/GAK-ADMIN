@@ -191,7 +191,7 @@ import FiltersRow from "@/views/components/filters/FiltersRow.vue";
 import Filters from "@/views/components/filters/Filters.vue";
 import FiltersCol from "@/views/components/filters/FiltersCol.vue";
 import Detail from "@/views/pages/private/orders/Detail.vue";
-import CkEditor from "@/views/components/CkEditor.vue";
+import CkEditor from "@/views/components/CkEditorCustom.vue";
 
 export default defineComponent({
   components: {

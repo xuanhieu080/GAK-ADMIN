@@ -39,7 +39,7 @@
         </div>
       </div>
       <div class="mb-4">
-        <CkEditor :content="form.description" @updateData="(value) => updateData(value)" />
+        <CkEditorCustom :content="form.description" @updateData="(value) => updateData(value)" />
         <span v-if="alertStore.errors['description']" class="text-xs tracking-wide text-red-600">{{
             alertStore.errors['description'][0]
           }}</span>
@@ -157,7 +157,7 @@ const FilePond = vueFilePond(FilePondPluginFileValidateType, FilePondPluginImage
 
 
 import ProductService from "@/services/ProductService";
-import CkEditor from "@/views/components/CkEditor.vue";
+import CkEditorCustom from "@/views/components/CkEditorCustom.vue";
 
 const emit = defineEmits(['informationUpdate']);
 const alertStore = useAlertStore();
