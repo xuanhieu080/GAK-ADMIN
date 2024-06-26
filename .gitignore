@@ -22,9 +22,6 @@ composer.lock
 composer.phar
 
 yarn.lock
-ckeditor-custom-build/node_modules
-ckeditor-custom-build/yarn.lock
-
 .phpstorm.meta.php
 _ide_helper.php
 _ide_helper_models.php
