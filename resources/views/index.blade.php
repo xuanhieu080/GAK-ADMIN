@@ -5,6 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>{{$config['name']}}</title>
+    <meta name="bingbot" content="follow, noindex">
+    <meta name="googlebot" content="follow, noindex">
+    <meta name="robots" content="follow, noindex">
 
     @vite(['resources/scss/main.scss', 'resources/js/main.js'])
 
