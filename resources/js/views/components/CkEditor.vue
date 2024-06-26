@@ -13,6 +13,7 @@ const props = defineProps({
 const emits = defineEmits(['updateData']);
 
 const editorData = ref(props.content);
+const loading = ref(true);
 const editorConfig = {
   toolbar: {
     items: [
@@ -35,7 +36,7 @@ const editorConfig = {
 };
 
 // Ref for editor instance
-const editor = ref(Editor);
+const editor = ref();
 
 function CustomUploader(editor) {
   editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
@@ -49,17 +50,17 @@ watchEffect(() => {
 });
 
 watch(() => editorData.value, (newValue) => {
-  console.log('sd')
   emits('updateData', newValue);
 });
 
 onMounted(() => {
   editor.value = Editor;
+  loading.value = false;
 });
 </script>
 
 <template>
-  <div class="ck-editor-component">
+  <div class="ck-editor-component" v-if="!loading">
     <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
   </div>
 </template>
