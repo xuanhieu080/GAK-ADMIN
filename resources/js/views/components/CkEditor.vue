@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {ref, onMounted, defineProps, watch, watchEffect} from 'vue';
-import * as Editor from '@ckeditor/ckeditor-custom-build/build/ckeditor';
+import Editor from '@ckeditor/ckeditor-custom-build/build/ckeditor';
 
 import CustomUploadAdapter from '@/helpers/ckeditor.js';
 
