@@ -31,7 +31,7 @@ class RoleController extends Controller
      */
     public function search(Request $request)
     {
-        $this->authorize('search', Role::class);
+//        $this->authorize('search', Role::class);
         return $this->roleService->index($request->all());
     }
 }

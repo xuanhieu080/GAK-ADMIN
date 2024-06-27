@@ -35,7 +35,7 @@ class BankController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('list', Post::class);
+//        $this->authorize('list', Post::class);
 
         return $this->bankService->index($request->all());
     }

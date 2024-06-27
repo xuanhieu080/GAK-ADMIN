@@ -36,7 +36,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('list', User::class);
+//        $this->authorize('list', User::class);
 
         return $this->userService->index($request->all());
     }
@@ -49,7 +49,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', User::class);
+//        $this->authorize('create', User::class);
 
         return $this->responseDataSuccess(['properties' => $this->properties()]);
     }
@@ -64,7 +64,7 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $this->authorize('create', User::class);
+//        $this->authorize('create', User::class);
 
         $input = $request->validated();
         $record = $this->userService->create($input);
@@ -85,7 +85,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $this->authorize('view', User::class);
+//        $this->authorize('view', User::class);
 
         $model = $this->userService->get($user);
         return $this->responseDataSuccess(['model' => $model, 'properties' => $this->properties()]);
@@ -101,7 +101,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $this->authorize('edit', User::class);
+//        $this->authorize('edit', User::class);
 
         return $this->show($user);
     }
@@ -117,7 +117,7 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        $this->authorize('edit', User::class);
+//        $this->authorize('edit', User::class);
 
         $data = $request->validated();
         if ($this->userService->update($user, $data)) {
@@ -136,7 +136,7 @@ class UserController extends Controller
      */
     public function updateAvatar(UpdateAvatarRequest $request, User $user)
     {
-        $this->authorize('edit-profile', User::class);
+//        $this->authorize('edit-profile', User::class);
 
         $data = $request->validated();
         if ($this->userService->updateAvatar($user, $data)) {

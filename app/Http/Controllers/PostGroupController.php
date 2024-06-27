@@ -35,7 +35,7 @@ class PostGroupController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('list', PostGroup::class);
+//        $this->authorize('list', PostGroup::class);
 
         return $this->postGroupService->index($request->all());
     }
@@ -48,7 +48,7 @@ class PostGroupController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', PostGroup::class);
+//        $this->authorize('create', PostGroup::class);
 
         return $this->responseDataSuccess(['properties' => $this->properties()]);
     }
@@ -63,7 +63,7 @@ class PostGroupController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $this->authorize('create', PostGroup::class);
+//        $this->authorize('create', PostGroup::class);
 
         $input = $request->validated();
         $record = $this->postGroupService->create($input);
@@ -84,7 +84,7 @@ class PostGroupController extends Controller
      */
     public function show(PostGroup $post_group)
     {
-        $this->authorize('view', PostGroup::class);
+//        $this->authorize('view', PostGroup::class);
 
         $model = $this->postGroupService->get( $post_group);
         return $this->responseDataSuccess(['model' => $model, 'properties' => $this->properties()]);
@@ -100,7 +100,7 @@ class PostGroupController extends Controller
      */
     public function edit(PostGroup $post_group)
     {
-        $this->authorize('edit', PostGroup::class);
+//        $this->authorize('edit', PostGroup::class);
 
         return $this->show( $post_group);
     }
@@ -116,7 +116,7 @@ class PostGroupController extends Controller
      */
     public function update(UpdateRequest $request, PostGroup $post_group)
     {
-        $this->authorize('edit', PostGroup::class);
+//        $this->authorize('edit', PostGroup::class);
 
         $data = $request->validated();
         if ($item = $this->postGroupService->update( $post_group, $data)) {
@@ -136,7 +136,7 @@ class PostGroupController extends Controller
      */
     public function destroy(DestroyUserRequest $request, PostGroup $post_group)
     {
-        $this->authorize('delete', PostGroup::class);
+//        $this->authorize('delete', PostGroup::class);
 
         if ($this->postGroupService->delete( $post_group)) {
             return $this->responseDeleteSuccess(['model' =>  $post_group]);

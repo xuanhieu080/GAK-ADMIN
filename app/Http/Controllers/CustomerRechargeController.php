@@ -34,7 +34,7 @@ class CustomerRechargeController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('list', CustomerRecharge::class);
+//        $this->authorize('list', CustomerRecharge::class);
 
         return $this->rechargeService->index($request->all());
     }
@@ -47,7 +47,7 @@ class CustomerRechargeController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', CustomerRecharge::class);
+//        $this->authorize('create', CustomerRecharge::class);
 
         return $this->responseDataSuccess(['properties' => $this->properties()]);
     }
@@ -62,7 +62,7 @@ class CustomerRechargeController extends Controller
      */
     public function store(RechargeRequest $request)
     {
-        $this->authorize('create', CustomerRecharge::class);
+//        $this->authorize('create', CustomerRecharge::class);
 
         $input = $request->validated();
         $record = $this->rechargeService->create($input);
@@ -83,7 +83,7 @@ class CustomerRechargeController extends Controller
      */
     public function show(CustomerRecharge $recharge)
     {
-        $this->authorize('view', CustomerRecharge::class);
+//        $this->authorize('view', CustomerRecharge::class);
 
         $model = $this->rechargeService->get($recharge);
         return $this->responseDataSuccess(['model' => $model, 'properties' => $this->properties()]);
@@ -99,7 +99,7 @@ class CustomerRechargeController extends Controller
      */
     public function edit(CustomerRecharge $recharge)
     {
-        $this->authorize('edit', CustomerRecharge::class);
+//        $this->authorize('edit', CustomerRecharge::class);
 
         return $this->show($recharge);
     }
@@ -128,7 +128,7 @@ class CustomerRechargeController extends Controller
      */
     public function destroy(DestroyUserRequest $request, CustomerRecharge $recharge)
     {
-        $this->authorize('delete', CustomerRecharge::class);
+//        $this->authorize('delete', CustomerRecharge::class);
 
         if ($this->rechargeService->delete($recharge)) {
             return $this->responseDeleteSuccess(['model' => $recharge]);

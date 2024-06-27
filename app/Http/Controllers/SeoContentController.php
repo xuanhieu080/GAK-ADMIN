@@ -33,7 +33,7 @@ class SeoContentController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('list', SeoContent::class);
+//        $this->authorize('list', SeoContent::class);
 
         return $this->seoContentService->index($request->all());
     }
@@ -46,7 +46,7 @@ class SeoContentController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', SeoContent::class);
+//        $this->authorize('create', SeoContent::class);
 
         return $this->responseDataSuccess(['properties' => $this->properties()]);
     }
@@ -61,7 +61,7 @@ class SeoContentController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $this->authorize('create', SeoContent::class);
+//        $this->authorize('create', SeoContent::class);
 
         $input = $request->validated();
         $record = $this->seoContentService->create($input);
@@ -82,7 +82,7 @@ class SeoContentController extends Controller
      */
     public function show(SeoContent $seo_content)
     {
-        $this->authorize('view', SeoContent::class);
+//        $this->authorize('view', SeoContent::class);
 
         $model = $this->seoContentService->get($seo_content);
         return $this->responseDataSuccess(['model' => $model, 'properties' => $this->properties()]);

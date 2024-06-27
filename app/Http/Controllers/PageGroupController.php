@@ -35,7 +35,7 @@ class PageGroupController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('list', PageGroup::class);
+//        $this->authorize('list', PageGroup::class);
 
         return $this->pageGroupService->index($request->all());
     }
@@ -48,7 +48,7 @@ class PageGroupController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', PageGroup::class);
+//        $this->authorize('create', PageGroup::class);
 
         return $this->responseDataSuccess(['properties' => $this->properties()]);
     }
@@ -63,7 +63,7 @@ class PageGroupController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $this->authorize('create', PageGroup::class);
+//        $this->authorize('create', PageGroup::class);
 
         $input = $request->validated();
         $record = $this->pageGroupService->create($input);
@@ -84,7 +84,7 @@ class PageGroupController extends Controller
      */
     public function show(PageGroup $page_group)
     {
-        $this->authorize('view', PageGroup::class);
+//        $this->authorize('view', PageGroup::class);
 
         $model = $this->pageGroupService->get($page_group);
         return $this->responseDataSuccess(['model' => $model, 'properties' => $this->properties()]);

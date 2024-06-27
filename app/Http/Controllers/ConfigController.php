@@ -37,7 +37,7 @@ class ConfigController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('list', Config::class);
+//        $this->authorize('list', Config::class);
 
         return $this->configService->index($request->all());
     }
@@ -50,7 +50,7 @@ class ConfigController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', Config::class);
+//        $this->authorize('create', Config::class);
 
         return $this->responseDataSuccess(['properties' => $this->properties()]);
     }
@@ -86,7 +86,7 @@ class ConfigController extends Controller
      */
     public function show(Config $config)
     {
-        $this->authorize('view', Config::class);
+//        $this->authorize('view', Config::class);
 
         $model = $this->configService->get($config);
         return $this->responseDataSuccess(['model' => $model, 'properties' => $this->properties()]);
@@ -102,7 +102,7 @@ class ConfigController extends Controller
      */
     public function edit(Config $config)
     {
-        $this->authorize('edit', Config::class);
+//        $this->authorize('edit', Config::class);
 
         return $this->show($config);
     }
@@ -118,7 +118,7 @@ class ConfigController extends Controller
      */
     public function update(UpdateRequest $request, Config $config)
     {
-        $this->authorize('edit', Config::class);
+//        $this->authorize('edit', Config::class);
 
         $data = $request->validated();
         if ($this->configService->update($config, $data)) {

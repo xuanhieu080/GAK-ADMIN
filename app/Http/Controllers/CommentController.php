@@ -33,7 +33,7 @@ class CommentController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('list', Comment::class);
+//        $this->authorize('list', Comment::class);
 
         return $this->commentService->index($request->all());
     }
@@ -46,7 +46,7 @@ class CommentController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', Comment::class);
+//        $this->authorize('create', Comment::class);
 
         return $this->responseDataSuccess(['properties' => $this->properties()]);
     }
@@ -82,7 +82,7 @@ class CommentController extends Controller
      */
     public function show(Comment $comment)
     {
-        $this->authorize('view', Comment::class);
+//        $this->authorize('view', Comment::class);
 
         $model = $this->commentService->get($comment);
         return $this->responseDataSuccess(['model' => $model, 'properties' => $this->properties()]);
@@ -98,7 +98,7 @@ class CommentController extends Controller
      */
     public function edit(Comment $comment)
     {
-        $this->authorize('edit', Comment::class);
+//        $this->authorize('edit', Comment::class);
 
         return $this->show($comment);
     }
@@ -134,7 +134,7 @@ class CommentController extends Controller
      */
     public function destroy(DestroyUserRequest $request, Comment $comment)
     {
-        $this->authorize('delete', Comment::class);
+//        $this->authorize('delete', Comment::class);
 
         if ($this->commentService->delete($comment)) {
             return $this->responseDeleteSuccess(['model' => $comment]);

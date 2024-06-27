@@ -35,7 +35,7 @@ class PageController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('list', Page::class);
+//        $this->authorize('list', Page::class);
 
         return $this->pageService->index($request->all());
     }
@@ -48,7 +48,7 @@ class PageController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', Page::class);
+//        $this->authorize('create', Page::class);
 
         return $this->responseDataSuccess(['properties' => $this->properties()]);
     }
@@ -63,7 +63,7 @@ class PageController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $this->authorize('create', Page::class);
+//        $this->authorize('create', Page::class);
 
         $input = $request->validated();
         $record = $this->pageService->create($input);
@@ -84,7 +84,7 @@ class PageController extends Controller
      */
     public function show(Page $page)
     {
-        $this->authorize('view', Page::class);
+//        $this->authorize('view', Page::class);
 
         $model = $this->pageService->get($page);
         return $this->responseDataSuccess(['model' => $model, 'properties' => $this->properties()]);
@@ -100,7 +100,7 @@ class PageController extends Controller
      */
     public function edit(Page $page)
     {
-        $this->authorize('edit', Page::class);
+//        $this->authorize('edit', Page::class);
 
         return $this->show($page);
     }
@@ -116,7 +116,7 @@ class PageController extends Controller
      */
     public function update(UpdateRequest $request, Page $page)
     {
-        $this->authorize('edit', Page::class);
+//        $this->authorize('edit', Page::class);
 
         $data = $request->validated();
         if ($item = $this->pageService->updateItem($page, $data)) {
@@ -136,7 +136,7 @@ class PageController extends Controller
      */
     public function destroy(DestroyUserRequest $request, Page $page)
     {
-        $this->authorize('delete', Page::class);
+//        $this->authorize('delete', Page::class);
 
         if ($this->pageService->delete($page)) {
             return $this->responseDeleteSuccess(['model' => $page]);

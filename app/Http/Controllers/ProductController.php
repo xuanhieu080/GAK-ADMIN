@@ -46,7 +46,7 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('list', Product::class);
+//        $this->authorize('list', Product::class);
 
         return $this->productService->index($request->all());
     }
@@ -59,7 +59,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', Product::class);
+//        $this->authorize('create', Product::class);
 
         return $this->responseDataSuccess(['properties' => $this->properties()]);
     }
@@ -74,7 +74,7 @@ class ProductController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $this->authorize('create', Product::class);
+//        $this->authorize('create', Product::class);
 
         $input = $request->validated();
         $record = $this->productService->create($input);
@@ -95,7 +95,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        $this->authorize('view', Product::class);
+//        $this->authorize('view', Product::class);
 
         $model = $this->productService->get($product);
         return $this->responseDataSuccess(['model' => $model, 'properties' => $this->properties()]);
@@ -111,7 +111,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        $this->authorize('edit', Product::class);
+//        $this->authorize('edit', Product::class);
 
         return $this->show($product);
     }
@@ -127,7 +127,7 @@ class ProductController extends Controller
      */
     public function update(UpdateRequest $request, Product $product)
     {
-        $this->authorize('edit', Product::class);
+//        $this->authorize('edit', Product::class);
 
         $data = $request->validated();
         if ($product = $this->productService->updateItem($product, $data)) {
@@ -148,7 +148,7 @@ class ProductController extends Controller
      */
     public function attribute(AttributeRequest $request, Product $product)
     {
-        $this->authorize('attribute', Product::class);
+//        $this->authorize('attribute', Product::class);
 
         $data = $request->validated();
         if ($product = $this->productService->attribute($product, $data)) {
@@ -184,7 +184,7 @@ class ProductController extends Controller
      */
     public function destroy(DestroyUserRequest $request, Product $product)
     {
-        $this->authorize('delete', Product::class);
+//        $this->authorize('delete', Product::class);
 
         if ($this->productService->delete($product)) {
             return $this->responseDeleteSuccess(['model' => $product]);
@@ -195,21 +195,21 @@ class ProductController extends Controller
 
     public function productVariantSync(Product $product)
     {
-        $this->authorize('product-variant', Product::class);
+//        $this->authorize('product-variant', Product::class);
 
         return $this->productService->productVariantSync($product);
     }
 
     public function productVariant(Product $product)
     {
-        $this->authorize('product-variant', Product::class);
+//        $this->authorize('product-variant', Product::class);
 
         return $this->productService->productVariant($product);
     }
 
     public function productVariantMain(Product $product)
     {
-        $this->authorize('product-variant', Product::class);
+//        $this->authorize('product-variant', Product::class);
 
         return $this->productService->productVariantMain($product);
     }
@@ -219,7 +219,7 @@ class ProductController extends Controller
      */
     public function updateProductVariant(UpdateVariantRequest $request, Product $product)
     {
-        $this->authorize('product-variant', Product::class);
+//        $this->authorize('product-variant', Product::class);
 
         $input = $request->validated();
         if ($this->productService->updateProductVariant($product, $input)) {
@@ -234,7 +234,7 @@ class ProductController extends Controller
      */
     public function createReview(StoreReviewRequest $request, Product $product)
     {
-        $this->authorize('product-variant', Product::class);
+//        $this->authorize('product-variant', Product::class);
 
         $input = $request->validated();
         if ($this->productService->createReview($product, $input)) {
@@ -261,7 +261,7 @@ class ProductController extends Controller
     public function getReviewItem(Product $product, ProductReview $productReview)
     {
 //        $this->authorizeize('attribute', Product::class);
-        $this->authorize('view', Product::class);
+//        $this->authorize('view', Product::class);
 
         $model = $this->productService->getReviewItem($product,$productReview);
         return $this->responseDataSuccess(['model' => $model, 'properties' => $this->properties()]);
@@ -272,7 +272,7 @@ class ProductController extends Controller
      */
     public function updateReview(UpdateReviewRequest $request, Product $product, ProductReview $product_review)
     {
-        $this->authorize('product-variant', Product::class);
+//        $this->authorize('product-variant', Product::class);
 
         $input = $request->validated();
         if ($this->productService->updateReview($product, $product_review, $input)) {
@@ -284,7 +284,7 @@ class ProductController extends Controller
 
     public function deleteReview(Product $product, ProductReview $product_review)
     {
-        $this->authorize('delete', Product::class);
+//        $this->authorize('delete', Product::class);
 
         if ($this->productService->deleteReview($product, $product_review)) {
             return $this->responseDeleteSuccess(['model' => $product_review]);
@@ -298,7 +298,7 @@ class ProductController extends Controller
      */
     public function updateProductVariantItem(UpdateVariantItemRequest $request, ProductVariant $product_variant)
     {
-        $this->authorize('product-variant', Product::class);
+//        $this->authorize('product-variant', Product::class);
 
         $input = $request->validated();
         if ($this->productService->updateProductVariantItem($product_variant, $input)) {
@@ -313,7 +313,7 @@ class ProductController extends Controller
      */
     public function updateProductVariantMainItem(UpdateVariantMainItemRequest $request, Product $product, ProductVariantMain $product_variant_main)
     {
-        $this->authorize('product-variant', Product::class);
+//        $this->authorize('product-variant', Product::class);
         $input = $request->validated();
 
         if ($this->productService->updateProductVariantMainItem($product, $product_variant_main, $input)) {
@@ -328,7 +328,7 @@ class ProductController extends Controller
      */
     public function updateHighlight(UpdateHighlightRequest $request, Product $product)
     {
-        $this->authorize('product-variant', Product::class);
+//        $this->authorize('product-variant', Product::class);
 
         $input = $request->validated();
         if ($item = $this->productService->updateHighlight($product, $input)) {

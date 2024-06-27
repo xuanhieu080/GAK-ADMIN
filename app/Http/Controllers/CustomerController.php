@@ -34,7 +34,7 @@ class CustomerController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('list', Customer::class);
+//        $this->authorize('list', Customer::class);
 
         return $this->customerService->index($request->all());
     }
@@ -47,7 +47,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', Customer::class);
+//        $this->authorize('create', Customer::class);
 
         return $this->responseDataSuccess(['properties' => $this->properties()]);
     }
@@ -62,7 +62,7 @@ class CustomerController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $this->authorize('create', Customer::class);
+//        $this->authorize('create', Customer::class);
 
         $input = $request->validated();
         $record = $this->customerService->create($input);
@@ -83,7 +83,7 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
-        $this->authorize('view', Customer::class);
+//        $this->authorize('view', Customer::class);
 
         $model = $this->customerService->get($customer);
         return $this->responseDataSuccess(['model' => $model, 'properties' => $this->properties()]);
@@ -99,7 +99,7 @@ class CustomerController extends Controller
      */
     public function edit(Customer $customer)
     {
-        $this->authorize('edit', Customer::class);
+//        $this->authorize('edit', Customer::class);
 
         return $this->show($customer);
     }
@@ -115,7 +115,7 @@ class CustomerController extends Controller
      */
     public function update(UpdateRequest $request, Customer $customer)
     {
-        $this->authorize('edit', Customer::class);
+//        $this->authorize('edit', Customer::class);
 
         $data = $request->validated();
         if ($item = $this->customerService->update($customer, $data)) {
@@ -136,7 +136,7 @@ class CustomerController extends Controller
      */
     public function recharge(UpdateRequest $request, Customer $customer)
     {
-        $this->authorize('edit', Customer::class);
+//        $this->authorize('edit', Customer::class);
 
         $data = $request->validated();
         if ($this->customerService->update($customer, $data)) {

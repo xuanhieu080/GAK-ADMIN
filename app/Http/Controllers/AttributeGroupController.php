@@ -35,7 +35,7 @@ class AttributeGroupController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('list', AttributeGroup::class);
+//        $this->authorize('list', AttributeGroup::class);
 
         return $this->attributeGroupService->index($request->all());
     }
@@ -48,7 +48,7 @@ class AttributeGroupController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', AttributeGroup::class);
+//        $this->authorize('create', AttributeGroup::class);
 
         return $this->responseDataSuccess(['properties' => $this->properties()]);
     }
@@ -63,7 +63,7 @@ class AttributeGroupController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $this->authorize('create', AttributeGroup::class);
+//        $this->authorize('create', AttributeGroup::class);
 
         $input = $request->validated();
         $record = $this->attributeGroupService->create($input);
@@ -84,7 +84,7 @@ class AttributeGroupController extends Controller
      */
     public function show(AttributeGroup $attributeGroup)
     {
-        $this->authorize('view', AttributeGroup::class);
+//        $this->authorize('view', AttributeGroup::class);
 
         $model = $this->attributeGroupService->get($attributeGroup);
         return $this->responseDataSuccess(['model' => $model, 'properties' => $this->properties()]);
@@ -100,7 +100,7 @@ class AttributeGroupController extends Controller
      */
     public function edit(AttributeGroup $attributeGroup)
     {
-        $this->authorize('edit', AttributeGroup::class);
+//        $this->authorize('edit', AttributeGroup::class);
 
         return $this->show($attributeGroup);
     }
@@ -116,8 +116,7 @@ class AttributeGroupController extends Controller
      */
     public function update(UpdateRequest $request, AttributeGroup $attributeGroup)
     {
-        $this->authorize('edit', AttributeGroup::class);
-
+//        $this->authorize('edit', AttributeGroup::class);
         $data = $request->validated();
         if ($item = $this->attributeGroupService->update($attributeGroup, $data)) {
             return $this->responseUpdateSuccess(['model' => $item]);
@@ -136,7 +135,7 @@ class AttributeGroupController extends Controller
      */
     public function destroy(DestroyUserRequest $request, AttributeGroup $attributeGroup)
     {
-        $this->authorize('delete', AttributeGroup::class);
+//        $this->authorize('delete', AttributeGroup::class);
 
         if ($this->attributeGroupService->delete($attributeGroup)) {
             return $this->responseDeleteSuccess(['model' => $attributeGroup]);

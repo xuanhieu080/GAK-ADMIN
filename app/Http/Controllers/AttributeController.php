@@ -35,7 +35,7 @@ class AttributeController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('list', Attribute::class);
+//        $this->authorize('list', Attribute::class);
 
         return $this->attributeService->index($request->all());
     }
@@ -48,7 +48,7 @@ class AttributeController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', Attribute::class);
+//        $this->authorize('create', Attribute::class);
 
         return $this->responseDataSuccess(['properties' => $this->properties()]);
     }
@@ -63,7 +63,7 @@ class AttributeController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $this->authorize('create', Attribute::class);
+//        $this->authorize('create', Attribute::class);
 
         $input = $request->validated();
         $record = $this->attributeService->create($input);
@@ -84,7 +84,7 @@ class AttributeController extends Controller
      */
     public function show(Attribute $attribute)
     {
-        $this->authorize('view', Attribute::class);
+//        $this->authorize('view', Attribute::class);
 
         $model = $this->attributeService->get($attribute);
         return $this->responseDataSuccess(['model' => $model, 'properties' => $this->properties()]);
@@ -100,7 +100,7 @@ class AttributeController extends Controller
      */
     public function edit(Attribute $attribute)
     {
-        $this->authorize('edit', Attribute::class);
+//        $this->authorize('edit', Attribute::class);
 
         return $this->show($attribute);
     }
@@ -116,7 +116,7 @@ class AttributeController extends Controller
      */
     public function update(UpdateRequest $request, Attribute $attribute)
     {
-        $this->authorize('edit', Attribute::class);
+//        $this->authorize('edit', Attribute::class);
 
         $data = $request->validated();
         if ($item = $this->attributeService->update($attribute, $data)) {
@@ -136,7 +136,7 @@ class AttributeController extends Controller
      */
     public function destroy(DestroyUserRequest $request, Attribute $attribute)
     {
-        $this->authorize('delete', Attribute::class);
+//        $this->authorize('delete', Attribute::class);
 
         if ($this->attributeService->delete($attribute)) {
             return $this->responseDeleteSuccess(['model' => $attribute]);

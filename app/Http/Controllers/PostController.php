@@ -35,7 +35,7 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('list', Post::class);
+//        $this->authorize('list', Post::class);
 
         return $this->postService->index($request->all());
     }
@@ -48,7 +48,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', Post::class);
+//        $this->authorize('create', Post::class);
 
         return $this->responseDataSuccess(['properties' => $this->properties()]);
     }
@@ -63,7 +63,7 @@ class PostController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $this->authorize('create', Post::class);
+//        $this->authorize('create', Post::class);
 
         $input = $request->validated();
         $record = $this->postService->create($input);
@@ -84,7 +84,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        $this->authorize('view', Post::class);
+//        $this->authorize('view', Post::class);
 
         $model = $this->postService->get($post);
         return $this->responseDataSuccess(['model' => $model, 'properties' => $this->properties()]);
@@ -100,7 +100,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        $this->authorize('edit', Post::class);
+//        $this->authorize('edit', Post::class);
 
         return $this->show($post);
     }
@@ -116,7 +116,7 @@ class PostController extends Controller
      */
     public function update(UpdateRequest $request, Post $post)
     {
-        $this->authorize('edit', Post::class);
+//        $this->authorize('edit', Post::class);
 
         $data = $request->validated();
         if ($item = $this->postService->updateItem($post, $data)) {
@@ -136,7 +136,7 @@ class PostController extends Controller
      */
     public function destroy(DestroyUserRequest $request, Post $post)
     {
-        $this->authorize('delete', Post::class);
+//        $this->authorize('delete', Post::class);
 
         if ($this->postService->delete($post)) {
             return $this->responseDeleteSuccess(['model' => $post]);

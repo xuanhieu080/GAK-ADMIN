@@ -35,7 +35,7 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('list', Category::class);
+//        $this->authorize('list', Category::class);
 
         return $this->categoryService->index($request->all());
     }
@@ -48,7 +48,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', Category::class);
+//        $this->authorize('create', Category::class);
 
         return $this->responseDataSuccess(['properties' => $this->properties()]);
     }
@@ -63,7 +63,7 @@ class CategoryController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $this->authorize('create', Category::class);
+//        $this->authorize('create', Category::class);
 
         $input = $request->validated();
         $record = $this->categoryService->create($input);
@@ -84,7 +84,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        $this->authorize('view', Category::class);
+//        $this->authorize('view', Category::class);
 
         $model = $this->categoryService->get($category);
         return $this->responseDataSuccess(['model' => $model, 'properties' => $this->properties()]);
@@ -100,7 +100,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        $this->authorize('edit', Category::class);
+//        $this->authorize('edit', Category::class);
 
         return $this->show($category);
     }
@@ -116,7 +116,7 @@ class CategoryController extends Controller
      */
     public function update(UpdateRequest $request, Category $category)
     {
-        $this->authorize('edit', Category::class);
+//        $this->authorize('edit', Category::class);
 
         $data = $request->validated();
         if ($item = $this->categoryService->update($category, $data)) {
@@ -136,7 +136,7 @@ class CategoryController extends Controller
      */
     public function destroy(DestroyUserRequest $request, Category $category)
     {
-        $this->authorize('delete', Category::class);
+//        $this->authorize('delete', Category::class);
 
         if ($this->categoryService->delete($category)) {
             return $this->responseDeleteSuccess(['model' => $category]);
