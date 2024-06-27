@@ -8,8 +8,11 @@
     <meta name="bingbot" content="follow, noindex">
     <meta name="googlebot" content="follow, noindex">
     <meta name="robots" content="follow, noindex">
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/42.0.0/ckeditor5.css" />
 
-    @vite(['resources/scss/main.scss', 'resources/js/main.js'])
+    <!-- If you are using premium features: -->
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5-premium-features/42.0.0/ckeditor5-premium-features.css" />
+
 
     <script>
         window.AppConfig = {
@@ -35,7 +38,7 @@
 </noscript>
 
 <div id="app"></div>
-
+@vite(['resources/scss/main.scss', 'resources/js/main.js'])
 </body>
 
 </html>
