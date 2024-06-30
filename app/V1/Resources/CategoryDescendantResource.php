@@ -21,6 +21,9 @@ class CategoryDescendantResource extends JsonResource
     public function toArray($request)
     {
         $data = $this->resource->toArray();
+        if (!empty($this->resource->toArray()['products'])) {
+            $data['products'] = ProductShortResource::collection($this->products);
+        }
         $data['image_url'] = $this->getFirstMediaUrl();
 
         $data['created_at'] = !empty($this->resource->created_at) ? $this->resource->created_at->diffForHumans() : null;
