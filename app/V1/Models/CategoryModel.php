@@ -69,23 +69,32 @@ class CategoryModel extends AbstractModel
             'descendants.products' => function ($query) {
                 $query->where('is_active', 1)
                     ->whereHas('media', function ($query) {
-                        $query->where('collection_name', 'default');
-                    })->whereHas('media', function ($query) {
-                        $query->where('collection_name', 'thumb');
+                        $query->where('collection_name', 'default')
+                            ->orWhere('collection_name', 'thumb'); // Sửa chỗ này để đảm bảo product có ít nhất một trong hai loại media
                     });
-            }
-        ])->each(function ($category) {
-            // Kết hợp các sản phẩm từ chính category này và các descendants một cách hiệu quả
-            $allProducts = collect();
-            foreach ($category->descendants as $descendant) {
-                $allProducts = $allProducts->concat($descendant->products);
-            }
+            },
+        ]);
 
-            $category->setRelation('products', $category->products->concat($allProducts));
+// Tạo một collection để giữ tất cả product ids
+        $productIds = collect();
+
+        $item->each(function ($category) use (&$productIds) {
+            // Lấy các sản phẩm từ chính category này
+            $categoryProducts = $category->products->pluck('id');
+
+            // Thêm vào tổng collection của product ids
+            $productIds = $productIds->concat($categoryProducts);
+
+            // Tương tự, lập lại với mỗi descendant category
+            foreach ($category->descendants as $descendant) {
+                $descendantProductIds = $descendant->products->pluck('id');
+                $productIds = $productIds->concat($descendantProductIds);
+            }
         });
 
-        $productIds = $item->products->where('is_active', 1)->pluck('id');
-//        $variants = Variant::whereIn('product_id', $productIds)->get()->unique()->groupBy('attribute_group_id')->toArray();
+// Bây giờ $productIds sẽ chứa ids của tất cả các products mà bạn cần.
+// Bạn có thể muốn loại bỏ các id trùng lặp
+        $productIds = $productIds->unique();
         $variants = AttributeGroup::with([
             'attributes' => function ($query) use ($productIds) {
                 $query->whereHas('variants', function ($qr) use ($productIds) {
@@ -184,7 +193,7 @@ class CategoryModel extends AbstractModel
     {
         $limit = 4;
         $categories = Category::with([
-            'products' => function ($query) use ($limit) {
+            'products'              => function ($query) use ($limit) {
                 $query->where('products.is_active', 1);
 //                    ->whereHas('media', function ($query) {
 //                        $query->where('collection_name', 'default');
