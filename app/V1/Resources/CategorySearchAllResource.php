@@ -2,8 +2,6 @@
 
 namespace App\V1\Resources;
 
-use App\Http\Resources\ProductVariantMainResource;
-use App\Utilities\Data;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
