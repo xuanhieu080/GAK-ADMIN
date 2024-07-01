@@ -1412,7 +1412,7 @@ of the component, floating–point numbers have been used which, for the default
 }
 .ck.ck-editor__editable_inline {
     overflow: auto;
-    padding: 0 var(--ck-spacing-standard);
+    padding: 0 2em;
     border: 1px solid transparent;
 }
 .ck.ck-editor__editable_inline[dir="ltr"] {
