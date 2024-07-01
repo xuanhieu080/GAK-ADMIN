@@ -13,7 +13,7 @@ class SeoContentModel extends AbstractModel
      */
     public function __construct()
     {
-        $model = new SeoContentModel();
+        $model = new SeoContent();
         parent::__construct($model);
     }
 
