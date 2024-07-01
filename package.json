@@ -11,13 +11,13 @@
         "watch": "vite build --mode development --watch --minify=false"
     },
     "dependencies": {
-        "@ckeditor/ckeditor5-vue": "^5.1.0",
+        "@ckeditor/ckeditor5-vue": "^6.0.0",
         "@vitejs/plugin-vue": "^3.0.2",
         "@vuepic/vue-datepicker": "^8.5.1",
         "@vueup/vue-quill": "^1.2.0",
         "@webspellchecker/wproofreader-ckeditor5": "^2.3.1",
         "axios": "^0.21.1",
-        "ckeditor5-custom-build": "file:./ckeditor-custom-build",
+        "ckeditor5": "^42.0.0",
         "filepond": "^4.30.6",
         "filepond-plugin-file-validate-size": "^2.2.8",
         "filepond-plugin-file-validate-type": "^1.2.8",

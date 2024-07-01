@@ -1,7 +1,91 @@
 <script setup lang="ts">
 import {ref, onMounted, defineProps, watch, watchEffect} from 'vue';
+import '@/ckeditor.css';
+
+import {
+  ClassicEditor,
+  ImageCaptionEditing,
+    ImageCaptionUI,
+  AccessibilityHelp,
+  Alignment,
+  Autoformat,
+  AutoImage,
+  Image,
+  AutoLink,
+  Autosave,
+  BalloonToolbar,
+  BlockQuote,
+  Bold,
+  Code,
+  CodeBlock,
+  Essentials,
+  FindAndReplace,
+  FontBackgroundColor,
+  FontColor,
+  FontFamily,
+  FontSize,
+  FullPage,
+  GeneralHtmlSupport,
+  Heading,
+  Highlight,
+  HorizontalLine,
+  HtmlComment,
+  HtmlEmbed,
+  ImageBlock,
+  ImageCaption,
+  ImageInline,
+  ImageInsert,
+  ImageInsertViaUrl,
+  ImageResize,
+  ImageStyle,
+  ImageTextAlternative,
+  ImageToolbar,
+  ImageUpload,
+  Indent,
+  IndentBlock,
+  Italic,
+  Link,
+  LinkImage,
+  List,
+  ListProperties,
+  Markdown,
+  MediaEmbed,
+  PageBreak,
+  Paragraph,
+  PasteFromMarkdownExperimental,
+  PasteFromOffice,
+  RemoveFormat,
+  SelectAll,
+  ShowBlocks,
+  SimpleUploadAdapter,
+  SourceEditing,
+  SpecialCharacters,
+  SpecialCharactersArrows,
+  SpecialCharactersCurrency,
+  SpecialCharactersEssentials,
+  SpecialCharactersLatin,
+  SpecialCharactersMathematical,
+  SpecialCharactersText,
+  Strikethrough,
+  Style,
+  Subscript,
+  Superscript,
+  Table,
+  TableCaption,
+  TableCellProperties,
+  TableColumnResize,
+  TableProperties,
+  TableToolbar,
+  TextPartLanguage,
+  TextTransformation,
+  TodoList,
+  Underline,
+  Undo
+} from 'ckeditor5';
+
+// import translations from 'ckeditor5/translations/vi.js';
 // import * as Editor from 'ckeditor-custom-build/build/ckeditor';
-import Editor from 'ckeditor5-custom-build/build/ckeditor';
+// import Editor from 'ckeditor5-custom-build/build/ckeditor';
 // import 'ckeditor5-custom-build/sample/styles.css';
 // import {ClassicEditor} from "@ckeditor/ckeditor5-editor-classic";
 import CustomUploadAdapter from '@/helpers/ckeditor.js';
@@ -15,30 +99,294 @@ const props = defineProps({
 const emits = defineEmits(['updateData']);
 
 const editorData = ref(props.content);
+const isLayoutReady = ref(false);
 const loading = ref(true);
 const editorConfig = {
   toolbar: {
     items: [
-      'heading', '|',
-      'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', '|',
-      'undo', 'redo',
-      '-',
-      'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', '|',
-      'insertTable', 'tableColumn', 'tableRow', 'mergeTableCells', '|',
-      'outdent', 'indent', '|',
-      'imageUpload', 'mediaEmbed', '|',
-      'alignment', 'horizontalLine', 'specialCharacters'
+      'undo',
+      'redo',
+      '|',
+      'sourceEditing',
+      'showBlocks',
+      '|',
+      'heading',
+      'style',
+      '|',
+      'fontSize',
+      'fontFamily',
+      'fontColor',
+      'fontBackgroundColor',
+      '|',
+      'bold',
+      'italic',
+      'underline',
+      '|',
+      'link',
+      'insertImage',
+      'insertTable',
+      'highlight',
+      'blockQuote',
+      'codeBlock',
+      '|',
+      'alignment',
+      '|',
+      'bulletedList',
+      'numberedList',
+      'todoList',
+      'indent',
+      'outdent'
+    ],
+    shouldNotGroupWhenFull: false
+  },
+  plugins: [
+    AccessibilityHelp,
+    Alignment,
+    Autoformat,
+    AutoImage,
+    Image,
+    AutoLink,
+    Autosave,
+    BalloonToolbar,
+    BlockQuote,
+    Bold,
+    Code,
+    CodeBlock,
+    Essentials,
+    FindAndReplace,
+    FontBackgroundColor,
+    FontColor,
+    FontFamily,
+    FontSize,
+    FullPage,
+    GeneralHtmlSupport,
+    Heading,
+    Highlight,
+    HorizontalLine,
+    HtmlComment,
+    HtmlEmbed,
+    ImageBlock,
+    ImageCaption,
+    ImageCaptionUI,
+    ImageInline,
+    ImageInsert,
+    ImageInsertViaUrl,
+    ImageResize,
+    ImageStyle,
+    ImageTextAlternative,
+    ImageToolbar,
+    ImageUpload,
+    Indent,
+    IndentBlock,
+    Italic,
+    Link,
+    LinkImage,
+    List,
+    ListProperties,
+    Markdown,
+    MediaEmbed,
+    PageBreak,
+    Paragraph,
+    PasteFromMarkdownExperimental,
+    PasteFromOffice,
+    RemoveFormat,
+    SelectAll,
+    ShowBlocks,
+    SimpleUploadAdapter,
+    SourceEditing,
+    SpecialCharacters,
+    SpecialCharactersArrows,
+    SpecialCharactersCurrency,
+    SpecialCharactersEssentials,
+    SpecialCharactersLatin,
+    SpecialCharactersMathematical,
+    SpecialCharactersText,
+    Strikethrough,
+    Style,
+    Subscript,
+    Superscript,
+    Table,
+    TableCaption,
+    TableCellProperties,
+    TableColumnResize,
+    TableProperties,
+    TableToolbar,
+    TextPartLanguage,
+    TextTransformation,
+    TodoList,
+    Underline,
+    Undo,
+    ImageCaptionEditing
+  ],
+  balloonToolbar: ['bold', 'italic', '|', 'link', 'insertImage', '|', 'bulletedList', 'numberedList'],
+  fontFamily: {
+    supportAllValues: true
+  },
+  fontSize: {
+    options: [10, 12, 14, 'default', 18, 20, 22],
+    supportAllValues: true
+  },
+  heading: {
+    options: [
+      {
+        model: 'paragraph',
+        title: 'Paragraph',
+        class: 'ck-heading_paragraph'
+      },
+      {
+        model: 'heading1',
+        view: 'h1',
+        title: 'Heading 1',
+        class: 'ck-heading_heading1'
+      },
+      {
+        model: 'heading2',
+        view: 'h2',
+        title: 'Heading 2',
+        class: 'ck-heading_heading2'
+      },
+      {
+        model: 'heading3',
+        view: 'h3',
+        title: 'Heading 3',
+        class: 'ck-heading_heading3'
+      },
+      {
+        model: 'heading4',
+        view: 'h4',
+        title: 'Heading 4',
+        class: 'ck-heading_heading4'
+      },
+      {
+        model: 'heading5',
+        view: 'h5',
+        title: 'Heading 5',
+        class: 'ck-heading_heading5'
+      },
+      {
+        model: 'heading6',
+        view: 'h6',
+        title: 'Heading 6',
+        class: 'ck-heading_heading6'
+      }
     ]
+  },
+  htmlSupport: {
+    allow: [
+      {
+        name: /^.*$/,
+        styles: true,
+        attributes: true,
+        classes: true
+      }
+    ]
+  },
+  image: {
+    toolbar: [
+      'toggleImageCaption',
+      'imageTextAlternative',
+      '|',
+      'imageStyle:inline',
+      'imageStyle:wrapText',
+      'imageStyle:breakText',
+      '|',
+      'resizeImage',
+      '|',
+      'linkImage'
+    ],
+    insert: {
+      // This is the default configuration, you do not need to provide
+      // this configuration key if the list content and order reflects your needs.
+      integrations: [ 'upload', 'assetManager', 'url' ]
+    }
+  },
+  initialData:
+      '<h2>Congratulations on setting up CKEditor 5! 🎉</h2>\n<p>\n    You\'ve successfully created a CKEditor 5 project. This powerful text editor will enhance your application, enabling rich text editing\n    capabilities that are customizable and easy to use.\n</p>\n<h3>What\'s next?</h3>\n<ol>\n    <li>\n        <strong>Integrate into your app</strong>: time to bring the editing into your application. Take the code you created and add to your\n        application.\n    </li>\n    <li>\n        <strong>Explore features:</strong> Experiment with different plugins and toolbar options to discover what works best for your needs.\n    </li>\n    <li>\n        <strong>Customize your editor:</strong> Tailor the editor\'s configuration to match your application\'s style and requirements. Or even\n        write your plugin!\n    </li>\n</ol>\n<p>\n    Keep experimenting, and don\'t hesitate to push the boundaries of what you can achieve with CKEditor 5. Your feedback is invaluable to us\n    as we strive to improve and evolve. Happy editing!\n</p>\n<h3>Helpful resources</h3>\n<ul>\n    <li>📝 <a href="https://orders.ckeditor.com/trial/premium-features">Trial sign up</a>,</li>\n    <li>📕 <a href="https://ckeditor.com/docs/ckeditor5/latest/installation/index.html">Documentation</a>,</li>\n    <li>⭐️ <a href="https://github.com/ckeditor/ckeditor5">GitHub</a> (star us if you can!),</li>\n    <li>🏠 <a href="https://ckeditor.com">CKEditor Homepage</a>,</li>\n    <li>🧑‍💻 <a href="https://ckeditor.com/ckeditor-5/demo/">CKEditor 5 Demos</a>,</li>\n</ul>\n<h3>Need help?</h3>\n<p>\n    See this text, but the editor is not starting up? Check the browser\'s console for clues and guidance. It may be related to an incorrect\n    license key if you use premium features or another feature-related requirement. If you cannot make it work, file a GitHub issue, and we\n    will help as soon as possible!\n</p>\n',
+  language: 'vi',
+  link: {
+    addTargetToExternalLinks: true,
+    defaultProtocol: 'https://',
+    decorators: {
+      toggleDownloadable: {
+        mode: 'manual',
+        label: 'Downloadable',
+        attributes: {
+          download: 'file'
+        }
+      }
+    }
+  },
+  list: {
+    properties: {
+      styles: true,
+      startIndex: true,
+      reversed: true
+    }
   },
   menuBar: {
     isVisible: true
   },
+  placeholder: 'Type or paste your content here!',
+  style: {
+    definitions: [
+      {
+        name: 'Article category',
+        element: 'h3',
+        classes: ['category']
+      },
+      {
+        name: 'Title',
+        element: 'h2',
+        classes: ['document-title']
+      },
+      {
+        name: 'Subtitle',
+        element: 'h3',
+        classes: ['document-subtitle']
+      },
+      {
+        name: 'Info box',
+        element: 'p',
+        classes: ['info-box']
+      },
+      {
+        name: 'Side quote',
+        element: 'blockquote',
+        classes: ['side-quote']
+      },
+      {
+        name: 'Marker',
+        element: 'span',
+        classes: ['marker']
+      },
+      {
+        name: 'Spoiler',
+        element: 'span',
+        classes: ['spoiler']
+      },
+      {
+        name: 'Code (dark)',
+        element: 'pre',
+        classes: ['fancy-code', 'fancy-code-dark']
+      },
+      {
+        name: 'Code (bright)',
+        element: 'pre',
+        classes: ['fancy-code', 'fancy-code-bright']
+      }
+    ]
+  },
+  toggleImageCaption:{focusCaptionOnShow: false },
+  table: {
+    contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties']
+  },
+  // translations: [translations],
   enableGrip: false,
   extraPlugins: [CustomUploader]
 };
 
 // Ref for editor instance
-const editor = ref(Editor);
+const editor = ref(ClassicEditor);
 
 function CustomUploader(editor) {
   editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
@@ -56,15 +404,27 @@ watch(() => editorData.value, (newValue) => {
 });
 
 onMounted(() => {
-  editor.value = Editor;
+  editor.value = ClassicEditor;
   loading.value = false;
+  isLayoutReady.value = true;
 });
 </script>
 
 <template>
-    <div class="ck-editor-component" v-if="!loading">
-      <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
+  <div class="main-container ck-editor-component">
+    <div class="editor-container editor-container_classic-editor editor-container_include-style"
+         ref="editorContainerElement">
+      <div class="editor-container__editor">
+        <div ref="editorElement">
+          <ckeditor v-if="isLayoutReady" v-model="editorData" :editor="editor" :config="editorConfig"/>
+        </div>
+      </div>
     </div>
+  </div>
+
+  <!--  <div class="ck-editor-component" v-if="!loading">-->
+  <!--      <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>-->
+  <!--    </div>-->
 
 </template>
 
@@ -126,7 +486,7 @@ onMounted(() => {
   }
 
   .editor-container--with-sidebar > .ck.ck-editor {
-    width: calc( 100% - var(--ck-sample-sidebar-width) );
+    width: calc(100% - var(--ck-sample-sidebar-width));
   }
 
   /* --------- DECOUPLED (DOCUMENT) BUILD. ---------------------------------------------*/
@@ -143,9 +503,9 @@ onMounted(() => {
     height: fit-content;
     padding: 2cm 1.2cm;
     margin: 2.5rem;
-    border: 1px hsl( 0, 0%, 82.7% ) solid;
+    border: 1px hsl(0, 0%, 82.7%) solid;
     background-color: var(--ck-sample-color-white);
-    box-shadow: 0 0 5px hsla( 0, 0%, 0%, .1 );
+    box-shadow: 0 0 5px hsla(0, 0%, 0%, .1);
     box-sizing: border-box;
   }
 
@@ -209,13 +569,13 @@ onMounted(() => {
     top: 30px;
     border: 0;
     padding: 0;
-    color: hsl( 0, 0%, 50% );
+    color: hsl(0, 0%, 50%);
     transition: 250ms ease color;
     background-color: transparent;
   }
 
   #sidebar-display-toggle:hover {
-    color: hsl( 0, 0%, 30% );
+    color: hsl(0, 0%, 30%);
     cursor: pointer;
   }
 
@@ -292,12 +652,12 @@ onMounted(() => {
     margin-right: 1em;
     outline-offset: 2px;
     outline-width: 2px;
-    background-color: var( --ck-sample-color-blue );
+    background-color: var(--ck-sample-color-blue);
   }
 
   .collaboration-demo__topbar .btn:focus,
   .collaboration-demo__topbar .btn:hover {
-    border-color: var( --ck-sample-color-blue );
+    border-color: var(--ck-sample-color-blue);
   }
 
   .collaboration-demo__share {
@@ -341,7 +701,7 @@ onMounted(() => {
     visibility: hidden;
     opacity: 0;
     pointer-events: none;
-    transition: all .15s cubic-bezier(.5,1,.25,1);
+    transition: all .15s cubic-bezier(.5, 1, .25, 1);
     z-index: 1;
   }
 
@@ -543,7 +903,7 @@ onMounted(() => {
     font-size: 1rem;
     user-select: none;
     border-radius: 4px;
-    transition: color .2s ease-in-out,background-color .2s ease-in-out,border-color .2s ease-in-out,opacity .2s ease-in-out;
+    transition: color .2s ease-in-out, background-color .2s ease-in-out, border-color .2s ease-in-out, opacity .2s ease-in-out;
     background-color: var(--ck-sample-color-button-blue);
     border-color: var(--ck-sample-color-button-blue);
     color: var(--ck-sample-color-white);
@@ -556,14 +916,14 @@ onMounted(() => {
   }
 
   footer {
-    margin: calc(2*var(--ck-sample-base-spacing)) var(--ck-sample-base-spacing);
+    margin: calc(2 * var(--ck-sample-base-spacing)) var(--ck-sample-base-spacing);
     font-size: .8em;
     text-align: center;
-    color: rgba(0,0,0,.4);
+    color: rgba(0, 0, 0, .4);
   }
 
   /* --------- RWD --------------------------------------------------------------------------------------------------- */
-  @media screen and ( max-width: 800px ) {
+  @media screen and (max-width: 800px) {
     :root {
       --ck-sample-base-spacing: 1em;
     }
@@ -584,6 +944,5 @@ onMounted(() => {
       font-size: 1.5em;
     }
   }
-
 }
 </style>

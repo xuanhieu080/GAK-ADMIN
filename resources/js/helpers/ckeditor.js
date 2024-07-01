@@ -2,10 +2,13 @@ import axios from "@/plugins/axios";
 class CustomUploadAdapter {
     constructor(loader) {
         this.loader = loader;
+        console.log('aaaa')
     }
 
     upload() {
         return new Promise((resolve, reject) => {
+
+            console.log('bbbb')
             this.loader.file.then(file => {
                 const data = new FormData();
                 data.append('image', file);
@@ -25,6 +28,8 @@ class CustomUploadAdapter {
     }
 
     abort() {
+
+        console.log('cccc')
         // Handle the abort upload action
     }
 }
