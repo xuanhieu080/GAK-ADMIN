@@ -83,7 +83,7 @@ import {
   Undo
 } from 'ckeditor5';
 
-// import translations from 'ckeditor5/translations/vi.js';
+import translations from './vi';
 // import * as Editor from 'ckeditor-custom-build/build/ckeditor';
 // import Editor from 'ckeditor5-custom-build/build/ckeditor';
 // import 'ckeditor5-custom-build/sample/styles.css';
@@ -166,8 +166,8 @@ const editorConfig = {
     HtmlComment,
     HtmlEmbed,
     ImageBlock,
-    ImageCaption,
-    ImageCaptionUI,
+    // ImageCaption,
+    // ImageCaptionUI,
     ImageInline,
     ImageInsert,
     ImageInsertViaUrl,
@@ -206,7 +206,7 @@ const editorConfig = {
     Subscript,
     Superscript,
     Table,
-    TableCaption,
+    // TableCaption,
     TableCellProperties,
     TableColumnResize,
     TableProperties,
@@ -216,7 +216,7 @@ const editorConfig = {
     TodoList,
     Underline,
     Undo,
-    ImageCaptionEditing
+    // ImageCaptionEditing
   ],
   balloonToolbar: ['bold', 'italic', '|', 'link', 'insertImage', '|', 'bulletedList', 'numberedList'],
   fontFamily: {
@@ -283,7 +283,6 @@ const editorConfig = {
   },
   image: {
     toolbar: [
-      'toggleImageCaption',
       'imageTextAlternative',
       '|',
       'imageStyle:inline',
@@ -326,7 +325,7 @@ const editorConfig = {
   menuBar: {
     isVisible: true
   },
-  placeholder: 'Type or paste your content here!',
+  placeholder: 'Nhập hoặc dán nội dung của bạn ở đây!',
   style: {
     definitions: [
       {
@@ -376,11 +375,10 @@ const editorConfig = {
       }
     ]
   },
-  toggleImageCaption:{focusCaptionOnShow: false },
   table: {
     contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties']
   },
-  // translations: [translations],
+  translations: [translations],
   enableGrip: false,
   extraPlugins: [CustomUploader]
 };
