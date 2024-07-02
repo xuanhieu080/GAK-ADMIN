@@ -38,6 +38,7 @@ import Toggle from "@/views/components/input/Toggle.vue";
 import {QuillEditor} from "@vueup/vue-quill";
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import {useAlertStore} from "@/stores";
+import CkEditorCustom from "@/views/components/CkEditorCustom.vue";
 
 // Import styles
 
