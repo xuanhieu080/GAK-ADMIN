@@ -19,9 +19,14 @@ class CategorySearchAllResource extends JsonResource
      */
     public function toArray($request)
     {
-        $data = $this->resource->toArray();
+        $data = [
+            'id'         => $this->id,
+            'code'         => $this->code,
+            'name'         => $this->name,
+            'slug'         => $this->slug,
+        ];
         $data['image_url'] = $this->getFirstMediaUrl();
-        $data['products'] = ProductVariantMainResource::collection($this->variantMains);
+        $data['products'] = ProductVariantResource::collection($this->variants);
 
         $data['created_at'] = !empty($this->resource->created_at) ? $this->resource->created_at->diffForHumans() : null;
         $data['updated_at'] = !empty($this->resource->updated_at) ? $this->resource->updated_at->diffForHumans() : null;

@@ -163,7 +163,35 @@ class CategoryModel extends AbstractModel
 
     public function getSearchAll($input)
     {
-        $categories = Category::whereHas('variantMains')
+        $categories = Category::with(['variants' => function ($query) {
+            $query->whereIn('product_variants.code', [
+                'wxV4jXU3UPTlgZAw',
+                'iWpp9vK4V6EQAh2T',
+                'AFL0P0UrtxOMQSRN',
+                'OUtwzd8iobpOZq93',
+
+                'hHC7X2NI6Y0e698p',
+                '4dA6r88gKMAdLuMt',
+                'js8YrUeeJtAfjYCJ',
+                'oK43C3YcLTwe8Snc',
+
+                'QEQpWwpfwAo1iyIq',
+                'oCavhwBOC1RilkVh',
+                'ORULu95P51kiWwGB',
+                '5OclkuKf6gpuG9Y8',
+
+                '1s9fzozMzvgpePsn',
+                'NO2tv5wHtWeDJpir',
+                'pwzc0jDP5ZCwL4i3',
+                'jM1Fme2PzC7OA50x',
+
+                'bqCsv4kf4G4mIoNJ',
+                'ZQ5H0zoh8bbqiTUl',
+                'kd3WD1kFoRJrpkxg',
+                'FCvTzECvyPxsRrJN',
+            ]);
+        }])
+            ->whereHas('variantMains')
             ->where('is_active', 1)
             ->whereIn('slug', [
                 'ao-phan-quang-thun-2-ben',
@@ -176,8 +204,8 @@ class CategoryModel extends AbstractModel
             ->get()
             ->map(function ($category) {
                 // Giữ chỉ 4 variantMains cho mỗi category.
-                $category->variantMains = $category->variantMains->filter(function ($variantMain) {
-                    return $variantMain->media->contains(function ($media) {
+                $category->variants = $category->variants->filter(function ($variants) {
+                    return $variants->media->contains(function ($media) {
                         return in_array($media->collection_name, ['thumb']);
                     });
                 })->take(4);
