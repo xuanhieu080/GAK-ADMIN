@@ -5,13 +5,14 @@ namespace App\Services\Page;
 use App\Http\Resources\PageGroupResource;
 use App\Models\PageGroup;
 use App\Services\Media\MediaService;
+use App\V1\Models\PageGroupModel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 
 class PageGroupService
 {
-    public $model;
+    public $model, $pageGroupModel;
 
     /**
      * The service instance
@@ -20,6 +21,7 @@ class PageGroupService
     public function __construct()
     {
         $this->model = new PageGroup();
+        $this->pageGroupModel = new PageGroupModel();
     }
 
     /**
@@ -68,6 +70,7 @@ class PageGroupService
         $data = array_intersect_key($data, array_flip($full_columns));
         $data['is_active'] = filter_var(Arr::get($data, 'is_active'), FILTER_VALIDATE_BOOLEAN);
         $record = PageGroup::query()->create($data);
+        $this->pageGroupModel->cacheIndex();
         if (!empty($record)) {
             return new PageGroupResource($record);
         } else {
@@ -90,6 +93,7 @@ class PageGroupService
 
         $pageGroup->save();
         $pageGroup->refresh();
+        $this->pageGroupModel->cacheIndex();
         return new PageGroupResource($pageGroup);
     }
 
@@ -100,7 +104,9 @@ class PageGroupService
      */
     public function delete(PageGroup $pageGroup)
     {
-        return $pageGroup->delete();
+        $bool = $pageGroup->delete();
+        $this->pageGroupModel->cacheIndex();
+        return $bool;
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\V1\Models;
 use App\Models\Page;
 use App\V1\Resources\PageResource;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class PageModel extends AbstractModel
@@ -54,6 +55,28 @@ class PageModel extends AbstractModel
 
     public function getPageHeader($input)
     {
+        $cacheKey = 'page_header_data';
+        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
+
+        // Kiểm tra xem dữ liệu có trong cache không
+        $pages = Cache::remember($cacheKey, $seconds, function () use ($input) {
+            $limit = Arr::get($input, 'limit', 999);
+
+            $input['sort'] = ['id' => 'desc'];
+            $input['is_active'] = 1;
+            $input['show_header'] = 1;
+            $result = $this->search($input, [], $limit);
+
+            return PageResource::collection($result);
+        });
+
+        return $pages;
+    }
+
+    public function cachePageHeader($input)
+    {
+        $cacheKey = 'page_header_data';
+        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
         $limit = Arr::get($input, 'limit', 999);
 
         $input['sort'] = ['id' => 'desc'];
@@ -61,7 +84,7 @@ class PageModel extends AbstractModel
         $input['show_header'] = 1;
         $result = $this->search($input, [], $limit);
 
-        return PageResource::collection($result);
+        Cache::put($cacheKey, PageResource::collection($result), $seconds);
     }
 
     public function search($input = [], $with = [], $limit = null)

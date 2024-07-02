@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Services\Media\MediaService;
 use App\Supports\HasImage;
 use App\Supports\Support;
+use App\V1\Models\CategoryModel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
@@ -17,7 +18,7 @@ use Illuminate\Support\Facades\Hash;
 
 class CategoryService
 {
-    public $model;
+    public $model, $categoryModel;
 
     /**
      * The service instance
@@ -26,6 +27,7 @@ class CategoryService
     public function __construct()
     {
         $this->model = new Category();
+        $this->categoryModel = new CategoryModel();
     }
 
     /**
@@ -90,6 +92,7 @@ class CategoryService
                 ->usingFileName($record->slug . '-' . time() . '.' . $data['image']->getClientOriginalExtension())
                 ->toMediaCollection();
             DB::commit();
+            $this->categoryModel->cacheCategoryHeader([]);
             if (!empty($record)) {
                 return new CategoryResource($record);
             } else {
@@ -142,6 +145,7 @@ class CategoryService
             $category->save();
             $category->refresh();
             DB::commit();
+            $this->categoryModel->cacheCategoryHeader([]);
         } catch (\Exception $exception) {
             DB::rollBack();
             throw new \Exception($exception->getMessage());
@@ -160,7 +164,9 @@ class CategoryService
         Product::query()
             ->where('category_id', $category->id)
             ->update(['category_id' => null]);
-        return $category->delete();
+        $bool = $category->delete();
+        $this->categoryModel->cacheCategoryHeader([]);
+        return $bool;
     }
 
     /**

@@ -16,6 +16,7 @@ use App\Models\Variant;
 use App\Services\Media\MediaService;
 use App\Supports\HasImage;
 use App\Supports\Support;
+use App\V1\Models\CategoryModel;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Builder;
@@ -26,7 +27,7 @@ use Illuminate\Support\Str;
 
 class ProductService
 {
-    public $model;
+    public $model, $categoryModel;
 
     /**
      * The service instance
@@ -35,6 +36,7 @@ class ProductService
     public function __construct()
     {
         $this->model = new Product();
+        $this->categoryModel = new CategoryModel();
     }
 
     /**
@@ -119,6 +121,7 @@ class ProductService
                     ->toMediaCollection('thumb');
             }
             DB::commit();
+            $this->categoryModel->cacheCategoryHeader([]);
         } catch (\Exception $e) {
             DB::rollback();
             throw new \Exception($e->getMessage());
@@ -188,6 +191,7 @@ class ProductService
             $product->save();
             $product->refresh();
             DB::commit();
+            $this->categoryModel->cacheCategoryHeader([]);
         } catch (\Exception $e) {
             DB::rollback();
             throw new \Exception($e->getMessage());
@@ -275,6 +279,7 @@ class ProductService
             $this->syncProductVariantMain($product);
             $this->sync($product);
             DB::commit();
+            $this->categoryModel->cacheCategoryHeader([]);
         } catch (\Exception $e) {
             DB::rollback();
             throw new \Exception($e->getMessage());
@@ -291,7 +296,10 @@ class ProductService
     public function delete(Product $product)
     {
         HasImage::deleteImage($product->image);
-        return $product->delete();
+        $bool = $product->delete();
+
+        $this->categoryModel->cacheCategoryHeader([]);
+        return $bool;
     }
 
     /**
@@ -363,6 +371,8 @@ class ProductService
             $this->syncProductVariantMain($product);
             $this->sync($product);
             DB::commit();
+
+            $this->categoryModel->cacheCategoryHeader([]);
         } catch (\Exception $exception) {
             DB::rollBack();
             return response()->json(['message' => $exception->getMessage()]);
@@ -691,6 +701,7 @@ class ProductService
                 $productVariant->save();
             }
             DB::commit();
+            $this->categoryModel->cacheCategoryHeader([]);
         } catch (\Exception $e) {
             DB::rollback();
             throw new \Exception($e->getMessage());
@@ -831,6 +842,7 @@ class ProductService
 //                $productVariant->is_active = filter_var(Arr::get($data, 'is_active', $productVariant->is_active), FILTER_VALIDATE_BOOLEAN);
             $productVariant->save();
             DB::commit();
+            $this->categoryModel->cacheCategoryHeader([]);
         } catch (\Exception $e) {
             DB::rollback();
             throw new \Exception($e->getMessage());
@@ -883,6 +895,7 @@ class ProductService
 
             $productVariant->save();
             DB::commit();
+            $this->categoryModel->cacheCategoryHeader([]);
         } catch (\Exception $e) {
             DB::rollback();
             throw new \Exception($e->getMessage());

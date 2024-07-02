@@ -10,6 +10,7 @@ use App\V1\Resources\CategoryHeaderResource;
 use App\V1\Resources\CategoryResource;
 use App\V1\Resources\CategorySearchAllResource;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class CategoryModel extends AbstractModel
@@ -272,108 +273,180 @@ class CategoryModel extends AbstractModel
 
     public function getCategoryHeader($input)
     {
-        $limit = Arr::get($input, 'limit', 20);
-        $categories = Category::with([
-            'descendants'          => function ($query) use ($limit) {
-                $query->where('is_active', 1);
-            },
-            'descendants.products' => function ($query) use ($limit) {
-                $query->where('products.is_active', 1)
-                    ->whereHas('media', function ($query) {
-                        // Điều kiện cho hình ảnh
-                        $query->where('collection_name', 'default');
-                    })->whereHas('media', function ($query) {
-                        // Điều kiện cho hình thu nhỏ
-                        $query->where('collection_name', 'thumb');
-                    })->limit($limit);
-            },
-            'products'             => function ($query) use ($limit) {
-                $query->where('products.is_active', 1)
-                    ->whereHas('media', function ($query) {
-                        $query->where('collection_name', 'default');
-                    })->whereHas('media', function ($query) {
-                        $query->where('collection_name', 'thumb');
-                    })->limit($limit);
-            },
-        ])->where('is_active', 1)
-            ->where('show_header', 1)
-            ->orderBy('order')
-            ->get();
+        $cacheKey = 'category_dashboard_data';
+        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
+
+        // Kiểm tra xem dữ liệu có trong cache không
+        $categories = Cache::remember($cacheKey, $seconds, function () use ($input) {
+            $limit = Arr::get($input, 'limit', 20);
+            $categories = Category::with([
+                'descendants'          => function ($query) use ($limit) {
+                    $query->where('is_active', 1);
+                },
+                'descendants.products' => function ($query) use ($limit) {
+                    $query->where('products.is_active', 1)
+                        ->whereHas('media', function ($query) {
+                            // Điều kiện cho hình ảnh
+                            $query->where('collection_name', 'default');
+                        })->whereHas('media', function ($query) {
+                            // Điều kiện cho hình thu nhỏ
+                            $query->where('collection_name', 'thumb');
+                        })->limit($limit);
+                },
+                'products'             => function ($query) use ($limit) {
+                    $query->where('products.is_active', 1)
+                        ->whereHas('media', function ($query) {
+                            $query->where('collection_name', 'default');
+                        })->whereHas('media', function ($query) {
+                            $query->where('collection_name', 'thumb');
+                        })->limit($limit);
+                },
+            ])->where('is_active', 1)
+                ->where('show_header', 1)
+                ->orderBy('order')
+                ->get();
 
 // Đối với mỗi category, sẽ load thêm các products từ descendants
-        $categories->load([
-            'descendants.products' => function ($query) use ($limit) {
-                $query->where('is_active', 1)
-                    ->whereHas('media', function ($query) {
-                        $query->where('collection_name', 'default');
-                    })->whereHas('media', function ($query) {
-                        $query->where('collection_name', 'thumb');
-                    })->limit($limit);
-            }
-        ])->each(function ($category) use ($limit) {
-            // Kết hợp các sản phẩm từ chính category này và các descendants một cách hiệu quả
-            $allProducts = collect();
-            foreach ($category->descendants as $descendant) {
-                $allProducts = $allProducts->concat($descendant->products);
-            }
+            $categories->load([
+                'descendants.products' => function ($query) use ($limit) {
+                    $query->where('is_active', 1)
+                        ->whereHas('media', function ($query) {
+                            $query->where('collection_name', 'default');
+                        })->whereHas('media', function ($query) {
+                            $query->where('collection_name', 'thumb');
+                        })->limit($limit);
+                }
+            ])->each(function ($category) use ($limit) {
+                // Kết hợp các sản phẩm từ chính category này và các descendants một cách hiệu quả
+                $allProducts = collect();
+                foreach ($category->descendants as $descendant) {
+                    $allProducts = $allProducts->concat($descendant->products);
+                }
 
-            $category->setRelation('products', $category->products->concat($allProducts)->take($limit));
+                $category->setRelation('products', $category->products->concat($allProducts)->take($limit));
+            });
+
+            return CategoryHeaderResource::collection($categories);
         });
 
-        return CategoryHeaderResource::collection($categories);
+        return $categories;
+    }
+
+    public function cacheCategoryHeader($input)
+    {
+        $cacheKey = 'category_dashboard_data';
+        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
+
+            $limit = Arr::get($input, 'limit', 20);
+            $categories = Category::with([
+                'descendants'          => function ($query) use ($limit) {
+                    $query->where('is_active', 1);
+                },
+                'descendants.products' => function ($query) use ($limit) {
+                    $query->where('products.is_active', 1)
+                        ->whereHas('media', function ($query) {
+                            // Điều kiện cho hình ảnh
+                            $query->where('collection_name', 'default');
+                        })->whereHas('media', function ($query) {
+                            // Điều kiện cho hình thu nhỏ
+                            $query->where('collection_name', 'thumb');
+                        })->limit($limit);
+                },
+                'products'             => function ($query) use ($limit) {
+                    $query->where('products.is_active', 1)
+                        ->whereHas('media', function ($query) {
+                            $query->where('collection_name', 'default');
+                        })->whereHas('media', function ($query) {
+                            $query->where('collection_name', 'thumb');
+                        })->limit($limit);
+                },
+            ])->where('is_active', 1)
+                ->where('show_header', 1)
+                ->orderBy('order')
+                ->get();
+
+// Đối với mỗi category, sẽ load thêm các products từ descendants
+            $categories->load([
+                'descendants.products' => function ($query) use ($limit) {
+                    $query->where('is_active', 1)
+                        ->whereHas('media', function ($query) {
+                            $query->where('collection_name', 'default');
+                        })->whereHas('media', function ($query) {
+                            $query->where('collection_name', 'thumb');
+                        })->limit($limit);
+                }
+            ])->each(function ($category) use ($limit) {
+                // Kết hợp các sản phẩm từ chính category này và các descendants một cách hiệu quả
+                $allProducts = collect();
+                foreach ($category->descendants as $descendant) {
+                    $allProducts = $allProducts->concat($descendant->products);
+                }
+
+                $category->setRelation('products', $category->products->concat($allProducts)->take($limit));
+            });
+
+            Cache::put($cacheKey, CategoryHeaderResource::collection($categories), $seconds);
     }
 
     public function getCategoryDashboard($input)
     {
-        $limit = Arr::get($input, 'limit', 20);
-        $categories = Category::with([
-            'descendants'          => function ($query) {
-                $query->where('is_active', 1);
-            },
-            'descendants.products' => function ($query) use ($limit) {
-                $query->where('products.is_active', 1)
-                    ->whereHas('media', function ($query) {
-                        // Điều kiện cho hình ảnh
-                        $query->where('collection_name', 'default');
-                    })->whereHas('media', function ($query) {
-                        // Điều kiện cho hình thu nhỏ
-                        $query->where('collection_name', 'thumb');
-                    })->limit($limit);
-            },
-            'products'             => function ($query) use ($limit) {
-                $query->where('products.is_active', 1)
-                    ->whereHas('media', function ($query) {
-                        $query->where('collection_name', 'default');
-                    })->whereHas('media', function ($query) {
-                        $query->where('collection_name', 'thumb');
-                    })->limit($limit);
-            },
-        ])->where('is_active', 1)
-            ->where('show_dashboard', 1)
-            ->orderBy('name')
-            ->get();
+        $cacheKey = 'category_dashboard_data';
+        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
+
+        // Kiểm tra xem dữ liệu có trong cache không
+        $categories = Cache::remember($cacheKey, $seconds, function () use ($input) {
+            $limit = Arr::get($input, 'limit', 5);
+            $categories = Category::with([
+                'descendants'          => function ($query) {
+                    $query->where('is_active', 1);
+                },
+                'descendants.products' => function ($query) use ($limit) {
+                    $query->where('products.is_active', 1)
+                        ->whereHas('media', function ($query) {
+                            // Điều kiện cho hình ảnh
+                            $query->where('collection_name', 'default');
+                        })->whereHas('media', function ($query) {
+                            // Điều kiện cho hình thu nhỏ
+                            $query->where('collection_name', 'thumb');
+                        })->limit($limit);
+                },
+                'products'             => function ($query) use ($limit) {
+                    $query->where('products.is_active', 1)
+                        ->whereHas('media', function ($query) {
+                            $query->where('collection_name', 'default');
+                        })->whereHas('media', function ($query) {
+                            $query->where('collection_name', 'thumb');
+                        })->limit($limit);
+                },
+            ])->where('is_active', 1)
+                ->where('show_dashboard', 1)
+                ->orderBy('name')
+                ->get();
 
 // Đối với mỗi category, sẽ load thêm các products từ descendants
-        $categories->load([
-            'descendants.products' => function ($query) {
-                $query->where('is_active', 1)
-                    ->whereHas('media', function ($query) {
-                        $query->where('collection_name', 'default');
-                    })->whereHas('media', function ($query) {
-                        $query->where('collection_name', 'thumb');
-                    })->limit(20);
-            }
-        ])->each(function ($category) use ($limit) {
-            // Kết hợp các sản phẩm từ chính category này và các descendants một cách hiệu quả
-            $allProducts = collect();
-            foreach ($category->descendants as $descendant) {
-                $allProducts = $allProducts->concat($descendant->products);
-            }
+            $categories->load([
+                'descendants.products' => function ($query) {
+                    $query->where('is_active', 1)
+                        ->whereHas('media', function ($query) {
+                            $query->where('collection_name', 'default');
+                        })->whereHas('media', function ($query) {
+                            $query->where('collection_name', 'thumb');
+                        })->limit(20);
+                }
+            ])->each(function ($category) use ($limit) {
+                // Kết hợp các sản phẩm từ chính category này và các descendants một cách hiệu quả
+                $allProducts = collect();
+                foreach ($category->descendants as $descendant) {
+                    $allProducts = $allProducts->concat($descendant->products);
+                }
 
-            $category->setRelation('products', $category->products->concat($allProducts)->take($limit));
+                $category->setRelation('products', $category->products->concat($allProducts)->take($limit));
+            });
+
+            return CategoryHeaderResource::collection($categories);
         });
 
-        return CategoryHeaderResource::collection($categories);
+        return $categories;
     }
 
     public function search($input = [], $with = [], $limit = null)

@@ -4,14 +4,15 @@ namespace App\Services\Page;
 
 use App\Http\Resources\PageResource;
 use App\Models\Page;
+use App\V1\Models\PageGroupModel;
+use App\V1\Models\PageModel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 
 class PageService
 {
-    public $model;
-
+    public $model, $pageGroupModel, $pageModel;
     /**
      * The service instance
      * @var Page
@@ -19,6 +20,8 @@ class PageService
     public function __construct()
     {
         $this->model = new Page();
+        $this->pageGroupModel = new PageGroupModel();
+        $this->pageModel = new PageModel();
     }
 
     /**
@@ -79,6 +82,8 @@ class PageService
                 ->usingFileName($record->slug . '-' . time() . '.' . $data['image']->getClientOriginalExtension())
                 ->toMediaCollection();
         }
+        $this->pageGroupModel->cacheIndex();
+        $this->pageModel->cachePageHeader([]);
         if (!empty($record)) {
             return new PageResource($record);
         } else {
@@ -120,6 +125,8 @@ class PageService
                 ->toMediaCollection();
         }
         $page->save();
+        $this->pageGroupModel->cacheIndex();
+        $this->pageModel->cachePageHeader([]);
         return new PageResource($page);
     }
 
@@ -130,7 +137,10 @@ class PageService
      */
     public function delete(Page $page)
     {
-        return $page->delete();
+        $bool = $page->delete();
+        $this->pageGroupModel->cacheIndex();
+        $this->pageModel->cachePageHeader([]);
+        return $bool;
     }
 
     /**
