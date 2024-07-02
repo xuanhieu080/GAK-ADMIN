@@ -19,12 +19,7 @@ class CategorySearchAllResource extends JsonResource
      */
     public function toArray($request)
     {
-        $data = [
-            'id'         => $this->id,
-            'code'         => $this->code,
-            'name'         => $this->name,
-            'slug'         => $this->slug,
-        ];
+        $data = $this->resource->toArray();
         $data['image_url'] = $this->getFirstMediaUrl();
         $data['products'] = ProductVariantResource::collection($this->variants);
 

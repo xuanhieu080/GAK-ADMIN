@@ -191,7 +191,7 @@ class CategoryModel extends AbstractModel
                 'FCvTzECvyPxsRrJN',
             ]);
         }])
-            ->whereHas('variantMains')
+//            ->whereHas('variantMains')
             ->where('is_active', 1)
             ->whereIn('slug', [
                 'ao-phan-quang-thun-2-ben',
@@ -200,18 +200,18 @@ class CategoryModel extends AbstractModel
                 'ao-phan-quang-palize',
                 'dong-phuc-cong-nhan',
             ])
-            ->with('variantMains.media')
-            ->get()
-            ->map(function ($category) {
-                // Giữ chỉ 4 variantMains cho mỗi category.
-                $category->variants = $category->variants->filter(function ($variants) {
-                    return $variants->media->contains(function ($media) {
-                        return in_array($media->collection_name, ['thumb']);
-                    });
-                })->take(4);
-
-                return $category;
-            });
+//            ->with('variantMains.media')
+            ->get();
+//            ->map(function ($category) {
+//                // Giữ chỉ 4 variantMains cho mỗi category.
+//                $category->variants = $category->variants->filter(function ($variants) {
+//                    return $variants->media->contains(function ($media) {
+//                        return in_array($media->collection_name, ['thumb']);
+//                    });
+//                })->take(4);
+//
+//                return $category;
+//            });
 
 
         return CategorySearchAllResource::collection($categories);
