@@ -103,7 +103,6 @@ import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
 // Import styles
 import 'filepond/dist/filepond.min.css';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css';
-import QuillEditorWrapper from "@/views/components/QuillEditorWrapper.vue";
 import CkEditorCustom from "@/views/components/CkEditorCustom.vue";
 
 

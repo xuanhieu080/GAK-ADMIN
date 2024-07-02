@@ -3,13 +3,7 @@
     <Form id="create-review" @submit.prevent="onSubmit">
       <div class="p-6 space-y-6">
         <div class="mb-4">
-          <QuillEditorWrapper
-              v-model:content="form.highlight"
-              :toolbar="'full'"
-              contentType="html"
-              :placeholder="trans('labels.description')"
-              :required="true"
-          />
+          <CkEditorCustom :content="form.highlight" @updateData="(value) => updateData(value)" />
           <span v-if="alertStore.errors['highlight']" class="text-xs tracking-wide text-red-600">{{
               alertStore.errors['highlight'][0]
             }}</span>
@@ -86,8 +80,8 @@ import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
 // Import styles
 import 'filepond/dist/filepond.min.css';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css';
-import QuillEditorWrapper from "@/views/components/QuillEditorWrapper.vue";
 import Toggle from "@/views/components/input/Toggle.vue";
+import CkEditorCustom from "@/views/components/CkEditorCustom.vue";
 
 // Create FilePond component
 const FilePond = vueFilePond(FilePondPluginFileValidateType, FilePondPluginImagePreview, FilePondPluginFileValidateSize);
@@ -162,6 +156,9 @@ function removeImage() {
   image.value = null;
 }
 
+function updateData(value) {
+  form.highlight = value
+}
 
 onBeforeMount(() => {
   service.edit(props.id).then((response) => {

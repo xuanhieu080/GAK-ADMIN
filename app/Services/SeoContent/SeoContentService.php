@@ -87,7 +87,7 @@ class SeoContentService
     {
         $data = $this->clean($data);
         $seoContent->link = Arr::get($data, 'link', $seoContent->link);
-        $seoContent->description = Arr::get($data, 'content', $seoContent->description);
+        $seoContent->description = Arr::get($data, 'description', $seoContent->description);
         $seoContent->is_active = filter_var(Arr::get($data, 'is_active', $seoContent->is_active), FILTER_VALIDATE_BOOLEAN);
         $seoContent->user_id = \Auth::id();
         $seoContent->save();

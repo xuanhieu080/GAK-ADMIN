@@ -6,13 +6,7 @@
         <TextInput class="mb-4" type="url" :required="true" error-input="link" name="link" v-model="form.link"
                    label="Đường dẫn"/>
         <div class="mb-4">
-          <QuillEditorWrapper
-              v-model:content="form.description"
-              :toolbar="'full'"
-              contentType="html"
-              :placeholder="trans('labels.description')"
-              :required="true"
-          />
+          <CkEditorCustom :content="form.description" @updateData="(value) => updateData(value)" />
           <span v-if="alertStore.errors['description']" class="text-xs tracking-wide text-red-600">{{
               alertStore.errors['description'][0]
             }}</span>
@@ -46,7 +40,6 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import {useAlertStore} from "@/stores";
 
 // Import styles
-import QuillEditorWrapper from "@/views/components/QuillEditorWrapper.vue";
 
 const alertStore = useAlertStore();
 const route = useRoute();
@@ -124,6 +117,10 @@ function onSubmit() {
     }
   });
   return false;
+}
+
+function updateData(value) {
+  form.description = value
 }
 </script>
 
