@@ -5,7 +5,7 @@ import '@/ckeditor.css';
 import {
   ClassicEditor,
   ImageCaptionEditing,
-    ImageCaptionUI,
+  ImageCaptionUI,
   AccessibilityHelp,
   Alignment,
   Autoformat,
@@ -166,8 +166,8 @@ const editorConfig = {
     HtmlComment,
     HtmlEmbed,
     ImageBlock,
-    // ImageCaption,
-    // ImageCaptionUI,
+    ImageCaption,
+    ImageCaptionUI,
     ImageInline,
     ImageInsert,
     ImageInsertViaUrl,
@@ -206,7 +206,7 @@ const editorConfig = {
     Subscript,
     Superscript,
     Table,
-    // TableCaption,
+    TableCaption,
     TableCellProperties,
     TableColumnResize,
     TableProperties,
@@ -216,7 +216,7 @@ const editorConfig = {
     TodoList,
     Underline,
     Undo,
-    // ImageCaptionEditing
+    ImageCaptionEditing
   ],
   balloonToolbar: ['bold', 'italic', '|', 'link', 'insertImage', '|', 'bulletedList', 'numberedList'],
   fontFamily: {
@@ -283,6 +283,7 @@ const editorConfig = {
   },
   image: {
     toolbar: [
+      'toggleImageCaption',
       'imageTextAlternative',
       '|',
       'imageStyle:inline',
@@ -296,7 +297,7 @@ const editorConfig = {
     insert: {
       // This is the default configuration, you do not need to provide
       // this configuration key if the list content and order reflects your needs.
-      integrations: [ 'upload', 'assetManager', 'url' ]
+      integrations: ['upload', 'assetManager', 'url']
     }
   },
   initialData:
