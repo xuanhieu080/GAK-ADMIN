@@ -30,6 +30,27 @@ class ProductController extends Controller
 
         return $this->model->index($input);
     }
+    public function hot(Request $request)
+    {
+//        $this->authorize('list', Company::class);
+        $input = $request->all();
+
+        return $this->model->hot($input);
+    }
+    public function upcoming(Request $request)
+    {
+//        $this->authorize('list', Company::class);
+        $input = $request->all();
+
+        return $this->model->upcoming($input);
+    }
+    public function uniform(Request $request)
+    {
+//        $this->authorize('list', Company::class);
+        $input = $request->all();
+
+        return $this->model->uniform($input);
+    }
 
     public function show($slug)
     {

@@ -43,6 +43,9 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('/wards/{ward}', [\App\V1\Controllers\WardController::class, 'show']);
     Route::get('/products', [\App\V1\Controllers\ProductController::class, 'index']);
 
+    Route::get('/product-hots', [\App\V1\Controllers\ProductController::class, 'hot']);
+    Route::get('/product-upcoming', [\App\V1\Controllers\ProductController::class, 'upcoming']);
+    Route::get('/product-uniforms', [\App\V1\Controllers\ProductController::class, 'uniform']);
     Route::get('/products/{slug}/reviews', [\App\V1\Controllers\ProductController::class, 'getReview']);
     Route::get('/products/{slug}', [\App\V1\Controllers\ProductController::class, 'show']);
     Route::get('/attributes', [\App\V1\Controllers\AttributeController::class, 'index']);
@@ -52,7 +55,11 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('/variants/{variant}', [\App\V1\Controllers\VariantController::class, 'show']);
     Route::get('/attribute-groups', [\App\V1\Controllers\AttributeGroupController::class, 'index']);
     Route::get('/attribute-groups/{attribute_groups}', [\App\V1\Controllers\AttributeGroupController::class, 'show']);
+
     Route::get('/posts', [\App\V1\Controllers\PostController::class, 'index']);
+    Route::get('/post-news', [\App\V1\Controllers\PostController::class, 'new']);
+    Route::get('/post-hots', [\App\V1\Controllers\PostController::class, 'hot']);
+
     Route::get('/posts/{slug}', [\App\V1\Controllers\PostController::class, 'show']);
     Route::get('/post-groups', [\App\V1\Controllers\PostGroupController::class, 'index']);
     Route::get('/post-groups/{slug}', [\App\V1\Controllers\PostGroupController::class, 'show']);

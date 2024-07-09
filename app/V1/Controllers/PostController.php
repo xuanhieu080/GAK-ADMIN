@@ -30,6 +30,20 @@ class PostController extends Controller
 
         return $this->model->index($input);
     }
+    public function hot(Request $request)
+    {
+//        $this->authorize('list', Company::class);
+        $input = $request->all();
+
+        return $this->model->hot($input);
+    }
+    public function new(Request $request)
+    {
+//        $this->authorize('list', Company::class);
+        $input = $request->all();
+
+        return $this->model->new($input);
+    }
 
     public function show($slug)
     {

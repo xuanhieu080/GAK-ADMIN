@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Services\Media\MediaService;
 use App\Supports\HasImage;
 use App\Supports\Support;
+use App\V1\Models\PostModel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
@@ -14,7 +15,7 @@ use Illuminate\Support\Str;
 
 class PostService
 {
-    public $model;
+    public $model, $postModel;
 
     /**
      * The service instance
@@ -23,6 +24,7 @@ class PostService
     public function __construct()
     {
         $this->model = new Post();
+        $this->postModel = new PostModel();
     }
 
     /**
@@ -83,6 +85,8 @@ class PostService
                 ->toMediaCollection();
         }
         if (!empty($record)) {
+            $this->postModel->cachePostNew(['is_new' => 1]);
+            $this->postModel->cachePostHot(['is_hot' => 1]);
             return new PostResource($record);
         } else {
             return null;
@@ -124,6 +128,8 @@ class PostService
                 ->toMediaCollection();
         }
         $post->refresh();
+        $this->postModel->cachePostNew(['is_new' => 1]);
+        $this->postModel->cachePostHot(['is_hot' => 1]);
         return new PostResource($post);
     }
 
@@ -135,7 +141,10 @@ class PostService
     public function delete(Post $post)
     {
         HasImage::deleteImage($post->image);
-        return $post->delete();
+        $bool = $post->delete();
+        $this->postModel->cachePostNew(['is_new' => 1]);
+        $this->postModel->cachePostHot(['is_hot' => 1]);
+        return $bool;
     }
 
     /**

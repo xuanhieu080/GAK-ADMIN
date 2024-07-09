@@ -7,13 +7,15 @@ use App\Models\AttributeGroup;
 use App\Services\Media\MediaService;
 use App\Supports\HasImage;
 use App\Supports\Support;
+use App\V1\Models\CategoryModel;
+use App\V1\Models\ProductModel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 
 class AttributeGroupService
 {
-    public $model;
+    public $model, $categoryModel, $productModel;
 
     /**
      * The service instance
@@ -22,6 +24,8 @@ class AttributeGroupService
     public function __construct()
     {
         $this->model = new AttributeGroup();
+        $this->categoryModel = new CategoryModel();
+        $this->productModel = new ProductModel();
     }
 
     /**
@@ -97,6 +101,10 @@ class AttributeGroupService
 
         $attributeGroup->save();
         $attributeGroup->refresh();
+        $this->categoryModel->cacheCategoryHeader([]);
+        $this->productModel->cacheProductHot(['is_hot' => 1,'limit'  => 20]);
+        $this->productModel->cacheProductUpcoming(['is_upcoming' => 1,'limit'  => 20]);
+        $this->productModel->cacheProductUniform(['is_uniform' => 1,'limit'  => 20]);
         return new AttributeGroupResource($attributeGroup);
     }
 
@@ -107,7 +115,12 @@ class AttributeGroupService
      */
     public function delete(AttributeGroup $attributeGroup)
     {
-        return $attributeGroup->delete();
+        $bool = $attributeGroup->delete();
+        $this->categoryModel->cacheCategoryHeader([]);
+        $this->productModel->cacheProductHot(['is_hot' => 1,'limit'  => 20]);
+        $this->productModel->cacheProductUpcoming(['is_upcoming' => 1,'limit'  => 20]);
+        $this->productModel->cacheProductUniform(['is_uniform' => 1,'limit'  => 20]);
+        return $bool;
     }
 
     /**
