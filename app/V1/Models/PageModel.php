@@ -55,11 +55,25 @@ class PageModel extends AbstractModel
 
     public function getPageHeader($input)
     {
-        $cacheKey = 'page_header_data';
-        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
+        $page = Arr::get($input, 'page', 1);
+        if ($page == 1) {
+            $cacheKey = 'page_header_data';
+            $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
 
-        // Kiểm tra xem dữ liệu có trong cache không
-        $pages = Cache::remember($cacheKey, $seconds, function () use ($input) {
+            // Kiểm tra xem dữ liệu có trong cache không
+            $pages = Cache::remember($cacheKey, $seconds, function () use ($input) {
+                $limit = Arr::get($input, 'limit', 999);
+
+                $input['sort'] = ['id' => 'desc'];
+                $input['is_active'] = 1;
+                $input['show_header'] = 1;
+                $result = $this->search($input, [], $limit);
+
+                return PageResource::collection($result);
+            });
+
+            return $pages;
+        } else {
             $limit = Arr::get($input, 'limit', 999);
 
             $input['sort'] = ['id' => 'desc'];
@@ -68,9 +82,7 @@ class PageModel extends AbstractModel
             $result = $this->search($input, [], $limit);
 
             return PageResource::collection($result);
-        });
-
-        return $pages;
+        }
     }
 
     public function cachePageHeader($input)

@@ -22,11 +22,27 @@ class PageGroupModel extends AbstractModel
 
     public function index($input)
     {
-        $cacheKey = 'page_group_data';
-        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
+        $page = Arr::get($input, 'page', 1);
+        if ($page == 1) {
+            $cacheKey = 'page_group_data';
+            $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
 
-        // Kiểm tra xem dữ liệu có trong cache không
-        $pages = Cache::remember($cacheKey, $seconds, function () use ($input) {
+            // Kiểm tra xem dữ liệu có trong cache không
+            $pages = Cache::remember($cacheKey, $seconds, function () use ($input) {
+                $pages = PageGroup::with(['details' => function ($query) {
+                    $query->where('pages.is_active', 1);
+                }])->whereHas('details', function ($query) {
+                    $query->selectRaw('name,title,slug')
+                        ->where('pages.is_active', 1);
+                })->where('page_groups.is_active', 1)
+                    ->get()
+                    ->groupBy('column');
+
+                return PageGroupResource::collection($pages);
+            });
+
+            return $pages;
+        } else {
             $pages = PageGroup::with(['details' => function ($query) {
                 $query->where('pages.is_active', 1);
             }])->whereHas('details', function ($query) {
@@ -37,9 +53,7 @@ class PageGroupModel extends AbstractModel
                 ->groupBy('column');
 
             return PageGroupResource::collection($pages);
-        });
-
-        return $pages;
+        }
     }
 
 

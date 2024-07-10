@@ -47,11 +47,38 @@ class PostModel extends AbstractModel
 
     public function hot($input)
     {
-        $cacheKey = 'post_hot_data';
-        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
+        $page = Arr::get($input, 'page', 1);
+        if ($page == 1) {
+            $cacheKey = 'post_hot_data';
+            $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
 
-        // Kiểm tra xem dữ liệu có trong cache không
-        $posts = Cache::remember($cacheKey, $seconds, function () use ($input) {
+            // Kiểm tra xem dữ liệu có trong cache không
+            $posts = Cache::remember($cacheKey, $seconds, function () use ($input) {
+                $limit = Arr::get($input, 'limit', 10);
+                $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
+                $sorts = ['id' => 'desc'];
+                if (!empty($sort['desc']) && is_array($sort['desc'])) {
+                    $sorts = array_merge($sorts, array_fill_keys($sort['desc'], 'desc'));
+                } elseif (!empty($sort['asc']) && is_array($sort['asc'])) {
+                    $sorts = array_merge($sorts, array_fill_keys($sort['asc'], 'asc'));
+                }
+
+                if (isset($input['is_hot'])) {
+                    $input['is_hot'] = filter_var($input['is_hot'], FILTER_VALIDATE_BOOLEAN);
+                }
+
+                if (isset($input['is_new'])) {
+                    $input['is_new'] = filter_var($input['is_new'], FILTER_VALIDATE_BOOLEAN);
+                }
+
+                $input['sort'] = $sorts;
+                $result = $this->search($input, [], $limit);
+
+                return PostResource::collection($result);
+            });
+
+            return $posts;
+        } else {
             $limit = Arr::get($input, 'limit', 10);
             $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
             $sorts = ['id' => 'desc'];
@@ -73,9 +100,7 @@ class PostModel extends AbstractModel
             $result = $this->search($input, [], $limit);
 
             return PostResource::collection($result);
-        });
-
-        return $posts;
+        }
     }
     public function cachePostHot($input)
     {
@@ -106,11 +131,38 @@ class PostModel extends AbstractModel
 
     public function new($input)
     {
-        $cacheKey = 'post_new_data';
-        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
+        $page = Arr::get($input, 'page', 1);
+        if ($page == 1) {
+            $cacheKey = 'post_new_data';
+            $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
 
-        // Kiểm tra xem dữ liệu có trong cache không
-        $posts = Cache::remember($cacheKey, $seconds, function () use ($input) {
+            // Kiểm tra xem dữ liệu có trong cache không
+            $posts = Cache::remember($cacheKey, $seconds, function () use ($input) {
+                $limit = Arr::get($input, 'limit', 10);
+                $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
+                $sorts = ['id' => 'desc'];
+                if (!empty($sort['desc']) && is_array($sort['desc'])) {
+                    $sorts = array_merge($sorts, array_fill_keys($sort['desc'], 'desc'));
+                } elseif (!empty($sort['asc']) && is_array($sort['asc'])) {
+                    $sorts = array_merge($sorts, array_fill_keys($sort['asc'], 'asc'));
+                }
+
+                if (isset($input['is_hot'])) {
+                    $input['is_hot'] = filter_var($input['is_hot'], FILTER_VALIDATE_BOOLEAN);
+                }
+
+                if (isset($input['is_new'])) {
+                    $input['is_new'] = filter_var($input['is_new'], FILTER_VALIDATE_BOOLEAN);
+                }
+
+                $input['sort'] = $sorts;
+                $result = $this->search($input, [], $limit);
+
+                return PostResource::collection($result);
+            });
+
+            return $posts;
+        } else {
             $limit = Arr::get($input, 'limit', 10);
             $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
             $sorts = ['id' => 'desc'];
@@ -132,9 +184,7 @@ class PostModel extends AbstractModel
             $result = $this->search($input, [], $limit);
 
             return PostResource::collection($result);
-        });
-
-        return $posts;
+        }
     }
     public function cachePostNew($input)
     {
