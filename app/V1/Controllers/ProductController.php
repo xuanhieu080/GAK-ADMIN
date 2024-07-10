@@ -40,9 +40,9 @@ class ProductController extends Controller
     public function new(Request $request)
     {
 //        $this->authorize('list', Company::class);
-        $input = $request->new();
+        $input = $request->all();
 
-        return $this->model->hot($input);
+        return $this->model->new($input);
     }
     public function upcoming(Request $request)
     {
