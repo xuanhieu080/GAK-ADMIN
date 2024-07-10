@@ -44,6 +44,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('/products', [\App\V1\Controllers\ProductController::class, 'index']);
 
     Route::get('/product-hots', [\App\V1\Controllers\ProductController::class, 'hot']);
+    Route::get('/product-news', [\App\V1\Controllers\ProductController::class, 'new']);
     Route::get('/product-upcoming', [\App\V1\Controllers\ProductController::class, 'upcoming']);
     Route::get('/product-uniforms', [\App\V1\Controllers\ProductController::class, 'uniform']);
     Route::get('/products/{slug}/reviews', [\App\V1\Controllers\ProductController::class, 'getReview']);

@@ -103,7 +103,8 @@ class AttributeGroupService
         $attributeGroup->refresh();
         $this->categoryModel->cacheCategoryHeader([]);
         $this->productModel->cacheProductHot(['is_hot' => 1,'limit'  => 20]);
-        $this->productModel->cacheProductUpcoming(['is_upcoming' => 1,'limit'  => 20]);
+        $this->productModel->cacheProductNew(['is_new' => 1,'limit'  => 20]);
+        $this->productModel->cacheProductUpcoming(['is_upcoming' => 1,'limit'  => 4]);
         $this->productModel->cacheProductUniform(['is_uniform' => 1,'limit'  => 20]);
         return new AttributeGroupResource($attributeGroup);
     }
@@ -118,7 +119,8 @@ class AttributeGroupService
         $bool = $attributeGroup->delete();
         $this->categoryModel->cacheCategoryHeader([]);
         $this->productModel->cacheProductHot(['is_hot' => 1,'limit'  => 20]);
-        $this->productModel->cacheProductUpcoming(['is_upcoming' => 1,'limit'  => 20]);
+        $this->productModel->cacheProductNew(['is_new' => 1,'limit'  => 20]);
+        $this->productModel->cacheProductUpcoming(['is_upcoming' => 1,'limit'  => 4]);
         $this->productModel->cacheProductUniform(['is_uniform' => 1,'limit'  => 20]);
         return $bool;
     }

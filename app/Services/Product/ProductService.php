@@ -125,7 +125,8 @@ class ProductService
             DB::commit();
             $this->categoryModel->cacheCategoryHeader([]);
             $this->productModel->cacheProductHot(['is_hot' => 1,'limit'  => 20]);
-            $this->productModel->cacheProductUpcoming(['is_upcoming' => 1,'limit'  => 20]);
+            $this->productModel->cacheProductNew(['is_new' => 1,'limit'  => 20]);
+            $this->productModel->cacheProductUpcoming(['is_upcoming' => 1,'limit'  => 4]);
             $this->productModel->cacheProductUniform(['is_uniform' => 1,'limit'  => 20]);
         } catch (\Exception $e) {
             DB::rollback();
@@ -198,8 +199,9 @@ class ProductService
             DB::commit();
 
             $this->productModel->cacheProductHot(['is_hot' => 1,'limit'  => 20]);
+            $this->productModel->cacheProductNew(['is_new' => 1,'limit'  => 20]);
             $this->categoryModel->cacheCategoryHeader([]);
-            $this->productModel->cacheProductUpcoming(['is_upcoming' => 1,'limit'  => 20]);
+            $this->productModel->cacheProductUpcoming(['is_upcoming' => 1,'limit'  => 4]);
             $this->productModel->cacheProductUniform(['is_uniform' => 1,'limit'  => 20]);
         } catch (\Exception $e) {
             DB::rollback();
@@ -290,7 +292,8 @@ class ProductService
             DB::commit();
             $this->categoryModel->cacheCategoryHeader([]);
             $this->productModel->cacheProductHot(['is_hot' => 1,'limit'  => 20]);
-            $this->productModel->cacheProductUpcoming(['is_upcoming' => 1,'limit'  => 20]);
+            $this->productModel->cacheProductNew(['is_new' => 1,'limit'  => 20]);
+            $this->productModel->cacheProductUpcoming(['is_upcoming' => 1,'limit'  => 4]);
             $this->productModel->cacheProductUniform(['is_uniform' => 1,'limit'  => 20]);
         } catch (\Exception $e) {
             DB::rollback();
@@ -312,7 +315,8 @@ class ProductService
 
         $this->categoryModel->cacheCategoryHeader([]);
         $this->productModel->cacheProductHot(['is_hot' => 1,'limit'  => 20]);
-        $this->productModel->cacheProductUpcoming(['is_upcoming' => 1,'limit'  => 20]);
+        $this->productModel->cacheProductNew(['is_new' => 1,'limit'  => 20]);
+        $this->productModel->cacheProductUpcoming(['is_upcoming' => 1,'limit'  => 4]);
         $this->productModel->cacheProductUniform(['is_uniform' => 1,'limit'  => 20]);
         return $bool;
     }
@@ -389,7 +393,8 @@ class ProductService
 
             $this->categoryModel->cacheCategoryHeader([]);
             $this->productModel->cacheProductHot(['is_hot' => 1,'limit'  => 20]);
-            $this->productModel->cacheProductUpcoming(['is_upcoming' => 1,'limit'  => 20]);
+            $this->productModel->cacheProductNew(['is_new' => 1,'limit'  => 20]);
+            $this->productModel->cacheProductUpcoming(['is_upcoming' => 1,'limit'  => 4]);
             $this->productModel->cacheProductUniform(['is_uniform' => 1,'limit'  => 20]);
         } catch (\Exception $exception) {
             DB::rollBack();
@@ -721,7 +726,8 @@ class ProductService
             DB::commit();
             $this->categoryModel->cacheCategoryHeader([]);
             $this->productModel->cacheProductHot(['is_hot' => 1,'limit'  => 20]);
-            $this->productModel->cacheProductUpcoming(['is_upcoming' => 1,'limit'  => 20]);
+            $this->productModel->cacheProductNew(['is_new' => 1,'limit'  => 20]);
+            $this->productModel->cacheProductUpcoming(['is_upcoming' => 1,'limit'  => 4]);
             $this->productModel->cacheProductUniform(['is_uniform' => 1,'limit'  => 20]);
         } catch (\Exception $e) {
             DB::rollback();
@@ -865,7 +871,8 @@ class ProductService
             DB::commit();
             $this->categoryModel->cacheCategoryHeader([]);
             $this->productModel->cacheProductHot(['is_hot' => 1,'limit'  => 20]);
-            $this->productModel->cacheProductUpcoming(['is_upcoming' => 1,'limit'  => 20]);
+            $this->productModel->cacheProductNew(['is_new' => 1,'limit'  => 20]);
+            $this->productModel->cacheProductUpcoming(['is_upcoming' => 1,'limit'  => 4]);
             $this->productModel->cacheProductUniform(['is_uniform' => 1,'limit'  => 20]);
         } catch (\Exception $e) {
             DB::rollback();
@@ -921,7 +928,8 @@ class ProductService
             DB::commit();
             $this->categoryModel->cacheCategoryHeader([]);
             $this->productModel->cacheProductHot(['is_hot' => 1,'limit'  => 20]);
-            $this->productModel->cacheProductUpcoming(['is_upcoming' => 1,'limit'  => 20]);
+            $this->productModel->cacheProductNew(['is_new' => 1,'limit'  => 20]);
+            $this->productModel->cacheProductUpcoming(['is_upcoming' => 1,'limit'  => 4]);
             $this->productModel->cacheProductUniform(['is_uniform' => 1,'limit'  => 20]);
             $this->productModel->cacheProductUniform(['is_uniform' => 1,'limit'  => 20]);
         } catch (\Exception $e) {

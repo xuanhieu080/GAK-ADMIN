@@ -142,6 +142,97 @@ class ProductModel extends AbstractModel
         Cache::put($cacheKey, ProductResource::collection($result), $seconds);
     }
 
+    public function new($input)
+    {
+        $page = Arr::get($input, 'page', 1);
+        if ($page == 1) {
+            $cacheKey = 'product_new_data';
+            $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
+
+            // Kiểm tra xem dữ liệu có trong cache không
+            $products = Cache::remember($cacheKey, $seconds, function () use ($input) {
+                $limit = Arr::get($input, 'limit', 999);
+                $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
+                $input['is_active'] = 1;
+                $sorts = ['id' => 'desc'];
+                if (!empty($sort['desc']) && is_array($sort['desc'])) {
+                    $sorts = array_merge($sorts, array_fill_keys($sort['desc'], 'desc'));
+                } elseif (!empty($sort['asc']) && is_array($sort['asc'])) {
+                    $sorts = array_merge($sorts, array_fill_keys($sort['asc'], 'asc'));
+                }
+
+                $input['sort'] = $sorts;
+                if (!empty($input['search'])) {
+                    $input['name'] = ['like' => $input['search']];
+                }
+                $result = $this->search($input,
+                    [
+                        'attributeVariants',
+                        //                'variants' => function ($query) {
+                        //                    $query->where('qty', '>', 0);
+                        //                }
+                    ], $limit);
+
+                return ProductResource::collection($result);
+            });
+
+            return $products;
+        } else {
+            $limit = Arr::get($input, 'limit', 999);
+            $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
+            $input['is_active'] = 1;
+            $sorts = ['id' => 'desc'];
+            if (!empty($sort['desc']) && is_array($sort['desc'])) {
+                $sorts = array_merge($sorts, array_fill_keys($sort['desc'], 'desc'));
+            } elseif (!empty($sort['asc']) && is_array($sort['asc'])) {
+                $sorts = array_merge($sorts, array_fill_keys($sort['asc'], 'asc'));
+            }
+
+            $input['sort'] = $sorts;
+            if (!empty($input['search'])) {
+                $input['name'] = ['like' => $input['search']];
+            }
+            $result = $this->search($input,
+                [
+                    'attributeVariants',
+                    //                'variants' => function ($query) {
+                    //                    $query->where('qty', '>', 0);
+                    //                }
+                ], $limit);
+
+            return ProductResource::collection($result);
+        }
+    }
+
+    public function cacheProductNew($input)
+    {
+        $cacheKey = 'product_new_data';
+        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
+        $limit = Arr::get($input, 'limit', 999);
+        $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
+        $input['is_active'] = 1;
+        $sorts = ['id' => 'desc'];
+        if (!empty($sort['desc']) && is_array($sort['desc'])) {
+            $sorts = array_merge($sorts, array_fill_keys($sort['desc'], 'desc'));
+        } elseif (!empty($sort['asc']) && is_array($sort['asc'])) {
+            $sorts = array_merge($sorts, array_fill_keys($sort['asc'], 'asc'));
+        }
+
+        $input['sort'] = $sorts;
+        if (!empty($input['search'])) {
+            $input['name'] = ['like' => $input['search']];
+        }
+        $result = $this->search($input,
+            [
+                'attributeVariants',
+                //                'variants' => function ($query) {
+                //                    $query->where('qty', '>', 0);
+                //                }
+            ], $limit);
+
+        Cache::put($cacheKey, ProductResource::collection($result), $seconds);
+    }
+
     public function upcoming($input)
     {
         $page = Arr::get($input, 'page', 1);
