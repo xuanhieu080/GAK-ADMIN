@@ -494,7 +494,5 @@ class GenerateSitemap extends Command
                 ->setPriority($priority));
         }
         $sitemap->writeToFile($path);
-
-        Log::info('chạy sitemap');
     }
 }
