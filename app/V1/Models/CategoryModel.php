@@ -166,7 +166,7 @@ class CategoryModel extends AbstractModel
     {
         $categories = Category::with(['variants' => function ($query) {
             $query->whereIn('product_variants.code', [
-                'wxV4jXU3UPTlgZAw',
+                'F56YtbAEmYc7Wkp2',
                 'iWpp9vK4V6EQAh2T',
                 'AFL0P0UrtxOMQSRN',
                 'OUtwzd8iobpOZq93',
