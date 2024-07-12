@@ -237,7 +237,7 @@ class GenerateSitemap extends Command
         $this->generateSitemap($data, "/home/DEV-GAK-UI/public/vi/static-pages.xml", 0.8);
 //        $this->generateSitemap($data, "/home/DEV-GAK-UI/public/en/static-pages.xml", 0.8);
         $this->urls[] = "vi/static-pages.xml";
-        $this->urls[] = "en/static-pages.xml";
+//        $this->urls[] = "en/static-pages.xml";
 
         $this->product();
         $this->catrgory();

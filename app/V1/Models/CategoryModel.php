@@ -196,8 +196,8 @@ class CategoryModel extends AbstractModel
             ->where('is_active', 1)
             ->whereIn('slug', [
                 'ao-phan-quang-thun-2-ben',
-                'ao-phang-quang-ha-noi',
-                'ao-phang-quang-kieu-3m',
+                'ao-phan-quang-ha-noi',
+                'ao-phan-quang-kieu-3m',
                 'ao-phan-quang-palize',
                 'dong-phuc-cong-nhan',
             ])
@@ -241,8 +241,8 @@ class CategoryModel extends AbstractModel
         ])->where('categories.is_active', 1)
             ->whereIn('categories.slug', [
                 'ao-phan-quang-thun-2-ben',
-                'ao-phang-quang-ha-noi',
-                'ao-phang-quang-kieu-3m',
+                'ao-phan-quang-ha-noi',
+                'ao-phan-quang-kieu-3m',
                 'ao-phan-quang-palize',
                 'dong-phuc-cong-nhan',
             ])
