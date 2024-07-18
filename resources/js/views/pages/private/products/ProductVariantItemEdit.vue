@@ -1,6 +1,6 @@
 <template>
   <div id="edit-product">
-    <h3 class="mb-4">Biến thể - {{index}}</h3>
+    <h3 class="mb-4">Biến thể - {{index}}     --------- Mã: {{props.item.code}}</h3>
     <Form>
       <TextInput class="mb-4" type="text" :required="true" :error-input="'details.' + index + '.name'" :name="'name-' + index" v-model="form.name"
                  label="Tên biến thể"/>
