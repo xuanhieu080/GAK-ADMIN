@@ -35,6 +35,7 @@ class Post extends Model implements HasMedia
         'is_hot',
         'is_new',
         'view',
+        'created_at'
     ];
 
     protected $searchFields = ['title', 'slug'];
