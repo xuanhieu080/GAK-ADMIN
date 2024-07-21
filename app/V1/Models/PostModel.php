@@ -3,6 +3,7 @@
 namespace App\V1\Models;
 
 use App\Models\Post;
+use App\Supports\Support;
 use App\V1\Resources\PostResource;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
@@ -104,8 +105,8 @@ class PostModel extends AbstractModel
     }
     public function cachePostHot($input)
     {
-        $cacheKey = 'post_hot_data';
-        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
+//        $cacheKey = 'post_hot_data';
+//        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
         $limit = Arr::get($input, 'limit', 10);
         $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
         $sorts = ['id' => 'desc'];
@@ -126,7 +127,8 @@ class PostModel extends AbstractModel
         $input['sort'] = $sorts;
         $result = $this->search($input, [], $limit);
 
-        Cache::put($cacheKey, PostResource::collection($result), $seconds);
+        Support::writeJsonFile('/home/DEV-GAK-UI/api/post_hot.json',  PostResource::collection($result));
+//        Cache::put($cacheKey, PostResource::collection($result), $seconds);
     }
 
     public function new($input)
@@ -188,8 +190,8 @@ class PostModel extends AbstractModel
     }
     public function cachePostNew($input)
     {
-        $cacheKey = 'post_new_data';
-        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
+//        $cacheKey = 'post_new_data';
+//        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
         $limit = Arr::get($input, 'limit', 10);
         $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
         $sorts = ['id' => 'desc'];
@@ -210,7 +212,9 @@ class PostModel extends AbstractModel
         $input['sort'] = $sorts;
         $result = $this->search($input, [], $limit);
 
-        Cache::put($cacheKey, PostResource::collection($result), $seconds);
+        Support::writeJsonFile('/home/DEV-GAK-UI/api/post_new.json',  PostResource::collection($result));
+
+//        Cache::put($cacheKey, PostResource::collection($result), $seconds);
     }
 
     public function search($input = [], $with = [], $limit = null)

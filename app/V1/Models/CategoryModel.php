@@ -5,6 +5,7 @@ namespace App\V1\Models;
 use App\Models\AttributeGroup;
 use App\Models\Category;
 use App\Models\Variant;
+use App\Supports\Support;
 use App\V1\Resources\CategoryDetailResource;
 use App\V1\Resources\CategoryHeaderResource;
 use App\V1\Resources\CategoryResource;
@@ -387,8 +388,8 @@ class CategoryModel extends AbstractModel
 
     public function cacheCategoryHeader($input)
     {
-        $cacheKey = 'category_dashboard_data';
-        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
+//        $cacheKey = 'category_dashboard_data';
+//        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
 
         $limit = Arr::get($input, 'limit', 20);
         $categories = Category::with([
@@ -438,7 +439,8 @@ class CategoryModel extends AbstractModel
             $category->setRelation('products', $category->products->concat($allProducts)->take($limit));
         });
 
-        Cache::put($cacheKey, CategoryHeaderResource::collection($categories), $seconds);
+        Support::writeJsonFile('/home/DEV-GAK-UI/api/category_header.json', CategoryHeaderResource::collection($categories));
+//        Cache::put($cacheKey, CategoryHeaderResource::collection($categories), $seconds);
     }
 
     public function getCategoryDashboard($input)
