@@ -5,7 +5,6 @@ namespace App\Supports;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-
 class Support
 {
     public static final function genCode($table, $column, $length = 10)
