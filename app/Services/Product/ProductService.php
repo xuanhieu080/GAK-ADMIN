@@ -129,7 +129,7 @@ class ProductService
             $this->productModel->cacheProductGhiLe(['category_slug' => 'ao-ghi-le', 'limit' => 4]);
             $this->productModel->cacheProductNew(['is_new' => 1, 'limit' => 20]);
             $this->productModel->cacheProductUpcoming(['is_upcoming' => 1, 'limit' => 4]);
-            $this->productModel->cacheProductUniform(['is_uniform' => 1, 'limit' => 20]);
+            $this->productModel->cacheProductUniform(['category_name' => 'dong phuc', 'limit' => 20]);
         } catch (\Exception $e) {
             DB::rollback();
             throw new \Exception($e->getMessage());
@@ -206,7 +206,7 @@ class ProductService
             $this->productModel->cacheProductNew(['is_new' => 1, 'limit' => 20]);
             $this->categoryModel->cacheCategoryHeader([]);
             $this->productModel->cacheProductUpcoming(['is_upcoming' => 1, 'limit' => 4]);
-            $this->productModel->cacheProductUniform(['is_uniform' => 1, 'limit' => 20]);
+            $this->productModel->cacheProductUniform(['category_name' => 'dong phuc', 'limit' => 20]);
         } catch (\Exception $e) {
             DB::rollback();
             throw new \Exception($e->getMessage());
@@ -300,7 +300,7 @@ class ProductService
             $this->productModel->cacheProductGhiLe(['category_slug' => 'ao-ghi-le', 'limit' => 4]);
             $this->productModel->cacheProductNew(['is_new' => 1, 'limit' => 20]);
             $this->productModel->cacheProductUpcoming(['is_upcoming' => 1, 'limit' => 4]);
-            $this->productModel->cacheProductUniform(['is_uniform' => 1, 'limit' => 20]);
+            $this->productModel->cacheProductUniform(['category_name' => 'dong phuc', 'limit' => 20]);
         } catch (\Exception $e) {
             DB::rollback();
             throw new \Exception($e->getMessage());
@@ -325,7 +325,7 @@ class ProductService
         $this->productModel->cacheProductGhiLe(['category_slug' => 'ao-ghi-le', 'limit' => 4]);
         $this->productModel->cacheProductNew(['is_new' => 1, 'limit' => 20]);
         $this->productModel->cacheProductUpcoming(['is_upcoming' => 1, 'limit' => 4]);
-        $this->productModel->cacheProductUniform(['is_uniform' => 1, 'limit' => 20]);
+        $this->productModel->cacheProductUniform(['category_name' => 'dong phuc', 'limit' => 20]);
         return $bool;
     }
 
@@ -405,7 +405,7 @@ class ProductService
             $this->productModel->cacheProductGhiLe(['category_slug' => 'ao-ghi-le', 'limit' => 4]);
             $this->productModel->cacheProductNew(['is_new' => 1, 'limit' => 20]);
             $this->productModel->cacheProductUpcoming(['is_upcoming' => 1, 'limit' => 4]);
-            $this->productModel->cacheProductUniform(['is_uniform' => 1, 'limit' => 20]);
+            $this->productModel->cacheProductUniform(['category_name' => 'dong phuc', 'limit' => 20]);
         } catch (\Exception $exception) {
             DB::rollBack();
             return response()->json(['message' => $exception->getMessage()]);
@@ -740,7 +740,7 @@ class ProductService
             $this->productModel->cacheProductGhiLe(['category_slug' => 'ao-ghi-le', 'limit' => 4]);
             $this->productModel->cacheProductNew(['is_new' => 1, 'limit' => 20]);
             $this->productModel->cacheProductUpcoming(['is_upcoming' => 1, 'limit' => 4]);
-            $this->productModel->cacheProductUniform(['is_uniform' => 1, 'limit' => 20]);
+            $this->productModel->cacheProductUniform(['category_name' => 'dong phuc', 'limit' => 20]);
         } catch (\Exception $e) {
             DB::rollback();
             throw new \Exception($e->getMessage());
@@ -887,7 +887,7 @@ class ProductService
             $this->productModel->cacheProductGhiLe(['category_slug' => 'ao-ghi-le', 'limit' => 4]);
             $this->productModel->cacheProductNew(['is_new' => 1, 'limit' => 20]);
             $this->productModel->cacheProductUpcoming(['is_upcoming' => 1, 'limit' => 4]);
-            $this->productModel->cacheProductUniform(['is_uniform' => 1, 'limit' => 20]);
+            $this->productModel->cacheProductUniform(['category_name' => 'dong phuc', 'limit' => 20]);
         } catch (\Exception $e) {
             DB::rollback();
             throw new \Exception($e->getMessage());
@@ -946,8 +946,8 @@ class ProductService
             $this->productModel->cacheProductGhiLe(['category_slug' => 'ao-ghi-le', 'limit' => 4]);
             $this->productModel->cacheProductNew(['is_new' => 1, 'limit' => 20]);
             $this->productModel->cacheProductUpcoming(['is_upcoming' => 1, 'limit' => 4]);
-            $this->productModel->cacheProductUniform(['is_uniform' => 1, 'limit' => 20]);
-            $this->productModel->cacheProductUniform(['is_uniform' => 1, 'limit' => 20]);
+            $this->productModel->cacheProductUniform(['category_name' => 'dong phuc', 'limit' => 20]);
+            $this->productModel->cacheProductUniform(['category_name' => 'dong phuc', 'limit' => 20]);
         } catch (\Exception $e) {
             DB::rollback();
             throw new \Exception($e->getMessage());
