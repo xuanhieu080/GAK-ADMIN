@@ -629,7 +629,7 @@ class ProductModel extends AbstractModel
         if (!empty($categoryName)) {
             $query->whereHas('category', function ($query) use ($categoryName) {
                 // Điều kiện cho hình ảnh
-                $query->where('name', 'like', "%$categoryName%");
+                $query->where(DB::raw(("REPLACE(REPLACE(name, 'Đ', 'd'), 'ư', 'u')")), 'like', "%$categoryName%");
             });
         }
 

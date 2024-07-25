@@ -621,7 +621,7 @@ class CategoryModel extends AbstractModel
                             }
                             switch ($action) {
                                 case "LIKE":
-                                    $q->orWhere(DB::raw($field), "like", "%$data%");
+                                    $q->orWhere(("REPLACE(REPLACE($field, 'Đ', 'd'), 'ư', 'u')"), "like", "%$data%");
                                     break;
                                 case "IN":
                                     $q->orWhereIn(DB::raw($field), $data);
