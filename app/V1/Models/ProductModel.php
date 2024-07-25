@@ -117,6 +117,8 @@ class ProductModel extends AbstractModel
 
     public function cacheProductHot($input)
     {
+        $cacheKey = 'product_hot_data';
+        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
         $limit = Arr::get($input, 'limit', 999);
         $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
         $input['is_active'] = 1;
@@ -139,9 +141,7 @@ class ProductModel extends AbstractModel
                 //                }
             ], $limit);
 
-        Support::writeJsonFile('/home/DEV-GAK-UI/api/product_hot.json', ProductResource::collection($result));
-
-//        Cache::put($cacheKey, ProductResource::collection($result), $seconds);
+        Cache::put($cacheKey, ProductResource::collection($result), $seconds);
     }
 
     public function new($input)
@@ -208,8 +208,8 @@ class ProductModel extends AbstractModel
 
     public function cacheProductNew($input)
     {
-//        $cacheKey = 'product_new_data';
-//        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
+        $cacheKey = 'product_new_data';
+        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
         $limit = Arr::get($input, 'limit', 999);
         $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
         $input['is_active'] = 1;
@@ -232,9 +232,7 @@ class ProductModel extends AbstractModel
                 //                }
             ], $limit);
 
-        Support::writeJsonFile('/home/DEV-GAK-UI/api/product_new.json', ProductResource::collection($result));
-
-//        Cache::put($cacheKey, ProductResource::collection($result), $seconds);
+        Cache::put($cacheKey, ProductResource::collection($result), $seconds);
     }
 
     public function upcoming($input)
@@ -301,8 +299,8 @@ class ProductModel extends AbstractModel
 
     public function cacheProductUpcoming($input)
     {
-//        $cacheKey = 'product_upcoming_data';
-//        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
+        $cacheKey = 'product_upcoming_data';
+        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
         $limit = Arr::get($input, 'limit', 999);
         $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
         $input['is_active'] = 1;
@@ -325,8 +323,7 @@ class ProductModel extends AbstractModel
                 //                }
             ], $limit);
 
-        Support::writeJsonFile('/home/DEV-GAK-UI/api/product_upcoming.json', ProductResource::collection($result));
-//        Cache::put($cacheKey, ProductResource::collection($result), $seconds);
+        Cache::put($cacheKey, ProductResource::collection($result), $seconds);
     }
 
     public function uniform($input)
@@ -393,8 +390,8 @@ class ProductModel extends AbstractModel
 
     public function cacheProductUniform($input)
     {
-//        $cacheKey = 'product_uniform_data';
-//        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
+        $cacheKey = 'product_uniform_data';
+        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
         $limit = Arr::get($input, 'limit', 999);
         $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
         $input['is_active'] = 1;
@@ -417,14 +414,14 @@ class ProductModel extends AbstractModel
                 //                }
             ], $limit);
 
-        Support::writeJsonFile('/home/DEV-GAK-UI/api/product_uniform.json', ProductResource::collection($result));
-//        Cache::put($cacheKey, ProductResource::collection($result), $seconds);
+//        Support::writeJsonFile('/home/DEV-GAK-UI/api/product_uniform.json', ProductResource::collection($result));
+        Cache::put($cacheKey, ProductResource::collection($result), $seconds);
     }
 
     public function cacheProductGhiLe($input)
     {
-//        $cacheKey = 'product_uniform_data';
-//        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
+        $cacheKey = 'product_ghi_le';
+        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
         $limit = Arr::get($input, 'limit', 999);
         $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
         $input['is_active'] = 1;
@@ -447,12 +444,14 @@ class ProductModel extends AbstractModel
                 //                }
             ], $limit);
 
-        Support::writeJsonFile('/home/DEV-GAK-UI/api/ao_ghi_le.json', ProductResource::collection($result));
-//        Cache::put($cacheKey, ProductResource::collection($result), $seconds);
+//        Support::writeJsonFile('/home/DEV-GAK-UI/api/ao_ghi_le.json', ProductResource::collection($result));
+        Cache::put($cacheKey, ProductResource::collection($result), $seconds);
     }
 
     public function cacheProductAll()
     {
+        $cacheKey = 'product_all';
+        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
         $categories = Category::with(['variants' => function ($query) {
             $query->whereIn('product_variants.code', [
                 'F56YtbAEmYc7Wkp2',
@@ -504,8 +503,8 @@ class ProductModel extends AbstractModel
 //            });
 
 
-        Support::writeJsonFile('/home/DEV-GAK-UI/api/product_all.json',  CategorySearchAllResource::collection($categories));
-//        Cache::put($cacheKey, ProductResource::collection($result), $seconds);
+//        Support::writeJsonFile('/home/DEV-GAK-UI/api/product_all.json',  CategorySearchAllResource::collection($categories));
+        Cache::put($cacheKey, CategorySearchAllResource::collection($categories), $seconds);
     }
 
     public function search($input = [], $with = [], $limit = null)

@@ -88,8 +88,8 @@ class PageModel extends AbstractModel
 
     public function cachePageHeader($input)
     {
-//        $cacheKey = 'page_header_data';
-//        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
+        $cacheKey = 'page_header_data';
+        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
         $limit = Arr::get($input, 'limit', 999);
 
         $input['sort'] = ['id' => 'desc'];
@@ -97,8 +97,7 @@ class PageModel extends AbstractModel
         $input['show_header'] = 1;
         $result = $this->search($input, [], $limit);
 
-        Support::writeJsonFile('/home/DEV-GAK-UI/api/page_header.json', PageResource::collection($result));
-//        Cache::put($cacheKey, PageResource::collection($result), $seconds);
+        Cache::put($cacheKey, PageResource::collection($result), $seconds);
     }
 
     public function search($input = [], $with = [], $limit = null)

@@ -105,8 +105,8 @@ class PostModel extends AbstractModel
     }
     public function cachePostHot($input)
     {
-//        $cacheKey = 'post_hot_data';
-//        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
+        $cacheKey = 'post_hot_data';
+        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
         $limit = Arr::get($input, 'limit', 10);
         $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
         $sorts = ['id' => 'desc'];
@@ -127,8 +127,7 @@ class PostModel extends AbstractModel
         $input['sort'] = $sorts;
         $result = $this->search($input, [], $limit);
 
-        Support::writeJsonFile('/home/DEV-GAK-UI/api/post_hot.json',  PostResource::collection($result));
-//        Cache::put($cacheKey, PostResource::collection($result), $seconds);
+        Cache::put($cacheKey, PostResource::collection($result), $seconds);
     }
 
     public function new($input)
@@ -190,8 +189,8 @@ class PostModel extends AbstractModel
     }
     public function cachePostNew($input)
     {
-//        $cacheKey = 'post_new_data';
-//        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
+        $cacheKey = 'post_new_data';
+        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
         $limit = Arr::get($input, 'limit', 10);
         $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
         $sorts = ['id' => 'desc'];
@@ -212,9 +211,7 @@ class PostModel extends AbstractModel
         $input['sort'] = $sorts;
         $result = $this->search($input, [], $limit);
 
-        Support::writeJsonFile('/home/DEV-GAK-UI/api/post_new.json',  PostResource::collection($result));
-
-//        Cache::put($cacheKey, PostResource::collection($result), $seconds);
+        Cache::put($cacheKey, PostResource::collection($result), $seconds);
     }
 
     public function search($input = [], $with = [], $limit = null)

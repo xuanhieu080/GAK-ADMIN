@@ -60,8 +60,8 @@ class PageGroupModel extends AbstractModel
 
     public function cacheIndex()
     {
-//        $cacheKey = 'page_group_data';
-//        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
+        $cacheKey = 'page_group_data';
+        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
 
         $pages = PageGroup::with(['details' => function ($query) {
             $query->where('pages.is_active', 1);
@@ -72,9 +72,7 @@ class PageGroupModel extends AbstractModel
             ->get()
             ->groupBy('column');
 
-        Support::writeJsonFile('/home/DEV-GAK-UI/api/page_group.json',  PageGroupResource::collection($pages));
-
-//        Cache::put($cacheKey, PageGroupResource::collection($pages), $seconds);
+        Cache::put($cacheKey, PageGroupResource::collection($pages), $seconds);
     }
 
     public function search($input = [], $with = [], $limit = null)
