@@ -249,8 +249,7 @@ export default defineComponent({
       trans,
       page,
       order,
-      content,
-      updateData
+      // updateData
     }
   }
 })
