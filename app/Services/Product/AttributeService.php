@@ -97,13 +97,14 @@ class AttributeService
         $attribute->color = Arr::get($data, 'color', $attribute->color);
 
         $attribute->save();
-
         $this->categoryModel->cacheCategoryHeader([]);
-        $this->productModel->cacheProductHot(['is_hot' => 1,'limit'  => 20]);
-        $this->productModel->cacheProductNew(['is_new' => 1,'limit'  => 20]);
-        $this->productModel->cacheProductUpcoming(['is_upcoming' => 1,'limit'  => 4]);
-        $this->productModel->cacheProductUniform(['is_uniform' => 1,'limit'  => 20]);
-        $this->productModel->cacheProductUniform(['is_uniform' => 1,'limit'  => 20]);
+        $this->productModel->cacheProductHot(['is_hot' => 1, 'limit' => 20]);
+        $this->productModel->cacheProductAll();
+        $this->productModel->cacheProductGhiLe(['category_slug' => 'ao-ghi-le', 'limit' => 4]);
+        $this->productModel->cacheProductNew(['is_new' => 1, 'limit' => 20]);
+        $this->productModel->cacheProductUpcoming(['is_upcoming' => 1, 'limit' => 4]);
+        $this->productModel->cacheProductUniform(['category_name' => 'dong phuc', 'limit' => 4]);
+        
         return new AttributeResource($attribute);
     }
 
@@ -116,11 +117,12 @@ class AttributeService
     {
         $bool = $attribute->delete();
         $this->categoryModel->cacheCategoryHeader([]);
-        $this->productModel->cacheProductHot(['is_hot' => 1,'limit'  => 20]);
-        $this->productModel->cacheProductNew(['is_new' => 1,'limit'  => 20]);
-        $this->productModel->cacheProductUpcoming(['is_upcoming' => 1,'limit'  => 4]);
-        $this->productModel->cacheProductUniform(['is_uniform' => 1,'limit'  => 20]);
-        $this->productModel->cacheProductUniform(['is_uniform' => 1,'limit'  => 20]);
+        $this->productModel->cacheProductHot(['is_hot' => 1, 'limit' => 20]);
+        $this->productModel->cacheProductAll();
+        $this->productModel->cacheProductGhiLe(['category_slug' => 'ao-ghi-le', 'limit' => 4]);
+        $this->productModel->cacheProductNew(['is_new' => 1, 'limit' => 20]);
+        $this->productModel->cacheProductUpcoming(['is_upcoming' => 1, 'limit' => 4]);
+        $this->productModel->cacheProductUniform(['category_name' => 'dong phuc', 'limit' => 4]);
 
         return $bool;
     }
