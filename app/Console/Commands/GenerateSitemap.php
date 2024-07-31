@@ -234,8 +234,8 @@ class GenerateSitemap extends Command
 //            "changefreq" => "daily",
 //        ];
 
-        $this->generateSitemap($data, "/Volumes/DATA/PHP/viafb-admin/public/vi/static-pages.xml", 0.8);
-//        $this->generateSitemap($data, "/Volumes/DATA/PHP/viafb-admin/public/en/static-pages.xml", 0.8);
+        $this->generateSitemap($data, "/home/DEV-GAK-UI/public/vi/static-pages.xml", 0.8);
+//        $this->generateSitemap($data, "/home/DEV-GAK-UI/public/en/static-pages.xml", 0.8);
         $this->urls[] = "vi/static-pages.xml";
 //        $this->urls[] = "en/static-pages.xml";
 
@@ -248,7 +248,7 @@ class GenerateSitemap extends Command
         foreach ($this->urls as $url) {
             $sitemap->add("https://gak.vn/$url");
         }
-        $sitemap->writeToFile("/Volumes/DATA/PHP/viafb-admin/public/sitemap.xml");
+        $sitemap->writeToFile("/home/DEV-GAK-UI/public/sitemap.xml");
 
         Log::info('Generate the sitemap.');
     }
@@ -294,12 +294,12 @@ class GenerateSitemap extends Command
         $dataEn = array_chunk($dataEn, 200);
 
         foreach ($data as $key => $item) {
-            $this->generateProductSitemap($item, "/Volumes/DATA/PHP/viafb-admin/public/vi/product$key.xml", $priority);
+            $this->generateProductSitemap($item, "/home/DEV-GAK-UI/public/vi/product$key.xml", $priority);
             $this->urls[] = "vi/product$key.xml";
         }
 //
 //        foreach ($dataEn as $key => $item) {
-//            $this->generateSitemap($item, "/Volumes/DATA/PHP/viafb-admin/public/en/product$key.xml", $priority);
+//            $this->generateSitemap($item, "/home/DEV-GAK-UI/public/en/product$key.xml", $priority);
 //            $this->urls[] = "en/product$key.xml";
 //        }
     }
@@ -336,12 +336,12 @@ class GenerateSitemap extends Command
         $dataEn = array_chunk($dataEn, 200);
 
         foreach ($data as $key => $item) {
-            $this->generateSitemap($item, "/Volumes/DATA/PHP/viafb-admin/public/vi/category$key.xml", $priority);
+            $this->generateSitemap($item, "/home/DEV-GAK-UI/public/vi/category$key.xml", $priority);
             $this->urls[] = "vi/category$key.xml";
         }
 
 //        foreach ($dataEn as $key => $item) {
-//            $this->generateSitemap($item, "/Volumes/DATA/PHP/viafb-admin/public/en/category$key.xml", $priority);
+//            $this->generateSitemap($item, "/home/DEV-GAK-UI/public/en/category$key.xml", $priority);
 //            $this->urls[] = "en/category$key.xml";
 //        }
     }
@@ -377,12 +377,12 @@ class GenerateSitemap extends Command
         $dataEn = array_chunk($dataEn, 200);
 
         foreach ($data as $key => $item) {
-            $this->generateSitemap($item, "/Volumes/DATA/PHP/viafb-admin/public/vi/article$key.xml", $priority);
+            $this->generateSitemap($item, "/home/DEV-GAK-UI/public/vi/article$key.xml", $priority);
             $this->urls[] = "vi/article$key.xml";
         }
 
 //        foreach ($dataEn as $key => $item) {
-//            $this->generateSitemap($item, "/Volumes/DATA/PHP/viafb-admin/public/en/article$key.xml", $priority);
+//            $this->generateSitemap($item, "/home/DEV-GAK-UI/public/en/article$key.xml", $priority);
 //            $this->urls[] = "en/article$key.xml";
 //        }
     }
@@ -433,12 +433,12 @@ class GenerateSitemap extends Command
         $dataEn = array_chunk($dataEn, 200);
 
         foreach ($data as $key => $item) {
-            $this->generateSitemap($item, "/Volumes/DATA/PHP/viafb-admin/public/vi/article$key.xml", $priority);
+            $this->generateSitemap($item, "/home/DEV-GAK-UI/public/vi/article$key.xml", $priority);
             $this->urls[] = "vi/article$key.xml";
         }
 //
 //        foreach ($dataEn as $key => $item) {
-//            $this->generateSitemap($item, "/Volumes/DATA/PHP/viafb-admin/public/en/article$key.xml", $priority);
+//            $this->generateSitemap($item, "/home/DEV-GAK-UI/public/en/article$key.xml", $priority);
 //            $this->urls[] = "en/article$key.xml";
 //        }
     }
@@ -475,12 +475,12 @@ class GenerateSitemap extends Command
         $dataEn = array_chunk($dataEn, 200);
 
         foreach ($data as $key => $item) {
-            $this->generateSitemap($item, "/Volumes/DATA/PHP/viafb-admin/public/vi/page$key.xml", $priority);
+            $this->generateSitemap($item, "/home/DEV-GAK-UI/public/vi/page$key.xml", $priority);
             $this->urls[] = "vi/page$key.xml";
         }
 
 //        foreach ($dataEn as $key => $item) {
-//            $this->generateSitemap($item, "/Volumes/DATA/PHP/viafb-admin/public/en/page$key.xml", $priority);
+//            $this->generateSitemap($item, "/home/DEV-GAK-UI/public/en/page$key.xml", $priority);
 //            $this->urls[] = "en/page$key.xml";
 //        }
     }
