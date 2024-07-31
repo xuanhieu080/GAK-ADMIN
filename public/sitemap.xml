@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <sitemap>
+        <loc>https://gak.vn/vi/static-pages.xml</loc>
+            <lastmod>2024-07-31T08:47:57+07:00</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>https://gak.vn/vi/product0.xml</loc>
+            <lastmod>2024-07-31T08:47:57+07:00</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>https://gak.vn/vi/category0.xml</loc>
+            <lastmod>2024-07-31T08:47:57+07:00</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>https://gak.vn/vi/article0.xml</loc>
+            <lastmod>2024-07-31T08:47:57+07:00</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>https://gak.vn/vi/page0.xml</loc>
+            <lastmod>2024-07-31T08:47:57+07:00</lastmod>
+    </sitemap>
+</sitemapindex>
