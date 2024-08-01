@@ -72,6 +72,7 @@ class PageGroupModel extends AbstractModel
             ->get()
             ->groupBy('column');
 
+        Support::writeJsonFile('/home/DEV-GAK-UI/api/page_group.json',  PageGroupResource::collection($pages));
         Cache::put($cacheKey, PageGroupResource::collection($pages), $seconds);
     }
 

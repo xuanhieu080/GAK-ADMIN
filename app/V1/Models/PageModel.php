@@ -97,6 +97,7 @@ class PageModel extends AbstractModel
         $input['show_header'] = 1;
         $result = $this->search($input, [], $limit);
 
+        Support::writeJsonFile('/home/DEV-GAK-UI/api/page_header.json',  PageResource::collection($result));
         Cache::put($cacheKey, PageResource::collection($result), $seconds);
     }
 

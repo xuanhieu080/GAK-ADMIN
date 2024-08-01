@@ -439,6 +439,7 @@ class CategoryModel extends AbstractModel
             $category->setRelation('products', $category->products->concat($allProducts)->take($limit));
         });
 
+        Support::writeJsonFile('/home/DEV-GAK-UI/api/category_header.json',  CategoryHeaderResource::collection($categories));
         Cache::put($cacheKey, CategoryHeaderResource::collection($categories), $seconds);
     }
 
