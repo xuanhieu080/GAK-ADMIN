@@ -873,6 +873,7 @@ class ProductService
             $price = Arr::get($data, 'price', $productVariant->price);
             $discount = Arr::get($data, 'discount', $productVariant->discount);
             $productVariant->name = Arr::get($data, 'name', $productVariant->name);
+            $productVariant->code = Arr::get($data, 'code', $productVariant->code);
             $productVariant->description = Arr::get($data, 'description', $productVariant->description);
             $productVariant->price = $price;
             $productVariant->discount = $discount;

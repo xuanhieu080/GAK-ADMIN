@@ -2,6 +2,8 @@
   <div id="edit-product">
     <h3 class="mb-4">Biến thể - {{index}}     --------- Mã: {{props.item.code}}</h3>
     <Form>
+      <TextInput class="mb-4" type="text" :required="true" :error-input="'details.' + index + '.code'" :name="'code-' + index" v-model="form.code"
+                 label="Mã sản phẩm"/>
       <TextInput class="mb-4" type="text" :required="true" :error-input="'details.' + index + '.name'" :name="'name-' + index" v-model="form.name"
                  label="Tên biến thể"/>
       <TextInput class="mb-4" type="text" disabled  :name="'name-variant-' + index" v-model="optionName"
@@ -96,6 +98,7 @@ const priceCurrent = ref(0);
 const form = reactive({
   id: props.item.id,
   name: null,
+  code: null,
   image: '',
   thumb_image: [],
   // slug: null,
@@ -127,6 +130,7 @@ const service = new ProductService();
 
 if (props.item) {
   form.name = props.item.name
+  form.code = props.item.code
   form.meta_title = props.item.meta_title
   form.meta_description = props.item.meta_description
   form.meta_key = props.item.meta_key

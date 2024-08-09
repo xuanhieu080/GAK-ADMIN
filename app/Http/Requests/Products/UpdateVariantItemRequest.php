@@ -24,6 +24,12 @@ class UpdateVariantItemRequest extends BaseRequest
                 'max:255',
                 //                Rule::unique('product_variants', 'name')->ignore($this->route('product')->id)
             ],
+            'code'      => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('product_variants', 'code')->ignore($this->route('product_variant')->id)
+            ],
             'is_active' => 'nullable|in:1,0,true,false',
             'price'     => 'nullable|numeric|min:0|max:999999999999',
             'discount'  => 'nullable|numeric|min:0|max:999999999999',
