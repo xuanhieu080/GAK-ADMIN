@@ -2845,10 +2845,25 @@ of the component, floating–point numbers have been used which, for the default
 }
 /* Note: Use ck-editor__main to make sure these styles don't apply to other editor types */
 .ck.ck-editor__main > .ck-editor__editable {
+    overflow-wrap: anywhere;
     /* https://github.com/ckeditor/ckeditor5-theme-lark/issues/113 */
     background: var(--ck-color-base-background);
 
     border-radius: 0;
+}
+.ck.ck-editor__main > p {
+    max-width: var(--max-ch, none);
+    word-wrap: break-word; /* Cho phép xuống dòng khi văn bản quá dài */
+    white-space: normal;
+}
+.ck.ck-editor__main > h1, h2, h3, h4, h5, h6, p {
+    overflow-wrap: break-word;
+    word-wrap: break-word; /* Cho phép xuống dòng khi văn bản quá dài */
+    white-space: normal;
+}
+.ck-editor__editable_inline.ck-editor__editable {
+    word-wrap: break-word; /* Cho phép xuống dòng khi văn bản quá dài */
+    white-space: normal;
 }
 .ck-rounded-corners .ck.ck-editor__main > .ck-editor__editable, .ck.ck-editor__main > .ck-editor__editable.ck-rounded-corners {
     border-radius: var(--ck-border-radius);
