@@ -54,6 +54,7 @@ import {
   Paragraph,
   PasteFromMarkdownExperimental,
   PasteFromOffice,
+  Clipboard,
   RemoveFormat,
   SelectAll,
   ShowBlocks,
@@ -102,6 +103,7 @@ const editorData = ref(props.content);
 const isLayoutReady = ref(false);
 const loading = ref(true);
 const editorConfig = {
+  autoGrowMaxHeight: false,
   toolbar: {
     items: [
       'undo',
@@ -189,6 +191,7 @@ const editorConfig = {
     Paragraph,
     PasteFromMarkdownExperimental,
     PasteFromOffice,
+    Clipboard,
     RemoveFormat,
     SelectAll,
     ShowBlocks,
