@@ -49,7 +49,7 @@ class ProductResource extends JsonResource
             'percent'             => $this->price <= 0 ? 0 : (int)(round($this->discount / $this->price, 2) * 100),
             'is_hot'              => $this->is_hot,
             'rate'                => $this->rate,
-            'rate_count'          => $this->rate_count,
+            'rate_count'          => $this->rate_count == 0 ? 1 : $this->rate_count,
             'average_rate'        => $this->rate_count == 0 ? 0 : round($this->rate / $this->rate_count, 1),
             'highlight'           => $this->highlight,
             'highlight_image_url' => $this->getFirstMediaUrl('highlight'),
