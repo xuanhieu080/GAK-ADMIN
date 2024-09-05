@@ -58,7 +58,6 @@ class CustomUploadAdapter {
                 });
             })
             .then(response => {
-                console.log(response.data);
                 if (response.data.error) {
                     reject(response.data.error.message);
                 } else {
