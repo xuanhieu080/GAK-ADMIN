@@ -125,6 +125,7 @@ const editorConfig = {
       '|',
       'link',
       'insertImage',
+      'mediaEmbed',
       'insertTable',
       'highlight',
       'blockQuote',
