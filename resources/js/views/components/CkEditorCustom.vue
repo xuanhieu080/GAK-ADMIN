@@ -79,7 +79,9 @@ import {
   TextTransformation,
   TodoList,
   Underline,
-  Undo
+  Undo,
+  PasteFromMarkdownExperimental,
+  PasteFromOffice,
 } from 'ckeditor5';
 
 import translations from './vi';
@@ -132,6 +134,7 @@ const editorConfig = {
       'codeBlock',
       '|',
       'alignment',
+      'removeFormat',
       '|',
       'bulletedList',
       'numberedList',
@@ -217,7 +220,9 @@ const editorConfig = {
     TodoList,
     Underline,
     Undo,
-    ImageCaptionEditing
+    ImageCaptionEditing,
+    PasteFromMarkdownExperimental,
+    PasteFromOffice,
   ],
   balloonToolbar: ['bold', 'italic', '|', 'link', 'insertImage', '|', 'bulletedList', 'numberedList'],
   fontFamily: {
@@ -275,16 +280,12 @@ const editorConfig = {
   htmlSupport: {
     disallow: [
       {
-        name: /^(?!img|a).*$/,  // Loại bỏ tất cả các tag trừ img và a
+        name: /^(?!img).*$/,  // Loại bỏ tất cả các tag trừ img và a
         styles: true,           // Không cho phép các style inline
         attributes: true,       // Không cho phép các thuộc tính inline
         classes: true           // Không cho phép các class CSS
       }
     ]
-  },
-  clipboard: {
-    // Sử dụng option này để chỉ dán nội dung đơn giản mà không giữ CSS
-    cleanPastedContent: true
   },
   image: {
     toolbar: [
