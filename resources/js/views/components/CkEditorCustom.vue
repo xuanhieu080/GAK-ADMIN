@@ -386,6 +386,9 @@ const editorConfig = {
   },
   translations: [translations],
   enableGrip: false,
+  mediaEmbed: {
+    previewsInData: true
+  },
   extraPlugins: [CustomUploader]
 };
 
