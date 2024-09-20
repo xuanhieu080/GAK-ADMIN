@@ -36,8 +36,9 @@ class PostResource extends JsonResource
             'is_new'           => $this->is_new,
             'view'             => $this->view,
             'user_id'          => $this->user_id,
-            'category_id'      => $this->category_id,
-            'category_name'    => object_get($this, 'category.name'),
+            'category_id'      => $this->group_id,
+            'category_name'    => object_get($this, 'group.name'),
+            'category_slug'    => object_get($this, 'group.slug'),
         ];
 
         foreach ($this->getMedia("thumb") as $item) {

@@ -40,6 +40,10 @@ class PostModel extends AbstractModel
             $input['is_new'] = filter_var($input['is_new'], FILTER_VALIDATE_BOOLEAN);
         }
 
+        if (isset($input['not_id'])) {
+            $input['id'] = ['<>' => $input['not_id']];
+        }
+
         $input['sort'] = $sorts;
         $result = $this->search($input, [], $limit);
 
@@ -103,6 +107,7 @@ class PostModel extends AbstractModel
             return PostResource::collection($result);
         }
     }
+
     public function cachePostHot($input)
     {
         $cacheKey = 'post_hot_data';
@@ -187,6 +192,7 @@ class PostModel extends AbstractModel
             return PostResource::collection($result);
         }
     }
+
     public function cachePostNew($input)
     {
         $cacheKey = 'post_new_data';
@@ -326,7 +332,8 @@ class PostModel extends AbstractModel
 
     public function show($slug)
     {
-        $item = Post::where('slug', $slug)
+        $item = Post::with(['group'])
+            ->where('slug', $slug)
             ->where('is_active', 1)
             ->first();
         if (empty($item)) {
