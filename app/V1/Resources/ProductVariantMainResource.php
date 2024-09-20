@@ -17,37 +17,29 @@ class ProductVariantMainResource extends JsonResource
     {
         $thumb = [];
         $data = [
-            'id'                      => $this->id,
-            'code'                    => $this->code,
-            'name'                    => $this->name,
-            'product_id'              => $this->product_id,
-            'product_name'            => object_get($this, 'product.name'),
-            'slug'                    => object_get($this, 'product.slug'),
-            'price'                   => $this->price,
-            'qty'                     => $this->qty,
-            'is_active'               => $this->is_active,
-            'price_discount'          => $this->price_discount,
-            'discount'                => $this->discount,
-            'percent'                 => $this->price <= 0 ? 0 : (int)(round($this->discount / $this->price, 2) * 100),
-            'options'                 => $this->options,
-            'option_all'              => $this->option_all,
-            'option_group'            => $this->option_group,
+            'id'             => $this->id,
+            'code'           => $this->code,
+            'name'           => $this->name,
+            'product_id'     => $this->product_id,
+            'product_name'   => object_get($this, 'product.name'),
+            'slug'           => object_get($this, 'product.slug'),
+            'price'          => $this->price,
+            'qty'            => $this->qty,
+            'is_active'      => $this->is_active,
+            'price_discount' => $this->price_discount,
+            'discount'       => $this->discount,
+            'percent'        => $this->price <= 0 ? 0 : (int)(round($this->discount / $this->price, 2) * 100),
+            'options'        => $this->options,
+            'option_all'     => $this->option_all,
+            'option_group'   => $this->option_group,
         ];
 
-        $image = null;
-        if (!empty($this->productVariantMain)) {
-            foreach ($this->productVariantMain->getMedia("thumb") as $item) {
-                $thumb[] = $item->getFullUrl();
-            }
-            $image = $this->productVariantMain->getFirstMediaUrl();
-//            $data['image'] = $this->productVariantMain->getFirstMediaUrl();
-        } else {
-            $image = $this->product->getFirstMediaUrl();
-//            $data['image'] = $this->product->getFirstMediaUrl();
-            foreach ($this->product->getMedia("thumb") as $item) {
-                $thumb[] = $item->getFullUrl();
-            }
+
+        $image = $this->getFirstMediaUrl();
+        foreach ($this->getMedia("thumb") as $item) {
+            $thumb[] = $item->getFullUrl();
         }
+
 
         if (empty($thumb)) {
             foreach ($this->product->getMedia("thumb") as $item) {
