@@ -670,7 +670,9 @@ class ProductModel extends AbstractModel
             },
             'variantMainDetail' => function ($query) use ($data){
                 if (!empty($data['code'])) {
-                    $query->where('code', $data['code']);
+                    $query->whereHas('variants', function ($qr) use ($data) {
+                        $qr->where('code', $data['code']);
+                    });
                 }
             }
         ])->where('slug', $slug)
