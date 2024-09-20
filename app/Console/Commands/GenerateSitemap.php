@@ -343,6 +343,8 @@ class GenerateSitemap extends Command
         foreach ($result as $item) {
             $data[] = [
                 "url"        => "https://gak.vn/vi/collection/$item->slug",
+                "image"      => $item->getFirstMediaUrl(),
+                "name"       => $item->name,
                 //                "image"      => getImageCustom($item->image, '/images/building.png'),
                 //                "title"      => "$item->title",
                 "created_at" => Carbon::parse($item->created_at),
@@ -384,6 +386,8 @@ class GenerateSitemap extends Command
         foreach ($result as $item) {
             $data[] = [
                 "url"        => "https://gak.vn/vi/articles/$item->slug",
+                "image"      => $item->getFirstMediaUrl(),
+                "name"       => $item->title,
                 //                "image"      => getImageCustom($item->image, '/images/building.png'),
                 //                "title"      => "$item->title",
                 "created_at" => Carbon::parse($item->created_at),
@@ -440,6 +444,8 @@ class GenerateSitemap extends Command
         foreach ($result as $item) {
             $data[] = [
                 "url"        => "https://gak.vn/vi/blog/$item->slug",
+                "image"      => $item->getFirstMediaUrl(),
+                "name"       => $item->name,
                 //                "image"      => getImageCustom($item->image, '/images/building.png'),
                 //                "title"      => "$item->title",
                 "created_at" => Carbon::parse($item->created_at),
@@ -522,6 +528,10 @@ class GenerateSitemap extends Command
                 ->setChangeFrequency($changeFrequency)
                 ->setPriority($priority);
 
+            if (!empty($item['image'])) {
+                $sitemapItem->addImage($item['image'], $item['name']);
+            }
+
             $sitemap->add($sitemapItem);
         }
         $sitemap->writeToFile($path);
@@ -538,9 +548,9 @@ class GenerateSitemap extends Command
                 ->setPriority($priority);
 
             if (!empty($item['image'])) {
-                $sitemapItem->addImage($item['image'],$item['name']);
+                $sitemapItem->addImage($item['image'], $item['name']);
                 if (!empty($item['video'])) {
-                    $sitemapItem->addVideo($item['image'],$item['name'],$item['name'],$item['video'],$item['url']);
+                    $sitemapItem->addVideo($item['image'], $item['name'], $item['name'], $item['video'], $item['url']);
                 }
             }
 
