@@ -52,7 +52,7 @@ class ProductDetailResource extends JsonResource
             'rate_count'          => $this->rate_count == 0 ? 1 : $this->rate_count,
             'average_rate'        => $this->rate_count == 0 ? 0 : round($this->rate / $this->rate_count, 1),
             'variants'            => ProductVariantResource::collection($this->variants),
-            'variantMainDetail'   => new ProductVariantResource($this->variantMainDetail),
+            'variantMainDetail'   => new ProductVariantMainResource($this->variantMainDetail),
             'highlight'           => $this->highlight,
             'highlight_image_url' => $this->getFirstMediaUrl('highlight'),
             'highlight_image'     => $this->getFirstMediaUrl('highlight'),
