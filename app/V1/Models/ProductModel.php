@@ -668,7 +668,7 @@ class ProductModel extends AbstractModel
             'reviews'           => function ($query) {
                 $query->orderByDesc('rate')->first();
             },
-            'variantMainDetail' => function ($query) {
+            'variantMainDetail' => function ($query) use ($data){
                 if (!empty($data['code'])) {
                     $query->where('code', $data['code']);
                 }
