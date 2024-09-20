@@ -88,6 +88,11 @@ class Product extends Model implements HasMedia
         return $this->hasMany(ProductVariantMain::class, 'product_id', 'id');
     }
 
+    public function variantMainDetail()
+    {
+        return $this->hasOne(ProductVariantMain::class, 'product_id', 'id');
+    }
+
     public function attributeVariants()
     {
         return $this->hasMany(Variant::class, 'product_id', 'id');

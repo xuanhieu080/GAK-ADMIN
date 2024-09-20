@@ -658,15 +658,20 @@ class ProductModel extends AbstractModel
     }
 
 
-    public function show($slug)
+    public function show($slug, $data = [])
     {
         $item = Product::with([
             'attributeVariants',
-            'variants' => function ($query) {
+            'variants'          => function ($query) {
                 $query->where('qty', '>', 0);
             },
-            'reviews'  => function ($query) {
+            'reviews'           => function ($query) {
                 $query->orderByDesc('rate')->first();
+            },
+            'variantMainDetail' => function ($query) {
+                if (!empty($data['code'])) {
+                    $query->where('code', $data['code']);
+                }
             }
         ])->where('slug', $slug)
             ->where('is_active', 1)

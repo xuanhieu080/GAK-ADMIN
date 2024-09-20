@@ -6,7 +6,6 @@ use App\Models\Category;
 use App\Models\Page;
 use App\Models\Post;
 use App\Models\PostGroup;
-use App\Models\Product;
 use App\V1\Models\ProductModel;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
@@ -65,13 +64,6 @@ class GenerateSitemap extends Command
 //            "freq" => "daily",
 //            "changefreq" => "daily",
 //        ];
-        $data[] = [
-            "url"        => "https://gak.vn/vi/collection/quan-ao-ghi-le-bao-ho-chat-luong",
-            "updated_at" => Carbon::now(),
-            "priority"   => 0.8,
-            "freq"       => "daily",
-            "changefreq" => "daily",
-        ];
 //        $data[] = [
 //            "url" => "https://gak.vn/en/collection/quan-ao-ghi-le-bao-ho-chat-luong",
 //            "updated_at" => Carbon::now(),
@@ -94,7 +86,7 @@ class GenerateSitemap extends Command
 //            "changefreq" => "daily",
 //        ];
         $data[] = [
-            "url"        => "https://gak.vn/vi/van-hoa-san-pham",
+            "url"        => "https://gak.vn/vi/van-hoa-gak",
             "updated_at" => Carbon::now(),
             "priority"   => 0.8,
             "freq"       => "daily",
@@ -156,6 +148,13 @@ class GenerateSitemap extends Command
             "freq"       => "daily",
             "changefreq" => "daily",
         ];
+        $data[] = [
+            "url"        => "https://gak.vn/vi/chinh-sach-hoan-tra-san-pham",
+            "updated_at" => Carbon::now(),
+            "priority"   => 0.8,
+            "freq"       => "daily",
+            "changefreq" => "daily",
+        ];
 //        $data[] = [
 //            "url" => "https://gak.vn/en/dieu-khoan-su-dung",
 //            "updated_at" => Carbon::now(),
@@ -179,6 +178,20 @@ class GenerateSitemap extends Command
 //        ];
         $data[] = [
             "url"        => "https://gak.vn/vi/chinh-sach-giao-hang",
+            "updated_at" => Carbon::now(),
+            "priority"   => 0.8,
+            "freq"       => "daily",
+            "changefreq" => "daily",
+        ];
+        $data[] = [
+            "url"        => "https://gak.vn/vi/dat-may",
+            "updated_at" => Carbon::now(),
+            "priority"   => 0.8,
+            "freq"       => "daily",
+            "changefreq" => "daily",
+        ];
+        $data[] = [
+            "url"        => "https://gak.vn/vi/faqs",
             "updated_at" => Carbon::now(),
             "priority"   => 0.8,
             "freq"       => "daily",
@@ -221,6 +234,20 @@ class GenerateSitemap extends Command
 //        ];
         $data[] = [
             "url"        => "https://gak.vn/vi/tat-ca-san-pham",
+            "updated_at" => Carbon::now(),
+            "priority"   => 0.8,
+            "freq"       => "daily",
+            "changefreq" => "daily",
+        ];
+        $data[] = [
+            "url"        => "https://gak.vn/vi/gak-offcial",
+            "updated_at" => Carbon::now(),
+            "priority"   => 0.8,
+            "freq"       => "daily",
+            "changefreq" => "daily",
+        ];
+        $data[] = [
+            "url"        => "https://gak.vn/vi/quy-dinh-thanh-toan",
             "updated_at" => Carbon::now(),
             "priority"   => 0.8,
             "freq"       => "daily",
