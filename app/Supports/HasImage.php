@@ -68,5 +68,4 @@ class HasImage
     {
         return Config::get('filesystems.default');
     }
-
 }

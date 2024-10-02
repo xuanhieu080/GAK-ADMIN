@@ -26,6 +26,7 @@ class UpdateRequest extends BaseRequest
             'image'            => 'nullable|image|max:3145728|mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,ogx,oga,ogv,ogg,webm',
             'meta_description' => 'required|max:255',
             'meta_title'       => 'required|max:255',
+            'order'            => 'nullable|numeric|min:0',
             'slug'             => [
                 'required',
                 'string',

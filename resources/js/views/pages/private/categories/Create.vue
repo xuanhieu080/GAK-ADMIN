@@ -6,6 +6,8 @@
                    :label="trans('labels.name')"/>
         <TextInput class="mb-4" type="text" :required="true" error-input="slug" name="slug" v-model="form.slug"
                    label="Slug"/>
+        <TextInput class="mb-4" type="number" min="1" max="999999" error-input="order" name="order" v-model="form.order"
+                   label="Thứ tự ưu tiên"/>
         <div class="flex justify-center">
           <div class="w-[500px]">
             <FilePond
@@ -107,6 +109,7 @@ const form = reactive({
   show_header: false,
   show_dashboard: false,
   is_active: false,
+  order: 1000,
   slug: '',
 });
 const category = ref();

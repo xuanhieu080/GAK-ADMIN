@@ -21,6 +21,7 @@ class StoreRequest extends BaseRequest
             'description'      => 'nullable',
             'meta_description' => 'required|max:255',
             'meta_title'       => 'required|max:255',
+            'order'            => 'nullable|numeric|min:0',
             'slug'             => [
                 'required',
                 'string',

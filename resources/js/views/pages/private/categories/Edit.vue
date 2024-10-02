@@ -7,6 +7,8 @@
                    :label="trans('labels.name')"/>
         <TextInput class="mb-4" type="text" :required="true" error-input="slug" name="slug" v-model="form.slug"
                    label="Slug"/>
+        <TextInput class="mb-4" type="number" min="1" max="1000" error-input="order" name="order" v-model="form.order"
+                   label="Thứ tự ưu tiên"/>
         <TextInput class="mb-4" type="text" :disabled="true" name="code" v-model="item.code"
                    :label="trans('labels.code')"/>
         <div class="flex justify-center">
@@ -120,6 +122,7 @@ const form = reactive({
   show_header: false,
   show_dashboard: false,
   is_active: false,
+  order: 1000,
   slug: '',
 });
 
