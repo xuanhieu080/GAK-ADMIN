@@ -53,6 +53,12 @@
                    error-input="meta_description" label="Meta description"/>
         <TextInput class="mb-4" type="text" error-input="meta_key" name="name" v-model="form.meta_key"
                    label="Meta key"/>
+        <div class="mb-4">
+          <CkEditorCustom :content="form.content_seo" @updateData="(value) => updateData(value)" />
+          <span v-if="alertStore.errors['content_seo']" class="text-xs tracking-wide text-red-600">{{
+              alertStore.errors['content_seo'][0]
+            }}</span>
+        </div>
         <Toggle class="mb-4" v-model="form.show_header" :checked="form.show_header" error-input="show_header"
                 label="Hiển thị ở header" name="show_header"/>
         <Toggle class="mb-4" v-model="form.show_dashboard" :checked="form.show_dashboard" error-input="show_dashboard"
@@ -94,6 +100,7 @@ import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
 import 'filepond/dist/filepond.min.css';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css';
 import Toggle from "@/views/components/input/Toggle.vue";
+import CkEditorCustom from "@/views/components/CkEditorCustom.vue";
 
 
 // Create FilePond component
@@ -124,6 +131,7 @@ const form = reactive({
   is_active: false,
   order: 1000,
   slug: '',
+  content_seo: '',
 });
 
 const myFile = ref(null);
@@ -228,6 +236,9 @@ function removeImage() {
   myFile.value = null;
 }
 
+function updateData(value) {
+  form.content_seo = value
+}
 </script>
 
 <style scoped>

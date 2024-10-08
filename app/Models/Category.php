@@ -29,6 +29,7 @@ class Category extends Model implements HasMedia
         'image',
         'name',
         'description',
+        'content_seo',
         'is_active',
         '_lft',
         '_rgt',
@@ -40,6 +41,7 @@ class Category extends Model implements HasMedia
         'meta_description',
         'meta_key',
         'order',
+        'content_seo',
     ];
 
     protected $casts = [
