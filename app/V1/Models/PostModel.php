@@ -25,6 +25,7 @@ class PostModel extends AbstractModel
     {
         $limit = Arr::get($input, 'limit', 999);
         $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
+        $input['is_active'] = 1;
         $sorts = ['id' => 'desc'];
         if (!empty($sort['desc']) && is_array($sort['desc'])) {
             $sorts = array_merge($sorts, array_fill_keys($sort['desc'], 'desc'));
@@ -53,6 +54,7 @@ class PostModel extends AbstractModel
     public function hot($input)
     {
         $page = Arr::get($input, 'page', 1);
+        $input['is_active'] = 1;
         if ($page == 1) {
             $cacheKey = 'post_hot_data';
             $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
@@ -138,6 +140,7 @@ class PostModel extends AbstractModel
     public function new($input)
     {
         $page = Arr::get($input, 'page', 1);
+        $input['is_active'] = 1;
         if ($page == 1) {
             $cacheKey = 'post_new_data';
             $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
@@ -200,6 +203,9 @@ class PostModel extends AbstractModel
         $limit = Arr::get($input, 'limit', 10);
         $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
         $sorts = ['id' => 'desc'];
+
+        $input['is_active'] = 1;
+
         if (!empty($sort['desc']) && is_array($sort['desc'])) {
             $sorts = array_merge($sorts, array_fill_keys($sort['desc'], 'desc'));
         } elseif (!empty($sort['asc']) && is_array($sort['asc'])) {
