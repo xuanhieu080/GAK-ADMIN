@@ -122,6 +122,7 @@ class CategoryService
             $category->order = Arr::get($data, 'order', $category->order);
             $category->slug = Arr::get($data, 'slug', $category->slug);
             $category->meta_title = Arr::get($data, 'meta_title', $category->meta_title);
+            $category->content_seo = Arr::get($data, 'content_seo', $category->content_seo);
             $category->meta_key = Arr::get($data, 'meta_key', $category->meta_key);
             $category->meta_description = Arr::get($data, 'meta_description', $category->meta_description);
 
