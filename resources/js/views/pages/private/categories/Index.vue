@@ -121,13 +121,15 @@ export default defineComponent({
         id: trans('labels.id_pound'),
         slug: 'Đường dẫn',
         name: trans('labels.name'),
+        order: 'Thứ tự ưu tiên',
         is_active: 'Hiển thị',
         show_dashboard: 'Hiển thị ở trang chủ',
         show_header: 'Hiển thị ở header',
       },
       sorting: {
         code: true,
-        name: true
+        name: true,
+        order: true,
       },
       pagination: {
         meta: null,
