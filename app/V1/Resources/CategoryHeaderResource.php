@@ -14,13 +14,18 @@ class CategoryHeaderResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      *
      * @return array
      */
     public function toArray($request)
     {
-        $data = $this->resource->toArray();
+        $data = [
+            'code'     => $this->code,
+            'name'     => $this->name,
+            'slug'     => $this->slug,
+            'is_actve' => $this->is_actve,
+        ];
         $data['image_url'] = $this->getFirstMediaUrl();
         if (!empty($this->resource->toArray()['products'])) {
             $data['products'] = ProductShortResource::collection($this->products);
