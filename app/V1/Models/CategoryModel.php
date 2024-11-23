@@ -47,19 +47,15 @@ class CategoryModel extends AbstractModel
             'descendants.products' => function ($query) {
                 $query->where('products.is_active', 1)
                     ->whereHas('media', function ($query) {
-                        // Điều kiện cho hình ảnh
-                        $query->where('collection_name', 'default');
-                    })->whereHas('media', function ($query) {
-                        // Điều kiện cho hình thu nhỏ
-                        $query->where('collection_name', 'thumb');
+                        $query->where('collection_name', 'default')
+                            ->where('collection_name', 'thumb');
                     });
             },
             'products'             => function ($query) {
                 $query->where('products.is_active', 1)
                     ->whereHas('media', function ($query) {
-                        $query->where('collection_name', 'default');
-                    })->whereHas('media', function ($query) {
-                        $query->where('collection_name', 'thumb');
+                        $query->where('collection_name', 'default')
+                            ->where('collection_name', 'thumb');
                     });
             },
         ])->where('slug', $slug)
@@ -68,16 +64,6 @@ class CategoryModel extends AbstractModel
         if (empty($item)) {
             return null;
         }
-
-        $item->load([
-            'descendants.products' => function ($query) {
-                $query->where('is_active', 1)
-                    ->whereHas('media', function ($query) {
-                        $query->where('collection_name', 'default')
-                            ->orWhere('collection_name', 'thumb'); // Sửa chỗ này để đảm bảo product có ít nhất một trong hai loại media
-                    });
-            },
-        ]);
 
 // Tạo một collection để giữ tất cả product ids
         $productIds = collect();

@@ -107,4 +107,8 @@ class Category extends Model implements HasMedia
         return 'categories';
     }
 
+    public function getDefaultOrderColumn()
+    {
+        return 'order';
+    }
 }
