@@ -240,13 +240,6 @@ class GenerateSitemap extends Command
             "changefreq" => "daily",
         ];
         $data[] = [
-            "url"        => "https://gak.vn/vi/gak-offcial",
-            "updated_at" => Carbon::now(),
-            "priority"   => 0.8,
-            "freq"       => "daily",
-            "changefreq" => "daily",
-        ];
-        $data[] = [
             "url"        => "https://gak.vn/vi/quy-dinh-thanh-toan",
             "updated_at" => Carbon::now(),
             "priority"   => 0.8,
