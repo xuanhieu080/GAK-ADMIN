@@ -21,21 +21,21 @@ export default defineComponent({
             }
             switch (props.theme) {
                 case 'success':
-                    value = 'bg-green-100 text-green-800 dark:bg-green-200 dark:text-green-900';
+                    value = 'bg-green-100 text-green-800';
                     break;
                 case 'info':
-                    value = 'bg-blue-100 text-blue-800 dark:bg-blue-200 dark:text-blue-900';
+                    value = 'bg-blue-100 text-blue-800';
                     break;
                 case 'warning':
-                    value = 'bg-orange-100 text-orange-800 dark:bg-orange-200 dark:text-orange-900';
+                    value = 'bg-orange-100 text-orange-800';
                     break;
                 case 'danger':
                 case 'alert':
                 case 'error':
-                    value = 'bg-red-100 text-red-800 dark:bg-red-200 dark:text-red-900';
+                    value = 'bg-red-100 text-red-800';
                     break;
                 default:
-                    value = 'bg-theme-100 text-theme-800 dark:bg-theme-200 dark:text-theme-900';
+                    value = 'bg-theme-100 text-theme-800 ';
                     break;
             }
             return value;

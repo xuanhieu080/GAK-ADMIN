@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TokenController;
+use App\Http\Controllers\TicketController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +44,8 @@ Route::middleware(['auth:sanctum', 'apply_locale'])->group(function () {
      * Auth related
      */
     Route::get('/users/auth', AuthController::class);
+    Route::get('tickets', [TicketController::class, 'index']);
+    Route::get('tickets/{ticket}', [TicketController::class, 'show']);
 
     /**
      * Users

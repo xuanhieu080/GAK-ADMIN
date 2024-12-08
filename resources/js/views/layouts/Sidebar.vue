@@ -111,11 +111,11 @@ watch(() => routeStore.name, () => {
   <!-- Desktop sidebar -->
   <aside
       :class="{'toggle-close': isToggleDesktop}"
-      class="sidebar fixed top-0 h-full z-50 hidden shadow w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block flex-shrink-0"
+      class="sidebar fixed top-0 h-full z-50 hidden shadow w-64 overflow-y-auto bg-white md:block flex-shrink-0"
   >
-    <div class="py-4 text-gray-500 dark:text-gray-400">
+    <div class="py-4 text-gray-500">
       <div class="flex content-center justify-between items-center px-7">
-        <router-link class="justify-center flex text-lg font-bold text-gray-800 dark:text-gray-200"
+        <router-link class="justify-center flex text-lg font-bold text-gray-800"
                      to="/"
         >
           <img class="img-fluid w-32 h-14" :src="configs.logo">
@@ -136,7 +136,7 @@ watch(() => routeStore.name, () => {
                         class="absolute inset-y-0 left-0 w-1 rounded-tr-lg rounded-br-lg"
                     ></span>
             <router-link :class="{'text-gray-800': routeName == 'home'}"
-                         class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
+                         class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800"
                          :to="{name:'home'}"
             >
                 <span class="menu-icon">
@@ -162,7 +162,7 @@ watch(() => routeStore.name, () => {
           <div class="menu-link">
             <div :class="{'text-gray-800': isToggleProduct}"
                  aria-haspopup="true"
-                 class="inline-flex px-7 py-3 items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+                 class="inline-flex px-7 py-3 items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800"
                  @click="toggleProductMenu">
                         <span class="inline-flex items-center">
 
@@ -191,7 +191,7 @@ watch(() => routeStore.name, () => {
             </div>
             <template v-if="isToggleProduct">
               <ul aria-label="submenu" class="submenu overflow-hidden text-sm font-medium text-gray-500">
-                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800">
                   <router-link
                       :class="{'active text-gray-800': routeName === 'categories.list' ||  routeName === 'categories.create' || routeName === 'categories.edit'}"
                       class="menu-link w-full"
@@ -202,7 +202,7 @@ watch(() => routeStore.name, () => {
                     <span>Nhóm sản phẩm</span>
                   </router-link>
                 </li>
-                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800">
                   <router-link
                       :class="{'active text-gray-800': routeName === 'products.list' || routeName === 'products.create' || routeName === 'products.edit'}"
                       class="menu-link w-full"
@@ -213,7 +213,7 @@ watch(() => routeStore.name, () => {
                     <span>Sản phẩm</span>
                   </router-link>
                 </li>
-                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800">
                   <router-link
                       :class="{'active text-gray-800': routeName === 'attribute_group.list' || routeName === 'attribute_group.create' || routeName === 'attribute_group.edit'}"
                       class="menu-link w-full"
@@ -224,7 +224,7 @@ watch(() => routeStore.name, () => {
                     <span>Nhóm thuộc tính</span>
                   </router-link>
                 </li>
-                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800">
                   <router-link
                       :class="{'active text-gray-800': routeName === 'attribute.list' || routeName === 'attribute.create' || routeName === 'attribute.edit'}"
                       class="menu-link w-full"
@@ -244,7 +244,7 @@ watch(() => routeStore.name, () => {
           <div class="menu-link">
             <div :class="{'text-gray-800': isTogglePost}"
                  aria-haspopup="true"
-                 class="inline-flex px-7 py-3 items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+                 class="inline-flex px-7 py-3 items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800"
                  @click="togglePostMenu">
                         <span class="inline-flex items-center">
                           <span class="menu-icon">
@@ -270,7 +270,7 @@ watch(() => routeStore.name, () => {
             </div>
             <template v-if="isTogglePost">
               <ul aria-label="submenu" class="submenu overflow-hidden text-sm font-medium text-gray-500">
-                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800">
                   <router-link
                       :class="{'active text-gray-800': routeName === 'post_groups.list' ||  routeName === 'post_groups.create' || routeName === 'post_groups.edit'}"
                       class="menu-link w-full"
@@ -281,7 +281,7 @@ watch(() => routeStore.name, () => {
                     <span>Nhóm Bài viết</span>
                   </router-link>
                 </li>
-                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800">
                   <router-link
                       :class="{'active text-gray-800': routeName === 'posts.list' ||  routeName === 'posts.create' || routeName === 'posts.edit'}"
                       class="menu-link w-full"
@@ -301,7 +301,7 @@ watch(() => routeStore.name, () => {
           <div class="menu-link">
             <div :class="{'text-gray-800': isTogglePage}"
                  aria-haspopup="true"
-                 class="inline-flex px-7 py-3 items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+                 class="inline-flex px-7 py-3 items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800"
                  @click="togglePageMenu">
                         <span class="inline-flex items-center">
                           <span class="menu-icon">
@@ -325,7 +325,7 @@ watch(() => routeStore.name, () => {
             </div>
             <template v-if="isTogglePage">
               <ul aria-label="submenu" class="submenu overflow-hidden text-sm font-medium text-gray-500">
-                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800">
                   <router-link
                       :class="{'active text-gray-800': routeName === 'page_groups.list' ||  routeName === 'page_groups.create' || routeName === 'page_groups.edit'}"
                       class="menu-link w-full"
@@ -336,7 +336,7 @@ watch(() => routeStore.name, () => {
                     <span>Nhóm trang</span>
                   </router-link>
                 </li>
-                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800">
                   <router-link
                       :class="{'active text-gray-800': routeName === 'pages.list' ||  routeName === 'pages.create' || routeName === 'pages.edit'}"
                       class="menu-link w-full"
@@ -360,7 +360,7 @@ watch(() => routeStore.name, () => {
               ></span>
             <router-link
                 :class="{'text-gray-800': routeName === 'users.list' || routeName === 'users.edit' || routeName === 'users.create'}"
-                class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
+                class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800"
                 :to="{name: 'users.list'}"
             >
 
@@ -386,7 +386,7 @@ watch(() => routeStore.name, () => {
               ></span>
             <router-link
                 :class="{'text-gray-800': routeName === 'customers.list' || routeName === 'customers.edit' || routeName === 'customers.create'}"
-                class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
+                class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800"
                 :to="{name: 'customers.list'}"
             >
 
@@ -412,7 +412,7 @@ watch(() => routeStore.name, () => {
               ></span>
             <router-link
                 :class="{'text-gray-800': routeName === 'orders.list' || routeName === 'orders.edit' || routeName === 'orders.create'}"
-                class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
+                class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800"
                 :to="{name: 'orders.list'}"
             >
 
@@ -436,7 +436,7 @@ watch(() => routeStore.name, () => {
               ></span>
             <router-link
                 :class="{'text-gray-800': routeName === 'supports.list' || routeName === 'supports.edit' || routeName === 'supports.create'}"
-                class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
+                class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800"
                 :to="{name: 'supports.list'}"
             >
                 <span class="menu-icon">
@@ -451,6 +451,30 @@ watch(() => routeStore.name, () => {
           </div>
         </li>
 
+
+        <li class="item menu-item">
+          <div class="menu-link px-7 py-3">
+              <span
+                  aria-hidden="true"
+                  class="absolute inset-y-0 left-0 w-1 rounded-tr-lg rounded-br-lg"
+              ></span>
+            <router-link
+                :class="{'text-gray-800': routeName === 'tickets.list' || routeName === 'tickets.edit'}"
+                class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800"
+                :to="{name: 'tickets.list'}"
+            >
+                <span class="menu-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                         stroke="currentColor" class="w-5 h-5">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155"/>
+                    </svg>
+                </span>
+              <span class="ml-4 menu-name">Đặt may</span>
+            </router-link>
+          </div>
+        </li>
+
         <li class="item menu-item">
           <div class="menu-link px-7 py-3">
               <span
@@ -459,7 +483,7 @@ watch(() => routeStore.name, () => {
               ></span>
             <router-link
                 :class="{'text-gray-800': routeName === 'seo_contents.list' || routeName === 'seo_contents.edit' || routeName === 'seo_contents.create'}"
-                class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
+                class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800"
                 :to="{name: 'seo_contents.list'}"
             >
                 <span class="menu-icon">
@@ -479,7 +503,7 @@ watch(() => routeStore.name, () => {
                   class="absolute inset-y-0 left-0 w-1 rounded-tr-lg rounded-br-lg"
               ></span>
             <router-link :class="{'text-gray-800': routeName === 'configs.list' || routeName === 'configs.edit'}"
-                         class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
+                         class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800"
                          :to="{name: 'configs.list'}"
             >
                 <span class="menu-icon">
@@ -513,7 +537,7 @@ watch(() => routeStore.name, () => {
   <aside
       v-on-click-outside="closeToggle"
       v-show="!isToggleMenu"
-      class="sidebar fixed inset-y-0 z-20 flex-shrink-0 w-64 mt-16 overflow-y-auto bg-white dark:bg-gray-800 md:hidden"
+      class="sidebar fixed inset-y-0 z-20 flex-shrink-0 w-64 mt-16 overflow-y-auto bg-white md:hidden"
       x-transition:enter="transition ease-in-out duration-150"
       x-transition:enter-end="opacity-100"
       x-transition:enter-start="opacity-0 transform -translate-x-20"
@@ -521,9 +545,9 @@ watch(() => routeStore.name, () => {
       x-transition:leave-end="opacity-0 transform -translate-x-20"
       x-transition:leave-start="opacity-100"
   >
-    <div class="py-4 text-gray-500 dark:text-gray-400">
+    <div class="py-4 text-gray-500">
       <div class="flex content-center justify-between items-center px-7">
-        <router-link class="justify-center flex text-lg font-bold text-gray-800 dark:text-gray-200"
+        <router-link class="justify-center flex text-lg font-bold text-gray-800"
                      to="/"
         >
           <img class="img-fluid w-32 h-14" :src="configs.logo">
@@ -544,7 +568,7 @@ watch(() => routeStore.name, () => {
                         class="absolute inset-y-0 left-0 w-1 rounded-tr-lg rounded-br-lg"
                     ></span>
             <router-link :class="{'text-gray-800': routeName == 'home'}"
-                         class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
+                         class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800"
                          :to="{name:'home'}"
             >
                 <span class="menu-icon">
@@ -570,7 +594,7 @@ watch(() => routeStore.name, () => {
           <div class="menu-link">
             <div :class="{'text-gray-800': isToggleProduct}"
                  aria-haspopup="true"
-                 class="inline-flex px-7 py-3 items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+                 class="inline-flex px-7 py-3 items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800"
                  @click="toggleProductMenu">
                         <span class="inline-flex items-center">
 
@@ -599,7 +623,7 @@ watch(() => routeStore.name, () => {
             </div>
             <template v-if="isToggleProduct">
               <ul aria-label="submenu" class="submenu overflow-hidden text-sm font-medium text-gray-500">
-                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800">
                   <router-link
                       :class="{'active text-gray-800': routeName === 'categories.list' ||  routeName === 'categories.create' || routeName === 'categories.edit'}"
                       class="menu-link w-full"
@@ -610,7 +634,7 @@ watch(() => routeStore.name, () => {
                     <span>Nhóm sản phẩm</span>
                   </router-link>
                 </li>
-                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800">
                   <router-link
                       :class="{'active text-gray-800': routeName === 'products.list' || routeName === 'products.create' || routeName === 'products.edit'}"
                       class="menu-link w-full"
@@ -621,7 +645,7 @@ watch(() => routeStore.name, () => {
                     <span>Sản phẩm</span>
                   </router-link>
                 </li>
-                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800">
                   <router-link
                       :class="{'active text-gray-800': routeName === 'attribute_group.list' || routeName === 'attribute_group.create' || routeName === 'attribute_group.edit'}"
                       class="menu-link w-full"
@@ -632,7 +656,7 @@ watch(() => routeStore.name, () => {
                     <span>Nhóm thuộc tính</span>
                   </router-link>
                 </li>
-                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800">
                   <router-link
                       :class="{'active text-gray-800': routeName === 'attribute.list' || routeName === 'attribute.create' || routeName === 'attribute.edit'}"
                       class="menu-link w-full"
@@ -652,7 +676,7 @@ watch(() => routeStore.name, () => {
           <div class="menu-link">
             <div :class="{'text-gray-800': isTogglePost}"
                  aria-haspopup="true"
-                 class="inline-flex px-7 py-3 items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+                 class="inline-flex px-7 py-3 items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800"
                  @click="togglePostMenu">
                         <span class="inline-flex items-center">
                           <span class="menu-icon">
@@ -678,7 +702,7 @@ watch(() => routeStore.name, () => {
             </div>
             <template v-if="isTogglePost">
               <ul aria-label="submenu" class="submenu overflow-hidden text-sm font-medium text-gray-500">
-                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800">
                   <router-link
                       :class="{'active text-gray-800': routeName === 'post_groups.list' ||  routeName === 'post_groups.create' || routeName === 'post_groups.edit'}"
                       class="menu-link w-full"
@@ -689,7 +713,7 @@ watch(() => routeStore.name, () => {
                     <span>Nhóm Bài viết</span>
                   </router-link>
                 </li>
-                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800">
                   <router-link
                       :class="{'active text-gray-800': routeName === 'posts.list' ||  routeName === 'posts.create' || routeName === 'posts.edit'}"
                       class="menu-link w-full"
@@ -709,7 +733,7 @@ watch(() => routeStore.name, () => {
           <div class="menu-link">
             <div :class="{'text-gray-800': isTogglePage}"
                  aria-haspopup="true"
-                 class="inline-flex px-7 py-3 items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+                 class="inline-flex px-7 py-3 items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800"
                  @click="togglePageMenu">
                         <span class="inline-flex items-center">
                           <span class="menu-icon">
@@ -733,7 +757,7 @@ watch(() => routeStore.name, () => {
             </div>
             <template v-if="isTogglePage">
               <ul aria-label="submenu" class="submenu overflow-hidden text-sm font-medium text-gray-500">
-                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800">
                   <router-link
                       :class="{'active text-gray-800': routeName === 'page_groups.list' ||  routeName === 'page_groups.create' || routeName === 'page_groups.edit'}"
                       class="menu-link w-full"
@@ -744,7 +768,7 @@ watch(() => routeStore.name, () => {
                     <span>Nhóm trang</span>
                   </router-link>
                 </li>
-                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                <li class="p-2 px-9 transition-colors duration-150 hover:text-gray-800">
                   <router-link
                       :class="{'active text-gray-800': routeName === 'pages.list' ||  routeName === 'pages.create' || routeName === 'pages.edit'}"
                       class="menu-link w-full"
@@ -768,7 +792,7 @@ watch(() => routeStore.name, () => {
               ></span>
             <router-link
                 :class="{'text-gray-800': routeName === 'users.list' || routeName === 'users.edit' || routeName === 'users.create'}"
-                class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
+                class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800"
                 :to="{name: 'users.list'}"
             >
 
@@ -794,7 +818,7 @@ watch(() => routeStore.name, () => {
               ></span>
             <router-link
                 :class="{'text-gray-800': routeName === 'customers.list' || routeName === 'customers.edit' || routeName === 'customers.create'}"
-                class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
+                class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800"
                 :to="{name: 'customers.list'}"
             >
 
@@ -820,7 +844,7 @@ watch(() => routeStore.name, () => {
               ></span>
             <router-link
                 :class="{'text-gray-800': routeName === 'orders.list' || routeName === 'orders.edit' || routeName === 'orders.create'}"
-                class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
+                class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800"
                 :to="{name: 'orders.list'}"
             >
 
@@ -844,7 +868,7 @@ watch(() => routeStore.name, () => {
               ></span>
             <router-link
                 :class="{'text-gray-800': routeName === 'supports.list' || routeName === 'supports.edit' || routeName === 'supports.create'}"
-                class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
+                class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800"
                 :to="{name: 'supports.list'}"
             >
                 <span class="menu-icon">
@@ -858,6 +882,28 @@ watch(() => routeStore.name, () => {
             </router-link>
           </div>
         </li>
+        <li class="item menu-item">
+          <div class="menu-link px-7 py-3">
+              <span
+                  aria-hidden="true"
+                  class="absolute inset-y-0 left-0 w-1 rounded-tr-lg rounded-br-lg"
+              ></span>
+            <router-link
+                :class="{'text-gray-800': routeName === 'tickets.list' || routeName === 'tickets.edit'}"
+                class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800"
+                :to="{name: 'tickets.list'}"
+            >
+                <span class="menu-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                         stroke="currentColor" class="w-5 h-5">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155"/>
+                    </svg>
+                </span>
+              <span class="ml-4 menu-name">Đặt may</span>
+            </router-link>
+          </div>
+        </li>
 
           <li class="item menu-item">
               <div class="menu-link px-7 py-3">
@@ -867,7 +913,7 @@ watch(() => routeStore.name, () => {
               ></span>
                   <router-link
                       :class="{'text-gray-800': routeName === 'seo_contents.list' || routeName === 'seo_contents.edit' || routeName === 'seo_contents.create'}"
-                      class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
+                      class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800"
                       :to="{name: 'seo_contents.list'}"
                   >
                 <span class="menu-icon">
@@ -887,7 +933,7 @@ watch(() => routeStore.name, () => {
                   class="absolute inset-y-0 left-0 w-1 rounded-tr-lg rounded-br-lg"
               ></span>
             <router-link :class="{'text-gray-800': routeName === 'configs.list' || routeName === 'configs.edit'}"
-                         class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
+                         class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800"
                          :to="{name: 'configs.list'}"
             >
                 <span class="menu-icon">

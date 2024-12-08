@@ -30,9 +30,9 @@ function toggleSideMenuSidebar() {
 }
 </script>
 <template>
-  <header class="py-4 bg-white shadow-md dark:bg-gray-800  border-b">
+  <header class="py-4 bg-white shadow-md  border-b">
     <div
-        class="container flex items-center justify-between h-full px-6 mx-auto text-purple-600 dark:text-purple-300"
+        class="container flex items-center justify-between h-full px-6 mx-auto text-purple-600"
     >
       <!-- Mobile hamburger -->
       <button
@@ -82,12 +82,12 @@ function toggleSideMenuSidebar() {
                 x-transition:leave-end="opacity-0"
                 @click.away="closeToggle"
                 @keydown.escape="closeToggle"
-                class="absolute right-0 w-56 p-2 mt-2 space-y-2 text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:border-gray-700 dark:text-gray-300 dark:bg-gray-700"
+                class="absolute right-0 w-56 p-2 mt-2 space-y-2 text-gray-600 bg-white border border-gray-100 rounded-md shadow-md"
                 aria-label="submenu"
             >
               <li class="flex">
                 <router-link :to="{name: 'profile'}"
-                             class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+                             class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800"
                 >
                   <svg
                       class="w-4 h-4 mr-3"
@@ -109,7 +109,7 @@ function toggleSideMenuSidebar() {
               <li class="flex">
                 <a
                     v-on:click="logout"
-                    class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+                    class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800"
                     href="#"
                 >
                   <svg

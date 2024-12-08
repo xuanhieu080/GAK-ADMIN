@@ -63,6 +63,10 @@ import {default as PageCategory} from "@/views/pages/private/categories/Index.vu
 import {default as PageCategoryEdit} from "@/views/pages/private/categories/Edit.vue";
 import {default as PageCategoryCreate} from "@/views/pages/private/categories/Create.vue";
 
+// Ticket
+import {default as Ticket} from "@/views/pages/private/tickets/Index.vue";
+import {default as TicketEdit} from "@/views/pages/private/tickets/Edit.vue";
+
 import abilities from "@/stub/abilities";
 
 const routes = [
@@ -421,6 +425,23 @@ const routes = [
                 path: ":id/edit",
                 meta: {requiresAuth: true},
                 component: PageOrderEdit,
+            }
+        ]
+    },
+    {
+        path: "/tickets",
+        children: [
+            {
+                name: "tickets.list",
+                path: "list",
+                meta: {requiresAuth: true},
+                component: Ticket,
+            },
+            {
+                name: "tickets.edit",
+                path: ":id/edit",
+                meta: {requiresAuth: true},
+                component: TicketEdit,
             }
         ]
     },

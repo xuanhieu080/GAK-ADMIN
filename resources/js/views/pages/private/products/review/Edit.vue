@@ -1,14 +1,14 @@
 <template>
   <DialogModal :show="open" @close="closeModal">
     <template #title>
-      <div class="flex justify-between items-start p-4 rounded-t border-b dark:border-gray-600">
-        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+      <div class="flex justify-between items-start p-4 rounded-t border-b">
+        <h3 class="text-xl font-semibold text-gray-900">
           Cập nhật review
         </h3>
         <button
             @click="closeModal"
             type="button"
-            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
             data-modal-toggle="defaultModal">
           <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                xmlns="http://www.w3.org/2000/svg">
