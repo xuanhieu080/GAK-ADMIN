@@ -4,11 +4,9 @@ namespace App\Services\Ticket;
 
 use App\Http\Resources\TicketResource;
 use App\Models\Ticket;
-use App\Supports\HasImage;
+use App\V1\Models\AbstractModel;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 
 class TicketService
 {
@@ -39,19 +37,20 @@ class TicketService
 
         $query = Ticket::query();
 
-        if (!empty($data['search'])) {
-            $search = $data['search'];
-            $query = $query->where(function ($qr) use ($search) {
-                $qr->where('name', 'like', "%$search%")
-                    ->orWhere('phone', 'like', "%$search%")
-                    ->orWhere('email', 'like', "%$search%");
-            });
+        if (!empty($data['filters'])) {
+            $this->filter($query, $data['filters']);
         }
-
         if (!empty($data['sort_by']) && !empty($data['sort'])) {
             $query = $query->orderBy($data['sort_by'], $data['sort']);
+        } else {
+            $query = $query->latest();
         }
 
         return TicketResource::collection($query->paginate($per_page));
+    }
+
+    private function filter(Builder &$query, $filters)
+    {
+        $query->filter(Arr::except($filters, []));
     }
 }

@@ -1,11 +1,17 @@
 <template>
   <Page :title="page.title" :breadcrumbs="page.breadcrumbs" :actions="page.actions" @action="onPageAction">
 
-    <template #filters v-if="page.toggleFilters">
+    <template #filters>
       <Filters @clear="onFiltersClear">
         <FiltersRow>
           <FiltersCol>
-            <TextInput name="name" label="Tên" v-model="mainQuery.filters.name.value"></TextInput>
+            <TextInput name="name" :label="trans('labels.name')" v-model="mainQuery.filters.name.value"></TextInput>
+          </FiltersCol>
+          <FiltersCol>
+            <TextInput name="phone" :label="trans('labels.phone')" v-model="mainQuery.filters.phone.value"></TextInput>
+          </FiltersCol>
+          <FiltersCol>
+            <TextInput name="email" :label="trans('labels.email')" v-model="mainQuery.filters.email.value"></TextInput>
           </FiltersCol>
         </FiltersRow>
       </Filters>
@@ -42,7 +48,15 @@ const mainQuery = reactive({
   search: '',
   sort: '',
   filters: {
-    search: {
+    phone: {
+      value: '',
+      comparison: '='
+    },
+    name: {
+      value: '',
+      comparison: '='
+    },
+    email: {
       value: '',
       comparison: '='
     }
@@ -74,6 +88,12 @@ const table = reactive({
   pagination: {
     meta: null,
     links: null,
+  },
+  sorting: {
+    name: true,
+    email: true,
+    phone: true,
+    created_at: true,
   },
   actions: {
     edit: {
