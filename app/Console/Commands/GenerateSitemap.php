@@ -50,13 +50,7 @@ class GenerateSitemap extends Command
 //            "freq" => "daily",
 //            "changefreq" => "daily",
 //        ];
-        $data[] = [
-            "url"        => "https://gak.vn/vi/collection/dong-phuc-cong-ty",
-            "updated_at" => Carbon::now(),
-            "priority"   => 0.8,
-            "freq"       => "daily",
-            "changefreq" => "daily",
-        ];
+
 //        $data[] = [
 //            "url" => "https://gak.vn/en/collection/dong-phuc-cong-ty",
 //            "updated_at" => Carbon::now(),
