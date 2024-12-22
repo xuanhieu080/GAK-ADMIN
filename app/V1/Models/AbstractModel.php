@@ -691,6 +691,7 @@ abstract class AbstractModel
         if (empty($attributes['sort'])) {
             return false;
         }
+
         foreach ($attributes['sort'] as $key => $value) {
 
             if (!$value) {

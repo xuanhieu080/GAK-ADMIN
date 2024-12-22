@@ -31,17 +31,21 @@ class ProductModel extends AbstractModel
         $limit = Arr::get($input, 'limit', 999);
         $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
         $input['is_active'] = 1;
-        $sorts = ['id' => 'desc'];
+
+        $sorts = [];
         if (!empty($sort['desc']) && is_array($sort['desc'])) {
             $sorts = array_merge($sorts, array_fill_keys($sort['desc'], 'desc'));
         } elseif (!empty($sort['asc']) && is_array($sort['asc'])) {
             $sorts = array_merge($sorts, array_fill_keys($sort['asc'], 'asc'));
+        } else {
+            $sorts = ['id' => 'desc'];
         }
 
         $input['sort'] = $sorts;
         if (!empty($input['search'])) {
             $input['name'] = ['like' => $input['search']];
         }
+
         $result = $this->search($input,
             [
                 'attributeVariants',
