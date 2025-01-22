@@ -65,6 +65,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('/post-groups', [\App\V1\Controllers\PostGroupController::class, 'index']);
     Route::get('/post-groups/{slug}', [\App\V1\Controllers\PostGroupController::class, 'show']);
     Route::get('/categories', [\App\V1\Controllers\CategoryController::class, 'index']);
+//    Route::get('/category-products', [\App\V1\Controllers\CategoryController::class, 'categoryProduct']);
     Route::get('/categories/all', [\App\V1\Controllers\CategoryController::class, 'getCategoryAll']);
     Route::get('/categories/search-all', [\App\V1\Controllers\CategoryController::class, 'getSearchAll']);
     Route::get('/categories/header', [\App\V1\Controllers\CategoryController::class, 'getCategoryHeader']);
