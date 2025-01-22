@@ -112,13 +112,18 @@ class CategoryModel extends AbstractModel
                     ->whereHas('media', function ($query) {
                         // Điều kiện cho hình ảnh
                         $query->where('collection_name', 'default');
-                    })->limit($limit);
+                    })->whereHas('media', function ($query) {
+                        // Điều kiện cho hình thu nhỏ
+                        $query->where('collection_name', 'thumb');
+                    });
             },
             'products'             => function ($query) use ($limit) {
                 $query->where('products.is_active', 1)
                     ->whereHas('media', function ($query) {
                         $query->where('collection_name', 'default');
-                    })->limit($limit);
+                    })->whereHas('media', function ($query) {
+                        $query->where('collection_name', 'thumb');
+                    });
             },
         ])->where('is_active', 1)
             ->get();
@@ -129,6 +134,8 @@ class CategoryModel extends AbstractModel
                 $query->where('is_active', 1)
                     ->whereHas('media', function ($query) {
                         $query->where('collection_name', 'default');
+                    })->whereHas('media', function ($query) {
+                        $query->where('collection_name', 'thumb');
                     })->limit($limit);
             }
         ])->each(function ($category) use ($limit) {
