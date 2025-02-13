@@ -406,7 +406,7 @@ class GenerateSitemap extends Command
 //        }
     }
 
-    public function postGroup($priority = 0.5)
+    public function postGroup($priority = 0.8)
     {
         $result = PostGroup::query()
             ->where('is_active', 1)
