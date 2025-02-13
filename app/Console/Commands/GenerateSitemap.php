@@ -257,6 +257,7 @@ class GenerateSitemap extends Command
         $this->catrgory();
         $this->post();
         $this->page();
+        $this->postGroup();
 
         $sitemap = SitemapIndex::create("https://gak.vn");
         foreach ($this->urls as $url) {
@@ -268,7 +269,7 @@ class GenerateSitemap extends Command
     }
 
 
-    public function product($priority = 0.6)
+    public function product($priority = 0.8)
     {
         $productModel = new ProductModel();
 
