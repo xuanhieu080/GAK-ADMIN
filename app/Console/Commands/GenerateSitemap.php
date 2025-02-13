@@ -454,7 +454,7 @@ class GenerateSitemap extends Command
         $dataEn = array_chunk($dataEn, 200);
 
         foreach ($data as $key => $item) {
-            $this->generateSitemap($item, "/home/DEV-GAK-UI/public/vi/article$key.xml", $priority);
+            $this->generateSitemap($item, "/home/DEV-GAK-UI/public/vi/blog$key.xml", $priority);
             $this->urls[] = "vi/article$key.xml";
         }
 //
