@@ -455,7 +455,7 @@ class GenerateSitemap extends Command
 
         foreach ($data as $key => $item) {
             $this->generateSitemap($item, "/home/DEV-GAK-UI/public/vi/blog$key.xml", $priority);
-            $this->urls[] = "vi/article$key.xml";
+            $this->urls[] = "vi/blog$key.xml";
         }
 //
 //        foreach ($dataEn as $key => $item) {
