@@ -23,6 +23,12 @@ class UpdateRequest extends BaseRequest
                 'max:255',
                 Rule::unique('attributes', 'name')->ignore($this->route('attribute')->id)
             ],
+            'name_en'     => [
+                'nullable',
+                'string',
+                'max:255',
+                Rule::unique('attributes', 'name_en')->ignore($this->route('attribute')->id)
+            ],
             'group_id' => 'required|exists:attribute_groups,id',
         ];
         if (!empty($this->group_id)) {

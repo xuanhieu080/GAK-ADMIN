@@ -100,7 +100,7 @@ class PageGroupController extends Controller
      */
     public function edit(PageGroup $page_group)
     {
-        $this->authorize('edit', PageGroup::class);
+//        $this->authorize('edit', PageGroup::class);
 
         return $this->show($page_group);
     }
@@ -116,7 +116,7 @@ class PageGroupController extends Controller
      */
     public function update(UpdateRequest $request, PageGroup $page_group)
     {
-        $this->authorize('edit', PageGroup::class);
+//        $this->authorize('edit', PageGroup::class);
 
         $data = $request->validated();
         if ($item = $this->pageGroupService->update($page_group, $data)) {
@@ -136,7 +136,7 @@ class PageGroupController extends Controller
      */
     public function destroy(DestroyUserRequest $request, PageGroup $page_group)
     {
-        $this->authorize('delete', PageGroup::class);
+//        $this->authorize('delete', PageGroup::class);
 
         if ($this->pageGroupService->delete($page_group)) {
             return $this->responseDeleteSuccess(['model' => $page_group]);

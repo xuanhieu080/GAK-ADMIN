@@ -3,8 +3,10 @@
         :is-loading="page.loading">
     <Panel>
       <Form id="edit-page-group">
-        <TextInput class="mb-4" type="text" name="name" v-model="form.name" error-input="name"
+        <TextInput class="mb-4" type="text" :required="true" name="name" v-model="form.name" error-input="name"
                    label="Tên"/>
+        <TextInput class="mb-4" type="text" name="name_en" v-model="form.name_en" error-input="name_en"
+                   label="Tên tiếng anh"/>
         <TextInput class="mb-4" type="number" :min="1" :max="100" name="column" v-model="form.column"
                    error-input="column" label="Thứ tự cột"/>
         <Toggle class="mb-4" v-model="form.is_active" :checked="form.is_active" error-input="is_active"
@@ -36,6 +38,7 @@ const route = useRoute();
 const item = ref(null);
 const form = reactive({
   name: '',
+  name_en: '',
   column: 1,
   is_active: false,
 });

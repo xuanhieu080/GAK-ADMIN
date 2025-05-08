@@ -88,6 +88,7 @@ class PageGroupService
     {
         $data = $this->clean($data);
         $pageGroup->name = Arr::get($data, 'name', $pageGroup->name);
+        $pageGroup->name_en = Arr::get($data, 'name_en', $pageGroup->name_en);
         $pageGroup->column = Arr::get($data, 'column', $pageGroup->column);
         $pageGroup->is_active = filter_var(Arr::get($data, 'is_active', $pageGroup->is_active), FILTER_VALIDATE_BOOLEAN);
 

@@ -107,6 +107,7 @@ export default defineComponent({
             headers: {
                 id: trans('labels.id_pound'),
                 title: trans('labels.title'),
+                title_en: 'Tiêu đề tiếng anh',
                 slug: 'Đường dẫn',
                 author_name: trans('labels.author_name'),
                 group_name: 'Nhóm',

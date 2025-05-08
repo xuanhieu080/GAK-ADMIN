@@ -25,8 +25,11 @@ class Product extends Model implements HasMedia
         'id',
         'code',
         'slug',
+        'slug_en',
         'name',
+        'name_en',
         'description',
+        'description_en',
         'price',
         'category_id',
         'qty',
@@ -34,8 +37,11 @@ class Product extends Model implements HasMedia
         'qty_sold',
         'priority',
         'meta_title',
+        'meta_title_en',
         'meta_description',
+        'meta_description_en',
         'meta_key',
+        'meta_key_en',
         'video_link',
         'price_discount',
         'discount',
@@ -46,7 +52,8 @@ class Product extends Model implements HasMedia
         'rate',
         'rate_count',
         'highlight_image',
-        'highlight'
+        'highlight',
+        'highlight_en'
     ];
 
     protected $casts = [

@@ -2,70 +2,117 @@
   <Page :title="page.title" :breadcrumbs="page.breadcrumbs" :actions="page.actions" @action="onAction">
     <Panel>
       <Form id="create-page" @submit.prevent="onSubmit">
-        <TextInput class="mb-4" type="text" :required="true" error-input="name" name="name" v-model="form.name"
-                   label="Tên"/>
-        <TextInput v-if="!form.is_button" class="mb-4" type="text" error-input="title" name="title" v-model="form.title"
-                   :label="trans('labels.title')"/>
-        <TextInput v-if="form.is_button" class="mb-4" type="text" :required="true" error-input="link" name="link" v-model="form.link"
-                   label="Liên kết"/>
-        <TextInput v-if="!form.is_button" class="mb-4" type="text" :required="true" error-input="slug" name="slug" v-model="form.slug"
-                   label="Slug"/>
-        <Dropdown class="mb-4" name="group" error-input="group_id" :multiple="false"
-                  server="page-groups" :label="trans('Nhóm trang')" :placeholder="trans('Nhóm trang')"
-                  :server-search-min-characters="0"
-                  v-model="group"></Dropdown>
-        <div v-if="!form.is_button" class="flex justify-center">
-          <div class="w-[1000px]">
-            <FilePond
-                ref="pondElement"
-                class="product-image"
-                label-idle="Kéo thả hoặc chọn hình ảnh tại đây"
-                accepted-file-types="image/*"
-                label-max-file-size-exceeded="File quá lớn"
-                :max-file-size="maxFileSize"
-                allow-file-size-validation="true"
-                class-name="upload-job-image flex items-center justify-center w-full"
-                name="image"
-                :label-max-file-size="'Kích thước tệp tối đa là ' +  maxFileSize"
-                required="true"
-                credits="false"
-                :accepted-file-types="acceptedFileTypes"
-                :label-file-type-not-allowed="'Invalid file format'"
-                :file-validate-type-label-expected-types="'Định dạng cho phép {format}'"
-                v-on:addfile="getImage"
-                v-on:removefile="removeImage"
-            />
-            <span v-if="alertStore.errors['image']" class="text-xs tracking-wide text-red-600">{{
-                alertStore.errors['image'][0]
-              }}</span>
+        <Tab :tabs="tabs" @set-index="updateTabIndex" :active-index="activeTab">
+          <div v-show="activeTab === 0">
+            <Dropdown class="mb-4" name="group" error-input="group_id" :multiple="false"
+                      server="page-groups" :label="trans('Nhóm trang')" :placeholder="trans('Nhóm trang')"
+                      :server-search-min-characters="0"
+                      v-model="group"></Dropdown>
+            <div v-if="!form.is_button" class="flex justify-center">
+              <div class="w-[1000px]">
+                <FilePond
+                    ref="pondElement"
+                    class="product-image"
+                    label-idle="Kéo thả hoặc chọn hình ảnh tại đây"
+                    accepted-file-types="image/*"
+                    label-max-file-size-exceeded="File quá lớn"
+                    :max-file-size="maxFileSize"
+                    allow-file-size-validation="true"
+                    class-name="upload-job-image flex items-center justify-center w-full"
+                    name="image"
+                    :label-max-file-size="'Kích thước tệp tối đa là ' +  maxFileSize"
+                    required="true"
+                    credits="false"
+                    :accepted-file-types="acceptedFileTypes"
+                    :label-file-type-not-allowed="'Invalid file format'"
+                    :file-validate-type-label-expected-types="'Định dạng cho phép {format}'"
+                    v-on:addfile="getImage"
+                    v-on:removefile="removeImage"
+                />
+                <span v-if="alertStore.errors['image']" class="text-xs tracking-wide text-red-600">{{
+                    alertStore.errors['image'][0]
+                  }}</span>
+              </div>
+            </div>
+            <Toggle class="mb-4" v-model="form.show_header" :checked="form.show_header" error-input="show_header"
+                    name="show_header"
+                    label="Hiển thị ở header"/>
+            <Toggle class="mb-4" v-model="form.is_button" :checked="form.is_button" error-input="is_button"
+                    name="is_button"
+                    label="Loại liên kết"/>
+            <Toggle class="mb-4" v-model="form.is_active" :checked="form.is_active" error-input="is_active"
+                    name="is_active"
+                    :label="trans('labels.show')"/>
           </div>
-        </div>
-        <div v-if="!form.is_button" class="mb-4">
-          <CkEditorCustom :content="form.description" @updateData="(value) => updateData(value)" />
-          <span v-if="alertStore.errors['description']" class="text-xs tracking-wide text-red-600">{{
-              alertStore.errors['description'][0]
-            }}</span>
-        </div>
-        <TextInput v-if="!form.is_button" class="mb-4" type="text" error-input="description_short" name="description_short"
-                   v-model="form.description_short"
-                   label="Mô tả ngắn"/>
-        <TextInput v-if="!form.is_button" class="mb-4" type="text" :required="true" error-input="meta_title" name="name"
-                   v-model="form.meta_title"
-                   label="Meta title"/>
-        <TextInput v-if="!form.is_button" class="mb-4" type="textarea" :required="true" :rows="5" name="meta_description"
-                   v-model="form.meta_description"
-                   error-input="meta_description" label="Meta description"/>
-        <TextInput v-if="!form.is_button" class="mb-4" type="text" :required="true" error-input="meta_key" name="name" v-model="form.meta_key"
-                   label="Meta key"/>
-        <Toggle class="mb-4" v-model="form.show_header" :checked="form.show_header" error-input="show_header"
-                name="show_header"
-                label="Hiển thị ở header"/>
-        <Toggle class="mb-4" v-model="form.is_button" :checked="form.is_button" error-input="is_button"
-                name="is_button"
-                label="Loại liên kết"/>
-        <Toggle class="mb-4" v-model="form.is_active" :checked="form.is_active" error-input="is_active"
-                name="is_active"
-                :label="trans('labels.show')"/>
+          <div v-show="activeTab === 1">
+            <TextInput class="mb-4" type="text" :required="true" error-input="name" name="name" v-model="form.name"
+                       label="Tên"/>
+            <TextInput v-if="!form.is_button" class="mb-4" type="text" error-input="title" name="title"
+                       v-model="form.title"
+                       :label="trans('labels.title')"/>
+            <TextInput v-if="form.is_button" class="mb-4" type="text" :required="true" error-input="link" name="link"
+                       v-model="form.link"
+                       label="Liên kết"/>
+            <TextInput v-if="!form.is_button" class="mb-4" type="text" :required="true" error-input="slug" name="slug"
+                       v-model="form.slug"
+                       label="Slug"/>
+            <div v-if="!form.is_button" class="mb-4">
+              <CkEditorCustom :content="form.description" @updateData="(value) => updateData(value)"/>
+              <span v-if="alertStore.errors['description']" class="text-xs tracking-wide text-red-600">{{
+                  alertStore.errors['description'][0]
+                }}</span>
+            </div>
+            <TextInput v-if="!form.is_button" class="mb-4" type="text" error-input="description_short"
+                       name="description_short"
+                       v-model="form.description_short"
+                       label="Mô tả ngắn"/>
+            <TextInput v-if="!form.is_button" class="mb-4" type="text" :required="true" error-input="meta_title"
+                       name="meta_title"
+                       v-model="form.meta_title"
+                       label="Meta title"/>
+            <TextInput v-if="!form.is_button" class="mb-4" type="textarea" :required="true" :rows="5"
+                       name="meta_description"
+                       v-model="form.meta_description"
+                       error-input="meta_description" label="Meta description"/>
+            <TextInput v-if="!form.is_button" class="mb-4" type="text" :required="true" error-input="meta_key"
+                       name="meta_key" v-model="form.meta_key"
+                       label="Meta key"/>
+          </div>
+          <div v-show="activeTab === 2">
+            <TextInput class="mb-4" type="text" error-input="name_en" name="name_en" v-model="form.name_en"
+                       label="Tên"/>
+            <TextInput v-if="!form.is_button" class="mb-4" type="text" error-input="title_en" name="title_en"
+                       v-model="form.title_en"
+                       :label="trans('labels.title')"/>
+            <TextInput v-if="form.is_button" class="mb-4" type="text" error-input="link_en" name="link_en"
+                       v-model="form.link_en"
+                       label="Liên kết"/>
+            <TextInput v-if="!form.is_button" class="mb-4" type="text" error-input="slug_en" name="slug_en"
+                       v-model="form.slug_en"
+                       label="Slug"/>
+            <div v-if="!form.is_button" class="mb-4">
+              <CkEditorCustom :content="form.description_en" @updateData="(value) => updateDataEn(value)"/>
+              <span v-if="alertStore.errors['description_en']" class="text-xs tracking-wide text-red-600">{{
+                  alertStore.errors['description_en'][0]
+                }}</span>
+            </div>
+            <TextInput v-if="!form.is_button" class="mb-4" type="text" error-input="description_short_en"
+                       name="description_short_en"
+                       v-model="form.description_short_en"
+                       label="Mô tả ngắn"/>
+            <TextInput v-if="!form.is_button" class="mb-4" type="text" error-input="meta_title_en"
+                       name="meta_title_en"
+                       v-model="form.meta_title_en"
+                       label="Meta title"/>
+            <TextInput v-if="!form.is_button" class="mb-4" type="textarea" :rows="5"
+                       name="meta_description_en"
+                       v-model="form.meta_description_en"
+                       error-input="meta_description_en" label="Meta description"/>
+            <TextInput v-if="!form.is_button" class="mb-4" type="text" error-input="meta_key_en"
+                       name="meta_key_en" v-model="form.meta_key_en"
+                       label="Meta key"/>
+          </div>
+        </Tab>
       </Form>
     </Panel>
   </Page>
@@ -103,6 +150,7 @@ import 'filepond/dist/filepond.min.css';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css';
 import PageService from "@/services/PageService";
 import CkEditorCustom from "@/views/components/CkEditorCustom.vue";
+import Tab from "@/views/components/Tab.vue";
 
 
 // Create FilePond component
@@ -117,19 +165,28 @@ const acceptedFileTypes = 'image/*';
 const alertStore = useAlertStore();
 const form = reactive({
   name: '',
+  name_en: '',
   title: '',
+  title_en: '',
   slug: '',
+  slug_en: '',
   image: '',
   description: '',
+  description_en: '',
   link: '',
+  link_en: '',
   description_short: '',
+  description_short_en: '',
   group_id: null,
   is_active: false,
   show_header: false,
   is_button: false,
   meta_title: null,
+  meta_title_en: null,
   meta_description: null,
+  meta_description_en: null,
   meta_key: null,
+  meta_key_en: null,
 });
 
 const group = ref();
@@ -140,6 +197,16 @@ const options = ref({
   theme: 'snow',
   contentType: 'html',
 });
+const tabs = ref([
+  {title: 'Thông tin chung', content: '<p>Content for Tab 1</p>'},
+  {title: 'Tiếng Việt', content: '<p>Content for Tab 2</p>'},
+  {title: 'Tiếng Anh', content: '<p>Content for Tab 3</p>'},
+]);
+const activeTab = ref(0)
+
+function updateTabIndex(index) {
+  activeTab.value = index
+}
 
 const page = reactive({
   id: 'create_pages',
@@ -207,6 +274,10 @@ function removeImage() {
 
 function updateData(value) {
   form.description = value
+}
+
+function updateDataEn(value) {
+  form.description_en = value
 }
 
 watch(() => group.value, (data) => {

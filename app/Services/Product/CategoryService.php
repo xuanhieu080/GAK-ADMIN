@@ -118,11 +118,17 @@ class CategoryService
             $name = Arr::get($data, 'name', $category->name);
 
             $category->name = $name;
+            $category->name_en = Arr::get($data, 'name_en', $category->name_en);
             $category->description = Arr::get($data, 'description', $category->description);
+            $category->description_en = Arr::get($data, 'description_en', $category->description_en);
             $category->slug = Arr::get($data, 'slug', $category->slug);
+            $category->slug_en = Arr::get($data, 'slug_en', $category->slug_en);
             $category->meta_title = Arr::get($data, 'meta_title', $category->meta_title);
+            $category->meta_title_en = Arr::get($data, 'meta_title_en', $category->meta_title_en);
             $category->meta_key = Arr::get($data, 'meta_key', $category->meta_key);
+            $category->meta_key_en = Arr::get($data, 'meta_key_en', $category->meta_key_en);
             $category->meta_description = Arr::get($data, 'meta_description', $category->meta_description);
+            $category->meta_description_en = Arr::get($data, 'meta_description_en', $category->meta_description_en);
 
             if (!empty($data['image'])) {
                 $category->clearMediaCollection();

@@ -5,22 +5,22 @@
       <Panel>
 
         <Tab :tabs="tabs" @set-index="updateTabIndex" :active-index="activeTab">
-          <div v-if="activeTab === 0">
+          <div v-show="activeTab === 0">
             <EditInformation :id="id"/>
           </div>
-          <div v-if="activeTab === 1">
+          <div v-show="activeTab === 1">
             <EditAttribute :id="id"  @information-attribute="informationAttribute"/>
           </div>
-          <div v-if="activeTab === 2">
+          <div v-show="activeTab === 2">
             <ProductVariantMain :id="id" :refresh="refresh"/>
           </div>
-          <div v-if="activeTab === 3">
+          <div v-show="activeTab === 3">
             <ProductVariant :id="id" :refresh="refresh"/>
           </div>
-          <div v-if="activeTab === 4">
+          <div v-show="activeTab === 4">
             <Review :id="id" :refresh="refresh"/>
           </div>
-          <div v-if="activeTab === 5">
+          <div v-show="activeTab === 5">
             <EditHighlight :id="id" :refresh="refresh"/>
           </div>
         </Tab>

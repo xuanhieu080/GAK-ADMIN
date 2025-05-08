@@ -87,6 +87,7 @@ const page = reactive({
 const table = reactive({
   headers: {
     name: 'Tên',
+    name_en: 'Tên Tiếng Anh',
     is_color: 'Nhóm màu sắc',
     is_main: 'Nhóm chính',
   },

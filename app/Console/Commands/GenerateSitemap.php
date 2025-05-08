@@ -243,6 +243,7 @@ class GenerateSitemap extends Command
         $this->catrgory();
         $this->post();
         $this->page();
+        $this->postGroup();
 
         $sitemap = SitemapIndex::create("https://gak.vn");
         foreach ($this->urls as $url) {

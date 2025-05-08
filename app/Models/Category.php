@@ -28,7 +28,9 @@ class Category extends Model implements HasMedia
         'code',
         'image',
         'name',
+        'name_en',
         'description',
+        'description_en',
         'is_active',
         '_lft',
         '_rgt',
@@ -36,9 +38,13 @@ class Category extends Model implements HasMedia
         'show_header',
         'show_dashboard',
         'slug',
+        'slug_en',
         'meta_title',
+        'meta_title_en',
         'meta_description',
+        'meta_description_en',
         'meta_key',
+        'meta_key_en',
         'order',
     ];
 

@@ -14,6 +14,7 @@ class Attribute extends Model
 
     protected $fillable = [
         'name',
+        'name_en',
         'group_id',
         'color',
         'link',

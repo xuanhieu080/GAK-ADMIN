@@ -21,6 +21,12 @@ class UpdateRequest extends BaseRequest
                 'max:255',
                 Rule::unique('page_groups', 'name')->ignore($this->route('page_group')->id)
             ],
+            'name_en' => [
+                'nullable',
+                'string',
+                'max:255',
+                Rule::unique('page_groups', 'name_en')->ignore($this->route('page_group')->id)
+            ],
 
             'column'    => 'required|numeric|min:1|max:10',
             'is_active' => 'nullable|in:true,false,0,1',

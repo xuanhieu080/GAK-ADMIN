@@ -2,8 +2,8 @@
   <div class="rounded w-full mx-auto">
     <!-- Tabs -->
     <ul class="inline-flex px-1 w-full border-b">
-      <li v-for="(tab, index) in tabs" :key="index" :class="{ 'bg-white px-4 text-gray-800 font-semibold py-2 rounded-t border-t border-r border-l -mb-px': activeTab === index, 'px-4 text-gray-800 font-semibold py-2 rounded-t': activeTab !== index }">
-        <router-link :to="tab.href" @click.prevent="activateTab(index)">{{ tab.title }}</router-link>
+      <li v-for="(tab, index) in tabs" :key="index" class="cursor-pointer" :class="{ 'bg-white px-4 text-gray-800 font-semibold py-2 rounded-t border-t border-r border-l -mb-px': activeTab === index, 'px-4 text-gray-800 font-semibold py-2 rounded-t': activeTab !== index }">
+        <div :to="tab.href" @click.prevent="activateTab(index)">{{ tab.title }}</div>
       </li>
     </ul>
 

@@ -151,7 +151,9 @@ class ProductService
             $discount = Arr::get($data, 'discount', $product->discount);
 
             $product->name = Arr::get($data, 'name', $product->name);
+            $product->name_en = Arr::get($data, 'name_en', $product->name_en);
             $product->description = Arr::get($data, 'description', $product->description);
+            $product->description_en = Arr::get($data, 'description_en', $product->description_en);
             $product->price = $price;
             $product->discount = $discount;
             $product->price_discount = $price - $discount;
@@ -164,9 +166,13 @@ class ProductService
             $product->is_uniform = filter_var(Arr::get($data, 'is_uniform', $product->is_uniform), FILTER_VALIDATE_BOOLEAN);
             $product->priority = Arr::get($data, 'priority', $product->priority);
             $product->slug = Arr::get($data, 'slug', $product->slug);
+            $product->slug_en = Arr::get($data, 'slug_en', $product->slug_en);
             $product->meta_title = Arr::get($data, 'meta_title', $product->meta_title);
+            $product->meta_title_en = Arr::get($data, 'meta_title_en', $product->meta_title_en);
             $product->meta_description = Arr::get($data, 'meta_description', $product->meta_description);
+            $product->meta_description_en = Arr::get($data, 'meta_description_en', $product->meta_description_en);
             $product->meta_key = Arr::get($data, 'meta_key', $product->meta_key);
+            $product->meta_key_en = Arr::get($data, 'meta_key_en', $product->meta_key_en);
             $product->video_link = Arr::get($data, 'video_link', $product->video_link);
             if (!empty($data['image'])) {
                 $image = $data['image'];
@@ -889,14 +895,19 @@ class ProductService
             $data = $this->clean($input);
 
             $productVariant->name = Arr::get($data, 'name', $productVariant->name);
+            $productVariant->name_en = Arr::get($data, 'name_en', $productVariant->name_en);
             $productVariant->description = Arr::get($data, 'description', $productVariant->description);
+            $productVariant->description_en = Arr::get($data, 'description_en', $productVariant->description_en);
 
             $productVariant->is_active = filter_var(Arr::get($data, 'is_active', $productVariant->is_active), FILTER_VALIDATE_BOOLEAN);
 //                $productVariant->priority = Arr::get($data, 'priority', $productVariant->priority);
 //                $productVariant->slug = Arr::get($data, 'slug', $productVariant->slug);
             $productVariant->meta_title = Arr::get($data, 'meta_title', $productVariant->meta_title);
+            $productVariant->meta_title_en = Arr::get($data, 'meta_title_en', $productVariant->meta_title_en);
             $productVariant->meta_description = Arr::get($data, 'meta_description', $productVariant->meta_description);
+            $productVariant->meta_description_en = Arr::get($data, 'meta_description_en', $productVariant->meta_description_en);
             $productVariant->meta_key = Arr::get($data, 'meta_key', $productVariant->meta_key);
+            $productVariant->meta_key_en = Arr::get($data, 'meta_key_en', $productVariant->meta_key_en);
             $productVariant->params = Arr::get($data, 'params', $productVariant->params);
             if (!empty($data['image'])) {
                 $image = $data['image'];
@@ -948,6 +959,7 @@ class ProductService
 
             $data = $this->clean($input);
             $product->highlight = Arr::get($data, 'highlight', $product->highlight);
+            $product->highlight_en = Arr::get($data, 'highlight_en', $product->highlight_en);
             if (!empty($data['highlight_image'])) {
                 $image = $data['highlight_image'];
                 $mediaItem = $product->getMedia('highlight')->first();
