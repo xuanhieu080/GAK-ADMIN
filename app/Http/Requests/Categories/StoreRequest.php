@@ -24,6 +24,8 @@ class StoreRequest extends BaseRequest
             'meta_description_en' => 'nullable|max:255',
             'meta_title'          => 'required|max:255',
             'meta_title_en'       => 'nullable|max:255',
+            'content_seo'         => 'nullable',
+            'content_seo_en'      => 'nullable',
             'slug'                => [
                 'required',
                 'string',
@@ -38,6 +40,7 @@ class StoreRequest extends BaseRequest
                 'regex:/^[a-z0-9-]+$/',
                 'unique:categories,slug_en',
             ],
+            'order'               => 'nullable|numeric|min:0',
             'meta_key'            => 'required|max:255',
             'meta_key_en'         => 'nullable|max:255',
             'show_header'         => 'required|in:true,false',

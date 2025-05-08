@@ -35,6 +35,8 @@ class UpdateRequest extends BaseRequest
             'meta_description_en' => 'nullable|max:255',
             'meta_title'          => 'required|max:255',
             'meta_title_en'       => 'nullable|max:255',
+            'content_seo'         => 'nullable',
+            'content_seo_en'      => 'nullable',
             'slug'                => [
                 'required',
                 'string',
@@ -53,6 +55,7 @@ class UpdateRequest extends BaseRequest
             'meta_key_en'         => 'nullable|max:255',
             'show_header'         => 'required|in:true,false',
             'show_dashboard'      => 'required|in:true,false',
+            'order'               => 'nullable|numeric|min:0',
         ];
 
         if (filter_var($this->input('remove_image'), FILTER_VALIDATE_BOOLEAN)) {

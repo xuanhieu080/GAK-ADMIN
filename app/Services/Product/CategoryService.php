@@ -121,7 +121,6 @@ class CategoryService
             $category->name_en = Arr::get($data, 'name_en', $category->name_en);
             $category->order = Arr::get($data, 'order', $category->order);
             $category->description = Arr::get($data, 'description', $category->description);
-
             $category->description_en = Arr::get($data, 'description_en', $category->description_en);
             $category->slug = Arr::get($data, 'slug', $category->slug);
             $category->slug_en = Arr::get($data, 'slug_en', $category->slug_en);

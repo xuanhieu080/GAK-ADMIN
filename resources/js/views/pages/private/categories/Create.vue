@@ -56,6 +56,15 @@
                        error-input="meta_description" label="Meta description"/>
             <TextInput class="mb-4" type="text" error-input="meta_key" name="meta_key" v-model="form.meta_key"
                        label="Meta key"/>
+            <div>
+              <label class="text-sm text-gray-500">
+                SEO content cuối trang
+              </label>
+              <CkEditorCustom :content="form.content_seo" @updateData="(value) => updateData(value)" />
+              <span v-if="alertStore.errors['content_seo']" class="text-xs tracking-wide text-red-600">{{
+                  alertStore.errors['content_seo'][0]
+                }}</span>
+            </div>
           </div>
           <div v-show="activeTab === 2">
             <TextInput class="mb-4" type="text" error-input="name_en" name="name_en" v-model="form.name_en"
@@ -72,6 +81,15 @@
                        error-input="meta_description_en" label="Meta description"/>
             <TextInput class="mb-4" type="text" error-input="meta_key_en" name="meta_key_en" v-model="form.meta_key_en"
                        label="Meta key"/>
+            <div>
+              <label class="text-sm text-gray-500">
+                SEO content cuối trang
+              </label>
+              <CkEditorCustom :content="form.content_seo_en" @updateData="(value) => updateDataEn(value)" />
+              <span v-if="alertStore.errors['content_seo_en']" class="text-xs tracking-wide text-red-600">{{
+                  alertStore.errors['content_seo_en'][0]
+                }}</span>
+            </div>
           </div>
         </Tab>
       </Form>
@@ -142,6 +160,7 @@ const form = reactive({
   order: 1000,
   slug: '',
   content_seo: '',
+  content_seo_en: '',
   slug_en: '',
 });
 const category = ref();
@@ -226,6 +245,10 @@ function removeImage() {
 
 function updateData(value) {
   form.content_seo = value
+}
+
+function updateDataEn(value) {
+  form.content_seo_en = value
 }
 </script>
 
