@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Categories;
 
 use App\Http\Requests\BaseRequest;
-use Illuminate\Validation\Rule;
 
 class StoreRequest extends BaseRequest
 {
@@ -15,17 +14,6 @@ class StoreRequest extends BaseRequest
     public function rules()
     {
         return [
-<<<<<<< HEAD
-            'name'             => 'required|string|max:255|unique:categories,name',
-            'image'            => 'required|image|max:3145728|mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,ogx,oga,ogv,ogg,webm',
-            'parent_id'        => 'nullable|exists:categories,id',
-            'description'      => 'nullable|max:255',
-            'content_seo'      => 'nullable',
-            'meta_description' => 'required|max:255',
-            'meta_title'       => 'required|max:255',
-            'order'            => 'nullable|numeric|min:0',
-            'slug'             => [
-=======
             'name'                => 'required|string|max:255|unique:categories,name',
             'name_en'             => 'nullable|string|max:255|unique:categories,name_en',
             'image'               => 'required|image|max:3145728|mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,ogx,oga,ogv,ogg,webm',
@@ -37,7 +25,6 @@ class StoreRequest extends BaseRequest
             'meta_title'          => 'required|max:255',
             'meta_title_en'       => 'nullable|max:255',
             'slug'                => [
->>>>>>> 2807034678122ce1cd4c00da686b57b2f5806f16
                 'required',
                 'string',
                 'max:255',

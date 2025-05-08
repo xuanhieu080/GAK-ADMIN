@@ -30,11 +30,7 @@ class Category extends Model implements HasMedia
         'name',
         'name_en',
         'description',
-<<<<<<< HEAD
-        'content_seo',
-=======
         'description_en',
->>>>>>> 2807034678122ce1cd4c00da686b57b2f5806f16
         'is_active',
         '_lft',
         '_rgt',

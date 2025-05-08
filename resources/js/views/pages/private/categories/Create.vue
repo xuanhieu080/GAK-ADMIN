@@ -2,63 +2,6 @@
   <Page :title="page.title" :breadcrumbs="page.breadcrumbs" :actions="page.actions" @action="onAction">
     <Panel>
       <Form id="create-category" @submit.prevent="onSubmit">
-<<<<<<< HEAD
-        <TextInput class="mb-4" type="text" :required="true" error-input="name" name="name" v-model="form.name"
-                   :label="trans('labels.name')"/>
-        <TextInput class="mb-4" type="text" :required="true" error-input="slug" name="slug" v-model="form.slug"
-                   label="Slug"/>
-        <TextInput class="mb-4" type="number" min="1" max="999999" error-input="order" name="order" v-model="form.order"
-                   label="Thứ tự ưu tiên"/>
-        <div class="flex justify-center">
-          <div class="w-[500px]">
-            <FilePond
-                ref="pondElement"
-                class="product-image"
-                label-idle="Kéo thả hoặc chọn hình ảnh tại đây"
-                accepted-file-types="image/*"
-                label-max-file-size-exceeded="File quá lớn"
-                :max-file-size="maxFileSize"
-                allow-file-size-validation="true"
-                class-name="upload-job-image flex items-center justify-center w-full"
-                name="image"
-                :label-max-file-size="'Kích thước tệp tối đa là ' +  maxFileSize"
-                required="true"
-                credits="false"
-                :accepted-file-types="acceptedFileTypes"
-                :label-file-type-not-allowed="'Invalid file format'"
-                :file-validate-type-label-expected-types="'Định dạng cho phép {format}'"
-                v-on:addfile="getImage"
-                v-on:removefile="removeImage"
-            />
-            <span v-if="alertStore.errors['image']" class="text-xs tracking-wide text-red-600">{{
-                alertStore.errors['image'][0]
-              }}</span>
-          </div>
-        </div>
-        <Dropdown class="mb-4" name="category" error-input="parent_id" :multiple="true"
-                  server="categories" :label="trans('labels.categories')" :placeholder="trans('labels.categories')"
-                  :server-search-min-characters="0" v-model="category"></Dropdown>
-        <TextInput class="mb-4" type="textarea" :rows="5" name="description" v-model="form.description"
-                   error-input="description" :label="trans('labels.description')"/>
-        <TextInput class="mb-4" type="text" :required="true" error-input="meta_title" name="name" v-model="form.meta_title"
-                   label="Meta title"/>
-        <TextInput class="mb-4" type="textarea" :required="true" :rows="5" name="meta_description" v-model="form.meta_description"
-                   error-input="meta_description" label="Meta description"/>
-        <TextInput class="mb-4" type="text" error-input="meta_key" name="name" v-model="form.meta_key"
-                   label="Meta key"/>
-        <div>
-          <CkEditorCustom :content="form.content_seo" @updateData="(value) => updateData(value)" />
-          <span v-if="alertStore.errors['content_seo']" class="text-xs tracking-wide text-red-600">{{
-              alertStore.errors['content_seo'][0]
-            }}</span>
-        </div>
-        <Toggle class="mb-4" v-model="form.show_header" :checked="form.show_header" error-input="show_header"
-                label="Hiển thị ở header" name="show_header"/>
-        <Toggle class="mb-4" v-model="form.show_dashboard" :checked="form.show_dashboard" error-input="show_dashboard"
-                label="Hiển thị ở trang chủ" name="show_dashboard"/>
-        <Toggle class="mb-4" v-model="form.is_active" :checked="form.is_active" error-input="is_active"
-                label="Hiển thị" name="is_active"/>
-=======
         <Tab :tabs="tabs" @set-index="updateTabIndex" :active-index="activeTab">
           <div v-show="activeTab === 0">
             <div class="flex justify-center">
@@ -131,7 +74,6 @@
                        label="Meta key"/>
           </div>
         </Tab>
->>>>>>> 2807034678122ce1cd4c00da686b57b2f5806f16
       </Form>
     </Panel>
   </Page>
@@ -165,11 +107,8 @@ import 'filepond/dist/filepond.min.css';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css';
 import Dropdown from "@/views/components/input/Dropdown.vue";
 import Toggle from "@/views/components/input/Toggle.vue";
-<<<<<<< HEAD
 import CkEditorCustom from "@/views/components/CkEditorCustom.vue";
-=======
 import Tab from "@/views/components/Tab.vue";
->>>>>>> 2807034678122ce1cd4c00da686b57b2f5806f16
 
 
 // Create FilePond component
@@ -202,11 +141,8 @@ const form = reactive({
   is_active: false,
   order: 1000,
   slug: '',
-<<<<<<< HEAD
   content_seo: '',
-=======
   slug_en: '',
->>>>>>> 2807034678122ce1cd4c00da686b57b2f5806f16
 });
 const category = ref();
 

@@ -21,16 +21,6 @@ class UpdateRequest extends BaseRequest
                 'max:255',
                 Rule::unique('categories', 'name')->ignore($this->route('category')->id)
             ],
-<<<<<<< HEAD
-            'description'      => 'nullable|max:255',
-            'content_seo'      => 'nullable',
-            'parent_id'        => 'nullable|exists:categories,id',
-            'image'            => 'nullable|image|max:3145728|mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,ogx,oga,ogv,ogg,webm',
-            'meta_description' => 'required|max:255',
-            'meta_title'       => 'required|max:255',
-            'order'            => 'nullable|numeric|min:0',
-            'slug'             => [
-=======
             'name_en'             => [
                 'nullable',
                 'string',
@@ -46,7 +36,6 @@ class UpdateRequest extends BaseRequest
             'meta_title'          => 'required|max:255',
             'meta_title_en'       => 'nullable|max:255',
             'slug'                => [
->>>>>>> 2807034678122ce1cd4c00da686b57b2f5806f16
                 'required',
                 'string',
                 'max:255',
