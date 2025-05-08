@@ -71,14 +71,14 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         parent::boot();
 
-        static::deleting(function (self $record) {
-            Log::info('Deleting user...');
-            Log::info(json_encode($record->mediaFiles));
-            Log::info(json_encode($record->mediaFiles()->get()));
-            foreach ($record->mediaFiles()->get() as $entry) {
-                $entry->delete();
-            }
-        });
+//        static::deleting(function (self $record) {
+//            Log::info('Deleting user...');
+//            Log::info(json_encode($record->mediaFiles));
+//            Log::info(json_encode($record->mediaFiles()->get()));
+//            foreach ($record->mediaFiles()->get() as $entry) {
+//                $entry->delete();
+//            }
+//        });
     }
 
     /**

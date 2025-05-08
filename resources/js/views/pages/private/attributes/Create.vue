@@ -4,6 +4,8 @@
       <Form id="create-attribute" @submit.prevent="onSubmit">
         <TextInput class="mb-4" :required="true" name="name" v-model="form.name" error-input="name"
                    :label="trans('labels.name')"/>
+        <TextInput class="mb-4" :required="true" name="name_en" v-model="form.name_en" error-input="name_en"
+                   label="Tên tiếng anh"/>
         <Dropdown class="mb-4" name="category" error-input="group_id" :required="true"
                   server="attribute-groups" label="Nhóm thuộc tính" placeholder="Nhóm thuộc tính"
                   :server-search-min-characters="0" v-model="group"></Dropdown>
@@ -42,6 +44,7 @@ import Toggle from "@/views/components/input/Toggle.vue";
 const alertStore = useAlertStore();
 const form = reactive({
   name: null,
+  name_en: null,
   link: null,
   group_id: null,
   color: '#000000',
@@ -105,6 +108,7 @@ function onSubmit() {
 
 function clearData() {
   form.name = null
+  form.name_en = null
   form.link = null
   form.group_id = null
   form.color = null

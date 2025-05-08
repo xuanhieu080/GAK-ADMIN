@@ -105,11 +105,17 @@ class PostGroupService
             $name = Arr::get($data, 'name', $postGroup->name);
 
             $postGroup->name = $name;
+            $postGroup->name_en = Arr::get($data, 'name_en', $postGroup->name_en);
             $postGroup->description = Arr::get($data, 'description', $postGroup->description);
+            $postGroup->description_en = Arr::get($data, 'description_en', $postGroup->description_en);
             $postGroup->slug = Arr::get($data, 'slug', $postGroup->slug);
+            $postGroup->slug_en = Arr::get($data, 'slug_en', $postGroup->slug_en);
             $postGroup->meta_title = Arr::get($data, 'meta_title', $postGroup->meta_title);
+            $postGroup->meta_title_en = Arr::get($data, 'meta_title_en', $postGroup->meta_title_en);
             $postGroup->meta_key = Arr::get($data, 'meta_key', $postGroup->meta_key);
+            $postGroup->meta_key_en = Arr::get($data, 'meta_key_en', $postGroup->meta_key_en);
             $postGroup->meta_description = Arr::get($data, 'meta_description', $postGroup->meta_description);
+            $postGroup->meta_description_en = Arr::get($data, 'meta_description_en', $postGroup->meta_description_en);
             $postGroup->is_active = filter_var(Arr::get($data, 'is_active', $postGroup->is_active), FILTER_VALIDATE_BOOLEAN);
             $postGroup->is_hot = filter_var(Arr::get($data, 'is_hot', $postGroup->is_hot), FILTER_VALIDATE_BOOLEAN);
             if (!empty($data['image'])) {

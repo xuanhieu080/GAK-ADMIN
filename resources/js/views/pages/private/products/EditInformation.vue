@@ -3,8 +3,12 @@
     <Form>
       <TextInput class="mb-4" type="text" :required="true" error-input="name" name="name" v-model="form.name"
                  :label="trans('labels.name')"/>
+      <TextInput class="mb-4" type="text" error-input="name_en" name="name_en" v-model="form.name_en"
+                 label="Tên tiếng anh"/>
       <TextInput class="mb-4" type="text" :required="true" error-input="slug" name="slug" v-model="form.slug"
                  label="Slug"/>
+      <TextInput class="mb-4" type="text" error-input="slug_en" name="slug_en" v-model="form.slug_en"
+                 label="Slug tiếng anh"/>
       <TextInput class="mb-4" type="url" error-input="video_link" name="video_link" v-model="form.video_link"
                  label="Đường dẫn video"/>
       <Dropdown class="mb-4" name="group" error-input="group_id" :multiple="false"
@@ -39,9 +43,23 @@
         </div>
       </div>
       <div class="mb-4">
+        <label
+            class="text-sm text-gray-500">
+          Mô tả
+        </label>
         <CkEditorCustom :content="form.description" @updateData="(value) => updateData(value)" />
         <span v-if="alertStore.errors['description']" class="text-xs tracking-wide text-red-600">{{
             alertStore.errors['description'][0]
+          }}</span>
+      </div>
+      <div class="mb-4">
+        <label
+            class="text-sm text-gray-500">
+          Mô tả tiếng anh
+        </label>
+        <CkEditorCustom :content="form.description_en" @updateData="(value) => updateDataEn(value)" />
+        <span v-if="alertStore.errors['description_en']" class="text-xs tracking-wide text-red-600">{{
+            alertStore.errors['description_en'][0]
           }}</span>
       </div>
       <Dropdown class="mb-4" name="category" error-input="category_id" :required="true" :multiple="true"
@@ -64,14 +82,24 @@
                  :rows="1" name="meta_title" v-model="form.meta_title"
                  :required="true"
                  error-input="meta_title" label="SEO tiêu đề"/>
+
+      <TextInput type="textarea" class="mb-4" :minlength="0" :maxlength="200"
+                 :rows="1" name="meta_title_en" v-model="form.meta_title_en"
+                 error-input="meta_title_en" label="SEO tiêu đề tiếng anh"/>
       <TextInput type="textarea" class="mb-4" :minlength="0" :maxlength="300"
                  :rows="5" name="meta_description" v-model="form.meta_description"
                  :required="true"
                  error-input="meta_description" label="SEO nội dung"/>
+      <TextInput type="textarea" class="mb-4" :minlength="0" :maxlength="300"
+                 :rows="5" name="meta_description_en" v-model="form.meta_description_en"
+                 error-input="meta_description_en" label="SEO nội dung tiếng anh"/>
       <TextInput type="textarea" class="mb-4" :minlength="0" :maxlength="200"
                  :rows="3" name="meta_key" v-model="form.meta_key"
                  :required="true"
                  error-input="meta_key" label="SEO từ khoá"/>
+      <TextInput type="textarea" class="mb-4" :minlength="0" :maxlength="200"
+                 :rows="3" name="meta_key_en" v-model="form.meta_key_en"
+                 error-input="meta_key_en" label="SEO từ khoá tiếng anh"/>
 
       <div class="flex justify-center">
         <div class="w-[700px]">
@@ -177,13 +205,19 @@ const priceCurrent = ref(0);
 
 const form = reactive({
   name: null,
+  name_en: null,
   image: null,
   thumb_image: [],
   slug: null,
+  slug_en: null,
   meta_title: null,
+  meta_title_en: null,
   meta_description: null,
+  meta_description_en: null,
   meta_key: null,
+  meta_key_en: null,
   description: null,
+  description_en: null,
   category_id: null,
   video_link: null,
   price: 0,
@@ -304,6 +338,9 @@ function onSubmit() {
 
 function updateData(value) {
   form.description = value
+}
+function updateDataEn(value) {
+  form.description_en = value
 }
 
 watch(() => [form.price,ratio.value], (value) => {

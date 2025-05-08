@@ -5,6 +5,8 @@
       <Form id="edit-attribute-group">
         <TextInput class="mb-4" type="text" name="name" v-model="form.name" error-input="name"
                    label="Tên"/>
+        <TextInput class="mb-4" type="text" name="name_en" v-model="form.name_en" error-input="name_en"
+                   label="Tên tiếng anh"/>
         <Dropdown class="mb-4" name="category" error-input="group_id" :required="true"
                   server="attribute-groups" label="Nhóm thuộc tính" placeholder="Nhóm thuộc tính"
                   :server-search-min-characters="0" v-model="group"></Dropdown>
@@ -45,6 +47,7 @@ const item = ref(null);
 const group = ref(null);
 const form = reactive({
   name: '',
+  name_en: '',
   link: '',
   group_id: '',
   color: '#000000',

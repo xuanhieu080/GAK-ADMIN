@@ -4,6 +4,8 @@
       <Form id="create-page-group" @submit.prevent="onSubmit">
         <TextInput class="mb-4" :required="true" name="name" v-model="form.name" error-input="name"
                    :label="trans('labels.name')"/>
+        <TextInput class="mb-4" name="name_en" v-model="form.name_en" error-input="name_en"
+                   label="Tên tiếng anh"/>
 
         <TextInput class="mb-4" type="number" :min="1" :max="100" name="column" v-model="form.column"
                    error-input="column" label="Thứ tự cột"/>
@@ -33,6 +35,7 @@ import PageGroupService from "@/services/PageGroupService";
 const alertStore = useAlertStore();
 const form = reactive({
   name: null,
+  name_en: null,
   column: 1,
   is_active: false,
 });
@@ -92,6 +95,7 @@ function onSubmit() {
 
 function clearData() {
   form.name = null
+  form.name_en = null
   form.is_active = false
 }
 </script>

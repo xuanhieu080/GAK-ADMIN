@@ -96,6 +96,7 @@ const table = reactive({
   headers: {
     id: trans('labels.id_pound'),
     name: 'Tên',
+    name_en: 'Tên tiếng anh',
     slug: 'Đường dẫn',
     link: 'Liên kết với button',
     group_name: 'Nhóm',

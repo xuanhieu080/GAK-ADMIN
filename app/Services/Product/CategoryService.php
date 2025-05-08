@@ -118,13 +118,25 @@ class CategoryService
             $name = Arr::get($data, 'name', $category->name);
 
             $category->name = $name;
+            $category->name_en = Arr::get($data, 'name_en', $category->name_en);
             $category->description = Arr::get($data, 'description', $category->description);
+<<<<<<< HEAD
             $category->order = Arr::get($data, 'order', $category->order);
+=======
+            $category->description_en = Arr::get($data, 'description_en', $category->description_en);
+>>>>>>> 2807034678122ce1cd4c00da686b57b2f5806f16
             $category->slug = Arr::get($data, 'slug', $category->slug);
+            $category->slug_en = Arr::get($data, 'slug_en', $category->slug_en);
             $category->meta_title = Arr::get($data, 'meta_title', $category->meta_title);
+<<<<<<< HEAD
             $category->content_seo = Arr::get($data, 'content_seo', $category->content_seo);
+=======
+            $category->meta_title_en = Arr::get($data, 'meta_title_en', $category->meta_title_en);
+>>>>>>> 2807034678122ce1cd4c00da686b57b2f5806f16
             $category->meta_key = Arr::get($data, 'meta_key', $category->meta_key);
+            $category->meta_key_en = Arr::get($data, 'meta_key_en', $category->meta_key_en);
             $category->meta_description = Arr::get($data, 'meta_description', $category->meta_description);
+            $category->meta_description_en = Arr::get($data, 'meta_description_en', $category->meta_description_en);
 
             if (!empty($data['image'])) {
                 $category->clearMediaCollection();

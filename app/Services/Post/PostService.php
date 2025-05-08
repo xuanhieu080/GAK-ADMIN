@@ -104,12 +104,18 @@ class PostService
         $data = $this->clean($data);
 
         $post->meta_title = Arr::get($data, 'meta_title', $post->meta_title);
+        $post->meta_title_en = Arr::get($data, 'meta_title_en', $post->meta_title_en);
         $post->meta_key = Arr::get($data, 'meta_key', $post->meta_key);
+        $post->meta_key_en = Arr::get($data, 'meta_key_en', $post->meta_key_en);
         $post->meta_description = Arr::get($data, 'meta_description', $post->meta_description);
+        $post->meta_description_en = Arr::get($data, 'meta_description_en', $post->meta_description_en);
         $post->group_id = Arr::get($data, 'group_id', $post->group_id);;
         $post->title = Arr::get($data, 'title', $post->title);
+        $post->title_en = Arr::get($data, 'title_en', $post->title_en);
         $post->slug = Arr::get($data, 'slug', $post->slug);
+        $post->slug_en = Arr::get($data, 'slug_en', $post->slug_en);
         $post->content = Arr::get($data, 'content', $post->content);
+        $post->content_en = Arr::get($data, 'content_en', $post->content_en);
         $post->is_active = filter_var(Arr::get($data, 'is_active', $post->is_active), FILTER_VALIDATE_BOOLEAN);
         $post->is_hot = filter_var(Arr::get($data, 'is_hot', $post->is_hot), FILTER_VALIDATE_BOOLEAN);
         $post->is_new = filter_var(Arr::get($data, 'is_new', $post->is_new), FILTER_VALIDATE_BOOLEAN);

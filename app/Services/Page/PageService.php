@@ -103,16 +103,25 @@ class PageService
 
         $name = Arr::get($data, 'name', $page->name);
         $page->name = $name;
-        $name = Arr::get($data, 'name', $page->name);
+        $page->name_en = Arr::get($data, 'name_en', $page->name_en);;
         $page->title = Arr::get($data, 'title', $page->title);
+        $page->title_en = Arr::get($data, 'title_en', $page->title_en);
         $page->group_id = Arr::get($data, 'group_id', $page->group_id);
         $page->user_id = Arr::get($data, 'user_id', $page->user_id);
         $page->description = Arr::get($data, 'description', $page->description);
+        $page->description_en = Arr::get($data, 'description_en', $page->description_en);
         $page->description_short = Arr::get($data, 'description_short', $page->description_short);
+        $page->description_short_en = Arr::get($data, 'description_short_en', $page->description_short_en);
         $page->slug = Arr::get($data, 'slug', $page->slug);
+        $page->slug_en = Arr::get($data, 'slug_en', $page->slug_en);
         $page->meta_title = Arr::get($data, 'meta_title', $page->meta_title);
+        $page->meta_title_en = Arr::get($data, 'meta_title_en', $page->meta_title_en);
         $page->meta_key = Arr::get($data, 'meta_key', $page->meta_key);
+        $page->meta_key_en = Arr::get($data, 'meta_key_en', $page->meta_key_en);
+        $page->meta_description = Arr::get($data, 'meta_description', $page->meta_description);
+        $page->meta_description_en = Arr::get($data, 'meta_description_en', $page->meta_description_en);
         $page->link = Arr::get($data, 'link', $page->link);
+        $page->link_en = Arr::get($data, 'link_en', $page->link_en);
         $page->is_active = filter_var(Arr::get($data, 'is_active', $page->is_active), FILTER_VALIDATE_BOOLEAN);
         $page->is_button = filter_var(Arr::get($data, 'is_button', $page->is_button), FILTER_VALIDATE_BOOLEAN);
         $page->show_header = filter_var(Arr::get($data, 'show_header', $page->show_header), FILTER_VALIDATE_BOOLEAN);

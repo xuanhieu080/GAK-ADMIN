@@ -18,9 +18,10 @@ class StoreRequest extends BaseRequest
     {
         $rules = [
             'name'     => 'required|string|max:255|unique:attributes,name',
+            'name_en'  => 'nullable|string|max:255|unique:attributes,name_en',
             'group_id' => 'nullable|exists:attribute_groups,id',
-//            'is_color' => 'nullable|in:true,false,1,0',
-//            'link'     => 'nullable|url|max:350',
+            //            'is_color' => 'nullable|in:true,false,1,0',
+            //            'link'     => 'nullable|url|max:350',
         ];
         if (!empty($this->group_id)) {
             $group = AttributeGroup::find($this->group_id);

@@ -98,7 +98,7 @@ class SeoContentController extends Controller
      */
     public function edit(SeoContent $seo_content)
     {
-        $this->authorize('edit', SeoContent::class);
+//        $this->authorize('edit', SeoContent::class);
 
         return $this->show($seo_content);
     }
@@ -114,7 +114,7 @@ class SeoContentController extends Controller
      */
     public function update(UpdateRequest $request, SeoContent $seo_content)
     {
-        $this->authorize('edit', SeoContent::class);
+//        $this->authorize('edit', SeoContent::class);
 
         $data = $request->validated();
         if ($item = $this->seoContentService->updateItem($seo_content, $data)) {
@@ -134,7 +134,7 @@ class SeoContentController extends Controller
      */
     public function destroy(SeoContent $seo_content)
     {
-        $this->authorize('delete', SeoContent::class);
+//        $this->authorize('delete', SeoContent::class);
 
         if ($this->seoContentService->delete($seo_content)) {
             return $this->responseDeleteSuccess(['model' => $seo_content]);

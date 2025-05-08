@@ -1,117 +1,149 @@
 <template>
   <div id="create-product">
     <Form>
-      <TextInput class="mb-4" type="text" :required="true" error-input="name" name="name" v-model="form.name"
-                 :label="trans('labels.name')"/>
-      <TextInput class="mb-4" type="text" :required="true" error-input="slug" name="slug" v-model="form.slug"
-                 label="Slug"/>
-      <!--      <FileInput class="mb-4" name="file" v-model="form.image" error-input="file" accept="image/*"-->
-      <!--                 img-style="width:200px;height:200px"-->
-      <!--                 :label="trans('labels.avatar')" @clear="clearImage"></FileInput>-->
-      <TextInput class="mb-4" type="url" error-input="video_link" name="video_link" v-model="form.video_link"
-                 label="Đường dẫn video"/>
-      <div class="flex justify-center">
-        <div class="w-[500px]">
-          <FilePond
-              ref="pondElement"
-              class="product-image"
-              label-idle="Kéo thả hoặc chọn hình ảnh tại đây"
-              accepted-file-types="image/*"
-              label-max-file-size-exceeded="File quá lớn"
-              :max-file-size="maxFileSize"
-              allow-file-size-validation="true"
-              class-name="upload-job-image flex items-center justify-center w-full"
-              name="image"
-              :label-max-file-size="'Kích thước tệp tối đa là ' +  maxFileSize"
-              required="true"
-              credits="false"
-              :accepted-file-types="acceptedFileTypes"
-              :label-file-type-not-allowed="'Invalid file format'"
-              :file-validate-type-label-expected-types="'Định dạng cho phép {format}'"
-              v-on:addfile="getImage"
-              v-on:removefile="removeImage"
-              v-bind:files="images"
-          />
-          <span v-if="alertStore.errors['image']" class="text-xs tracking-wide text-red-600">{{
-              alertStore.errors['image'][0]
-            }}</span>
-        </div>
-      </div>
-      <div class="mb-4">
-        <CkEditorCustom :content="form.description" @updateData="(value) => updateData(value)" />
-        <span v-if="alertStore.errors['description']" class="text-xs tracking-wide text-red-600">{{
-            alertStore.errors['description'][0]
-          }}</span>
-      </div>
-      <Dropdown class="mb-4" name="category" error-input="category_id" :required="true" :multiple="true"
-                server="categories" :label="trans('labels.categories')" :placeholder="trans('labels.categories')"
-                :server-search-min-characters="0" v-model="category"></Dropdown>
-      <TextInput class="mb-4" type="number" :min="0" :max="999999999999" name="price" v-model="form.price"
-                 error-input="price" :label="trans('labels.price')"/>
-      <TextInput class="mb-4" type="number" :min="0" :max="100" name="ratio" v-model="ratio"
-                 label="% giảm giá"/>
-      <TextInput class="mb-4" type="number" :min="0" :max="999999999999" name="price-discount" v-model="form.discount"
-                 label="Tiền giảm giá"/>
-      <TextInput class="mb-4" type="number" :min="0" :max="999999999999" name="price-current" disabled
-                 v-model="priceCurrent"
-                 label="Giá sau khi đã trừ"/>
-      <TextInput class="mb-4" type="number" :min="0" :max="10000" name="priority" v-model="form.priority"
-                 error-input="priority" :label="trans('labels.priority')"/>
-      <TextInput class="mb-4" type="number" :min="0" :max="100000" name="qty" v-model="form.qty"
-                 error-input="qty" label="Số lượng"/>
+      <Tab :tabs="tabs" @set-index="updateTabIndex" :active-index="activeTab">
+        <div v-show="activeTab === 0">
+          <TextInput class="mb-4" type="url" error-input="video_link" name="video_link" v-model="form.video_link"
+                     label="Đường dẫn video"/>
+          <div class="flex justify-center">
+            <div class="w-[500px]">
+              <label>Hình Ảnh Chính</label>
+              <FilePond
+                  ref="pondElement"
+                  class="product-image"
+                  label-idle="Kéo thả hoặc chọn hình ảnh tại đây"
+                  accepted-file-types="image/*"
+                  label-max-file-size-exceeded="File quá lớn"
+                  :max-file-size="maxFileSize"
+                  allow-file-size-validation="true"
+                  class-name="upload-job-image flex items-center justify-center w-full"
+                  name="image"
+                  :label-max-file-size="'Kích thước tệp tối đa là ' +  maxFileSize"
+                  required="true"
+                  credits="false"
+                  :accepted-file-types="acceptedFileTypes"
+                  :label-file-type-not-allowed="'Invalid file format'"
+                  :file-validate-type-label-expected-types="'Định dạng cho phép {format}'"
+                  v-on:addfile="getImage"
+                  v-on:removefile="removeImage"
+                  v-bind:files="images"
+              />
+              <span v-if="alertStore.errors['image']" class="text-xs tracking-wide text-red-600">{{
+                  alertStore.errors['image'][0]
+                }}</span>
+            </div>
+          </div>
+          <Dropdown class="mb-4" name="category" error-input="category_id" :required="true" :multiple="true"
+                    server="categories" :label="trans('labels.categories')" :placeholder="trans('labels.categories')"
+                    :server-search-min-characters="0" v-model="category"></Dropdown>
+          <TextInput class="mb-4" type="number" :min="0" :max="999999999999" name="price" v-model="form.price"
+                     error-input="price" :label="trans('labels.price')"/>
+          <TextInput class="mb-4" type="number" :min="0" :max="100" name="ratio" v-model="ratio"
+                     label="% giảm giá"/>
+          <TextInput class="mb-4" type="number" :min="0" :max="999999999999" name="price-discount"
+                     v-model="form.discount"
+                     label="Tiền giảm giá"/>
+          <TextInput class="mb-4" type="number" :min="0" :max="999999999999" name="price-current" disabled
+                     v-model="priceCurrent"
+                     label="Giá sau khi đã trừ"/>
+          <TextInput class="mb-4" type="number" :min="0" :max="10000" name="priority" v-model="form.priority"
+                     error-input="priority" :label="trans('labels.priority')"/>
+          <TextInput class="mb-4" type="number" :min="0" :max="100000" name="qty" v-model="form.qty"
+                     error-input="qty" label="Số lượng"/>
 
-      <TextInput type="textarea" class="mb-4" :minlength="0" :maxlength="200"
-                 :rows="1" name="meta_title" v-model="form.meta_title"
-                 :required="true"
-                 error-input="meta_title" label="SEO tiêu đề"/>
-      <TextInput type="textarea" class="mb-4" :minlength="0" :maxlength="300"
-                 :rows="5" name="meta_description" v-model="form.meta_description"
-                 :required="true"
-                 error-input="meta_description" label="SEO nội dung"/>
-      <TextInput type="textarea" class="mb-4" :minlength="0" :maxlength="200"
-                 :rows="3" name="meta_key" v-model="form.meta_key"
-                 :required="true"
-                 error-input="meta_key" label="SEO từ khoá"/>
 
-      <div class="flex justify-center">
-        <div class="w-[700px]">
-          <FilePond
-              ref="pondElementThumb"
-              class="product-image"
-              label-idle="Kéo thả hoặc chọn hình ảnh tại đây"
-              accepted-file-types="image/*"
-              label-max-file-size-exceeded="File quá lớn"
-              :max-file-size="maxFileSize"
-              allow-file-size-validation="true"
-              class-name="upload-job-image flex items-center justify-center w-full"
-              name="image"
-              :label-max-file-size="'Kích thước tệp tối đa là ' +  maxFileSize"
-              required="true"
-              credits="false"
-              :accepted-file-types="acceptedFileTypes"
-              :label-file-type-not-allowed="'Invalid file format'"
-              :file-validate-type-label-expected-types="'Định dạng cho phép {format}'"
-              allow-multiple="true"
-              max-files="50"
-              v-on:addfile="getThumbImage"
-              v-on:removefile="removeThumbImage"
-              v-bind:files="thumbImage"
-          />
-          <span v-if="alertStore.errors['thumb_image']" class="text-xs tracking-wide text-red-600">{{
-              alertStore.errors['thumb_image'][0]
-            }}</span>
+          <div class="flex justify-center">
+            <div class="w-[700px]">
+              <label>Hình Ảnh Khác</label>
+              <FilePond
+                  ref="pondElementThumb"
+                  class="product-image"
+                  label-idle="Kéo thả hoặc chọn hình ảnh tại đây"
+                  accepted-file-types="image/*"
+                  label-max-file-size-exceeded="File quá lớn"
+                  :max-file-size="maxFileSize"
+                  allow-file-size-validation="true"
+                  class-name="upload-job-image flex items-center justify-center w-full"
+                  name="image"
+                  :label-max-file-size="'Kích thước tệp tối đa là ' +  maxFileSize"
+                  required="true"
+                  credits="false"
+                  :accepted-file-types="acceptedFileTypes"
+                  :label-file-type-not-allowed="'Invalid file format'"
+                  :file-validate-type-label-expected-types="'Định dạng cho phép {format}'"
+                  allow-multiple="true"
+                  max-files="50"
+                  v-on:addfile="getThumbImage"
+                  v-on:removefile="removeThumbImage"
+                  v-bind:files="thumbImage"
+              />
+              <span v-if="alertStore.errors['thumb_image']" class="text-xs tracking-wide text-red-600">{{
+                  alertStore.errors['thumb_image'][0]
+                }}</span>
+            </div>
+          </div>
+          <Toggle class="mb-4" v-model="form.is_hot" :checked="form.is_hot" error-input="is_hot"
+                  label="Nổi bật" name="is_hot"/>
+          <Toggle class="mb-4" v-model="form.is_upcoming" :checked="form.is_upcoming" error-input="is_upcoming"
+                  label="Sắp ra mắt" name="is_upcoming"/>
+          <Toggle class="mb-4" v-model="form.is_new" :checked="form.is_new" error-input="is_new"
+                  label="Mới" name="is_new"/>
+          <Toggle class="mb-4" v-model="form.is_uniform" :checked="form.is_uniform" error-input="is_uniform"
+                  label="Đồng phục" name="is_uniform"/>
+          <Toggle class="mb-4" v-model="form.is_active" :checked="form.is_active" error-input="is_active"
+                  :label="trans('labels.show')" name="is_active"/>
         </div>
-      </div>
-      <Toggle class="mb-4" v-model="form.is_hot" :checked="form.is_hot" error-input="is_hot"
-              label="Nổi bật" name="is_hot"/>
-      <Toggle class="mb-4" v-model="form.is_upcoming" :checked="form.is_upcoming" error-input="is_upcoming"
-              label="Sắp ra mắt" name="is_upcoming"/>
-      <Toggle class="mb-4" v-model="form.is_new" :checked="form.is_new" error-input="is_new"
-              label="Mới" name="is_new"/>
-      <Toggle class="mb-4" v-model="form.is_uniform" :checked="form.is_uniform" error-input="is_uniform"
-              label="Đồng phục" name="is_uniform"/>
-      <Toggle class="mb-4" v-model="form.is_active" :checked="form.is_active" error-input="is_active"
-              :label="trans('labels.show')" name="status"/>
+        <div v-show="activeTab === 1">
+          <TextInput class="mb-4" type="text" :required="true" error-input="name" name="name" v-model="form.name"
+                     :label="trans('labels.name')"/>
+          <TextInput class="mb-4" type="text" :required="true" error-input="slug" name="slug" v-model="form.slug"
+                     label="Slug"/>
+
+          <div class="mb-4">
+            <CkEditorCustom :content="form.description" @updateData="(value) => updateData(value)"/>
+            <span v-if="alertStore.errors['description']" class="text-xs tracking-wide text-red-600">{{
+                alertStore.errors['description'][0]
+              }}</span>
+          </div>
+
+
+          <TextInput type="textarea" class="mb-4" :minlength="0" :maxlength="200"
+                     :rows="1" name="meta_title" v-model="form.meta_title"
+                     :required="true"
+                     error-input="meta_title" label="SEO tiêu đề"/>
+          <TextInput type="textarea" class="mb-4" :minlength="0" :maxlength="300"
+                     :rows="5" name="meta_description" v-model="form.meta_description"
+                     :required="true"
+                     error-input="meta_description" label="SEO nội dung"/>
+          <TextInput type="textarea" class="mb-4" :minlength="0" :maxlength="200"
+                     :rows="3" name="meta_key" v-model="form.meta_key"
+                     :required="true"
+                     error-input="meta_key" label="SEO từ khoá"/>
+        </div>
+        <div v-show="activeTab === 2">
+          <TextInput class="mb-4" type="text" error-input="name_en" name="name_en" v-model="form.name_en"
+                     :label="trans('labels.name')"/>
+          <TextInput class="mb-4" type="text" error-input="slug_en" name="slug_en" v-model="form.slug_en"
+                     label="Slug"/>
+
+          <div class="mb-4">
+            <CkEditorCustom :content="form.description_en" @updateData="(value) => updateDataEn(value)"/>
+            <span v-if="alertStore.errors['description_en']" class="text-xs tracking-wide text-red-600">{{
+                alertStore.errors['description_en'][0]
+              }}</span>
+          </div>
+
+          <TextInput type="textarea" class="mb-4" :minlength="0" :maxlength="250"
+                     :rows="1" name="meta_title_en" v-model="form.meta_title_en"
+                     error-input="meta_title_en" label="SEO tiêu đề"/>
+          <TextInput type="textarea" class="mb-4" :minlength="0" :maxlength="300"
+                     :rows="5" name="meta_description_en" v-model="form.meta_description_en"
+                     error-input="meta_description_en" label="SEO nội dung"/>
+          <TextInput type="textarea" class="mb-4" :minlength="0" :maxlength="250"
+                     :rows="3" name="meta_key_en" v-model="form.meta_key_en"
+                     error-input="meta_key_en" label="SEO từ khoá"/>
+        </div>
+      </Tab>
     </Form>
   </div>
 </template>
@@ -169,13 +201,19 @@ const priceCurrent = ref(0);
 
 const form = reactive({
   name: null,
+  name_en: null,
   image: null,
   thumb_image: [],
   slug: null,
+  slug_en: null,
   meta_title: null,
+  meta_title_en: null,
   meta_description: null,
+  meta_description_en: null,
   meta_key: null,
+  meta_key_en: null,
   description: null,
+  description_en: null,
   category_id: null,
   price: 0,
   qty: 100000,
@@ -197,21 +235,27 @@ const props = defineProps({
 
 if (props.information) {
   form.name = props.information.name;
+  form.name_en = props.information.name_en;
   form.file = props.information.file;
   form.description = props.information.description;
+  form.description_en = props.information.description_en;
   form.category_id = props.information.category_id;
   form.price = props.information.price;
   form.discount = props.information.discount;
   form.priority = props.information.priority;
   form.is_active = props.information.is_active;
   form.is_hot = props.information.is_hot;
-  form.is_hot = props.information.is_upcoming;
+  form.is_uniform = props.information.is_uniform;
   form.is_new = props.information.is_new;
   form.is_upcoming = props.information.is_upcoming;
   form.meta_title = props.information.meta_title;
+  form.meta_title_en = props.information.meta_title_en;
   form.meta_description = props.information.meta_description;
+  form.meta_description_en = props.information.meta_description_en;
   form.meta_key = props.information.meta_key;
+  form.meta_key_en = props.information.meta_key_en;
   form.slug = props.information.slug;
+  form.slug_en = props.information.slug_en;
   form.video_link = props.information.video_link;
   form.qty = props.information.qty;
 }
@@ -219,6 +263,18 @@ if (props.information) {
 const image = ref();
 const images = ref([]);
 const thumbImage = ref([]);
+
+const tabs = ref([
+  {title: 'Thông tin chung', content: '<p>Content for Tab 1</p>'},
+  {title: 'Tiếng Việt', content: '<p>Content for Tab 2</p>'},
+  {title: 'Tiếng Anh', content: '<p>Content for Tab 3</p>'},
+]);
+
+const activeTab = ref(0)
+
+function updateTabIndex(index) {
+  activeTab.value = index
+}
 
 const options = ref({
   debug: 'info',
@@ -268,23 +324,29 @@ watch(form, (data) => {
 
 watch(() => props.information, (data) => {
   form.name = props.information.name;
+  form.name_en = props.information.name_en;
   form.file = props.information.file;
   form.image = props.information.image;
   form.thumb_image = props.information.thumb_image;
   form.description = props.information.description;
+  form.description_en = props.information.description_en;
   form.category_id = props.information.category_id;
   form.price = props.information.price;
   form.discount = props.information.discount;
   form.priority = props.information.priority;
   form.is_active = props.information.is_active;
   form.is_hot = props.information.is_hot;
-  form.is_hot = props.information.is_upcoming;
+  form.is_uniform = props.information.is_uniform;
   form.is_new = props.information.is_new;
   form.is_upcoming = props.information.is_upcoming;
   form.meta_title = props.information.meta_title;
+  form.meta_title_en = props.information.meta_title_en;
   form.slug = props.information.slug;
+  form.slug_en = props.information.slug_en;
   form.meta_description = props.information.meta_description;
+  form.meta_description_en = props.information.meta_description_en;
   form.meta_key = props.information.meta_key;
+  form.meta_key_en = props.information.meta_key_en;
   form.video_link = props.information.video_link;
   form.qty = props.information.qty;
   if (!form.category_id) {
@@ -300,6 +362,10 @@ watch(() => props.information, (data) => {
 
 function updateData(value) {
   form.description = value
+}
+
+function updateDataEn(value) {
+  form.description_en = value
 }
 
 

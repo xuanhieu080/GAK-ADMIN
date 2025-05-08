@@ -4,6 +4,8 @@
     <Form>
       <TextInput class="mb-4" type="text" :required="true" :error-input="'details.' + index + '.name'" :name="'name-' + index" v-model="form.name"
                  label="Tên biến thể"/>
+      <TextInput class="mb-4" type="text" :error-input="'details.' + index + '.name_en'" :name="'name_en-' + index" v-model="form.name_en"
+                 label="Tên biến thể tiếng anh"/>
       <TextInput class="mb-4" type="text" disabled  :name="'name-variant-' + index" v-model="optionName"
                  label="Biến thể"/>
       <TextInput class="mb-4" type="text" :required="true" :error-input="'details.' + index + '.params'" :name="'params-' + index" v-model="form.params"
@@ -36,19 +38,28 @@
         </div>
       </div>
 
-
       <TextInput type="textarea" class="mb-4" :minlength="0" :maxlength="200"
                  :rows="1" name="meta_title" v-model="form.meta_title"
                  :required="true"
                  :error-input="'details.' + index + '.meta_detail'" label="SEO tiêu đề"/>
+      <TextInput type="textarea" class="mb-4" :minlength="0" :maxlength="200"
+                 :rows="1" name="meta_title_en" v-model="form.meta_title_en"
+                 :error-input="'details.' + index + '.meta_title_en'" label="SEO tiêu đề tiếng anh"/>
+
       <TextInput type="textarea" class="mb-4" :minlength="0" :maxlength="300"
                  :rows="5" name="meta_description" v-model="form.meta_description"
                  :required="true"
                  :error-input="'details.' + index + '.meta_description'" label="SEO nội dung"/>
+      <TextInput type="textarea" class="mb-4" :minlength="0" :maxlength="300"
+                 :rows="5" name="meta_description_en" v-model="form.meta_description_en"
+                 :error-input="'details.' + index + '.meta_description_en'" label="SEO nội dung tiếng anh"/>
       <TextInput type="textarea" class="mb-4" :minlength="0" :maxlength="200"
                  :rows="3" name="meta_key" v-model="form.meta_key"
                  :required="true"
                  :error-input="'details.' + index + '.meta_key'" label="SEO từ khoá"/>
+      <TextInput type="textarea" class="mb-4" :minlength="0" :maxlength="200"
+                 :rows="3" name="meta_key_en" v-model="form.meta_key_en"
+                 :error-input="'details.' + index + '.meta_key_en'" label="SEO từ khoá tiếng anh"/>
 
       <div class="flex justify-center">
         <div class="w-[700px]">
@@ -156,12 +167,16 @@ const priceCurrent = ref(0);
 const form = reactive({
   id: props.item.id,
   name: null,
+  name_en: null,
   image: '',
   thumb_image: [],
   // slug: null,
   meta_title: null,
+  meta_title_en: null,
   meta_description: null,
+  meta_description_en: null,
   meta_key: null,
+  meta_key_en: null,
   // description: null,
   // category_id: null,
   price: 0,
@@ -187,9 +202,13 @@ const service = new ProductService();
 
 if (props.item) {
   form.name = props.item.name
+  form.name_en = props.item.name_en
   form.meta_title = props.item.meta_title
+  form.meta_title_en = props.item.meta_title_en
   form.meta_description = props.item.meta_description
+  form.meta_description_en = props.item.meta_description_en
   form.meta_key = props.item.meta_key
+  form.meta_key_en = props.item.meta_key_en
   // form.description = props.item.description
   form.is_active = true
   // form.is_active = props.item.is_active

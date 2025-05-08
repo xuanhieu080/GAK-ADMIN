@@ -94,8 +94,10 @@ class AttributeGroupService
         $data = $this->clean($data);
 
         $attributeGroup->name = Arr::get($data, 'name', $attributeGroup->name);
+        $attributeGroup->name_en = Arr::get($data, 'name_en', $attributeGroup->name_en);
         $attributeGroup->priority = Arr::get($data, 'priority', $attributeGroup->priority);
         $attributeGroup->link = Arr::get($data, 'link', $attributeGroup->link);
+        $attributeGroup->link_en = Arr::get($data, 'link_en', $attributeGroup->link_en);
         $attributeGroup->is_color = filter_var(Arr::get($data, 'is_color',$attributeGroup->is_color), FILTER_VALIDATE_BOOLEAN);
         $attributeGroup->is_main = filter_var(Arr::get($data, 'is_main',$attributeGroup->is_main), FILTER_VALIDATE_BOOLEAN);
 

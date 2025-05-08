@@ -15,6 +15,7 @@ class PageGroup extends Model
     protected $fillable = [
         'id',
         'name',
+        'name_en',
         'column',
         'is_active',
     ];

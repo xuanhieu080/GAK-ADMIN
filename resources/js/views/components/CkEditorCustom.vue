@@ -306,7 +306,12 @@ const editorConfig = {
       integrations: ['upload', 'assetManager', 'url']
     }
   },
+<<<<<<< HEAD
   initialData: '',
+=======
+  initialData:
+      '',
+>>>>>>> 2807034678122ce1cd4c00da686b57b2f5806f16
   language: 'vi',
   link: {
     addTargetToExternalLinks: true,

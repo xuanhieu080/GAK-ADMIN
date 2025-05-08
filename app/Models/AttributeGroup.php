@@ -15,9 +15,11 @@ class AttributeGroup extends Model
 
     protected $fillable = [
         'name',
+        'name_en',
         'priority',
         'is_color',
         'link',
+        'link_en',
         'is_main',
     ];
     protected $casts = [

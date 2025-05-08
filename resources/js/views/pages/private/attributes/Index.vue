@@ -79,6 +79,7 @@ const page = reactive({
 const table = reactive({
   headers: {
     name: 'Tên',
+    name_en: 'Tên tiếng anh',
     group_name: 'Nhóm',
   },
   sorting: {

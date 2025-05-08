@@ -20,6 +20,7 @@ class UpdateHighlightRequest extends BaseRequest
             'highlight_image'        => 'nullable|image|max:3145728|mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,ogx,oga,ogv,ogg,webm',
             'highlight_image_remove' => 'nullable|in:1,0,false,true',
             'highlight'              => 'nullable|string',
+            'highlight_en'           => 'nullable|string',
         ];
     }
 

@@ -93,6 +93,7 @@ class AttributeService
         $data = $this->clean($data);
 
         $attribute->name = Arr::get($data, 'name', $attribute->name);
+        $attribute->name_en = Arr::get($data, 'name_en', $attribute->name_en);
         $attribute->group_id = Arr::get($data, 'group_id', $attribute->group_id);
         $attribute->color = Arr::get($data, 'color', $attribute->color);
 

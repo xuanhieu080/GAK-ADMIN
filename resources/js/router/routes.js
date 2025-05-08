@@ -118,19 +118,19 @@ const routes = [
             {
                 name: "users.list",
                 path: "list",
-                meta: {requiresAuth: true, requiresAbility: abilities.LIST_USER},
+                meta: {requiresAuth: true},
                 component: PageUsers,
             },
             {
                 name: "users.create",
                 path: "create",
-                meta: {requiresAuth: true, requiresAbility: abilities.CREATE_USER},
+                meta: {requiresAuth: true},
                 component: PageUsersCreate,
             },
             {
                 name: "users.edit",
                 path: ":id/edit",
-                meta: {requiresAuth: true, requiresAbility: abilities.EDIT_USER},
+                meta: {requiresAuth: true},
                 component: PageUsersEdit,
             },
         ]

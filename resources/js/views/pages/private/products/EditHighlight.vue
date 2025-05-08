@@ -3,9 +3,23 @@
     <Form id="create-review" @submit.prevent="onSubmit">
       <div class="p-6 space-y-6">
         <div class="mb-4">
+          <label
+              class="text-sm text-gray-500">
+            Mô tả
+          </label>
           <CkEditorCustom :content="form.highlight" @updateData="(value) => updateData(value)" />
           <span v-if="alertStore.errors['highlight']" class="text-xs tracking-wide text-red-600">{{
               alertStore.errors['highlight'][0]
+            }}</span>
+        </div>
+        <div class="mb-4">
+          <label
+              class="text-sm text-gray-500">
+            Mô tả tiếng anh
+          </label>
+          <CkEditorCustom :content="form.highlight_en" @updateData="(value) => updateDataEn(value)" />
+          <span v-if="alertStore.errors['highlight_en']" class="text-xs tracking-wide text-red-600">{{
+              alertStore.errors['highlight_en'][0]
             }}</span>
         </div>
         <div class="w-[700px]">
@@ -125,6 +139,7 @@ function onSubmit() {
   service.handleUpdate('create-review', `${props.id}/highlight`, reduceProperties(form, 'roles', 'id')).then((response) => {
     if (alertStore.type == 'success') {
       form.highlight = response.data.model.highlight
+      form.highlight_en = response.data.model.highlight_en
       images.value = response.data.model.highlight_image_url
     }
   })
@@ -134,6 +149,7 @@ function onSubmit() {
 
 function clearData() {
   form.highlight = null
+  form.highlight_en = null
   processing.value = false
   form.highlight_image = null
 }
@@ -160,9 +176,14 @@ function updateData(value) {
   form.highlight = value
 }
 
+function updateDataEn(value) {
+  form.highlight_en = value
+}
+
 onBeforeMount(() => {
   service.edit(props.id).then((response) => {
     form.highlight = response.data.model.highlight
+    form.highlight_en = response.data.model.highlight_en
     images.value = response.data.model.highlight_image_url
   })
 });

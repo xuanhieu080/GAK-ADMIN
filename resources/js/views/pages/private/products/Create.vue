@@ -52,7 +52,9 @@ const category = ref(null)
 const file = ref(null)
 const information = reactive({
   name: null,
+  name_en: null,
   description: null,
+  description_en: null,
   category_id: null,
   price: 0,
   discount: 0,
@@ -61,15 +63,24 @@ const information = reactive({
   is_active: false,
   is_hot: false,
   meta_title: null,
+  meta_title_en: null,
   meta_description: null,
+  meta_description_en: null,
   meta_key: null,
+  meta_key_en: null,
   slug: null,
+  slug_en: null,
   video_link: null,
   thumb_image: [],
+  is_upcoming: false,
+  is_new: false,
+  is_uniform: false,
 });
 const informationCreate = ref({
   name: null,
+  name_en: null,
   description: null,
+  description_en: null,
   category_id: null,
   price: 0,
   discount: 0,
@@ -78,10 +89,17 @@ const informationCreate = ref({
   is_active: false,
   is_hot: false,
   meta_title: null,
+  meta_title_en: null,
   meta_description: null,
+  meta_description_en: null,
   meta_key: null,
+  meta_key_en: null,
   video_link: null,
   slug: null,
+  slug_en: null,
+  is_upcoming: false,
+  is_new: false,
+  is_uniform: false,
 });
 
 const options = ref({
@@ -152,9 +170,11 @@ function onSubmit() {
 
 function clearData() {
   information.name = null;
+  information.name_en = null;
   information.file = null;
   information.image = null;
   information.description = null;
+  information.description_en = null;
   information.category_id = null;
   information.price = 0
   information.discount = 0
@@ -163,22 +183,28 @@ function clearData() {
   information.is_active = false;
   information.is_hot = false;
   information.meta_title = null;
+  information.meta_title_en = null;
   information.meta_description = null;
+  information.meta_description_en = null;
   information.slug = null;
+  information.slug_en = null;
   information.meta_key = null;
+  information.meta_key_en = null;
   information.video_link = null;
   information.thumb_image = [];
+  information.is_new = false;
+  information.is_upcoming = false;
+  information.is_uniform = false;
   informationCreate.value = information;
-  form.is_hot = false;
-  form.is_new = false;
-  form.is_upcoming = false;
 }
 
 function informationUpdate(data) {
   information.name = data.name;
+  information.name_en = data.name_en;
   information.file = data.image;
   information.image = data.image;
   information.description = data.description;
+  information.description_en = data.description_en;
   information.category_id = data.category_id;
   information.price = data.price;
   information.discount = data.discount;
@@ -187,14 +213,18 @@ function informationUpdate(data) {
   information.is_active = data.is_active;
   information.is_hot = data.is_hot;
   information.meta_title = data.meta_title;
+  information.meta_title_en = data.meta_title_en;
   information.meta_description = data.meta_description;
+  information.meta_description_en = data.meta_description_en;
   information.meta_key = data.meta_key;
+  information.meta_key_en = data.meta_key_en;
   information.slug = data.slug;
+  information.slug_en = data.slug_en;
   information.video_link = data.video_link;
   information.thumb_image = data.thumb_image;
-  form.is_hot = data.is_upcoming;
-  form.is_new = data.is_new;
-  form.is_upcoming = data.is_upcoming;
+  information.is_new = data.is_new;
+  information.is_upcoming = data.is_upcoming;
+  information.is_uniform = data.is_uniform;
 }
 </script>
 

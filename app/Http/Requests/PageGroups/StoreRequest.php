@@ -16,6 +16,7 @@ class StoreRequest extends BaseRequest
     {
         return [
             'name'      => 'required|string|max:255|unique:page_groups,name',
+            'name_en'   => 'nullable|string|max:255|unique:page_groups,name_en',
             'column'    => 'required|numeric|min:1|max:10',
             'is_active' => 'nullable|in:true,false,0,1',
         ];

@@ -154,12 +154,16 @@ class UserController extends Controller
      * @return JsonResponse
      * @throws AuthorizationException
      */
-    public function destroy(DestroyUserRequest $request, User $user)
+    public function destroy( User $user)
     {
-        $this->authorize('delete', User::class);
+//        $this->authorize('delete', User::class);
+        try {
 
-        if ($this->userService->delete($user)) {
-            return $this->responseDeleteSuccess(['model' => $user]);
+            if ($this->userService->delete($user)) {
+                return $this->responseDeleteSuccess(['model' => $user]);
+            }
+        } catch (\Exception $e) {
+            dd($e);
         }
 
         return $this->responseDeleteFail();
