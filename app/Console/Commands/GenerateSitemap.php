@@ -363,7 +363,7 @@ class GenerateSitemap extends Command
 //        }
     }
 
-    public function post($priority = 0.5)
+    public function post($priority = 0.8)
     {
         $result = Post::query()
             ->where('is_active', 1)
