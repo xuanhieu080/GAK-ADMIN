@@ -36,6 +36,7 @@ class ProductVariant extends Model implements HasMedia
         'params',
         'discount',
         'product_main_id',
+        'price_en', 'price_discount_en', 'discount_en'
     ];
 
     protected $casts = [

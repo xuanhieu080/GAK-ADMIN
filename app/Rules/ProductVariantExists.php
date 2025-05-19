@@ -27,7 +27,6 @@ class ProductVariantExists implements ValidationRule
             $exists = \DB::table('product_variants')->where('id', $value)
                 ->where('product_id', $productId)
                 ->exists();
-            dd($exists);
 
             if (!$exists) {
                 $fail('The selected product variant is invalid for the given product.');
@@ -49,8 +48,6 @@ class ProductVariantExists implements ValidationRule
 
         // Lấy productId tương ứng từ input
         $productId = request()->input($this->productIdField);
-
-        dd($productId);
 
         return \DB::table('products')
             ->where('id', $productId)

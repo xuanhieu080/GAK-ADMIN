@@ -163,7 +163,7 @@ class UserController extends Controller
                 return $this->responseDeleteSuccess(['model' => $user]);
             }
         } catch (\Exception $e) {
-            dd($e);
+//            dd($e);
         }
 
         return $this->responseDeleteFail();

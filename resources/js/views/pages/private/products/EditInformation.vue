@@ -73,6 +73,20 @@
                  label="Tiền giảm giá"/>
       <TextInput class="mb-4" type="number" disabled :min="0" :max="999999999999" name="price-current" v-model="priceCurrent"
                  label="Giá sau khi đã trừ"/>
+      <hr/>
+
+      <TextInput class="mb-4" type="number" :min="0" :max="999999999999" name="price_en" v-model="form.price_en"
+                 error-input="price_en" label="Giá tiền tiếng anh"/>
+      <TextInput class="mb-4" type="number" :min="0" :max="100" name="ratio" v-model="ratio"
+                 label="% giảm giá"/>
+      <TextInput class="mb-4" type="number" :min="0" :max="999999999999" name="price-discount_en" v-model="form.discount_en"
+                 label="Tiền giảm giá tiếng anh"/>
+      <TextInput class="mb-4" type="number" disabled :min="0" :max="999999999999" name="price_current_en" v-model="priceCurrentEn"
+                 label="Giá sau khi đã trừ tiếng anh"/>
+      <hr/>
+
+
+
       <TextInput class="mb-4" type="number" :min="0" :max="10000" name="priority" v-model="form.priority"
                  error-input="priority" :label="trans('labels.priority')"/>
       <TextInput class="mb-4" type="number" :min="0" :max="100000" name="qty" v-model="form.qty"
@@ -202,6 +216,7 @@ const isFirstLoad = ref(false);
 const item = ref();
 const ratio = ref(0);
 const priceCurrent = ref(0);
+const priceCurrentEn = ref(0);
 
 const form = reactive({
   name: null,
@@ -221,9 +236,11 @@ const form = reactive({
   category_id: null,
   video_link: null,
   price: 0,
+  price_en: 0,
   priority: 100,
   qty: 100000,
   discount: 0,
+  discount_en: 0,
   is_active: false,
   is_hot: false,
   is_uniform: false,
@@ -259,6 +276,7 @@ onBeforeMount(() => {
     thumbImage.value = item.value.thumb_image
     form.image = null
     priceCurrent.value = item.value.price_discount
+    priceCurrentEn.value = item.value.price_discount_en
     if (response.data.model.category_id) {
       category.value = {
         'id': response.data.model.category_id,
@@ -343,8 +361,24 @@ function updateDataEn(value) {
   form.description_en = value
 }
 
-watch(() => [form.price,ratio.value], (value) => {
+watch(() => form.price, (value) => {
   if (isFirstLoad.value) {
+    form.discount = form.price * ratio.value / 100;
+    priceCurrent.value = form.price - ratio.value * value / 100;
+  }
+});
+
+watch(() => form.price_en, (value) => {
+  if (isFirstLoad.value) {
+    form.discount_en = form.price_en * ratio.value / 100;
+    priceCurrentEn.value = form.price_en - ratio.value * value / 100;
+  }
+});
+
+watch(() => ratio.value, (value) => {
+  if (isFirstLoad.value) {
+    form.discount_en = form.price_en * ratio.value / 100;
+    priceCurrentEn.value = form.price_en - ratio.value * value / 100;
     form.discount = form.price * ratio.value / 100;
     priceCurrent.value = form.price - ratio.value * value / 100;
   }
@@ -354,6 +388,12 @@ watch(() => [form.price,ratio.value], (value) => {
 watch(() => form.discount, (value) => {
   if (isFirstLoad.value) {
     priceCurrent.value = form.price - value ;
+  }
+});
+
+watch(() => form.discount_en, (value) => {
+  if (isFirstLoad.value) {
+    priceCurrentEn.value = form.price_en - value ;
   }
 });
 </script>

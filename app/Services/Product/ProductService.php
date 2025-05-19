@@ -108,7 +108,7 @@ class ProductService
             $data['is_new'] = filter_var(Arr::get($data, 'is_new'), FILTER_VALIDATE_BOOLEAN);
             $data['is_uniform'] = filter_var(Arr::get($data, 'is_uniform'), FILTER_VALIDATE_BOOLEAN);
             $data['price_discount'] = filter_var(Arr::get($data, 'price'), FILTER_VALIDATE_INT) - filter_var(Arr::get($data, 'discount'), FILTER_VALIDATE_INT);
-
+            $data['price_discount_en'] = filter_var(Arr::get($data, 'price_en'), FILTER_VALIDATE_INT) - filter_var(Arr::get($data, 'discount_en'), FILTER_VALIDATE_INT);
 
             $record = Product::query()->create($data);
             $record->addMedia($image)
@@ -150,15 +150,20 @@ class ProductService
             DB::beginTransaction();
             $data = $this->clean($data);
             $price = Arr::get($data, 'price', $product->price);
+            $priceEn = Arr::get($data, 'price_en', $product->price_en);
             $discount = Arr::get($data, 'discount', $product->discount);
+            $discountEn = Arr::get($data, 'discount_en', $product->discount_en);
 
             $product->name = Arr::get($data, 'name', $product->name);
             $product->name_en = Arr::get($data, 'name_en', $product->name_en);
             $product->description = Arr::get($data, 'description', $product->description);
             $product->description_en = Arr::get($data, 'description_en', $product->description_en);
             $product->price = $price;
+            $product->price_en = $priceEn;
             $product->discount = $discount;
+            $product->discount_en = $discountEn;
             $product->price_discount = $price - $discount;
+            $product->price_discount_en = $priceEn - $discountEn;
             $product->category_id = Arr::get($data, 'category_id', $product->category_id);
             $product->qty = Arr::get($data, 'qty', $product->qty);
             $product->is_active = filter_var(Arr::get($data, 'is_active', $product->is_active), FILTER_VALIDATE_BOOLEAN);
@@ -438,9 +443,12 @@ class ProductService
                         'product_id'               => $item['product']['id'],
                         'product_name'             => $item['product']['name'],
                         'price'                    => $item['product']['price'],
+                        'price_en'                    => $item['product']['price_en'],
                         'qty'                      => $item['product']['qty'],
                         'discount'                 => $item['product']['discount'],
+                        'discount_en'                 => $item['product']['discount_en'],
                         'price_discount'           => $item['product']['price_discount'],
+                        'price_discount_en'           => $item['product']['price_discount_en'],
                         'description'              => $item['product']['description'],
                         'meta_description'         => $item['product']['meta_description'],
                         'meta_key'                 => $item['product']['meta_key'],
@@ -489,9 +497,12 @@ class ProductService
                 'meta_key'         => $product->meta_key,
                 'meta_title'       => $product->meta_title,
                 'price'            => $product->price,
+                'price_en'            => $product->price_en,
                 'qty'              => $product->qty,
                 'discount'         => $product->discount,
+                'discount_en'         => $product->discount_en,
                 'price_discount'   => $product->price_discount,
+                'price_discount_en'   => $product->price_discount_en,
             ];
         }, $result);
 
@@ -565,9 +576,12 @@ class ProductService
                         'product_id'               => $item['product']['id'],
                         'product_name'             => $item['product']['name'],
                         'price'                    => $item['product']['price'],
+                        'price_en'                    => $item['product']['price_en'],
                         'qty'                      => $item['product']['qty'],
                         'discount'                 => $item['product']['discount'],
+                        'discount_en'                 => $item['product']['discount_en'],
                         'price_discount'           => $item['product']['price_discount'],
+                        'price_discount_en'           => $item['product']['price_discount_en'],
                         'description'              => $item['product']['description'],
                         'meta_description'         => $item['product']['meta_description'],
                         'meta_key'                 => $item['product']['meta_key'],
@@ -697,12 +711,17 @@ class ProductService
                 $productVariant = ProductVariant::find($data['id']);
 
                 $price = Arr::get($data, 'price', $productVariant->price);
+                $priceEn = Arr::get($data, 'price_en', $productVariant->price_en);
                 $discount = Arr::get($data, 'discount', $productVariant->discount);
+                $discountEn = Arr::get($data, 'discount_en', $productVariant->discount_en);
                 $productVariant->name = Arr::get($data, 'name', $productVariant->name);
                 $productVariant->description = Arr::get($data, 'description', $productVariant->description);
                 $productVariant->price = $price;
+                $productVariant->price_en = $priceEn;
                 $productVariant->discount = $discount;
+                $productVariant->discount_en = $discountEn;
                 $productVariant->price_discount = $price - $discount;
+                $productVariant->price_discount_en = $priceEn - $discountEn;
                 $productVariant->qty = Arr::get($data, 'qty', $productVariant->qty);
                 $productVariant->is_active = filter_var(Arr::get($data, 'is_active', $productVariant->is_active), FILTER_VALIDATE_BOOLEAN);
 //                $productVariant->priority = Arr::get($data, 'priority', $productVariant->priority);
@@ -877,13 +896,18 @@ class ProductService
             $data = $this->clean($input);
 
             $price = Arr::get($data, 'price', $productVariant->price);
+            $priceEn = Arr::get($data, 'price_en', $productVariant->price_en);
             $discount = Arr::get($data, 'discount', $productVariant->discount);
+            $discountEn = Arr::get($data, 'discount_en', $productVariant->discount_en);
             $productVariant->name = Arr::get($data, 'name', $productVariant->name);
             $productVariant->code = Arr::get($data, 'code', $productVariant->code);
             $productVariant->description = Arr::get($data, 'description', $productVariant->description);
             $productVariant->price = $price;
+            $productVariant->price_en = $priceEn;
             $productVariant->discount = $discount;
+            $productVariant->discount_en = $discountEn;
             $productVariant->price_discount = $price - $discount;
+            $productVariant->price_discount_en = $priceEn - $discountEn;
             $productVariant->qty = Arr::get($data, 'qty', $productVariant->qty);
 //                $productVariant->is_active = filter_var(Arr::get($data, 'is_active', $productVariant->is_active), FILTER_VALIDATE_BOOLEAN);
             $productVariant->save();

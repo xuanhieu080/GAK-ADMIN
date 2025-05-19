@@ -38,6 +38,7 @@ class UpdateRequest extends BaseRequest
             'category_id'         => 'required|exists:categories,id',
             'is_active'           => 'required|in:1,0,true,false',
             'price'               => 'nullable|numeric|min:0|max:999999999999',
+            'price_en'               => 'nullable|numeric|min:0|max:999999999999',
             'qty'                 => 'nullable|numeric|min:0|max:10000000',
             'priority'            => 'required|numeric|min:0|max:1000',
             'meta_description'    => 'required|max:255',
@@ -72,6 +73,17 @@ class UpdateRequest extends BaseRequest
                 'numeric',
                 function ($attribute, $value, $fail) {
                     if ($value > $this->price) {
+                        return $fail('Tiền giảm giá không được vượt quá giá tiền gốc');
+                    }
+                }
+            ],
+            'discount_en'            => [
+                'nullable',
+                'max:1000000000000',
+                'min:0',
+                'numeric',
+                function ($attribute, $value, $fail) {
+                    if ($value > $this->price_en) {
                         return $fail('Tiền giảm giá không được vượt quá giá tiền gốc');
                     }
                 }

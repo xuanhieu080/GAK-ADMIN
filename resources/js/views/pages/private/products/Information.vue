@@ -36,16 +36,6 @@
           <Dropdown class="mb-4" name="category" error-input="category_id" :required="true" :multiple="true"
                     server="categories" :label="trans('labels.categories')" :placeholder="trans('labels.categories')"
                     :server-search-min-characters="0" v-model="category"></Dropdown>
-          <TextInput class="mb-4" type="number" :min="0" :max="999999999999" name="price" v-model="form.price"
-                     error-input="price" :label="trans('labels.price')"/>
-          <TextInput class="mb-4" type="number" :min="0" :max="100" name="ratio" v-model="ratio"
-                     label="% giảm giá"/>
-          <TextInput class="mb-4" type="number" :min="0" :max="999999999999" name="price-discount"
-                     v-model="form.discount"
-                     label="Tiền giảm giá"/>
-          <TextInput class="mb-4" type="number" :min="0" :max="999999999999" name="price-current" disabled
-                     v-model="priceCurrent"
-                     label="Giá sau khi đã trừ"/>
           <TextInput class="mb-4" type="number" :min="0" :max="10000" name="priority" v-model="form.priority"
                      error-input="priority" :label="trans('labels.priority')"/>
           <TextInput class="mb-4" type="number" :min="0" :max="100000" name="qty" v-model="form.qty"
@@ -99,6 +89,17 @@
           <TextInput class="mb-4" type="text" :required="true" error-input="slug" name="slug" v-model="form.slug"
                      label="Slug"/>
 
+          <TextInput class="mb-4" type="number" :min="0" :max="999999999999" name="price" v-model="form.price"
+                     error-input="price" :label="trans('labels.price')"/>
+          <TextInput class="mb-4" type="number" :min="0" :max="100" name="ratio" v-model="ratio"
+                     label="% giảm giá"/>
+          <TextInput class="mb-4" type="number" :min="0" :max="999999999999" name="price_discount"
+                     v-model="form.discount"
+                     label="Tiền giảm giá"/>
+          <TextInput class="mb-4" type="number" :min="0" :max="999999999999" name="price_current" disabled
+                     v-model="priceCurrent"
+                     label="Giá sau khi đã trừ"/>
+
           <div class="mb-4">
             <CkEditorCustom :content="form.description" @updateData="(value) => updateData(value)"/>
             <span v-if="alertStore.errors['description']" class="text-xs tracking-wide text-red-600">{{
@@ -125,6 +126,17 @@
                      :label="trans('labels.name')"/>
           <TextInput class="mb-4" type="text" error-input="slug_en" name="slug_en" v-model="form.slug_en"
                      label="Slug"/>
+
+          <TextInput class="mb-4" type="number" :min="0" :max="999999999999" name="price_en" v-model="form.price_en"
+                     error-input="price_en" :label="trans('labels.price')"/>
+          <TextInput class="mb-4" type="number" :min="0" :max="100" name="ratio" v-model="ratio"
+                     label="% giảm giá"/>
+          <TextInput class="mb-4" type="number" :min="0" :max="999999999999" name="price_discount_en"
+                     v-model="form.discount_en"
+                     label="Tiền giảm giá"/>
+          <TextInput class="mb-4" type="number" :min="0" :max="999999999999" name="price-current-en" disabled
+                     v-model="priceCurrentEn"
+                     label="Giá sau khi đã trừ"/>
 
           <div class="mb-4">
             <CkEditorCustom :content="form.description_en" @updateData="(value) => updateDataEn(value)"/>
@@ -198,6 +210,7 @@ const acceptedFileTypes = 'image/*';
 
 const ratio = ref(0);
 const priceCurrent = ref(0);
+const priceCurrentEn = ref(0);
 
 const form = reactive({
   name: null,
@@ -216,8 +229,10 @@ const form = reactive({
   description_en: null,
   category_id: null,
   price: 0,
+  price_en: 0,
   qty: 100000,
   discount: 0,
+  discount_en: 0,
   priority: 100,
   is_active: false,
   is_hot: false,
@@ -241,7 +256,9 @@ if (props.information) {
   form.description_en = props.information.description_en;
   form.category_id = props.information.category_id;
   form.price = props.information.price;
+  form.price_en = props.information.price_en;
   form.discount = props.information.discount;
+  form.discount_en = props.information.discount_en;
   form.priority = props.information.priority;
   form.is_active = props.information.is_active;
   form.is_hot = props.information.is_hot;
@@ -332,7 +349,9 @@ watch(() => props.information, (data) => {
   form.description_en = props.information.description_en;
   form.category_id = props.information.category_id;
   form.price = props.information.price;
+  form.price_en = props.information.price_en;
   form.discount = props.information.discount;
+  form.discount_en = props.information.discount_en;
   form.priority = props.information.priority;
   form.is_active = props.information.is_active;
   form.is_hot = props.information.is_hot;
@@ -373,14 +392,24 @@ watch(() => form.price, (value) => {
   form.discount = ratio.value * value / 100;
   priceCurrent.value = value - ratio.value * value / 100;
 });
+watch(() => form.price_en, (value) => {
+  form.discount_en = ratio.value * value / 100;
+  priceCurrentEn.value = value - ratio.value * value / 100;
+});
 
 watch(() => ratio.value, (value) => {
   form.discount = form.price * value / 100;
   priceCurrent.value = form.price - form.price * value / 100;
+  form.discount_en = form.price_en * value / 100;
+  priceCurrentEn.value = form.price_en - form.price_en * value / 100;
 });
 
 watch(() => form.discount, (value) => {
   priceCurrent.value = form.price - value;
+});
+
+watch(() => form.discount_en, (value) => {
+  priceCurrentEn.value = form.price_en - value;
 });
 
 </script>

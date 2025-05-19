@@ -20,6 +20,16 @@
                  label="Tiền giảm giá"/>
       <TextInput class="mb-4" type="number" disabled :min="0" :max="999999999999" name="price-current" v-model="priceCurrent"
                  label="Giá sau khi đã trừ"/>
+
+      <TextInput class="mb-4" type="number" :min="0" :max="999999999999" name="price_en" v-model="form.price_en"
+                 :error-input="'details.' + index + '.price_en'" label="Giá tiền tiếng anh"/>
+      <TextInput class="mb-4" type="number" :min="0" :max="100" name="ratio" v-model="ratio"
+                 label="% giảm giá"/>
+      <TextInput class="mb-4" type="number" :min="0" :max="999999999999" name="price_discount_en" v-model="form.discount_en"
+                 :error-input="'details.' + index + '.discount_en'"
+                 label="Tiền giảm giá tiếng anh"/>
+      <TextInput class="mb-4" type="number" disabled :min="0" :max="999999999999" name="price_current_en" v-model="priceCurrentEn"
+                 label="Giá sau khi đã trừ tiếng anh"/>
       <TextInput class="mb-4" type="number" :min="0" :max="100000" name="qty" v-model="form.qty"
                  :error-input="'details.' + index + '.qty'"
                  error-input="qty" label="Số lượng"/>
@@ -94,6 +104,7 @@ const props = defineProps({
 
 const ratio = ref(0);
 const priceCurrent = ref(0);
+const priceCurrentEn = ref(0);
 
 const form = reactive({
   id: props.item.id,
@@ -108,7 +119,9 @@ const form = reactive({
   // description: null,
   // category_id: null,
   price: 0,
+  price_en: 0,
   discount: 0,
+  discount_en: 0,
   params: null,
   qty: 0,
   // priority: 100,
@@ -138,12 +151,15 @@ if (props.item) {
   form.is_active = true
   // form.is_active = props.item.is_active
   form.price = props.item.price
+  form.price_en = props.item.price_en
   form.discount = props.item.discount
+  form.discount_en = props.item.discount_en
   form.qty = props.item.qty
   form.params = props.item.params
   images.value = props.item.images
   thumbImage.value = props.item.thumb_image
   priceCurrent.value = props.item.price_discount
+  priceCurrentEn.value = props.item.price_discount_en
   optionName.value = props.item.option_name
 
   setTimeout(() => {
@@ -161,10 +177,25 @@ watch(() => addFile.value, (data) => {
   })
 });
 
-watch(() => [form.price,ratio.value], (value) => {
+watch(() => ratio.value, (value) => {
   if (isFirstLoad.value) {
     form.discount = form.price * ratio.value / 100;
     priceCurrent.value = form.price - ratio.value * value / 100;
+    form.discount_en = form.price_en * ratio.value / 100;
+    priceCurrentEn.value = form.price_en - ratio.value * value / 100;
+  }
+});
+
+watch(() => form.price, (value) => {
+  if (isFirstLoad.value) {
+    form.discount = form.price * ratio.value / 100;
+    priceCurrent.value = form.price - ratio.value * value / 100;
+  }
+});
+watch(() => form.price_en, (value) => {
+  if (isFirstLoad.value) {
+    form.discount_en = form.price_en * ratio.value / 100;
+    priceCurrentEn.value = form.price_en - ratio.value * value / 100;
   }
 });
 
@@ -172,6 +203,12 @@ watch(() => [form.price,ratio.value], (value) => {
 watch(() => form.discount, (value) => {
   if (isFirstLoad.value) {
     priceCurrent.value = form.price - value ;
+  }
+});
+
+watch(() => form.discount_en, (value) => {
+  if (isFirstLoad.value) {
+    priceCurrentEn.value = form.price_en - value ;
   }
 });
 

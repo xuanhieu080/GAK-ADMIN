@@ -53,7 +53,8 @@ class Product extends Model implements HasMedia
         'rate_count',
         'highlight_image',
         'highlight',
-        'highlight_en'
+        'highlight_en',
+        'price_en', 'price_discount_en', 'discount_en'
     ];
 
     protected $casts = [

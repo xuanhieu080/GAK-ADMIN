@@ -57,7 +57,9 @@ const information = reactive({
   description_en: null,
   category_id: null,
   price: 0,
+  price_en: 0,
   discount: 0,
+  discount_en: 0,
   priority: 100,
   qty: 100000,
   is_active: false,
@@ -83,7 +85,9 @@ const informationCreate = ref({
   description_en: null,
   category_id: null,
   price: 0,
+  price_en: 0,
   discount: 0,
+  discount_en: 0,
   priority: 100,
   qty: 100000,
   is_active: false,
@@ -177,7 +181,9 @@ function clearData() {
   information.description_en = null;
   information.category_id = null;
   information.price = 0
+  information.price_en = 0
   information.discount = 0
+  information.discount_en = 0
   information.priority = 100;
   information.qty = 100000;
   information.is_active = false;
@@ -207,7 +213,9 @@ function informationUpdate(data) {
   information.description_en = data.description_en;
   information.category_id = data.category_id;
   information.price = data.price;
+  information.price_en = data.price_en;
   information.discount = data.discount;
+  information.discount_en = data.discount_en;
   information.qty = data.qty;
   information.priority = data.priority;
   information.is_active = data.is_active;

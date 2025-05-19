@@ -38,9 +38,11 @@ class UpdateVariantRequest extends BaseRequest
             //            'category_id'        => 'required|exists:categories,id',
             'details.*.is_active'          => 'required|in:1,0,true,false',
             'details.*.price'              => 'nullable|numeric|min:0|max:999999999999',
+            'details.*.price_en'           => 'nullable|numeric|min:0|max:999999999999',
             'details.*.qty'                => 'nullable|numeric|min:0|max:10000000',
 
             'details.*.discount'         => 'nullable|max:1000000000000|min:0|numeric',
+            'details.*.discount_en'      => 'nullable|max:1000000000000|min:0|numeric',
             //            'priority'           => 'required|numeric|min:0|max:1000',
             'details.*.meta_description' => 'required|max:255',
             'details.*.meta_title'       => 'required|max:255',

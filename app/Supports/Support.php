@@ -43,7 +43,6 @@ class Support
 
 //            return response()->json(['message' => 'File has been written successfully'], 200);
         } catch (\Exception $e) {
-            dd($e);
             return response()->json(['message' => 'Error writing file', 'error' => $e->getMessage()], 500);
         }
     }
