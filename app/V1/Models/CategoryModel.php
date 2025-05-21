@@ -4,12 +4,11 @@ namespace App\V1\Models;
 
 use App\Models\AttributeGroup;
 use App\Models\Category;
-use App\Models\Variant;
 use App\Supports\Support;
-use App\V1\Resources\CategoryDetailResource;
-use App\V1\Resources\CategoryHeaderResource;
-use App\V1\Resources\CategoryResource;
-use App\V1\Resources\CategorySearchAllResource;
+use App\V1\Resources\vi\CategoryDetailResource;
+use App\V1\Resources\vi\CategoryHeaderResource;
+use App\V1\Resources\vi\CategoryResource;
+use App\V1\Resources\vi\CategorySearchAllResource;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;

@@ -1,11 +1,10 @@
 <?php
 
-namespace App\V1\Resources;
+namespace App\V1\Resources\vi;
 
-use App\Utilities\Data;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProductVariantMainResource extends JsonResource
+class ProductStockResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -19,40 +18,37 @@ class ProductVariantMainResource extends JsonResource
         $data = [
             'id'               => $this->id,
             'code'             => $this->code,
+            'slug'             => $this->slug,
             'name'             => $this->name,
-            'product_id'       => $this->product_id,
-            'product_name'     => object_get($this, 'product.name'),
-            'slug'             => object_get($this, 'product.slug'),
+//            'description'      => $this->description,
             'price'            => $this->price,
+            'category_id'      => $this->category_id,
             'qty'              => $this->qty,
             'is_active'        => $this->is_active,
-            'price_discount'   => $this->price_discount,
-            'discount'         => $this->discount,
-            'percent'          => $this->price <= 0 ? 0 : (int)(round($this->discount / $this->price, 2) * 100),
-            'options'          => $this->options,
-            'option_all'       => $this->option_all,
-            'option_group'     => $this->option_group,
+            'qty_sold'         => $this->qty_sold,
+            'priority'         => $this->priority,
             'meta_title'       => $this->meta_title,
             'meta_description' => $this->meta_description,
             'meta_key'         => $this->meta_key,
+            'video_link'       => $this->video_link,
+            'price_discount'   => $this->price_discount,
+            'discount'         => $this->discount,
+            'percent'          => $this->price <= 0 ? 0 : (int)(round($this->discount / $this->price, 2) * 100),
+            'is_hot'           => $this->is_hot,
+            //            'variants'         => [],
         ];
 
+//        if (!empty($this->resource->toArray()['variants'])) {
+        $data['variants'] = ProductVariantResource::collection($this->variants);
+//        }
 
-        $image = $this->getFirstMediaUrl();
         foreach ($this->getMedia("thumb") as $item) {
             $thumb[] = $item->getFullUrl();
         }
-
-
-        if (empty($thumb)) {
-            foreach ($this->product->getMedia("thumb") as $item) {
-                $thumb[] = $item->getFullUrl();
-            }
-        }
-        $data['image_url'] = !empty($thumb[0]) ? $thumb[0] : $image;
-        $data['image'] = !empty($thumb[0]) ? $thumb[0] : $image;
+        $data['image'] = $this->getFirstMediaUrl();
+        $data['image_url'] = $this->getFirstMediaUrl();
         $data['thumb_image'] = $thumb;
-        $data['out_of_stock'] = empty($thumb) || empty($data['image']) || $this->qty <= 0;
+        $data['category_name'] = object_get($this, 'category.name');
         $data['created_at'] = !empty($this->resource->created_at) ? $this->resource->created_at->diffForHumans() : null;
         $data['updated_at'] = !empty($this->resource->updated_at) ? $this->resource->updated_at->diffForHumans() : null;
 

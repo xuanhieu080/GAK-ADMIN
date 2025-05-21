@@ -1,15 +1,14 @@
 <?php
 
-namespace App\V1\Resources;
+namespace App\V1\Resources\vi;
 
-use App\Utilities\Data;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * Class UserResource
  * @package App\Http\Resources
  */
-class PageGroupResource extends JsonResource
+class PageResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -21,8 +20,11 @@ class PageGroupResource extends JsonResource
     public function toArray($request)
     {
         $data = $this->resource->toArray();
-//        $data['title'] = $this->name;
-//        $data['details'] = new PageResource($this->details);
+        $data['image_url'] = $this->getFirstMediaUrl();
+
+        $data['created_at'] = !empty($this->resource->created_at) ? $this->resource->created_at->diffForHumans() : null;
+        $data['updated_at'] = !empty($this->resource->updated_at) ? $this->resource->updated_at->diffForHumans() : null;
+
         return $data;
     }
 }

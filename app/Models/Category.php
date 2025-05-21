@@ -47,7 +47,7 @@ class Category extends Model implements HasMedia
         'meta_key_en',
         'order',
         'content_seo',
-        ''
+        'content_seo_en'
     ];
 
     protected $casts = [

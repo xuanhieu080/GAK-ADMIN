@@ -4,7 +4,7 @@ namespace App\V1\Models;
 
 use App\Models\PageGroup;
 use App\Supports\Support;
-use App\V1\Resources\PageGroupResource;
+use App\V1\Resources\vi\PageGroupResource;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;

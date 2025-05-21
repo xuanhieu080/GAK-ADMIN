@@ -1,15 +1,14 @@
 <?php
 
-namespace App\V1\Resources;
+namespace App\V1\Resources\vi;
 
-use App\Utilities\Data;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * Class UserResource
  * @package App\Http\Resources
  */
-class CategoryDetailResource extends JsonResource
+class CategoryDescendantResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -21,14 +20,10 @@ class CategoryDetailResource extends JsonResource
     public function toArray($request)
     {
         $data = $this->resource->toArray();
-        $data['image_url'] = $this->getFirstMediaUrl();
-        if (!empty($this->resource->toArray()['descendants'])) {
-            $data['descendants'] = CategoryDescendantResource::collection($this->descendants);
+        if (!empty($this->resource->toArray()['products'])) {
+            $data['products'] = ProductShortResource::collection($this->products);
         }
-//        $data['variants'] = $this->getFirstMediaUrl();
-//        if (!empty($this->resource->toArray()['products'])) {
-//            $data['products'] = ProductResource::collection($this->products);
-//        }
+        $data['image_url'] = $this->getFirstMediaUrl();
 
         $data['created_at'] = !empty($this->resource->created_at) ? $this->resource->created_at->diffForHumans() : null;
         $data['updated_at'] = !empty($this->resource->updated_at) ? $this->resource->updated_at->diffForHumans() : null;

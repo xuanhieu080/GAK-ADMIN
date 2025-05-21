@@ -1,15 +1,14 @@
 <?php
 
-namespace App\V1\Resources;
+namespace App\V1\Resources\vi;
 
-use App\Utilities\Data;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * Class UserResource
  * @package App\Http\Resources
  */
-class CategoryHeaderResource extends JsonResource
+class CategoryChildrenResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -25,9 +24,9 @@ class CategoryHeaderResource extends JsonResource
             'name'      => $this->name,
             'slug'      => $this->slug,
             'is_active' => $this->is_active,
-            'children'  => CategoryChildrenResource::collection($this->children),
         ];
 
+        $data['image_url'] = $this->getFirstMediaUrl();
         $data['created_at'] = !empty($this->resource->created_at) ? $this->resource->created_at->diffForHumans() : null;
         $data['updated_at'] = !empty($this->resource->updated_at) ? $this->resource->updated_at->diffForHumans() : null;
 

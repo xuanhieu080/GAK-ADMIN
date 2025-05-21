@@ -3,7 +3,7 @@
 namespace App\V1\Models;
 
 use App\Models\AttributeGroup;
-use App\V1\Resources\AttributeGroupResource;
+use App\V1\Resources\vi\AttributeGroupResource;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 

@@ -1,15 +1,14 @@
 <?php
 
-namespace App\V1\Resources;
+namespace App\V1\Resources\vi;
 
-use App\Utilities\Data;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * Class UserResource
  * @package App\Http\Resources
  */
-class PostGroupResource extends JsonResource
+class PostResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -24,18 +23,23 @@ class PostGroupResource extends JsonResource
         $data = [
             'id'               => $this->id,
             'slug'             => $this->slug,
-            'name'             => $this->name,
-            'description'      => $this->description,
+            'title'            => $this->title,
+            'content'          => $this->content,
+            'author_id'        => $this->author_id,
+            'author_name'      => object_get($this, 'author.name'),
             'meta_title'       => $this->meta_title,
             'meta_description' => $this->meta_description,
             'meta_key'         => $this->meta_key,
             'is_hot'           => $this->is_hot,
             'is_active'        => $this->is_active,
-            'user_id'          => $this->user_id
+            'is_new'           => $this->is_new,
+            'view'             => $this->view,
+            'user_id'          => $this->user_id,
+            'category_id'      => $this->group_id,
+            'category_name'    => object_get($this, 'group.name'),
+            'category_slug'    => object_get($this, 'group.slug'),
         ];
-        if (!empty($this->resource->toArray()['posts'])) {
-            $data['posts'] = PostResource::collection($this->posts);
-        }
+
         foreach ($this->getMedia("thumb") as $item) {
             $thumb[] = $item->getFullUrl();
         }

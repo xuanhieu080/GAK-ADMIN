@@ -1,6 +1,6 @@
 <?php
 
-namespace App\V1\Resources;
+namespace App\V1\Resources\vi;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -8,7 +8,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * Class UserResource
  * @package App\Http\Resources
  */
-class CategorySearchAllResource extends JsonResource
+class CategoryHeaderResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -19,9 +19,13 @@ class CategorySearchAllResource extends JsonResource
      */
     public function toArray($request)
     {
-        $data = $this->resource->toArray();
-        $data['image_url'] = $this->getFirstMediaUrl();
-        $data['products'] = ProductVariantResource::collection($this->variants);
+        $data = [
+            'code'      => $this->code,
+            'name'      => $this->name,
+            'slug'      => $this->slug,
+            'is_active' => $this->is_active,
+            'children'  => CategoryChildrenResource::collection($this->children),
+        ];
 
         $data['created_at'] = !empty($this->resource->created_at) ? $this->resource->created_at->diffForHumans() : null;
         $data['updated_at'] = !empty($this->resource->updated_at) ? $this->resource->updated_at->diffForHumans() : null;
