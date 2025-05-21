@@ -19,17 +19,12 @@ class CategoryChildrenResource extends JsonResource
      */
     public function toArray($request)
     {
-        $data = [
-            'code'      => $this->code,
-            'name'      => $this->name,
-            'slug'      => $this->slug,
-            'is_active' => $this->is_active,
+        return [
+            'code'       => $this->code,
+            'name'       => $this->name,
+            'slug'       => $this->slug,
+            'is_active'  => $this->is_active,
+            'image_url'  => $this->getFirstMediaUrl()
         ];
-
-        $data['image_url'] = $this->getFirstMediaUrl();
-        $data['created_at'] = !empty($this->resource->created_at) ? $this->resource->created_at->diffForHumans() : null;
-        $data['updated_at'] = !empty($this->resource->updated_at) ? $this->resource->updated_at->diffForHumans() : null;
-
-        return $data;
     }
 }

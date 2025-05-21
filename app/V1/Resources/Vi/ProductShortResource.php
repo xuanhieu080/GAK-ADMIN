@@ -22,7 +22,7 @@ class ProductShortResource extends JsonResource
             'name'             => $this->name,
             'price'            => $this->price,
             'category_id'      => $this->category_id,
-            'qty'              => $this->coqtyde,
+            'qty'              => $this->qty,
             'is_active'        => $this->is_active,
             'price_discount'   => $this->price_discount,
             'discount'         => $this->discount,

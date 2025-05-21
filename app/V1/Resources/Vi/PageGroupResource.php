@@ -19,9 +19,9 @@ class PageGroupResource extends JsonResource
      */
     public function toArray($request)
     {
-        $data = $this->resource->toArray();
-//        $data['title'] = $this->name;
-//        $data['details'] = new PageResource($this->details);
-        return $data;
+        return [
+            'name'   => $this->name,
+            'column' => $this->column,
+        ];
     }
 }

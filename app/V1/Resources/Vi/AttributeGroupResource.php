@@ -19,13 +19,11 @@ class AttributeGroupResource extends JsonResource
      */
     public function toArray($request)
     {
-        $data = [
+        return [
             'id'         => $this->id,
             'name'       => $this->name,
             'slug'       => $this->slug,
             'attributes' => AttributeResource::collection($this->attributes),
         ];
-
-        return $data;
     }
 }

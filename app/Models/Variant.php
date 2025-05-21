@@ -37,6 +37,11 @@ class Variant extends Model
         'attribute_group_link',
         'attribute_name',
         'attribute_slug',
+        'attribute_group_name_en',
+        'attribute_group_slug_en',
+        'attribute_group_link_en',
+        'attribute_name_en',
+        'attribute_slug_en',
         'is_color',
     ];
 
@@ -75,6 +80,26 @@ class Variant extends Model
         return \Str::slug(object_get($this, 'attribute.name'));
     }
 
+    public function getAttributeGroupNameEnAttribute()
+    {
+        return object_get($this, 'attributeGroup.name_en');
+    }
+
+    public function getAttributeGroupSlugEnAttribute()
+    {
+        return \Str::slug(object_get($this, 'attributeGroup.name_en'));
+    }
+
+    public function getAttributeNameEnAttribute()
+    {
+        return object_get($this, 'attribute.name_en');
+    }
+
+    public function getAttributeSlugEnAttribute()
+    {
+        return \Str::slug(object_get($this, 'attribute.name_en'));
+    }
+
     public function getIsColorAttribute()
     {
         return filter_var(object_get($this, 'attributeGroup.is_color'), FILTER_VALIDATE_BOOLEAN);
@@ -83,5 +108,10 @@ class Variant extends Model
     public function getAttributeGroupLinkAttribute()
     {
         return object_get($this, 'attributeGroup.link');
+    }
+
+    public function getAttributeGroupLinkEnAttribute()
+    {
+        return object_get($this, 'attributeGroup.link_en');
     }
 }

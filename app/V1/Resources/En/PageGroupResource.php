@@ -13,15 +13,15 @@ class PageGroupResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      *
      * @return array
      */
     public function toArray($request)
     {
-        $data = $this->resource->toArray();
-//        $data['title'] = $this->name;
-//        $data['details'] = new PageResource($this->details);
-        return $data;
+        return [
+            'name'   => $this->name_en,
+            'column' => $this->column,
+        ];
     }
 }

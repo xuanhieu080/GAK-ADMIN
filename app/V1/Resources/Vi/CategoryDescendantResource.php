@@ -20,7 +20,7 @@ class CategoryDescendantResource extends JsonResource
     public function toArray($request)
     {
         $image = $this->getFirstMediaUrl();
-        $data = [
+        return [
             'id'         => $this->id,
             'code'       => $this->code,
             'image'      => $image,
@@ -30,7 +30,5 @@ class CategoryDescendantResource extends JsonResource
             'created_at' => $this->created_at ? $this->created_at->diffForHumans() : null,
             'updated_at' => $this->updated_at ? $this->updated_at->diffForHumans(): null,
         ];
-
-        return $data;
     }
 }

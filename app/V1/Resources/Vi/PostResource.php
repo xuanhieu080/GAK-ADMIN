@@ -43,6 +43,7 @@ class PostResource extends JsonResource
         foreach ($this->getMedia("thumb") as $item) {
             $thumb[] = $item->getFullUrl();
         }
+
         $data['image'] = $this->getFirstMediaUrl();
         $data['image_url'] = $this->getFirstMediaUrl();
         $data['thumb_image'] = $thumb;

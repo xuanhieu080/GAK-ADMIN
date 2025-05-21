@@ -41,6 +41,7 @@ class Page extends Model implements HasMedia
         'meta_key_en',
         'is_button',
         'link',
+        'link_en',
     ];
 
     protected $casts = [

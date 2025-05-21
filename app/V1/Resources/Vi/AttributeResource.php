@@ -19,7 +19,7 @@ class AttributeResource extends JsonResource
      */
     public function toArray($request)
     {
-        $data = [
+        return [
             'id'       => $this->id,
             'name'     => $this->name,
             'slug'     => $this->slug,
@@ -27,7 +27,5 @@ class AttributeResource extends JsonResource
             'is_color' => filter_var(object_get($this, 'group.is_color'), FILTER_VALIDATE_BOOLEAN),
             'link'     => $this->link,
         ];
-
-        return $data;
     }
 }

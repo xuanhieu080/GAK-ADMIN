@@ -19,17 +19,14 @@ class CategoryHeaderResource extends JsonResource
      */
     public function toArray($request)
     {
-        $data = [
-            'code'      => $this->code,
-            'name'      => $this->name,
-            'slug'      => $this->slug,
-            'is_active' => $this->is_active,
-            'children'  => CategoryChildrenResource::collection($this->children),
+        return [
+            'code'       => $this->code,
+            'name'       => $this->name,
+            'slug'       => $this->slug,
+            'is_active'  => $this->is_active,
+            'children'   => CategoryChildrenResource::collection($this->children),
+            'created_at' => $this->created_at ? $this->created_at->diffForHumans() : null,
+            'updated_at' => $this->updated_at ? $this->updated_at->diffForHumans() : null,
         ];
-
-        $data['created_at'] = !empty($this->resource->created_at) ? $this->resource->created_at->diffForHumans() : null;
-        $data['updated_at'] = !empty($this->resource->updated_at) ? $this->resource->updated_at->diffForHumans() : null;
-
-        return $data;
     }
 }

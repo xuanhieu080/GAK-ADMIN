@@ -18,22 +18,22 @@ class ProductStockResource extends JsonResource
         $data = [
             'id'               => $this->id,
             'code'             => $this->code,
-            'slug'             => $this->slug,
-            'name'             => $this->name,
+            'slug'             => $this->slug_en,
+            'name'             => $this->name_en,
 //            'description'      => $this->description,
-            'price'            => $this->price,
+            'price'            => $this->price_en,
             'category_id'      => $this->category_id,
             'qty'              => $this->qty,
             'is_active'        => $this->is_active,
             'qty_sold'         => $this->qty_sold,
             'priority'         => $this->priority,
-            'meta_title'       => $this->meta_title,
-            'meta_description' => $this->meta_description,
-            'meta_key'         => $this->meta_key,
+            'meta_title'       => $this->meta_title_en,
+            'meta_description' => $this->meta_description_en,
+            'meta_key'         => $this->meta_key_en,
             'video_link'       => $this->video_link,
-            'price_discount'   => $this->price_discount,
-            'discount'         => $this->discount,
-            'percent'          => $this->price <= 0 ? 0 : (int)(round($this->discount / $this->price, 2) * 100),
+            'price_discount'   => $this->price_discount_en,
+            'discount'         => $this->discount_en,
+            'percent'          => $this->price_en <= 0 ? 0 : (int)(round($this->discount_en / $this->price_en, 2) * 100),
             'is_hot'           => $this->is_hot,
             //            'variants'         => [],
         ];
@@ -48,7 +48,7 @@ class ProductStockResource extends JsonResource
         $data['image'] = $this->getFirstMediaUrl();
         $data['image_url'] = $this->getFirstMediaUrl();
         $data['thumb_image'] = $thumb;
-        $data['category_name'] = object_get($this, 'category.name');
+        $data['category_name'] = object_get($this, 'category.name_en');
         $data['created_at'] = !empty($this->resource->created_at) ? $this->resource->created_at->diffForHumans() : null;
         $data['updated_at'] = !empty($this->resource->updated_at) ? $this->resource->updated_at->diffForHumans() : null;
 

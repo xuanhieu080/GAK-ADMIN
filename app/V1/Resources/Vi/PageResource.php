@@ -19,12 +19,28 @@ class PageResource extends JsonResource
      */
     public function toArray($request)
     {
-        $data = $this->resource->toArray();
-        $data['image_url'] = $this->getFirstMediaUrl();
+        $image = $this->getFirstMediaUrl();
 
-        $data['created_at'] = !empty($this->resource->created_at) ? $this->resource->created_at->diffForHumans() : null;
-        $data['updated_at'] = !empty($this->resource->updated_at) ? $this->resource->updated_at->diffForHumans() : null;
-
-        return $data;
+        return [
+            'id'                => $this->id,
+            'name'              => $this->name,
+            'title'             => $this->title,
+            'slug'              => $this->slug,
+            'description'       => $this->description,
+            'description_short' => $this->description_short,
+            'image'             => $image,
+            'image_url'         => $image,
+            'user_id'           => $this->user_id,
+            'group_id'          => $this->group_id,
+            'is_active'         => $this->is_active,
+            'show_header'       => $this->show_header,
+            'meta_title'        => $this->meta_title,
+            'meta_description'  => $this->meta_description,
+            'meta_key'          => $this->meta_key,
+            'is_button'         => $this->is_button,
+            'link'              => $this->link,
+            'created_at'        => $this->created_at ? $this->created_at->diffForHumans() : null,
+            'updated_at'        => $this->updated_at ? $this->updated_at->diffForHumans() : null,
+        ];
     }
 }

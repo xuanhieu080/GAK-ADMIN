@@ -18,14 +18,14 @@ class ProductShortResource extends JsonResource
         $thumb = [];
         $data = [
             'code'             => $this->code,
-            'slug'             => $this->slug,
-            'name'             => $this->name,
-            'price'            => $this->price,
+            'slug'             => $this->slug_en,
+            'name'             => $this->name_en,
+            'price'            => $this->price_en,
             'category_id'      => $this->category_id,
-            'qty'              => $this->coqtyde,
+            'qty'              => $this->qty,
             'is_active'        => $this->is_active,
-            'price_discount'   => $this->price_discount,
-            'discount'         => $this->discount,
+            'price_discount'   => $this->price_discount_en,
+            'discount'         => $this->discount_en,
             'is_hot'           => $this->is_hot,
         ];
 
@@ -36,7 +36,7 @@ class ProductShortResource extends JsonResource
         $data['image'] = $this->getFirstMediaUrl();
         $data['image_url'] = $this->getFirstMediaUrl();
         $data['thumb_image'] = $thumb;
-        $data['category_name'] = object_get($this, 'category.name');
+        $data['category_name'] = object_get($this, 'category.name_en');
         $data['created_at'] = !empty($this->resource->created_at) ? $this->resource->created_at->diffForHumans() : null;
         $data['updated_at'] = !empty($this->resource->updated_at) ? $this->resource->updated_at->diffForHumans() : null;
 

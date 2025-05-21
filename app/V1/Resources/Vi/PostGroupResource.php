@@ -32,6 +32,7 @@ class PostGroupResource extends JsonResource
             'is_active'        => $this->is_active,
             'user_id'          => $this->user_id
         ];
+
         if (!empty($this->resource->toArray()['posts'])) {
             $data['posts'] = PostResource::collection($this->posts);
         }

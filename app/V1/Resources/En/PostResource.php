@@ -22,22 +22,22 @@ class PostResource extends JsonResource
         $thumb = [];
         $data = [
             'id'               => $this->id,
-            'slug'             => $this->slug,
-            'title'            => $this->title,
-            'content'          => $this->content,
+            'slug'             => $this->slug_en,
+            'title'            => $this->title_en,
+            'content'          => $this->content_en,
             'author_id'        => $this->author_id,
             'author_name'      => object_get($this, 'author.name'),
-            'meta_title'       => $this->meta_title,
-            'meta_description' => $this->meta_description,
-            'meta_key'         => $this->meta_key,
+            'meta_title'       => $this->meta_title_en,
+            'meta_description' => $this->meta_description_en,
+            'meta_key'         => $this->meta_key_en,
             'is_hot'           => $this->is_hot,
             'is_active'        => $this->is_active,
             'is_new'           => $this->is_new,
             'view'             => $this->view,
             'user_id'          => $this->user_id,
             'category_id'      => $this->group_id,
-            'category_name'    => object_get($this, 'group.name'),
-            'category_slug'    => object_get($this, 'group.slug'),
+            'category_name'    => object_get($this, 'group.name_en'),
+            'category_slug'    => object_get($this, 'group.slug_en'),
         ];
 
         foreach ($this->getMedia("thumb") as $item) {
