@@ -4,7 +4,7 @@ namespace App\V1\Models;
 
 use App\Models\Page;
 use App\Supports\Support;
-use App\V1\Resources\vi\PageResource;
+use App\V1\Resources\Vi\PageResource;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;

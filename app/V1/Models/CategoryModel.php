@@ -5,10 +5,10 @@ namespace App\V1\Models;
 use App\Models\AttributeGroup;
 use App\Models\Category;
 use App\Supports\Support;
-use App\V1\Resources\vi\CategoryDetailResource;
-use App\V1\Resources\vi\CategoryHeaderResource;
-use App\V1\Resources\vi\CategoryResource;
-use App\V1\Resources\vi\CategorySearchAllResource;
+use App\V1\Resources\Vi\CategoryDetailResource;
+use App\V1\Resources\Vi\CategoryHeaderResource;
+use App\V1\Resources\Vi\CategoryResource;
+use App\V1\Resources\Vi\CategorySearchAllResource;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -261,7 +261,6 @@ class CategoryModel extends AbstractModel
 
     public function getCategoryHeader($input)
     {
-
         $cacheKey = 'category_dashboard_data';
         $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
 
@@ -280,7 +279,6 @@ class CategoryModel extends AbstractModel
 
             return CategoryHeaderResource::collection($categories);
         });
-
         return $categories;
 
     }

@@ -3,7 +3,7 @@
 namespace App\V1\Models;
 
 use App\Models\Post;
-use App\V1\Resources\vi\PostResource;
+use App\V1\Resources\Vi\PostResource;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;

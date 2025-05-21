@@ -3,7 +3,7 @@
 namespace App\V1\Models;
 
 use App\Models\Variant;
-use App\V1\Resources\vi\VariantResource;
+use App\V1\Resources\Vi\VariantResource;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 

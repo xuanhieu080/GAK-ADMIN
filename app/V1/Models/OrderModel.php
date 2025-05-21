@@ -9,7 +9,7 @@ use App\Models\ProductVariant;
 use App\Supports\GAK_ERROR;
 use App\Supports\Support;
 use App\V1\Resources\OrderResource;
-use App\V1\Resources\vi\ProductStockResource;
+use App\V1\Resources\Vi\ProductStockResource;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;

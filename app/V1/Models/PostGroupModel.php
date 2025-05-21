@@ -3,7 +3,7 @@
 namespace App\V1\Models;
 
 use App\Models\PostGroup;
-use App\V1\Resources\vi\PostGroupResource;
+use App\V1\Resources\Vi\PostGroupResource;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 

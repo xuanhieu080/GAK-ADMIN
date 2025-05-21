@@ -1,10 +1,10 @@
 <?php
 
-namespace App\V1\Resources\vi;
+namespace App\V1\Resources\Vi;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProductDetailResource extends JsonResource
+class ProductResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -32,7 +32,7 @@ class ProductDetailResource extends JsonResource
             'code'                => $this->code,
             'slug'                => $this->slug,
             'name'                => $this->name,
-            'description'         => $this->description,
+//            'description'         => $this->description,
             'price'               => $this->price,
             'category_id'         => $this->category_id,
             'qty'                 => $this->qty,
@@ -50,12 +50,9 @@ class ProductDetailResource extends JsonResource
             'rate'                => $this->rate,
             'rate_count'          => $this->rate_count == 0 ? 1 : $this->rate_count,
             'average_rate'        => $this->rate_count == 0 ? 0 : round($this->rate / $this->rate_count, 1),
-            'variants'            => ProductVariantResource::collection($this->variants),
-            'variantMainDetail'   => new ProductVariantMainResource($this->variantMainDetail),
             'highlight'           => $this->highlight,
             'highlight_image_url' => $this->getFirstMediaUrl('highlight'),
             'highlight_image'     => $this->getFirstMediaUrl('highlight'),
-            'reviews'             => $this->reviews,
         ];
 
 //        $productVariants = [];
