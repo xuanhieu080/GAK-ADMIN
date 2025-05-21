@@ -1,6 +1,6 @@
 <?php
 
-namespace App\V1\Resources\Vi;
+namespace App\V1\Resources\En;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -25,10 +25,10 @@ class CategoryDescendantResource extends JsonResource
             'code'       => $this->code,
             'image'      => $image,
             'image_url'  => $image,
-            'name'       => $this->name,
-            'slug'       => $this->slug,
+            'name'       => $this->name_en,
+            'slug'       => $this->slug_en,
             'created_at' => $this->created_at ? $this->created_at->diffForHumans() : null,
-            'updated_at' => $this->updated_at ? $this->updated_at->diffForHumans(): null,
+            'updated_at' => $this->updated_at ? $this->updated_at->diffForHumans() : null,
         ];
 
         return $data;

@@ -24,7 +24,8 @@ class Attribute extends Model
         'is_color' => 'boolean',
     ];
     protected $appends = [
-        'slug','title'
+        'slug','title',
+        'title_en', 'slug_en',
     ];
 
     protected $searchFields = ['name'];
@@ -46,5 +47,15 @@ class Attribute extends Model
     public function getTitleAttribute()
     {
         return $this->name;
+    }
+
+    public function getTitleEnAttribute()
+    {
+        return $this->name_en;
+    }
+
+    public function getSlugEnAttribute()
+    {
+        return \Str::slug($this->name_en);
     }
 }

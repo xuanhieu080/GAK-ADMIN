@@ -27,7 +27,8 @@ class AttributeGroup extends Model
         'is_main' => 'boolean',
     ];
     protected $appends = [
-        'title', 'slug'
+        'title', 'slug',
+        'title_en', 'slug_en',
     ];
     protected $searchFields = ['name'];
 
@@ -44,5 +45,15 @@ class AttributeGroup extends Model
     public function getSlugAttribute()
     {
         return \Str::slug($this->name);
+    }
+
+    public function getTitleEnAttribute()
+    {
+        return $this->name_en;
+    }
+
+    public function getSlugEnAttribute()
+    {
+        return \Str::slug($this->name_en);
     }
 }
