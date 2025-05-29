@@ -3,6 +3,9 @@
 namespace App\V1\Models;
 
 use App\Models\Variant;
+use App\V1\Resources\En\VariantAllResourceEn;
+use App\V1\Resources\En\VariantResourceEn;
+use App\V1\Resources\Vi\VariantAllResource;
 use App\V1\Resources\Vi\VariantResource;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -33,6 +36,9 @@ class VariantModel extends AbstractModel
         $input['sort'] = $sorts;
         $result = $this->search($input, [], $limit);
 
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            return VariantResourceEn::collection($result);
+        }
         return VariantResource::collection($result);
     }
 
@@ -50,7 +56,11 @@ class VariantModel extends AbstractModel
         $input['sort'] = $sorts;
         $result = $this->_search($input, [], $limit);
 
-        return $result;
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            return VariantAllResourceEn::collection($result);
+        }
+
+        return VariantAllResource::collection($result);
     }
 
     public function search($input = [], $with = [], $limit = null)
@@ -263,12 +273,15 @@ class VariantModel extends AbstractModel
 //        return $query->get()->groupBy('attribute_group_id')->sortBy('attribute_group_id');;
     }
 
-    public function show(Variant $item)
+    public function show(Variant $item, $input = [])
     {
 //        if (!$item->is_active) {
 //            return null;
 //        }
 
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            return new VariantResourceEn($item);
+        }
         return new VariantResource($item);
     }
 }

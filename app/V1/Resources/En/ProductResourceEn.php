@@ -4,7 +4,7 @@ namespace App\V1\Resources\En;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProductResource extends JsonResource
+class ProductResourceEn extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,11 +18,11 @@ class ProductResource extends JsonResource
         foreach ($this->attributeVariants->sortByDesc('is_color')->sortByDesc('is_hot')->sortByDesc('is_main')->groupBy('attribute_group_id') as $key => $item) {
             $variants[] = [
                 'id'         => $key,
-                'name'       => $item[0]['attribute_group_name_en'],
-                'slug'       => $item[0]['attribute_group_slug_en'],
-                'link'       => $item[0]['attribute_group_link_en'],
+                'name'       => $item[0]['attribute_group_name_en'] ?? $item[0]['attribute_group_name'],
+                'slug'       => $item[0]['attribute_group_slug_en'] ?? $item[0]['attribute_group_slug'],
+                'link'       => $item[0]['attribute_group_link_en'] ?? $item[0]['attribute_group_link'],
                 'is_color'   => $item[0]['is_color'],
-                'attributes' => VariantResource::collection($item)
+                'attributes' => VariantResourceEn::collection($item)
             ];
         }
 
@@ -31,17 +31,17 @@ class ProductResource extends JsonResource
             'id'                  => $this->id,
             'code'                => $this->code,
             'slug'                => $this->slug_en,
-            'name'                => $this->name_en,
-//            'description'         => $this->description,
+            'name'                => $this->name_en ?? $this->name,
+            //            'description'         => $this->description,
             'price'               => $this->price_en,
             'category_id'         => $this->category_id,
             'qty'                 => $this->qty,
             'is_active'           => $this->is_active,
             'qty_sold'            => $this->qty_sold,
             'priority'            => $this->priority,
-            'meta_title'          => $this->meta_title_en,
-            'meta_description'    => $this->meta_description_en,
-            'meta_key'            => $this->meta_key_en,
+            'meta_title'          => $this->meta_title_en ?? $this->meta_title,
+            'meta_description'    => $this->meta_description_en ?? $this->meta_description,
+            'meta_key'            => $this->meta_key_en ?? $this->meta_key,
             'video_link'          => $this->video_link,
             'price_discount'      => $this->price_discount_en,
             'discount'            => $this->discount_en,

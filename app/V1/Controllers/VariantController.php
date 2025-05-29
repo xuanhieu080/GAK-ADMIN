@@ -44,11 +44,11 @@ class VariantController extends Controller
         return $this->model->_index($input);
     }
 
-    public function show(Variant $variant)
+    public function show(Variant $variant, Request $request)
     {
 //        $this->authorize('view', Company::class);
 
-        $model = $this->model->show($variant);
+        $model = $this->model->show($variant,$request->all());
         if (empty($model)) {
             return $this->responseFail('Dữ liệu không tồn tại',[]);
         }

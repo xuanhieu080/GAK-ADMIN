@@ -4,6 +4,7 @@ namespace App\V1\Models;
 
 use App\Models\PageGroup;
 use App\Supports\Support;
+use App\V1\Resources\En\PageGroupResourceEn;
 use App\V1\Resources\Vi\PageGroupResource;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
@@ -26,21 +27,37 @@ class PageGroupModel extends AbstractModel
         $page = Arr::get($input, 'page', 1);
         if ($page == 1) {
             $cacheKey = 'page_group_data';
+            $cacheKeyEn = 'page_group_data_en';
             $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
 
-            // Kiểm tra xem dữ liệu có trong cache không
-            $pages = Cache::remember($cacheKey, $seconds, function () use ($input) {
-                $pages = PageGroup::with(['details' => function ($query) {
-                    $query->where('pages.is_active', 1);
-                }])->whereHas('details', function ($query) {
-                    $query->selectRaw('name,title,slug')
-                        ->where('pages.is_active', 1);
-                })->where('page_groups.is_active', 1)
-                    ->get()
-                    ->groupBy('column');
+            if (!empty($input['lang']) && $input['lang'] == 'en') {
+                // Kiểm tra xem dữ liệu có trong cache không
+                $pages = Cache::remember($cacheKeyEn, $seconds, function () use ($input) {
+                    $pages = PageGroup::with(['details' => function ($query) {
+                        $query->where('pages.is_active', 1);
+                    }])->whereHas('details', function ($query) {
+                        $query->selectRaw('name,title,slug')
+                            ->where('pages.is_active', 1);
+                    })->where('page_groups.is_active', 1)
+                        ->get()
+                        ->groupBy('column');
 
-                return PageGroupResource::collection($pages);
-            });
+                    return PageGroupResourceEn::collection($pages);
+                });
+            } else {
+                $pages = Cache::remember($cacheKey, $seconds, function () use ($input) {
+                    $pages = PageGroup::with(['details' => function ($query) {
+                        $query->where('pages.is_active', 1);
+                    }])->whereHas('details', function ($query) {
+                        $query->selectRaw('name,title,slug')
+                            ->where('pages.is_active', 1);
+                    })->where('page_groups.is_active', 1)
+                        ->get()
+                        ->groupBy('column');
+
+                    return PageGroupResource::collection($pages);
+                });
+            }
 
             return $pages;
         } else {
@@ -53,6 +70,9 @@ class PageGroupModel extends AbstractModel
                 ->get()
                 ->groupBy('column');
 
+            if (!empty($input['lang']) && $input['lang'] == 'en') {
+                return PageGroupResourceEn::collection($pages);
+            }
             return PageGroupResource::collection($pages);
         }
     }
@@ -61,6 +81,7 @@ class PageGroupModel extends AbstractModel
     public function cacheIndex()
     {
         $cacheKey = 'page_group_data';
+        $cacheKeyEn = 'page_group_data_en';
         $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
 
         $pages = PageGroup::with(['details' => function ($query) {
@@ -72,8 +93,12 @@ class PageGroupModel extends AbstractModel
             ->get()
             ->groupBy('column');
 
-        Support::writeJsonFile('/home/DEV-GAK-UI/api/page_group.json',  PageGroupResource::collection($pages));
-        Cache::put($cacheKey, PageGroupResource::collection($pages), $seconds);
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            Cache::put($cacheKeyEn, PageGroupResourceEn::collection($pages), $seconds);
+        } else {
+            Cache::put($cacheKey, PageGroupResource::collection($pages), $seconds);
+
+        }
     }
 
     public function search($input = [], $with = [], $limit = null)

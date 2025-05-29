@@ -5,6 +5,7 @@ namespace App\V1\Models;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductReview;
+use App\V1\Resources\En\ProductResourceEn;
 use App\V1\Resources\Vi\CategorySearchAllResource;
 use App\V1\Resources\Vi\ProductDetailResource;
 use App\V1\Resources\Vi\ProductResource;
@@ -53,6 +54,10 @@ class ProductModel extends AbstractModel
                 //                }
             ], $limit);
 
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            return ProductResourceEn::collection($result);
+        }
+
         return ProductResource::collection($result);
     }
 
@@ -61,34 +66,63 @@ class ProductModel extends AbstractModel
         $page = Arr::get($input, 'page', 1);
         if ($page == 1) {
             $cacheKey = 'product_hot_data';
+            $cacheKeyEn = 'product_hot_data_en';
             $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
 
-            // Kiểm tra xem dữ liệu có trong cache không
-            $products = Cache::remember($cacheKey, $seconds, function () use ($input) {
-                $limit = Arr::get($input, 'limit', 999);
-                $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
-                $input['is_active'] = 1;
-                $sorts = ['id' => 'desc'];
-                if (!empty($sort['desc']) && is_array($sort['desc'])) {
-                    $sorts = array_merge($sorts, array_fill_keys($sort['desc'], 'desc'));
-                } elseif (!empty($sort['asc']) && is_array($sort['asc'])) {
-                    $sorts = array_merge($sorts, array_fill_keys($sort['asc'], 'asc'));
-                }
+            if (!empty($input['lang']) && $input['lang'] == 'en') {
+                // Kiểm tra xem dữ liệu có trong cache không
+                $products = Cache::remember($cacheKeyEn, $seconds, function () use ($input) {
+                    $limit = Arr::get($input, 'limit', 999);
+                    $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
+                    $input['is_active'] = 1;
+                    $sorts = ['id' => 'desc'];
+                    if (!empty($sort['desc']) && is_array($sort['desc'])) {
+                        $sorts = array_merge($sorts, array_fill_keys($sort['desc'], 'desc'));
+                    } elseif (!empty($sort['asc']) && is_array($sort['asc'])) {
+                        $sorts = array_merge($sorts, array_fill_keys($sort['asc'], 'asc'));
+                    }
 
-                $input['sort'] = $sorts;
-                if (!empty($input['search'])) {
-                    $input['name'] = ['like' => $input['search']];
-                }
-                $result = $this->search($input,
-                    [
-                        'attributeVariants',
-                        //                'variants' => function ($query) {
-                        //                    $query->where('qty', '>', 0);
-                        //                }
-                    ], $limit);
+                    $input['sort'] = $sorts;
+                    if (!empty($input['search'])) {
+                        $input['name'] = ['like' => $input['search']];
+                    }
+                    $result = $this->search($input,
+                        [
+                            'attributeVariants',
+                            //                'variants' => function ($query) {
+                            //                    $query->where('qty', '>', 0);
+                            //                }
+                        ], $limit);
 
-                return ProductResource::collection($result);
-            });
+                    return ProductResourceEn::collection($result);
+                });
+            } else {
+                $products = Cache::remember($cacheKey, $seconds, function () use ($input) {
+                    $limit = Arr::get($input, 'limit', 999);
+                    $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
+                    $input['is_active'] = 1;
+                    $sorts = ['id' => 'desc'];
+                    if (!empty($sort['desc']) && is_array($sort['desc'])) {
+                        $sorts = array_merge($sorts, array_fill_keys($sort['desc'], 'desc'));
+                    } elseif (!empty($sort['asc']) && is_array($sort['asc'])) {
+                        $sorts = array_merge($sorts, array_fill_keys($sort['asc'], 'asc'));
+                    }
+
+                    $input['sort'] = $sorts;
+                    if (!empty($input['search'])) {
+                        $input['name'] = ['like' => $input['search']];
+                    }
+                    $result = $this->search($input,
+                        [
+                            'attributeVariants',
+                            //                'variants' => function ($query) {
+                            //                    $query->where('qty', '>', 0);
+                            //                }
+                        ], $limit);
+
+                    return ProductResource::collection($result);
+                });
+            }
 
             return $products;
         } else {
@@ -114,6 +148,9 @@ class ProductModel extends AbstractModel
                     //                }
                 ], $limit);
 
+            if (!empty($input['lang']) && $input['lang'] == 'en') {
+                return ProductResourceEn::collection($result);
+            }
             return ProductResource::collection($result);
         }
     }
@@ -121,6 +158,7 @@ class ProductModel extends AbstractModel
     public function cacheProductHot($input)
     {
         $cacheKey = 'product_hot_data';
+        $cacheKeyEn = 'product_hot_data_en';
         $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
         $limit = Arr::get($input, 'limit', 999);
         $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
@@ -144,7 +182,11 @@ class ProductModel extends AbstractModel
                 //                }
             ], $limit);
 
-        Cache::put($cacheKey, ProductResource::collection($result), $seconds);
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            Cache::put($cacheKeyEn, ProductResourceEn::collection($result), $seconds);
+        } else {
+            Cache::put($cacheKey, ProductResource::collection($result), $seconds);
+        }
     }
 
     public function new($input)
@@ -152,34 +194,64 @@ class ProductModel extends AbstractModel
         $page = Arr::get($input, 'page', 1);
         if ($page == 1) {
             $cacheKey = 'product_new_data';
+            $cacheKeyEn = 'product_new_data_en';
             $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
 
-            // Kiểm tra xem dữ liệu có trong cache không
-            $products = Cache::remember($cacheKey, $seconds, function () use ($input) {
-                $limit = Arr::get($input, 'limit', 999);
-                $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
-                $input['is_active'] = 1;
-                $sorts = ['id' => 'desc'];
-                if (!empty($sort['desc']) && is_array($sort['desc'])) {
-                    $sorts = array_merge($sorts, array_fill_keys($sort['desc'], 'desc'));
-                } elseif (!empty($sort['asc']) && is_array($sort['asc'])) {
-                    $sorts = array_merge($sorts, array_fill_keys($sort['asc'], 'asc'));
-                }
 
-                $input['sort'] = $sorts;
-                if (!empty($input['search'])) {
-                    $input['name'] = ['like' => $input['search']];
-                }
-                $result = $this->search($input,
-                    [
-                        'attributeVariants',
-                        //                'variants' => function ($query) {
-                        //                    $query->where('qty', '>', 0);
-                        //                }
-                    ], $limit);
+            if (!empty($input['lang']) && $input['lang'] == 'en') {
+                // Kiểm tra xem dữ liệu có trong cache không
+                $products = Cache::remember($cacheKeyEn, $seconds, function () use ($input) {
+                    $limit = Arr::get($input, 'limit', 999);
+                    $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
+                    $input['is_active'] = 1;
+                    $sorts = ['id' => 'desc'];
+                    if (!empty($sort['desc']) && is_array($sort['desc'])) {
+                        $sorts = array_merge($sorts, array_fill_keys($sort['desc'], 'desc'));
+                    } elseif (!empty($sort['asc']) && is_array($sort['asc'])) {
+                        $sorts = array_merge($sorts, array_fill_keys($sort['asc'], 'asc'));
+                    }
 
-                return ProductResource::collection($result);
-            });
+                    $input['sort'] = $sorts;
+                    if (!empty($input['search'])) {
+                        $input['name'] = ['like' => $input['search']];
+                    }
+                    $result = $this->search($input,
+                        [
+                            'attributeVariants',
+                            //                'variants' => function ($query) {
+                            //                    $query->where('qty', '>', 0);
+                            //                }
+                        ], $limit);
+
+                    return ProductResourceEn::collection($result);
+                });
+            } else {
+                $products = Cache::remember($cacheKey, $seconds, function () use ($input) {
+                    $limit = Arr::get($input, 'limit', 999);
+                    $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
+                    $input['is_active'] = 1;
+                    $sorts = ['id' => 'desc'];
+                    if (!empty($sort['desc']) && is_array($sort['desc'])) {
+                        $sorts = array_merge($sorts, array_fill_keys($sort['desc'], 'desc'));
+                    } elseif (!empty($sort['asc']) && is_array($sort['asc'])) {
+                        $sorts = array_merge($sorts, array_fill_keys($sort['asc'], 'asc'));
+                    }
+
+                    $input['sort'] = $sorts;
+                    if (!empty($input['search'])) {
+                        $input['name'] = ['like' => $input['search']];
+                    }
+                    $result = $this->search($input,
+                        [
+                            'attributeVariants',
+                            //                'variants' => function ($query) {
+                            //                    $query->where('qty', '>', 0);
+                            //                }
+                        ], $limit);
+
+                    return ProductResource::collection($result);
+                });
+            }
 
             return $products;
         } else {
@@ -205,6 +277,9 @@ class ProductModel extends AbstractModel
                     //                }
                 ], $limit);
 
+            if (!empty($input['lang']) && $input['lang'] == 'en') {
+                return ProductResourceEn::collection($result);
+            }
             return ProductResource::collection($result);
         }
     }
@@ -212,6 +287,7 @@ class ProductModel extends AbstractModel
     public function cacheProductNew($input)
     {
         $cacheKey = 'product_new_data';
+        $cacheKeyEn = 'product_new_data_en';
         $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
         $limit = Arr::get($input, 'limit', 999);
         $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
@@ -235,7 +311,11 @@ class ProductModel extends AbstractModel
                 //                }
             ], $limit);
 
-        Cache::put($cacheKey, ProductResource::collection($result), $seconds);
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            Cache::put($cacheKeyEn, ProductResourceEn::collection($result), $seconds);
+        } else {
+            Cache::put($cacheKey, ProductResource::collection($result), $seconds);
+        }
     }
 
     public function upcoming($input)
@@ -243,34 +323,63 @@ class ProductModel extends AbstractModel
         $page = Arr::get($input, 'page', 1);
         if ($page == 1) {
             $cacheKey = 'product_upcoming_data';
+            $cacheKeyEn = 'product_upcoming_data_en';
             $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
 
-            // Kiểm tra xem dữ liệu có trong cache không
-            $products = Cache::remember($cacheKey, $seconds, function () use ($input) {
-                $limit = Arr::get($input, 'limit', 999);
-                $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
-                $input['is_active'] = 1;
-                $sorts = ['id' => 'desc'];
-                if (!empty($sort['desc']) && is_array($sort['desc'])) {
-                    $sorts = array_merge($sorts, array_fill_keys($sort['desc'], 'desc'));
-                } elseif (!empty($sort['asc']) && is_array($sort['asc'])) {
-                    $sorts = array_merge($sorts, array_fill_keys($sort['asc'], 'asc'));
-                }
+            if (!empty($input['lang']) && $input['lang'] == 'en') {
+                // Kiểm tra xem dữ liệu có trong cache không
+                $products = Cache::remember($cacheKeyEn, $seconds, function () use ($input) {
+                    $limit = Arr::get($input, 'limit', 999);
+                    $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
+                    $input['is_active'] = 1;
+                    $sorts = ['id' => 'desc'];
+                    if (!empty($sort['desc']) && is_array($sort['desc'])) {
+                        $sorts = array_merge($sorts, array_fill_keys($sort['desc'], 'desc'));
+                    } elseif (!empty($sort['asc']) && is_array($sort['asc'])) {
+                        $sorts = array_merge($sorts, array_fill_keys($sort['asc'], 'asc'));
+                    }
 
-                $input['sort'] = $sorts;
-                if (!empty($input['search'])) {
-                    $input['name'] = ['like' => $input['search']];
-                }
-                $result = $this->search($input,
-                    [
-                        'attributeVariants',
-                        //                'variants' => function ($query) {
-                        //                    $query->where('qty', '>', 0);
-                        //                }
-                    ], $limit);
+                    $input['sort'] = $sorts;
+                    if (!empty($input['search'])) {
+                        $input['name'] = ['like' => $input['search']];
+                    }
+                    $result = $this->search($input,
+                        [
+                            'attributeVariants',
+                            //                'variants' => function ($query) {
+                            //                    $query->where('qty', '>', 0);
+                            //                }
+                        ], $limit);
 
-                return ProductResource::collection($result);
-            });
+                    return ProductResourceEn::collection($result);
+                });
+            } else {
+                $products = Cache::remember($cacheKey, $seconds, function () use ($input) {
+                    $limit = Arr::get($input, 'limit', 999);
+                    $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
+                    $input['is_active'] = 1;
+                    $sorts = ['id' => 'desc'];
+                    if (!empty($sort['desc']) && is_array($sort['desc'])) {
+                        $sorts = array_merge($sorts, array_fill_keys($sort['desc'], 'desc'));
+                    } elseif (!empty($sort['asc']) && is_array($sort['asc'])) {
+                        $sorts = array_merge($sorts, array_fill_keys($sort['asc'], 'asc'));
+                    }
+
+                    $input['sort'] = $sorts;
+                    if (!empty($input['search'])) {
+                        $input['name'] = ['like' => $input['search']];
+                    }
+                    $result = $this->search($input,
+                        [
+                            'attributeVariants',
+                            //                'variants' => function ($query) {
+                            //                    $query->where('qty', '>', 0);
+                            //                }
+                        ], $limit);
+
+                    return ProductResource::collection($result);
+                });
+            }
 
             return $products;
         } else {
@@ -296,6 +405,9 @@ class ProductModel extends AbstractModel
                     //                }
                 ], $limit);
 
+            if (!empty($input['lang']) && $input['lang'] == 'en') {
+                return ProductResourceEn::collection($result);
+            }
             return ProductResource::collection($result);
         }
     }
@@ -303,6 +415,7 @@ class ProductModel extends AbstractModel
     public function cacheProductUpcoming($input)
     {
         $cacheKey = 'product_upcoming_data';
+        $cacheKeyEn = 'product_upcoming_data_en';
         $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
         $limit = Arr::get($input, 'limit', 999);
         $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
@@ -326,7 +439,11 @@ class ProductModel extends AbstractModel
                 //                }
             ], $limit);
 
-        Cache::put($cacheKey, ProductResource::collection($result), $seconds);
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            Cache::put($cacheKeyEn, ProductResourceEn::collection($result), $seconds);
+        } else {
+            Cache::put($cacheKey, ProductResource::collection($result), $seconds);
+        }
     }
 
     public function uniform($input)
@@ -334,34 +451,63 @@ class ProductModel extends AbstractModel
         $page = Arr::get($input, 'page', 1);
         if ($page == 1) {
             $cacheKey = 'product_uniform_data';
+            $cacheKeyEn = 'product_uniform_data_en';
             $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
 
-            // Kiểm tra xem dữ liệu có trong cache không
-            $products = Cache::remember($cacheKey, $seconds, function () use ($input) {
-                $limit = Arr::get($input, 'limit', 999);
-                $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
-                $input['is_active'] = 1;
-                $sorts = ['id' => 'desc'];
-                if (!empty($sort['desc']) && is_array($sort['desc'])) {
-                    $sorts = array_merge($sorts, array_fill_keys($sort['desc'], 'desc'));
-                } elseif (!empty($sort['asc']) && is_array($sort['asc'])) {
-                    $sorts = array_merge($sorts, array_fill_keys($sort['asc'], 'asc'));
-                }
+            if (!empty($input['lang']) && $input['lang'] == 'en') {
+                // Kiểm tra xem dữ liệu có trong cache không
+                $products = Cache::remember($cacheKeyEn, $seconds, function () use ($input) {
+                    $limit = Arr::get($input, 'limit', 999);
+                    $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
+                    $input['is_active'] = 1;
+                    $sorts = ['id' => 'desc'];
+                    if (!empty($sort['desc']) && is_array($sort['desc'])) {
+                        $sorts = array_merge($sorts, array_fill_keys($sort['desc'], 'desc'));
+                    } elseif (!empty($sort['asc']) && is_array($sort['asc'])) {
+                        $sorts = array_merge($sorts, array_fill_keys($sort['asc'], 'asc'));
+                    }
 
-                $input['sort'] = $sorts;
-                if (!empty($input['search'])) {
-                    $input['name'] = ['like' => $input['search']];
-                }
-                $result = $this->search($input,
-                    [
-                        'attributeVariants',
-                        //                'variants' => function ($query) {
-                        //                    $query->where('qty', '>', 0);
-                        //                }
-                    ], $limit);
+                    $input['sort'] = $sorts;
+                    if (!empty($input['search'])) {
+                        $input['name'] = ['like' => $input['search']];
+                    }
+                    $result = $this->search($input,
+                        [
+                            'attributeVariants',
+                            //                'variants' => function ($query) {
+                            //                    $query->where('qty', '>', 0);
+                            //                }
+                        ], $limit);
 
-                return ProductResource::collection($result);
-            });
+                    return ProductResourceEn::collection($result);
+                });
+            } else {
+                $products = Cache::remember($cacheKey, $seconds, function () use ($input) {
+                    $limit = Arr::get($input, 'limit', 999);
+                    $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
+                    $input['is_active'] = 1;
+                    $sorts = ['id' => 'desc'];
+                    if (!empty($sort['desc']) && is_array($sort['desc'])) {
+                        $sorts = array_merge($sorts, array_fill_keys($sort['desc'], 'desc'));
+                    } elseif (!empty($sort['asc']) && is_array($sort['asc'])) {
+                        $sorts = array_merge($sorts, array_fill_keys($sort['asc'], 'asc'));
+                    }
+
+                    $input['sort'] = $sorts;
+                    if (!empty($input['search'])) {
+                        $input['name'] = ['like' => $input['search']];
+                    }
+                    $result = $this->search($input,
+                        [
+                            'attributeVariants',
+                            //                'variants' => function ($query) {
+                            //                    $query->where('qty', '>', 0);
+                            //                }
+                        ], $limit);
+
+                    return ProductResource::collection($result);
+                });
+            }
 
             return $products;
         } else {
@@ -387,6 +533,9 @@ class ProductModel extends AbstractModel
                     //                }
                 ], $limit);
 
+            if (!empty($input['lang']) && $input['lang'] == 'en') {
+                return ProductResourceEn::collection($result);
+            }
             return ProductResource::collection($result);
         }
     }
@@ -394,6 +543,7 @@ class ProductModel extends AbstractModel
     public function cacheProductUniform($input)
     {
         $cacheKey = 'product_uniform_data';
+        $cacheKeyEn = 'product_uniform_data_en';
         $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
         $limit = Arr::get($input, 'limit', 999);
         $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
@@ -418,12 +568,18 @@ class ProductModel extends AbstractModel
             ], $limit);
 
 //        Support::writeJsonFile('/home/DEV-GAK-UI/api/product_uniform.json', ProductResource::collection($result));
-        Cache::put($cacheKey, ProductResource::collection($result), $seconds);
+
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            Cache::put($cacheKeyEn, ProductResourceEn::collection($result), $seconds);
+        } else {
+            Cache::put($cacheKey, ProductResource::collection($result), $seconds);
+        }
     }
 
     public function cacheProductGhiLe($input)
     {
         $cacheKey = 'product_ghi_le';
+        $cacheKeyEn = 'product_ghi_le_en';
         $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
         $limit = Arr::get($input, 'limit', 999);
         $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
@@ -447,13 +603,22 @@ class ProductModel extends AbstractModel
                 //                }
             ], $limit);
 
-//        Support::writeJsonFile('/home/DEV-GAK-UI/api/ao_ghi_le.json', ProductResource::collection($result));
-        Cache::put($cacheKey, ProductResource::collection($result), $seconds);
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            Cache::put($cacheKeyEn, ProductResourceEn::collection($result), $seconds);
+        } else {
+            Cache::put($cacheKey, ProductResource::collection($result), $seconds);
+        }
     }
 
     public function cacheProductAll()
     {
+        $attributeColumn = 'slug';
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            $attributeColumn = 'slug_en';
+        }
+
         $cacheKey = 'product_all';
+        $cacheKeyEn = 'product_all_en';
         $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
         $categories = Category::with(['variants' => function ($query) {
             $query->whereIn('product_variants.code', [
@@ -485,6 +650,7 @@ class ProductModel extends AbstractModel
         }])
 //            ->whereHas('variantMains')
             ->where('is_active', 1)
+            ->whereNotNull($attributeColumn)
             ->whereIn('slug', [
                 'ao-phan-quang-thun-2-ben',
                 'ao-phan-quang-ha-noi',
@@ -506,12 +672,20 @@ class ProductModel extends AbstractModel
 //            });
 
 
-//        Support::writeJsonFile('/home/DEV-GAK-UI/api/product_all.json',  CategorySearchAllResource::collection($categories));
-        Cache::put($cacheKey, CategorySearchAllResource::collection($categories), $seconds);
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            Cache::put($cacheKeyEn, ProductResourceEn::collection($categories), $seconds);
+        } else {
+            Cache::put($cacheKey, CategorySearchAllResource::collection($categories), $seconds);
+        }
     }
 
     public function search($input = [], $with = [], $limit = null)
     {
+        $attributeColumn = 'slug';
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            $attributeColumn = 'slug_en';
+        }
+
         $attributes = (array)Arr::get($input, 'attributes');
         $categoryName = Arr::get($input, 'category_name');
         $categorySlug = Arr::get($input, 'category_slug');
@@ -606,13 +780,15 @@ class ProductModel extends AbstractModel
             }
         });
 
-        $query->whereHas('media', function ($query) {
-            // Điều kiện cho hình ảnh
-            $query->where('collection_name', 'default');
-        })->whereHas('media', function ($query) {
-            // Điều kiện cho hình thu nhỏ
-            $query->where('collection_name', 'thumb');
-        });
+
+        $query->whereNotNull($attributeColumn)
+            ->whereHas('media', function ($query) {
+                // Điều kiện cho hình ảnh
+                $query->where('collection_name', 'default');
+            })->whereHas('media', function ($query) {
+                // Điều kiện cho hình thu nhỏ
+                $query->where('collection_name', 'thumb');
+            });
 
         if (!empty($attributes)) {
             $query->whereHas('variants', function ($qr) use ($attributes) {
@@ -663,6 +839,10 @@ class ProductModel extends AbstractModel
 
     public function show($slug, $data = [])
     {
+        $attributeColumn = 'slug';
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            $attributeColumn = 'slug_en';
+        }
         $item = Product::with([
             'attributeVariants',
             'variants'          => function ($query) {
@@ -671,14 +851,14 @@ class ProductModel extends AbstractModel
             'reviews'           => function ($query) {
                 $query->orderByDesc('rate')->first();
             },
-            'variantMainDetail' => function ($query) use ($data){
+            'variantMainDetail' => function ($query) use ($data) {
                 if (!empty($data['code'])) {
                     $query->whereHas('variants', function ($qr) use ($data) {
                         $qr->where('code', $data['code']);
                     });
                 }
             }
-        ])->where('slug', $slug)
+        ])->where($attributeColumn, $slug)
             ->where('is_active', 1)
             ->whereHas('media', function ($query) {
                 // Điều kiện cho hình ảnh
@@ -692,6 +872,9 @@ class ProductModel extends AbstractModel
             return null;
         }
 
+        if (!empty($data['lang']) && $data['lang'] == 'en') {
+            return new ProductDetailResource($item);
+        }
         return new ProductDetailResource($item);
     }
 
@@ -702,7 +885,8 @@ class ProductModel extends AbstractModel
         $query = ProductReview::query()
             ->whereHas('product', function ($query) use ($slug) {
                 $query->when($slug, function ($q, $slug) {
-                    $q->where('slug', $slug);
+                    $q->where('slug', $slug)
+                        ->orWhere('slug_en', $slug);
                 });
             })
             ->orderByDesc('date')

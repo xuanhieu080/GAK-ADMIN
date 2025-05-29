@@ -3,6 +3,7 @@
 namespace App\V1\Models;
 
 use App\Models\Post;
+use App\V1\Resources\En\PostResourceEn;
 use App\V1\Resources\Vi\PostResource;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
@@ -47,6 +48,10 @@ class PostModel extends AbstractModel
         $input['sort'] = $sorts;
         $result = $this->search($input, [], $limit);
 
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            return PostResourceEn::collection($result);
+        }
+
         return PostResource::collection($result);
     }
 
@@ -56,32 +61,62 @@ class PostModel extends AbstractModel
         $input['is_active'] = 1;
         if ($page == 1) {
             $cacheKey = 'post_hot_data';
+            $cacheKeyEn = 'post_hot_data_en';
             $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
 
-            // Kiểm tra xem dữ liệu có trong cache không
-            $posts = Cache::remember($cacheKey, $seconds, function () use ($input) {
-                $limit = Arr::get($input, 'limit', 10);
-                $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
-                $sorts = ['id' => 'desc'];
-                if (!empty($sort['desc']) && is_array($sort['desc'])) {
-                    $sorts = array_merge($sorts, array_fill_keys($sort['desc'], 'desc'));
-                } elseif (!empty($sort['asc']) && is_array($sort['asc'])) {
-                    $sorts = array_merge($sorts, array_fill_keys($sort['asc'], 'asc'));
-                }
+            if (!empty($input['lang']) && $input['lang'] == 'en') {
 
-                if (isset($input['is_hot'])) {
-                    $input['is_hot'] = filter_var($input['is_hot'], FILTER_VALIDATE_BOOLEAN);
-                }
+                // Kiểm tra xem dữ liệu có trong cache không
+                $posts = Cache::remember($cacheKeyEn, $seconds, function () use ($input) {
+                    $limit = Arr::get($input, 'limit', 10);
+                    $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
+                    $sorts = ['id' => 'desc'];
+                    if (!empty($sort['desc']) && is_array($sort['desc'])) {
+                        $sorts = array_merge($sorts, array_fill_keys($sort['desc'], 'desc'));
+                    } elseif (!empty($sort['asc']) && is_array($sort['asc'])) {
+                        $sorts = array_merge($sorts, array_fill_keys($sort['asc'], 'asc'));
+                    }
 
-                if (isset($input['is_new'])) {
-                    $input['is_new'] = filter_var($input['is_new'], FILTER_VALIDATE_BOOLEAN);
-                }
+                    if (isset($input['is_hot'])) {
+                        $input['is_hot'] = filter_var($input['is_hot'], FILTER_VALIDATE_BOOLEAN);
+                    }
 
-                $input['sort'] = $sorts;
-                $result = $this->search($input, [], $limit);
+                    if (isset($input['is_new'])) {
+                        $input['is_new'] = filter_var($input['is_new'], FILTER_VALIDATE_BOOLEAN);
+                    }
 
-                return PostResource::collection($result);
-            });
+                    $input['sort'] = $sorts;
+                    $result = $this->search($input, [], $limit);
+
+                    return PostResourceEn::collection($result);
+                });
+            } else {
+
+                // Kiểm tra xem dữ liệu có trong cache không
+                $posts = Cache::remember($cacheKey, $seconds, function () use ($input) {
+                    $limit = Arr::get($input, 'limit', 10);
+                    $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
+                    $sorts = ['id' => 'desc'];
+                    if (!empty($sort['desc']) && is_array($sort['desc'])) {
+                        $sorts = array_merge($sorts, array_fill_keys($sort['desc'], 'desc'));
+                    } elseif (!empty($sort['asc']) && is_array($sort['asc'])) {
+                        $sorts = array_merge($sorts, array_fill_keys($sort['asc'], 'asc'));
+                    }
+
+                    if (isset($input['is_hot'])) {
+                        $input['is_hot'] = filter_var($input['is_hot'], FILTER_VALIDATE_BOOLEAN);
+                    }
+
+                    if (isset($input['is_new'])) {
+                        $input['is_new'] = filter_var($input['is_new'], FILTER_VALIDATE_BOOLEAN);
+                    }
+
+                    $input['sort'] = $sorts;
+                    $result = $this->search($input, [], $limit);
+
+                    return PostResource::collection($result);
+                });
+            }
 
             return $posts;
         } else {
@@ -105,6 +140,9 @@ class PostModel extends AbstractModel
             $input['sort'] = $sorts;
             $result = $this->search($input, [], $limit);
 
+            if (!empty($input['lang']) && $input['lang'] == 'en') {
+                return PostResourceEn::collection($result);
+            }
             return PostResource::collection($result);
         }
     }
@@ -112,6 +150,7 @@ class PostModel extends AbstractModel
     public function cachePostHot($input)
     {
         $cacheKey = 'post_hot_data';
+        $cacheKeyEn = 'post_hot_data_en';
         $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
         $limit = Arr::get($input, 'limit', 10);
         $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
@@ -133,7 +172,11 @@ class PostModel extends AbstractModel
         $input['sort'] = $sorts;
         $result = $this->search($input, [], $limit);
 
-        Cache::put($cacheKey, PostResource::collection($result), $seconds);
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            Cache::put($cacheKeyEn, PostResourceEn::collection($result), $seconds);
+        } else {
+            Cache::put($cacheKey, PostResource::collection($result), $seconds);
+        }
     }
 
     public function new($input)
@@ -142,32 +185,60 @@ class PostModel extends AbstractModel
         $input['is_active'] = 1;
         if ($page == 1) {
             $cacheKey = 'post_new_data';
+            $cacheKeyEn = 'post_new_data_en';
             $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
 
-            // Kiểm tra xem dữ liệu có trong cache không
-            $posts = Cache::remember($cacheKey, $seconds, function () use ($input) {
-                $limit = Arr::get($input, 'limit', 10);
-                $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
-                $sorts = ['id' => 'desc'];
-                if (!empty($sort['desc']) && is_array($sort['desc'])) {
-                    $sorts = array_merge($sorts, array_fill_keys($sort['desc'], 'desc'));
-                } elseif (!empty($sort['asc']) && is_array($sort['asc'])) {
-                    $sorts = array_merge($sorts, array_fill_keys($sort['asc'], 'asc'));
-                }
+            if (!empty($input['lang']) && $input['lang'] == 'en') {
+                // Kiểm tra xem dữ liệu có trong cache không
+                $posts = Cache::remember($cacheKeyEn, $seconds, function () use ($input) {
+                    $limit = Arr::get($input, 'limit', 10);
+                    $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
+                    $sorts = ['id' => 'desc'];
+                    if (!empty($sort['desc']) && is_array($sort['desc'])) {
+                        $sorts = array_merge($sorts, array_fill_keys($sort['desc'], 'desc'));
+                    } elseif (!empty($sort['asc']) && is_array($sort['asc'])) {
+                        $sorts = array_merge($sorts, array_fill_keys($sort['asc'], 'asc'));
+                    }
 
-                if (isset($input['is_hot'])) {
-                    $input['is_hot'] = filter_var($input['is_hot'], FILTER_VALIDATE_BOOLEAN);
-                }
+                    if (isset($input['is_hot'])) {
+                        $input['is_hot'] = filter_var($input['is_hot'], FILTER_VALIDATE_BOOLEAN);
+                    }
 
-                if (isset($input['is_new'])) {
-                    $input['is_new'] = filter_var($input['is_new'], FILTER_VALIDATE_BOOLEAN);
-                }
+                    if (isset($input['is_new'])) {
+                        $input['is_new'] = filter_var($input['is_new'], FILTER_VALIDATE_BOOLEAN);
+                    }
 
-                $input['sort'] = $sorts;
-                $result = $this->search($input, [], $limit);
+                    $input['sort'] = $sorts;
+                    $result = $this->search($input, [], $limit);
 
-                return PostResource::collection($result);
-            });
+                    return PostResourceEn::collection($result);
+                });
+            } else {
+                // Kiểm tra xem dữ liệu có trong cache không
+                $posts = Cache::remember($cacheKey, $seconds, function () use ($input) {
+                    $limit = Arr::get($input, 'limit', 10);
+                    $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
+                    $sorts = ['id' => 'desc'];
+                    if (!empty($sort['desc']) && is_array($sort['desc'])) {
+                        $sorts = array_merge($sorts, array_fill_keys($sort['desc'], 'desc'));
+                    } elseif (!empty($sort['asc']) && is_array($sort['asc'])) {
+                        $sorts = array_merge($sorts, array_fill_keys($sort['asc'], 'asc'));
+                    }
+
+                    if (isset($input['is_hot'])) {
+                        $input['is_hot'] = filter_var($input['is_hot'], FILTER_VALIDATE_BOOLEAN);
+                    }
+
+                    if (isset($input['is_new'])) {
+                        $input['is_new'] = filter_var($input['is_new'], FILTER_VALIDATE_BOOLEAN);
+                    }
+
+                    $input['sort'] = $sorts;
+                    $result = $this->search($input, [], $limit);
+
+                    return PostResource::collection($result);
+                });
+            }
 
             return $posts;
         } else {
@@ -191,6 +262,10 @@ class PostModel extends AbstractModel
             $input['sort'] = $sorts;
             $result = $this->search($input, [], $limit);
 
+            if (!empty($input['lang']) && $input['lang'] == 'en') {
+                return PostResourceEn::collection($result);
+            }
+
             return PostResource::collection($result);
         }
     }
@@ -198,6 +273,7 @@ class PostModel extends AbstractModel
     public function cachePostNew($input)
     {
         $cacheKey = 'post_new_data';
+        $cacheKeyEn = 'post_new_data_en';
         $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
         $limit = Arr::get($input, 'limit', 10);
         $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
@@ -222,11 +298,20 @@ class PostModel extends AbstractModel
         $input['sort'] = $sorts;
         $result = $this->search($input, [], $limit);
 
-        Cache::put($cacheKey, PostResource::collection($result), $seconds);
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            Cache::put($cacheKeyEn, PostResourceEn::collection($result), $seconds);
+        } else {
+            Cache::put($cacheKey, PostResource::collection($result), $seconds);
+        }
     }
 
     public function search($input = [], $with = [], $limit = null)
     {
+        $attributeColumn = 'slug';
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            $attributeColumn = 'slug_en';
+        }
+
         $groupSlug = Arr::get($input, 'group_slug');
         $query = $this->make($with);
         $orWhere = Arr::get($input, 'orWhere', []);
@@ -318,6 +403,8 @@ class PostModel extends AbstractModel
             }
         });
 
+        $query->whereNotNull($attributeColumn);
+
         if (!empty($groupSlug)) {
             $query->whereHas('group', function ($q) use ($groupSlug) {
                 $q->where('slug', $groupSlug);
@@ -335,14 +422,23 @@ class PostModel extends AbstractModel
         }
     }
 
-    public function show($slug)
+    public function show($slug, $input = [])
     {
+        $attributeColumn = 'slug';
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            $attributeColumn = 'slug_en';
+        }
+
         $item = Post::with(['group'])
-            ->where('slug', $slug)
+            ->where($attributeColumn, $slug)
             ->where('is_active', 1)
             ->first();
         if (empty($item)) {
             return null;
+        }
+
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            return new PostResourceEn($item);
         }
 
         return new PostResource($item);

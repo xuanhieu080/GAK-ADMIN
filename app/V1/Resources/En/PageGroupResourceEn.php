@@ -8,7 +8,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * Class UserResource
  * @package App\Http\Resources
  */
-class PageGroupResource extends JsonResource
+class PageGroupResourceEn extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -20,7 +20,7 @@ class PageGroupResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'name'   => $this->name_en,
+            'name'   => $this->name_en ?? $this->name,
             'column' => $this->column,
         ];
     }

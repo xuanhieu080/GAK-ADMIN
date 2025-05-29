@@ -8,7 +8,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * Class UserResource
  * @package App\Http\Resources
  */
-class CategoryChildrenResource extends JsonResource
+class AttributeGroupResourceEn extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -20,11 +20,10 @@ class CategoryChildrenResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'code'       => $this->code,
-            'name'       => $this->name_en,
+            'id'         => $this->id,
+            'name'       => $this->name_en ?? $this->name,
             'slug'       => $this->slug_en,
-            'is_active'  => $this->is_active,
-            'image_url'  => $this->getFirstMediaUrl()
+            'attributes' => AttributeResourceEn::collection($this->attributes),
         ];
     }
 }

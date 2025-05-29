@@ -8,7 +8,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * Class UserResource
  * @package App\Http\Resources
  */
-class PageResource extends JsonResource
+class PageResourceEn extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -23,20 +23,20 @@ class PageResource extends JsonResource
 
         return [
             'id'                => $this->id,
-            'name'              => $this->name_en,
-            'title'             => $this->title_en,
+            'name'              => $this->name_en ?? $this->name,
+            'title'             => $this->title_en ?? $this->title,
             'slug'              => $this->slug_en,
-            'description'       => $this->description_en,
-            'description_short' => $this->description_short_en,
+            'description'       => $this->description_en ?? $this->description,
+            'description_short' => $this->description_short_en ?? $this->description_short,
             'image'             => $image,
             'image_url'         => $image,
             'user_id'           => $this->user_id,
             'group_id'          => $this->group_id,
             'is_active'         => $this->is_active,
             'show_header'       => $this->show_header,
-            'meta_title'        => $this->meta_title_en,
-            'meta_description'  => $this->meta_description_en,
-            'meta_key'          => $this->meta_key_en,
+            'meta_title'        => $this->meta_title_en ?? $this->meta_title,
+            'meta_description'  => $this->meta_description_en ?? $this->meta_description,
+            'meta_key'          => $this->meta_key_en ?? $this->meta_key,
             'is_button'         => $this->is_button,
             'link'              => $this->link_en,
             'created_at'        => $this->created_at ? $this->created_at->diffForHumans() : null,

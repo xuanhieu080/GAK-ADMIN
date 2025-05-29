@@ -4,7 +4,7 @@ namespace App\V1\Resources\En;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProductDetailResource extends JsonResource
+class ProductDetailResourceEn extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -22,7 +22,7 @@ class ProductDetailResource extends JsonResource
                 'slug'       => $item[0]['attribute_group_slug_en'],
                 'link'       => $item[0]['attribute_group_link_en'],
                 'is_color'   => $item[0]['is_color'],
-                'attributes' => VariantResource::collection($item)
+                'attributes' => VariantResourceEn::collection($item)
             ];
         }
 
@@ -31,17 +31,17 @@ class ProductDetailResource extends JsonResource
             'id'                  => $this->id,
             'code'                => $this->code,
             'slug'                => $this->slug_en,
-            'name'                => $this->name_en,
-            'description'         => $this->description_en,
-            'price'               => $this->price_en,
+            'name'                => $this->name_en ?? $this->name,
+            'description'         => $this->description_en ?? $this->description,
+            'price'               => $this->price_en ?? 0,
             'category_id'         => $this->category_id,
             'qty'                 => $this->qty,
             'is_active'           => $this->is_active,
             'qty_sold'            => $this->qty_sold,
             'priority'            => $this->priority,
-            'meta_title'          => $this->meta_title_en,
-            'meta_description'    => $this->meta_description_en,
-            'meta_key'            => $this->meta_key_en,
+            'meta_title'          => $this->meta_title_en ?? $this->meta_title,
+            'meta_description'    => $this->meta_description_en ?? $this->meta_description,
+            'meta_key'            => $this->meta_key_en ?? $this->meta_key,
             'video_link'          => $this->video_link,
             'price_discount'      => $this->price_discount_en,
             'discount'            => $this->discount_en,
@@ -50,8 +50,8 @@ class ProductDetailResource extends JsonResource
             'rate'                => $this->rate,
             'rate_count'          => $this->rate_count == 0 ? 1 : $this->rate_count,
             'average_rate'        => $this->rate_count == 0 ? 0 : round($this->rate / $this->rate_count, 1),
-            'variants'            => ProductVariantResource::collection($this->variants),
-            'variantMainDetail'   => new ProductVariantMainResource($this->variantMainDetail),
+            'variants'            => ProductVariantResourceEn::collection($this->variants),
+            'variantMainDetail'   => new ProductVariantMainResourceEn($this->variantMainDetail),
             'highlight'           => $this->highlight_en,
             'highlight_image_url' => $this->getFirstMediaUrl('highlight'),
             'highlight_image'     => $this->getFirstMediaUrl('highlight'),

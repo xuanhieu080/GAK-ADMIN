@@ -8,7 +8,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * Class UserResource
  * @package App\Http\Resources
  */
-class CategoryDescendantResource extends JsonResource
+class CategoryChildrenResourceEn extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -19,16 +19,12 @@ class CategoryDescendantResource extends JsonResource
      */
     public function toArray($request)
     {
-        $image = $this->getFirstMediaUrl();
         return [
-            'id'         => $this->id,
             'code'       => $this->code,
-            'image'      => $image,
-            'image_url'  => $image,
-            'name'       => $this->name_en,
+            'name'       => $this->name_en ?? $this->name,
             'slug'       => $this->slug_en,
-            'created_at' => $this->created_at ? $this->created_at->diffForHumans() : null,
-            'updated_at' => $this->updated_at ? $this->updated_at->diffForHumans() : null,
+            'is_active'  => $this->is_active,
+            'image_url'  => $this->getFirstMediaUrl()
         ];
     }
 }

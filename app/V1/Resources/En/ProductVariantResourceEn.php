@@ -4,7 +4,7 @@ namespace App\V1\Resources\En;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProductVariantResource extends JsonResource
+class ProductVariantResourceEn extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,11 +18,11 @@ class ProductVariantResource extends JsonResource
         $data = [
             'id'                      => $this->id,
             'code'                    => $this->code,
-            'name'                    => object_get($this, 'productVariantMain.name_en', object_get($this, 'product.name_en')),
+            'name'                    => optional($this->productVariantMain)->name_en ?? optional($this->product)->name_en ?? optional($this->product)->name,
             'product_id'              => $this->product_id,
-            'product_name'            => object_get($this, 'product.name_en'),
+            'product_name'            => optional($this->product)->name_en ?? optional($this->product)->name,
             'slug'                    => object_get($this, 'product.slug_en'),
-//            'description'             => $this->description,
+            //            'description'             => $this->description,
             'price'                   => $this->price_en,
             'category_id'             => object_get($this, 'product.category.id'),
             'qty'                     => $this->qty,
@@ -34,9 +34,9 @@ class ProductVariantResource extends JsonResource
             'option_all'              => $this->option_all,
             'option_group'            => $this->option_group,
             'product_variant_main_id' => object_get($this, 'productVariantMain.id'),
-            'meta_title'              => $this->meta_title_en,
-            'meta_description'        => $this->meta_description_en,
-            'meta_key'                => $this->meta_key_en,
+            'meta_title'              => $this->meta_title_en ?? $this->meta_title,
+            'meta_description'        => $this->meta_description_en ?? $this->meta_description,
+            'meta_key'                => $this->meta_key_en ?? $this->meta_key,
         ];
 
         $image = null;

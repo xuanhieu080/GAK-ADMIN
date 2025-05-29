@@ -31,11 +31,11 @@ class AttributeGroupController extends Controller
         return $this->model->index($input);
     }
 
-    public function show(AttributeGroup $attribute_group)
+    public function show(AttributeGroup $attribute_group, Request $request)
     {
 //        $this->authorize('view', Company::class);
 
-        $model = $this->model->show($attribute_group);
+        $model = $this->model->show($attribute_group, $request->all());
         if (empty($model)) {
             return $this->responseFail('Dữ liệu không tồn tại',[]);
         }

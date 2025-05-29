@@ -31,11 +31,11 @@ class PostGroupController extends Controller
         return $this->model->index($input);
     }
 
-    public function show($slug)
+    public function show($slug, Request $request)
     {
 //        $this->authorize('view', Company::class);
 
-        $model = $this->model->show($slug);
+        $model = $this->model->show($slug, $request->all());
         if (empty($model)) {
             return $this->responseFail('Dữ liệu không tồn tại',[]);
         }

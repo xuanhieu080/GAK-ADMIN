@@ -8,7 +8,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * Class UserResource
  * @package App\Http\Resources
  */
-class CategoryHeaderResource extends JsonResource
+class CategoryHeaderResourceEn extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -21,10 +21,10 @@ class CategoryHeaderResource extends JsonResource
     {
         return [
             'code'       => $this->code,
-            'name'       => $this->name_en,
+            'name'       => $this->name_en ?? $this->name,
             'slug'       => $this->slug_en,
             'is_active'  => $this->is_active,
-            'children'   => CategoryChildrenResource::collection($this->children),
+            'children'   => CategoryChildrenResourceEn::collection($this->children),
             'created_at' => $this->created_at ? $this->created_at->diffForHumans() : null,
             'updated_at' => $this->updated_at ? $this->updated_at->diffForHumans() : null,
         ];

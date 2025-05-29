@@ -4,6 +4,7 @@ namespace App\V1\Models;
 
 use App\Models\Page;
 use App\Supports\Support;
+use App\V1\Resources\En\PageResourceEn;
 use App\V1\Resources\Vi\PageResource;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
@@ -28,28 +29,41 @@ class PageModel extends AbstractModel
         $input['sort'] = ['id' => 'desc'];
         $result = $this->search($input, [], $limit);
 
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            return PageResourceEn::collection($result);
+        }
         return PageResource::collection($result);
     }
 
-    public function show(Page $item)
+    public function show(Page $item, $input = [])
     {
         if (!$item->is_active) {
             return null;
         }
 
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            return new PageResourceEn($item);
+        }
         return new PageResource($item);
     }
 
-    public function getItem($slug)
+    public function getItem($slug, $input = [])
     {
-        $item = Page::where('slug', $slug)
+        $attributeColumn = 'slug';
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            $attributeColumn = 'slug_en';
+        }
+        $item = Page::query()
+            ->where($attributeColumn, $slug)
             ->where('is_active', 1)
             ->first();
 
         if (empty($item)) {
             return null;
         }
-
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            return new PageResourceEn($item);
+        }
         return new PageResource($item);
     }
 
@@ -59,20 +73,34 @@ class PageModel extends AbstractModel
         $page = Arr::get($input, 'page', 1);
         if ($page == 1) {
             $cacheKey = 'page_header_data';
+            $cacheKeyEn = 'page_header_data';
             $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
 
-            // Kiểm tra xem dữ liệu có trong cache không
-            $pages = Cache::remember($cacheKey, $seconds, function () use ($input) {
-                $limit = Arr::get($input, 'limit', 999);
+            if (!empty($input['lang']) && $input['lang'] == 'en') {
+                // Kiểm tra xem dữ liệu có trong cache không
+                $pages = Cache::remember($cacheKeyEn, $seconds, function () use ($input) {
+                    $limit = Arr::get($input, 'limit', 999);
 
-                $input['sort'] = ['id' => 'desc'];
-                $input['is_active'] = 1;
-                $input['show_header'] = 1;
-                $result = $this->search($input, [], $limit);
+                    $input['sort'] = ['id' => 'desc'];
+                    $input['is_active'] = 1;
+                    $input['show_header'] = 1;
+                    $result = $this->search($input, [], $limit);
 
-                return PageResource::collection($result);
-            });
+                    return PageResourceEn::collection($result);
+                });
+            } else {
+                // Kiểm tra xem dữ liệu có trong cache không
+                $pages = Cache::remember($cacheKey, $seconds, function () use ($input) {
+                    $limit = Arr::get($input, 'limit', 999);
 
+                    $input['sort'] = ['id' => 'desc'];
+                    $input['is_active'] = 1;
+                    $input['show_header'] = 1;
+                    $result = $this->search($input, [], $limit);
+
+                    return PageResource::collection($result);
+                });
+            }
             return $pages;
         } else {
             $limit = Arr::get($input, 'limit', 999);
@@ -82,13 +110,18 @@ class PageModel extends AbstractModel
             $input['show_header'] = 1;
             $result = $this->search($input, [], $limit);
 
-            return PageResource::collection($result);
+            if (!empty($input['lang']) && $input['lang'] == 'en') {
+                return PageResourceEn::collection($result);
+            } else {
+                return PageResource::collection($result);
+            }
         }
     }
 
     public function cachePageHeader($input)
     {
         $cacheKey = 'page_header_data';
+        $cacheKeyEn = 'page_header_data_en';
         $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
         $limit = Arr::get($input, 'limit', 999);
 
@@ -97,12 +130,20 @@ class PageModel extends AbstractModel
         $input['show_header'] = 1;
         $result = $this->search($input, [], $limit);
 
-        Support::writeJsonFile('/home/DEV-GAK-UI/api/page_header.json',  PageResource::collection($result));
-        Cache::put($cacheKey, PageResource::collection($result), $seconds);
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            Cache::put($cacheKeyEn, PageResourceEn::collection($result), $seconds);
+        } else {
+            Cache::put($cacheKey, PageResource::collection($result), $seconds);
+        }
     }
 
     public function search($input = [], $with = [], $limit = null)
     {
+        $attributeColumn = 'slug';
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            $attributeColumn = 'slug_en';
+        }
+
         $query = $this->make($with);
         $orWhere = Arr::get($input, 'orWhere', []);
         $this->sortBuilder($query, $input);
@@ -193,6 +234,8 @@ class PageModel extends AbstractModel
                 }
             }
         });
+
+        $query->whereNotNull($attributeColumn);
 
         if ($limit) {
             if ($limit === 1) {

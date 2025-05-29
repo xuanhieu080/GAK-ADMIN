@@ -8,7 +8,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * Class UserResource
  * @package App\Http\Resources
  */
-class PostResource extends JsonResource
+class PostGroupResourceEn extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -23,23 +23,18 @@ class PostResource extends JsonResource
         $data = [
             'id'               => $this->id,
             'slug'             => $this->slug_en,
-            'title'            => $this->title_en,
-            'content'          => $this->content_en,
-            'author_id'        => $this->author_id,
-            'author_name'      => object_get($this, 'author.name'),
-            'meta_title'       => $this->meta_title_en,
-            'meta_description' => $this->meta_description_en,
-            'meta_key'         => $this->meta_key_en,
+            'name'             => $this->name_en ?? $this->name,
+            'description'      => $this->description_en ?? $this->description,
+            'meta_title'       => $this->meta_title_en ?? $this->meta_title,
+            'meta_description' => $this->meta_description_en ?? $this->meta_description,
+            'meta_key'         => $this->meta_key_en ?? $this->meta_key,
             'is_hot'           => $this->is_hot,
             'is_active'        => $this->is_active,
-            'is_new'           => $this->is_new,
-            'view'             => $this->view,
-            'user_id'          => $this->user_id,
-            'category_id'      => $this->group_id,
-            'category_name'    => object_get($this, 'group.name_en'),
-            'category_slug'    => object_get($this, 'group.slug_en'),
+            'user_id'          => $this->user_id
         ];
-
+        if (!empty($this->resource->toArray()['posts'])) {
+            $data['posts'] = PostResourceEn::collection($this->posts);
+        }
         foreach ($this->getMedia("thumb") as $item) {
             $thumb[] = $item->getFullUrl();
         }

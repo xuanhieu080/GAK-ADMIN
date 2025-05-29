@@ -3,6 +3,7 @@
 namespace App\V1\Models;
 
 use App\Models\PostGroup;
+use App\V1\Resources\En\PostGroupResourceEn;
 use App\V1\Resources\Vi\PostGroupResource;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -35,12 +36,19 @@ class PostGroupModel extends AbstractModel
             $input['name'] = ['like' => $input['name']];
         }
         $result = $this->search($input, [], $limit);
-
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            return PostGroupResourceEn::collection($result);
+        }
         return PostGroupResource::collection($result);
     }
 
     public function search($input = [], $with = [], $limit = null)
     {
+        $attributeColumn = 'slug';
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            $attributeColumn = 'slug_en';
+        }
+
         $query = $this->make($with);
         $orWhere = Arr::get($input, 'orWhere', []);
         $this->sortBuilder($query, $input);
@@ -132,6 +140,8 @@ class PostGroupModel extends AbstractModel
             }
         });
 
+        $query->whereNotNull($attributeColumn);
+
         if ($limit) {
             if ($limit === 1) {
                 return $query->first();
@@ -143,15 +153,24 @@ class PostGroupModel extends AbstractModel
         }
     }
 
-
-
-    public function show($slug)
+    public function show($slug, $input = [])
     {
-        $item = PostGroup::where('slug', $slug)
-            ->where('is_active',1)
+        $attributeColumn = 'slug';
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            $attributeColumn = 'slug_en';
+        }
+
+        $item = PostGroup::query()
+            ->where($attributeColumn, $slug)
+            ->where('is_active', 1)
             ->first();
+
         if (empty($item)) {
             return null;
+        }
+
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            return new PostGroupResourceEn($item);
         }
 
         return new PostGroupResource($item);

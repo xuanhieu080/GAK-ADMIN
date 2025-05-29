@@ -5,6 +5,10 @@ namespace App\V1\Models;
 use App\Models\AttributeGroup;
 use App\Models\Category;
 use App\Supports\Support;
+use App\V1\Resources\En\CategoryDetailResourceEn;
+use App\V1\Resources\En\CategoryHeaderResourceEn;
+use App\V1\Resources\En\CategoryResourceEn;
+use App\V1\Resources\En\CategorySearchAllResourceEn;
 use App\V1\Resources\Vi\CategoryDetailResource;
 use App\V1\Resources\Vi\CategoryHeaderResource;
 use App\V1\Resources\Vi\CategoryResource;
@@ -12,6 +16,7 @@ use App\V1\Resources\Vi\CategorySearchAllResource;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use function Symfony\Component\String\u;
 
 class CategoryModel extends AbstractModel
 {
@@ -32,34 +37,48 @@ class CategoryModel extends AbstractModel
         $input['sort'] = ['id' => 'desc'];
         $result = $this->search($input, [], $limit);
 
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            return CategoryResourceEn::collection($result);
+        }
+
         return CategoryResource::collection($result);
     }
 
-    public function show($slug)
+    public function show($slug, $input = [])
     {
+        $attributeColumn = 'slug';
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            $attributeColumn = 'slug_en';
+        }
+
         $item = Category::with([
-            'descendants'          => function ($query) {
+            'descendants'          => function ($query) use ($attributeColumn) {
                 $query->where('is_active', 1)
+                    ->whereNotNull($attributeColumn)
                     ->orderBy('order')
                     ->orderBy('name');
             },
-            'descendants.products' => function ($query) {
+            'descendants.products' => function ($query) use ($attributeColumn) {
                 $query->where('products.is_active', 1)
+                    ->whereNotNull("products.$attributeColumn")
                     ->whereHas('media', function ($query) {
                         $query->where('collection_name', 'default')
                             ->where('collection_name', 'thumb');
                     });
             },
-            'products'             => function ($query) {
+            'products'             => function ($query) use ($attributeColumn) {
                 $query->where('products.is_active', 1)
+                    ->whereNotNull("products.$attributeColumn")
                     ->whereHas('media', function ($query) {
                         $query->where('collection_name', 'default')
                             ->where('collection_name', 'thumb');
                     });
             },
-        ])->where('slug', $slug)
+        ])->whereNotNull($attributeColumn)
+            ->where($attributeColumn, $slug)
             ->where('is_active', 1)
             ->first();
+
         if (empty($item)) {
             return null;
         }
@@ -96,18 +115,30 @@ class CategoryModel extends AbstractModel
             });
         })->orderByDesc('is_color')->get();
 
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            return response()->json(['item' => new CategoryDetailResourceEn($item), 'variants' => $variants]);
+        }
+
         return response()->json(['item' => new CategoryDetailResource($item), 'variants' => $variants]);
     }
 
     public function getAll($input)
     {
         $limit = Arr::get($input, 'limit', 4);
+
+        $attributeColumn = 'slug';
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            $attributeColumn = 'slug_en';
+        }
+
         $categories = Category::with([
-            'descendants'          => function ($query) use ($limit) {
-                $query->where('is_active', 1);
+            'descendants'          => function ($query) use ($attributeColumn) {
+                $query->where('is_active', 1)
+                    ->whereNotNull($attributeColumn);
             },
-            'descendants.products' => function ($query) use ($limit) {
+            'descendants.products' => function ($query) use ($attributeColumn) {
                 $query->where('products.is_active', 1)
+                    ->whereNotNull("products.$attributeColumn")
                     ->whereHas('media', function ($query) {
                         // Điều kiện cho hình ảnh
                         $query->where('collection_name', 'default');
@@ -116,8 +147,9 @@ class CategoryModel extends AbstractModel
                         $query->where('collection_name', 'thumb');
                     });
             },
-            'products'             => function ($query) use ($limit) {
+            'products'             => function ($query) use ($attributeColumn) {
                 $query->where('products.is_active', 1)
+                    ->whereNotNull("products.$attributeColumn")
                     ->whereHas('media', function ($query) {
                         $query->where('collection_name', 'default');
                     })->whereHas('media', function ($query) {
@@ -129,8 +161,9 @@ class CategoryModel extends AbstractModel
 
 // Đối với mỗi category, sẽ load thêm các products từ descendants
         $categories->load([
-            'descendants.products' => function ($query) use ($limit) {
+            'descendants.products' => function ($query) use ($limit, $attributeColumn) {
                 $query->where('is_active', 1)
+                    ->whereNotNull("products.$attributeColumn")
                     ->whereHas('media', function ($query) {
                         $query->where('collection_name', 'default');
                     })->whereHas('media', function ($query) {
@@ -147,11 +180,19 @@ class CategoryModel extends AbstractModel
             $category->setRelation('products', $category->products->concat($allProducts)->take($limit));
         });
 
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            return CategoryResourceEn::collection($categories);
+        }
         return CategoryResource::collection($categories);
     }
 
     public function getSearchAll($input)
     {
+        $attributeColumn = 'slug';
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            $attributeColumn = 'slug_en';
+        }
+
         $categories = Category::with(['variants' => function ($query) {
             $query->whereIn('product_variants.code', [
                 'F56YtbAEmYc7Wkp2',
@@ -182,6 +223,7 @@ class CategoryModel extends AbstractModel
         }])
 //            ->whereHas('variantMains')
             ->where('is_active', 1)
+            ->whereNotNull($attributeColumn)
             ->whereIn('slug', [
                 'ao-phan-quang-thun-2-ben',
                 'ao-phan-quang-ha-noi',
@@ -202,16 +244,23 @@ class CategoryModel extends AbstractModel
 //                return $category;
 //            });
 
-
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            return CategorySearchAllResourceEn::collection($categories);
+        }
         return CategorySearchAllResource::collection($categories);
     }
 
     public function getSearchAll1($input)
     {
         $limit = 4;
+        $attributeColumn = 'slug';
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            $attributeColumn = 'slug_en';
+        }
         $categories = Category::with([
-            'products'              => function ($query) use ($limit) {
-                $query->where('products.is_active', 1);
+            'products'              => function ($query) use ($attributeColumn) {
+                $query->where('products.is_active', 1)
+                    ->whereNotNull("products.$attributeColumn");
 //                    ->whereHas('media', function ($query) {
 //                        $query->where('collection_name', 'default');
 //                    })->whereHas('media', function ($query) {
@@ -227,6 +276,7 @@ class CategoryModel extends AbstractModel
 //                    })->limit($limit);
             },
         ])->where('categories.is_active', 1)
+            ->whereNotNull("$attributeColumn")
             ->whereIn('categories.slug', [
                 'ao-phan-quang-thun-2-ben',
                 'ao-phan-quang-ha-noi',
@@ -256,29 +306,54 @@ class CategoryModel extends AbstractModel
 //            $category->setRelation('products', $category->products->concat($allProducts)->take($limit));
 //        });
 
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            return CategoryResourceEn::collection($categories);
+        }
+
         return CategoryResource::collection($categories);
     }
 
     public function getCategoryHeader($input)
     {
         $cacheKey = 'category_dashboard_data';
+        $cacheKeyEn = 'category_dashboard_data_en';
         $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
 
-        // Kiểm tra xem dữ liệu có trong cache không
-        $categories = Cache::remember($cacheKey, $seconds, function () use ($input) {
-            $limit = 5;
-            $categories = Category::with([
-                'children' => function ($query) use ($limit) {
-                    $query->where('is_active', 1);
-                },
-            ])->where('is_active', 1)
-                ->where('show_header', 1)
-                ->orderBy('order')
-                ->limit($limit)
-                ->get();
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            $categories = Cache::remember($cacheKeyEn, $seconds, function () use ($input) {
+                $limit = 5;
+                $categories = Category::with([
+                    'children' => function ($query) use ($limit) {
+                        $query->where('is_active', 1)
+                            ->whereNotNull('slug_en');
+                    },
+                ])->where('is_active', 1)
+                    ->whereNotNull('slug_en')
+                    ->where('show_header', 1)
+                    ->orderBy('order')
+                    ->limit($limit)
+                    ->get();
 
-            return CategoryHeaderResource::collection($categories);
-        });
+                return CategoryHeaderResourceEn::collection($categories);
+            });
+        } else {
+            // Kiểm tra xem dữ liệu có trong cache không
+            $categories = Cache::remember($cacheKey, $seconds, function () use ($input) {
+                $limit = 5;
+                $categories = Category::with([
+                    'children' => function ($query) use ($limit) {
+                        $query->where('is_active', 1);
+                    },
+                ])->where('is_active', 1)
+                    ->where('show_header', 1)
+                    ->orderBy('order')
+                    ->limit($limit)
+                    ->get();
+
+                return CategoryHeaderResource::collection($categories);
+            });
+        }
+
         return $categories;
 
     }
@@ -286,30 +361,25 @@ class CategoryModel extends AbstractModel
     public function cacheCategoryHeader($input)
     {
         $cacheKey = 'category_dashboard_data';
+        $cacheKeyEn = 'category_dashboard_data_en';
         $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
         $limit = 5;
-        $categories = Category::with([
-            'children' => function ($query) use ($limit) {
-                $query->where('is_active', 1);
-            },
-        ])->where('is_active', 1)
-            ->where('show_header', 1)
-            ->orderBy('order')
-            ->limit($limit)
-            ->get();
 
-        Support::writeJsonFile('/home/DEV-GAK-UI/api/category_header.json', CategoryHeaderResource::collection($categories));
-        Cache::put($cacheKey, CategoryHeaderResource::collection($categories), $seconds);
-    }
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            $categories = Category::with([
+                'children' => function ($query) use ($limit) {
+                    $query->where('is_active', 1)
+                        ->whereNotNull('slug_en');
+                },
+            ])->where('is_active', 1)
+                ->whereNotNull('slug_en')
+                ->where('show_header', 1)
+                ->orderBy('order')
+                ->limit($limit)
+                ->get();
 
-    public function getCategoryDashboard($input)
-    {
-        $cacheKey = 'category_dashboard_data';
-        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
-
-        // Kiểm tra xem dữ liệu có trong cache không
-        $categories = Cache::remember($cacheKey, $seconds, function () use ($input) {
-            $limit = Arr::get($input, 'limit', 5);
+            Cache::put($cacheKeyEn, CategoryHeaderResourceEn::collection($categories), $seconds);
+        } else {
             $categories = Category::with([
                 'children' => function ($query) use ($limit) {
                     $query->where('is_active', 1);
@@ -320,8 +390,50 @@ class CategoryModel extends AbstractModel
                 ->limit($limit)
                 ->get();
 
-            return CategoryHeaderResource::collection($categories);
-        });
+            Cache::put($cacheKey, CategoryHeaderResource::collection($categories), $seconds);
+        }
+    }
+
+    public function getCategoryDashboard($input)
+    {
+        $cacheKey = 'category_dashboard_data';
+        $cacheKeyEn = 'category_dashboard_data_en';
+        $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
+
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            $categories = Cache::remember($cacheKeyEn, $seconds, function () use ($input) {
+                $limit = Arr::get($input, 'limit', 5);
+                $categories = Category::with([
+                    'children' => function ($query) use ($limit) {
+                        $query->where('is_active', 1)
+                            ->whereNotNull('slug_en');
+                    },
+                ])->where('is_active', 1)
+                    ->whereNotNull('slug_en')
+                    ->where('show_header', 1)
+                    ->orderBy('order')
+                    ->limit($limit)
+                    ->get();
+
+                return CategoryHeaderResourceEn::collection($categories);
+            });
+        } else {
+            // Kiểm tra xem dữ liệu có trong cache không
+            $categories = Cache::remember($cacheKey, $seconds, function () use ($input) {
+                $limit = Arr::get($input, 'limit', 5);
+                $categories = Category::with([
+                    'children' => function ($query) use ($limit) {
+                        $query->where('is_active', 1);
+                    },
+                ])->where('is_active', 1)
+                    ->where('show_header', 1)
+                    ->orderBy('order')
+                    ->limit($limit)
+                    ->get();
+
+                return CategoryHeaderResource::collection($categories);
+            });
+        }
 
         return $categories;
     }
@@ -418,6 +530,10 @@ class CategoryModel extends AbstractModel
                 }
             }
         });
+
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            $query->whereNotNull('slug_en');
+        }
 
         if ($limit) {
             if ($limit === 1) {

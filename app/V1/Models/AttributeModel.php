@@ -3,6 +3,7 @@
 namespace App\V1\Models;
 
 use App\Models\Attribute;
+use App\V1\Resources\En\AttributeResourceEn;
 use App\V1\Resources\Vi\AttributeResource;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -32,6 +33,10 @@ class AttributeModel extends AbstractModel
 
         $input['sort'] = $sorts;
         $result = $this->search($input, [], $limit);
+
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            return AttributeResourceEn::collection($result);
+        }
 
         return AttributeResource::collection($result);
     }
@@ -142,12 +147,14 @@ class AttributeModel extends AbstractModel
 
 
 
-    public function show(Attribute $item)
+    public function show(Attribute $item, $input = [])
     {
 //        if (!$item->is_active) {
 //            return null;
 //        }
-
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            return new AttributeResourceEn($item);
+        }
         return new AttributeResource($item);
     }
 }

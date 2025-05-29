@@ -3,6 +3,7 @@
 namespace App\V1\Models;
 
 use App\Models\AttributeGroup;
+use App\V1\Resources\En\AttributeGroupResourceEn;
 use App\V1\Resources\Vi\AttributeGroupResource;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -31,6 +32,10 @@ class AttributeGroupModel extends AbstractModel
 
         $input['sort'] = $sorts;
         $result = $this->search($input, [], $limit);
+
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            return AttributeGroupResourceEn::collection($result);
+        }
 
         return AttributeGroupResource::collection($result);
     }
@@ -141,12 +146,16 @@ class AttributeGroupModel extends AbstractModel
 
 
 
-    public function show(AttributeGroup $item)
+    public function show(AttributeGroup $item, $input = [])
     {
 //        if (!$item->is_active) {
 //            return null;
 //        }
 
+
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            return new AttributeGroupResourceEn($item);
+        }
         return new AttributeGroupResource($item);
     }
 }
