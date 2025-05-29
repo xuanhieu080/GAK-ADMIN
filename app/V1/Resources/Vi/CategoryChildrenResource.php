@@ -23,6 +23,7 @@ class CategoryChildrenResource extends JsonResource
             'code'       => $this->code,
             'name'       => $this->name,
             'slug'       => $this->slug,
+            'slug_other' => $this->slug_en,
             'is_active'  => $this->is_active,
             'image_url'  => $this->getFirstMediaUrl()
         ];

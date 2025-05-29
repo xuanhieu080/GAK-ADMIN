@@ -20,6 +20,7 @@ class ProductDetailResource extends JsonResource
                 'id'         => $key,
                 'name'       => $item[0]['attribute_group_name'],
                 'slug'       => $item[0]['attribute_group_slug'],
+                'slug_other' => $item[0]['attribute_group_slug_en'],
                 'link'       => $item[0]['attribute_group_link'],
                 'is_color'   => $item[0]['is_color'],
                 'attributes' => VariantResource::collection($item)
@@ -31,6 +32,7 @@ class ProductDetailResource extends JsonResource
             'id'                  => $this->id,
             'code'                => $this->code,
             'slug'                => $this->slug,
+            'slug_other'          => $this->slug_en,
             'name'                => $this->name,
             'description'         => $this->description,
             'price'               => $this->price,

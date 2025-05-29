@@ -13,7 +13,7 @@ class PageResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      *
      * @return array
      */
@@ -26,6 +26,7 @@ class PageResource extends JsonResource
             'name'              => $this->name,
             'title'             => $this->title,
             'slug'              => $this->slug,
+            'slug_other'        => $this->slug_en,
             'description'       => $this->description,
             'description_short' => $this->description_short,
             'image'             => $image,

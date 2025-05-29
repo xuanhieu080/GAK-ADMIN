@@ -18,8 +18,9 @@ class ProductDetailResourceEn extends JsonResource
         foreach ($this->attributeVariants->sortByDesc('is_color')->sortByDesc('is_hot')->sortByDesc('is_main')->groupBy('attribute_group_id') as $key => $item) {
             $variants[] = [
                 'id'         => $key,
-                'name'       => $item[0]['attribute_group_name_en'],
+                'name'       => $item[0]['attribute_group_name_en'] ?? $item[0]['attribute_group_name'],
                 'slug'       => $item[0]['attribute_group_slug_en'],
+                'slug_other' => $item[0]['attribute_group_slug'],
                 'link'       => $item[0]['attribute_group_link_en'],
                 'is_color'   => $item[0]['is_color'],
                 'attributes' => VariantResourceEn::collection($item)
@@ -31,6 +32,7 @@ class ProductDetailResourceEn extends JsonResource
             'id'                  => $this->id,
             'code'                => $this->code,
             'slug'                => $this->slug_en,
+            'slug_other'          => $this->slug,
             'name'                => $this->name_en ?? $this->name,
             'description'         => $this->description_en ?? $this->description,
             'price'               => $this->price_en ?? 0,

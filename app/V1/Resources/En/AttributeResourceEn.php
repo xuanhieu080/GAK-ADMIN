@@ -20,12 +20,13 @@ class AttributeResourceEn extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'       => $this->id,
-            'name'     => $this->name_en ?? $this->name,
-            'slug'     => $this->slug_en,
-            'color'    => $this->color,
-            'is_color' => filter_var(object_get($this, 'group.is_color'), FILTER_VALIDATE_BOOLEAN),
-            'link'     => $this->link_en,
+            'id'         => $this->id,
+            'name'       => $this->name_en ?? $this->name,
+            'slug'       => $this->slug_en,
+            'slug_other' => $this->slug,
+            'color'      => $this->color,
+            'is_color'   => filter_var(object_get($this, 'group.is_color'), FILTER_VALIDATE_BOOLEAN),
+            'link'       => $this->link_en,
         ];
     }
 }

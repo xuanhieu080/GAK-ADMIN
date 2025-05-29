@@ -22,6 +22,7 @@ class ProductVariantResourceEn extends JsonResource
             'product_id'              => $this->product_id,
             'product_name'            => optional($this->product)->name_en ?? optional($this->product)->name,
             'slug'                    => object_get($this, 'product.slug_en'),
+            'slug_other'              => object_get($this, 'product.slug'),
             //            'description'             => $this->description,
             'price'                   => $this->price_en,
             'category_id'             => object_get($this, 'product.category.id'),

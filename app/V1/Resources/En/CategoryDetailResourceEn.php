@@ -32,6 +32,7 @@ class CategoryDetailResourceEn extends JsonResource
             'show_header'      => $this->show_header,
             'show_dashboard'   => $this->show_dashboard,
             'slug'             => $this->slug_en,
+            'slug_other'       => $this->slug,
             'meta_title'       => $this->meta_title_en ?? $this->meta_title,
             'meta_description' => $this->meta_description_en ?? $this->meta_description,
             'meta_key'         => $this->meta_key_en ?? $this->meta_key,

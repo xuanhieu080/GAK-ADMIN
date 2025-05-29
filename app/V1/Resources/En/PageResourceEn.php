@@ -26,6 +26,7 @@ class PageResourceEn extends JsonResource
             'name'              => $this->name_en ?? $this->name,
             'title'             => $this->title_en ?? $this->title,
             'slug'              => $this->slug_en,
+            'slug_other'        => $this->slug,
             'description'       => $this->description_en ?? $this->description,
             'description_short' => $this->description_short_en ?? $this->description_short,
             'image'             => $image,

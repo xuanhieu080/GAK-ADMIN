@@ -23,6 +23,7 @@ class CategoryHeaderResourceEn extends JsonResource
             'code'       => $this->code,
             'name'       => $this->name_en ?? $this->name,
             'slug'       => $this->slug_en,
+            'slug_other' => $this->slug,
             'is_active'  => $this->is_active,
             'children'   => CategoryChildrenResourceEn::collection($this->children),
             'created_at' => $this->created_at ? $this->created_at->diffForHumans() : null,

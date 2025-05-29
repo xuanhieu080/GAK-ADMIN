@@ -23,6 +23,7 @@ class PostGroupResourceEn extends JsonResource
         $data = [
             'id'               => $this->id,
             'slug'             => $this->slug_en,
+            'slug_other'       => $this->slug,
             'name'             => $this->name_en ?? $this->name,
             'description'      => $this->description_en ?? $this->description,
             'meta_title'       => $this->meta_title_en ?? $this->meta_title,

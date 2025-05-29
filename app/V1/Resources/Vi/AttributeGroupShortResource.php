@@ -20,13 +20,14 @@ class AttributeGroupShortResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'       => $this->id,
-            'name'     => $this->name,
-            'title'    => $this->name,
-            'slug'     => $this->slug,
-            'priority' => $this->priority,
-            'is_color' => $this->is_color,
-            'is_main'  => $this->is_main,
+            'id'         => $this->id,
+            'name'       => $this->name,
+            'title'      => $this->name,
+            'slug'       => $this->slug,
+            'slug_other' => $this->slug_en,
+            'priority'   => $this->priority,
+            'is_color'   => $this->is_color,
+            'is_main'    => $this->is_main,
         ];
     }
 }

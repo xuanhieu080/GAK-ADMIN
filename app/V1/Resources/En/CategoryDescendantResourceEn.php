@@ -27,6 +27,7 @@ class CategoryDescendantResourceEn extends JsonResource
             'image_url'  => $image,
             'name'       => $this->name_en ?? $this->name,
             'slug'       => $this->slug_en,
+            'slug_other' => $this->slug,
             'created_at' => $this->created_at ? $this->created_at->diffForHumans() : null,
             'updated_at' => $this->updated_at ? $this->updated_at->diffForHumans() : null,
         ];

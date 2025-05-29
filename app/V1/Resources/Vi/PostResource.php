@@ -23,6 +23,7 @@ class PostResource extends JsonResource
         $data = [
             'id'               => $this->id,
             'slug'             => $this->slug,
+            'slug_other'       => $this->slug_en,
             'title'            => $this->title,
             'content'          => $this->content,
             'author_id'        => $this->author_id,
