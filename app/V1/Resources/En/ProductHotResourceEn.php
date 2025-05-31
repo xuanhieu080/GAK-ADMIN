@@ -1,10 +1,10 @@
 <?php
 
-namespace App\V1\Resources\Vi;
+namespace App\V1\Resources\En;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProductHotResource extends JsonResource
+class ProductHotResourceEn extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,35 +18,36 @@ class ProductHotResource extends JsonResource
         foreach ($this->attributeVariants->sortByDesc('is_color')->sortByDesc('is_hot')->sortByDesc('is_main')->groupBy('attribute_group_id') as $key => $item) {
             $variants[] = [
                 'id'         => $key,
-                'name'       => $item[0]['attribute_group_name'],
-                'slug'       => $item[0]['attribute_group_slug'],
-                'slug_other' => $item[0]['attribute_group_slug_en'],
-                'link'       => $item[0]['attribute_group_link'],
+                'name'       => $item[0]['attribute_group_name_en'] ?? $item[0]['attribute_group_name'],
+                'slug'       => $item[0]['attribute_group_slug_en'],
+                'slug_other' => $item[0]['attribute_group_slug'],
+                'link'       => $item[0]['attribute_group_link_en'],
                 'is_color'   => $item[0]['is_color'],
-                'attributes' => VariantShortResource::collection($item)
+                'attributes' => VariantShortResourceEn::collection($item)
             ];
         }
 
         $thumb = [];
         $data = [
+
             'id'                  => $this->id,
             'code'                => $this->code,
-            'slug'                => $this->slug,
-            'slug_other'          => $this->slug_en,
-            'name'                => $this->name,
-            'price'               => $this->price,
+            'slug'                => $this->slug_en,
+            'slug_other'          => $this->slug,
+            'name'                => $this->name_en ?? $this->name,
+            'price'               => $this->price_en,
             'qty'                 => $this->qty,
             'is_active'           => $this->is_active,
-            'price_discount'      => $this->price_discount,
-            'discount'            => $this->discount,
-            'percent'             => $this->price <= 0 ? 0 : (int)(round($this->discount / $this->price, 2) * 100),
+            'price_discount'      => $this->price_discount_en,
+            'discount'            => $this->discount_en,
+            'percent'             => $this->price_en <= 0 ? 0 : (int)(round($this->discount_en / $this->price_en, 2) * 100),
         ];
 
 
         $data['variantAttribute'] = (array)$variants;
 
-        $image =  $this->getFirstMediaUrl();
 
+        $image =  $this->getFirstMediaUrl();
         foreach ($this->getMedia("thumb") as $item) {
             $thumb[] = $item->getFullUrl();
         }
