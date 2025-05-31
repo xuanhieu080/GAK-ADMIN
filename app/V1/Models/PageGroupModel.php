@@ -39,10 +39,13 @@ class PageGroupModel extends AbstractModel
                         $query->selectRaw('name,title,slug')
                             ->where('pages.is_active', 1);
                     })->where('page_groups.is_active', 1)
-                        ->get()
-                        ->groupBy('column');
+                        ->get();
+                    $groupedPages = $pages->groupBy('column');
 
-                    return PageGroupResourceEn::collection($pages);
+                    // Nếu bạn muốn trả về grouped array:
+                    return $groupedPages->map(function ($group) {
+                        return PageGroupResourceEn::collection($group);
+                    });
                 });
             } else {
                 $pages = Cache::remember($cacheKey, $seconds, function () use ($input) {
@@ -52,10 +55,13 @@ class PageGroupModel extends AbstractModel
                         $query->selectRaw('name,title,slug')
                             ->where('pages.is_active', 1);
                     })->where('page_groups.is_active', 1)
-                        ->get()
-                        ->groupBy('column');
+                        ->get();
+                    $groupedPages = $pages->groupBy('column');
 
-                    return PageGroupResource::collection($pages);
+                    // Nếu bạn muốn trả về grouped array:
+                    return $groupedPages->map(function ($group) {
+                        return PageGroupResource::collection($group);
+                    });
                 });
             }
 
@@ -67,13 +73,18 @@ class PageGroupModel extends AbstractModel
                 $query->selectRaw('name,title,slug')
                     ->where('pages.is_active', 1);
             })->where('page_groups.is_active', 1)
-                ->get()
-                ->groupBy('column');
+                ->get();
+            $groupedPages = $pages->groupBy('column');
+
 
             if (!empty($input['lang']) && $input['lang'] == 'en') {
-                return PageGroupResourceEn::collection($pages);
+                return $groupedPages->map(function ($group) {
+                    return PageGroupResourceEn::collection($group);
+                });
             }
-            return PageGroupResource::collection($pages);
+            return $groupedPages->map(function ($group) {
+                return PageGroupResource::collection($group);
+            });
         }
     }
 
@@ -93,11 +104,16 @@ class PageGroupModel extends AbstractModel
             ->get()
             ->groupBy('column');
 
-        if (!empty($input['lang']) && $input['lang'] == 'en') {
-            Cache::put($cacheKeyEn, PageGroupResourceEn::collection($pages), $seconds);
+        if (!empty($input['lang']) && $input['lang'] === 'en') {
+            $resource = $pages->map(function ($group) {
+                return PageGroupResourceEn::collection($group);
+            });
+            Cache::put($cacheKeyEn, $resource, $seconds);
         } else {
-            Cache::put($cacheKey, PageGroupResource::collection($pages), $seconds);
-
+            $resource = $pages->map(function ($group) {
+                return PageGroupResource::collection($group);
+            });
+            Cache::put($cacheKey, $resource, $seconds);
         }
     }
 
