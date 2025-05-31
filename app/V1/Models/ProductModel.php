@@ -5,9 +5,11 @@ namespace App\V1\Models;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductReview;
+use App\V1\Resources\En\CategorySearchAllResourceEn;
 use App\V1\Resources\En\ProductResourceEn;
 use App\V1\Resources\Vi\CategorySearchAllResource;
 use App\V1\Resources\Vi\ProductDetailResource;
+use App\V1\Resources\Vi\ProductHotResource;
 use App\V1\Resources\Vi\ProductResource;
 use App\V1\Resources\Vi\ProductReviewResource;
 use Illuminate\Support\Arr;
@@ -100,8 +102,10 @@ class ProductModel extends AbstractModel
                 $products = Cache::remember($cacheKey, $seconds, function () use ($input) {
                     $limit = Arr::get($input, 'limit', 999);
                     $sort = Arr::get($input, 'sort', ['desc' => ['id']]);
+
                     $input['is_active'] = 1;
                     $sorts = ['id' => 'desc'];
+
                     if (!empty($sort['desc']) && is_array($sort['desc'])) {
                         $sorts = array_merge($sorts, array_fill_keys($sort['desc'], 'desc'));
                     } elseif (!empty($sort['asc']) && is_array($sort['asc'])) {
@@ -109,18 +113,37 @@ class ProductModel extends AbstractModel
                     }
 
                     $input['sort'] = $sorts;
+
                     if (!empty($input['search'])) {
                         $input['name'] = ['like' => $input['search']];
                     }
-                    $result = $this->search($input,
-                        [
-                            'attributeVariants',
-                            //                'variants' => function ($query) {
-                            //                    $query->where('qty', '>', 0);
-                            //                }
-                        ], $limit);
 
-                    return ProductResource::collection($result);
+                    $result = $this->search($input, ['attributeVariants'], $limit);
+
+                    // Nếu dùng paginate:
+                    if ($result instanceof \Illuminate\Pagination\LengthAwarePaginator) {
+                        return [
+                            'data' => ProductHotResource::collection($result)->resolve(),
+                            'links' => [
+                                'first' => $result->url(1),
+                                'last' => $result->url($result->lastPage()),
+                                'prev' => $result->previousPageUrl(),
+                                'next' => $result->nextPageUrl(),
+                            ],
+                            'meta' => [
+                                'current_page' => $result->currentPage(),
+                                'from' => $result->firstItem(),
+                                'last_page' => $result->lastPage(),
+                                'links' => $result->linkCollection(),
+                                'path' => $result->path(),
+                                'per_page' => $result->perPage(),
+                                'to' => $result->lastItem(),
+                                'total' => $result->total(),
+                            ],
+                        ];
+                    }
+
+                    return ProductHotResource::collection($result)->resolve();
                 });
             }
 
@@ -673,7 +696,7 @@ class ProductModel extends AbstractModel
 
 
         if (!empty($input['lang']) && $input['lang'] == 'en') {
-            Cache::put($cacheKeyEn, ProductResourceEn::collection($categories), $seconds);
+            Cache::put($cacheKeyEn, CategorySearchAllResourceEn::collection($categories), $seconds);
         } else {
             Cache::put($cacheKey, CategorySearchAllResource::collection($categories), $seconds);
         }
