@@ -47,6 +47,10 @@ class PageGroupModel extends AbstractModel
                         return PageGroupResourceEn::collection($group);
                     })->values();
                 });
+
+                return response()->json([
+                    'data' => $pages
+                ]);
             } else {
                 $pages = Cache::remember($cacheKey, $seconds, function () use ($input) {
                     $pages = PageGroup::with(['details' => function ($query) {
@@ -65,7 +69,9 @@ class PageGroupModel extends AbstractModel
                 });
             }
 
-            return $pages;
+            return response()->json([
+                'data' => $pages
+            ]);
         } else {
             $pages = PageGroup::with(['details' => function ($query) {
                 $query->where('pages.is_active', 1);
@@ -78,13 +84,21 @@ class PageGroupModel extends AbstractModel
 
 
             if (!empty($input['lang']) && $input['lang'] == 'en') {
-                return $groupedPages->map(function ($group) {
+                $result = $groupedPages->map(function ($group) {
                     return PageGroupResourceEn::collection($group);
                 })->values();
+
+                return response()->json([
+                    'data' => $result
+                ]);
             }
-            return $groupedPages->map(function ($group) {
+            $result = $groupedPages->map(function ($group) {
                 return PageGroupResource::collection($group);
             })->values();
+
+            return response()->json([
+                'data' => $result
+            ]);
         }
     }
 
