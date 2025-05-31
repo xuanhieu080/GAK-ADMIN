@@ -20,8 +20,10 @@ class PageGroupResourceEn extends JsonResource
     public function toArray($request)
     {
         return [
+            'id'     => $this->id,
             'name'   => $this->name_en ?? $this->name,
             'column' => $this->column,
+            'details' => PageResourceEn::collection($this->whenLoaded('details')),
         ];
     }
 }

@@ -45,7 +45,7 @@ class PageGroupModel extends AbstractModel
                     // Nếu bạn muốn trả về grouped array:
                     return $groupedPages->map(function ($group) {
                         return PageGroupResourceEn::collection($group);
-                    });
+                    })->values();
                 });
             } else {
                 $pages = Cache::remember($cacheKey, $seconds, function () use ($input) {
@@ -61,7 +61,7 @@ class PageGroupModel extends AbstractModel
                     // Nếu bạn muốn trả về grouped array:
                     return $groupedPages->map(function ($group) {
                         return PageGroupResource::collection($group);
-                    });
+                    })->values();
                 });
             }
 
@@ -80,11 +80,11 @@ class PageGroupModel extends AbstractModel
             if (!empty($input['lang']) && $input['lang'] == 'en') {
                 return $groupedPages->map(function ($group) {
                     return PageGroupResourceEn::collection($group);
-                });
+                })->values();
             }
             return $groupedPages->map(function ($group) {
                 return PageGroupResource::collection($group);
-            });
+            })->values();
         }
     }
 
@@ -107,12 +107,12 @@ class PageGroupModel extends AbstractModel
         if (!empty($input['lang']) && $input['lang'] === 'en') {
             $resource = $pages->map(function ($group) {
                 return PageGroupResourceEn::collection($group);
-            });
+            })->values();
             Cache::put($cacheKeyEn, $resource, $seconds);
         } else {
             $resource = $pages->map(function ($group) {
                 return PageGroupResource::collection($group);
-            });
+            })->values();
             Cache::put($cacheKey, $resource, $seconds);
         }
     }
