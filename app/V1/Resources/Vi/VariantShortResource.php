@@ -22,6 +22,7 @@ class VariantShortResource extends JsonResource
         $data = [
             'id'                         => $this->id,
             'attribute_color'            => object_get($this, 'attribute.color'),
+            'attribute_name'             => object_get($this, 'attribute.name'),
         ];
 
         return $data;

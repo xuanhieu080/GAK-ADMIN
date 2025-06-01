@@ -22,6 +22,7 @@ class VariantShortResourceEn extends JsonResource
         $data = [
             'id'              => $this->id,
             'attribute_color' => object_get($this, 'attribute.color'),
+            'attribute_name'  => optional($this->attribute)->name_en ?? optional($this->attribute)->name,
         ];
 
         return $data;
