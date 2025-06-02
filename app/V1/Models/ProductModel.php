@@ -422,9 +422,10 @@ class ProductModel extends AbstractModel
     public function show($slug, $data = [])
     {
         $attributeColumn = 'slug';
-        if (!empty($input['lang']) && $input['lang'] == 'en') {
+        if (!empty($data['lang']) && $data['lang'] == 'en') {
             $attributeColumn = 'slug_en';
         }
+
         $item = Product::with([
             'attributeVariants',
             'variants'          => function ($query) {
