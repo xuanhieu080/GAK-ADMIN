@@ -49,27 +49,23 @@ class PageModel extends AbstractModel
 
     public function getItem($slug, $input = [])
     {
-        try {
-            $attributeColumn = 'slug';
-            if (!empty($input['lang']) && $input['lang'] == 'en') {
-                $attributeColumn = 'slug_en';
-            }
-
-            $item = Page::query()
-                ->where($attributeColumn, $slug)
-                ->where('is_active', 1)
-                ->first();
-
-            if (empty($item)) {
-                return null;
-            }
-            if (!empty($input['lang']) && $input['lang'] == 'en') {
-                return new PageResourceEn($item);
-            }
-            return new PageResource($item);
-        } catch (\Exception $e) {
-            dd($e);
+        $attributeColumn = 'slug';
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            $attributeColumn = 'slug_en';
         }
+
+        $item = Page::query()
+            ->where($attributeColumn, $slug)
+            ->where('is_active', 1)
+            ->first();
+
+        if (empty($item)) {
+            return null;
+        }
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            return new PageResourceEn($item);
+        }
+        return new PageResource($item);
     }
 
 
