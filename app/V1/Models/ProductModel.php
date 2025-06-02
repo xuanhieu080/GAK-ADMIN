@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductReview;
 use App\V1\Resources\En\CategorySearchAllResourceEn;
+use App\V1\Resources\En\ProductDetailResourceEn;
 use App\V1\Resources\En\ProductHotResourceEn;
 use App\V1\Resources\En\ProductResourceEn;
 use App\V1\Resources\Vi\CategorySearchAllResource;
@@ -456,7 +457,7 @@ class ProductModel extends AbstractModel
         }
 
         if (!empty($data['lang']) && $data['lang'] == 'en') {
-            return new ProductDetailResource($item);
+            return new ProductDetailResourceEn($item);
         }
         return new ProductDetailResource($item);
     }
