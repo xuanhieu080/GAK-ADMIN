@@ -74,7 +74,7 @@ class PageModel extends AbstractModel
         $page = Arr::get($input, 'page', 1);
         if ($page == 1) {
             $cacheKey = 'page_header_data';
-            $cacheKeyEn = 'page_header_data';
+            $cacheKeyEn = 'page_header_data_en';
             $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
 
             if (!empty($input['lang']) && $input['lang'] == 'en') {
