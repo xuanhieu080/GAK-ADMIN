@@ -203,6 +203,9 @@ class OrderModel extends AbstractModel
             $query->where('collection_name', 'thumb');
         })->orderBy('name')->get();
 
+        if (!empty($input['lang']) && $input['lang'] == 'en') {
+            return ProductStockResourceEn::collection($products);
+        }
 
         return ProductStockResource::collection($products);
     }
