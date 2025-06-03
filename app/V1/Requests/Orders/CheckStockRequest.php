@@ -19,6 +19,7 @@ class CheckStockRequest extends ValidatorBase
             'items.*'                    => 'required',
             'items.*.product_id'         => 'required|numeric',
             'items.*.product_variant_id' => 'nullable|numeric',
+            'lang'                       => 'nullable|string',
         ];
     }
 }

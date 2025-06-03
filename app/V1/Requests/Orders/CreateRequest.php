@@ -42,6 +42,7 @@ class CreateRequest extends ValidatorBase
             'province_id'                => 'required|exists:provinces,id',
             'note'                       => 'nullable|string|max:255',
             'payment_method'             => 'required|in:COD,Zalopay,Momo,ShopeePay,VNPAY',
+            'lang'                       => 'nullable|string',
         ];
     }
 }

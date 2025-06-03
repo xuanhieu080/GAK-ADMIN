@@ -203,6 +203,7 @@ class OrderModel extends AbstractModel
             $query->where('collection_name', 'thumb');
         })->orderBy('name')->get();
 
+
         return ProductStockResource::collection($products);
     }
 
