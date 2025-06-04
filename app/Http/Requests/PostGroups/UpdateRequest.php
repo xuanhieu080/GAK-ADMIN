@@ -30,8 +30,8 @@ class UpdateRequest extends BaseRequest
             'description'         => 'nullable|max:255',
             'description_en'      => 'nullable|max:255',
             'image'               => 'nullable|image|max:3145728|mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,ogx,oga,ogv,ogg,webm',
-            'meta_description'    => 'required|max:255',
-            'meta_description_en' => 'nullable|max:255',
+            'meta_description'    => 'required|max:400',
+            'meta_description_en' => 'nullable|max:400',
             'meta_title'          => 'required|max:255',
             'meta_title_en'       => 'nullable|max:255',
             'slug'                => [

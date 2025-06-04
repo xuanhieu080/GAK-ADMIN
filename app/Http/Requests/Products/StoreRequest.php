@@ -27,8 +27,8 @@ class StoreRequest extends BaseRequest
             'price'               => 'nullable|numeric|min:0|max:999999999999',
             'price_en'               => 'nullable|numeric|min:0|max:999999999999',
             'priority'            => 'required|numeric|min:0|max:1000',
-            'meta_description'    => 'required|max:255',
-            'meta_description_en' => 'nullable|max:255',
+            'meta_description'    => 'required|max:400',
+            'meta_description_en' => 'nullable|max:400',
             'meta_title'          => 'required|max:255',
             'meta_title_en'       => 'nullable|max:255',
             'slug'                => [

@@ -36,8 +36,8 @@ class UpdateVariantMainItemRequest extends BaseRequest
             'thumb_image_remove' => 'nullable|array',
 
             'is_active'           => 'nullable|in:1,0,true,false',
-            'meta_description'    => 'required|max:255',
-            'meta_description_en' => 'nullable|max:255',
+            'meta_description'    => 'required|max:400',
+            'meta_description_en' => 'nullable|max:400',
             'meta_title'          => 'required|max:255',
             'meta_title_en'       => 'nullable|max:255',
             'meta_key'            => 'required|max:255',

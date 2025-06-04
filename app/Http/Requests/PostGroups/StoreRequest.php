@@ -20,8 +20,8 @@ class StoreRequest extends BaseRequest
             'image'               => 'required|image|max:3145728|mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,ogx,oga,ogv,ogg,webm',
             'description'         => 'nullable',
             'description_en'      => 'nullable',
-            'meta_description'    => 'required|max:255',
-            'meta_description_en' => 'nullable|max:255',
+            'meta_description'    => 'required|max:400',
+            'meta_description_en' => 'nullable|max:400',
             'meta_title'          => 'required|max:255',
             'meta_title_en'       => 'nullable|max:255',
             'slug'                => [

@@ -47,8 +47,8 @@ class StoreRequest extends BaseRequest
             $rules['description_en'] = 'nullable|string';
             $rules['description_short'] = 'nullable|string|max:255';
             $rules['description_short_en'] = 'nullable|string|max:255';
-            $rules['meta_description'] = 'required|max:255';
-            $rules['meta_description_en'] = 'nullable|max:255';
+            $rules['meta_description'] = 'required|max:400';
+            $rules['meta_description_en'] = 'nullable|max:400';
             $rules['meta_title'] = 'required|max:255';
             $rules['meta_title_en'] = 'nullable|max:255';
             $rules['meta_key'] = 'required|max:255';
