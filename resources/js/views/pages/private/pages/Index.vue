@@ -5,7 +5,7 @@
       <Filters @clear="onFiltersClear">
         <FiltersRow>
           <FiltersCol>
-            <TextInput name="title" :label="trans('labels.title')" v-model="mainQuery.filters.title.value"></TextInput>
+            <TextInput name="name" :label="trans('labels.title')" v-model="mainQuery.filters.name.value"></TextInput>
           </FiltersCol>
         </FiltersRow>
       </Filters>
@@ -58,7 +58,7 @@ const mainQuery = reactive({
   search: '',
   sort: '',
   filters: {
-    title: {
+    name: {
       value: '',
       comparison: '='
     },
