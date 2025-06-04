@@ -265,8 +265,10 @@ class ProductModel extends AbstractModel
     public function search($input = [], $with = [], $limit = null)
     {
         $attributeColumn = 'slug';
+        $lang = null;
         if (!empty($input['lang']) && $input['lang'] == 'en') {
             $attributeColumn = 'slug_en';
+            $lang = '_en';
         }
 
         $attributes = (array)Arr::get($input, 'attributes');
@@ -388,16 +390,16 @@ class ProductModel extends AbstractModel
         }
 
         if (!empty($categoryName)) {
-            $query->whereHas('category', function ($query) use ($categoryName) {
+            $query->whereHas('category', function ($query) use ($categoryName, $lang) {
                 // Điều kiện cho hình ảnh
-                $query->where(DB::raw(("REPLACE(REPLACE(name, 'Đ', 'd'), 'ư', 'u')")), 'like', "%$categoryName%");
+                $query->where(DB::raw(("REPLACE(REPLACE(name$lang, 'Đ', 'd'), 'ư', 'u')")), 'like', "%$categoryName%");
             });
         }
 
         if (!empty($categorySlug)) {
-            $query->whereHas('category', function ($query) use ($categorySlug) {
+            $query->whereHas('category', function ($query) use ($categorySlug, $lang) {
                 $category = Category::with(['descendants'])
-                    ->where('slug', $categorySlug)
+                    ->where("slug$lang", $categorySlug)
                     ->first();
                 if ($category) {
                     // Lấy ID của tất cả descendants và thêm ID của cha vào đầu mảng
