@@ -407,7 +407,7 @@ class PostModel extends AbstractModel
 
         if (!empty($groupSlug)) {
             $query->whereHas('group', function ($q) use ($groupSlug) {
-                $q->where('slug', $groupSlug);
+                $q->where($attributeColumn, $groupSlug);
             });
         }
 
