@@ -36,7 +36,7 @@ class PageGroupModel extends AbstractModel
                     $pages = PageGroup::with(['details' => function ($query) {
                         $query->where('pages.is_active', 1);
                     }])->whereHas('details', function ($query) {
-                        $query->selectRaw('name,title,slug')
+                        $query->selectRaw('name,title,slug,name_en,title_en,slug_en')
                             ->where('pages.is_active', 1);
                     })->where('page_groups.is_active', 1)
                         ->get();
@@ -56,7 +56,7 @@ class PageGroupModel extends AbstractModel
                     $pages = PageGroup::with(['details' => function ($query) {
                         $query->where('pages.is_active', 1);
                     }])->whereHas('details', function ($query) {
-                        $query->selectRaw('name,title,slug')
+                        $query->selectRaw('name,title,slug,name_en,title_en,slug_en')
                             ->where('pages.is_active', 1);
                     })->where('page_groups.is_active', 1)
                         ->get();
@@ -76,7 +76,7 @@ class PageGroupModel extends AbstractModel
             $pages = PageGroup::with(['details' => function ($query) {
                 $query->where('pages.is_active', 1);
             }])->whereHas('details', function ($query) {
-                $query->selectRaw('name,title,slug')
+                $query->selectRaw('name,title,slug,name_en,title_en,slug_en')
                     ->where('pages.is_active', 1);
             })->where('page_groups.is_active', 1)
                 ->get();
@@ -112,7 +112,7 @@ class PageGroupModel extends AbstractModel
         $pages = PageGroup::with(['details' => function ($query) {
             $query->where('pages.is_active', 1);
         }])->whereHas('details', function ($query) {
-            $query->selectRaw('name,title,slug')
+            $query->selectRaw('name,title,slug,name_en,title_en,slug_en')
                 ->where('pages.is_active', 1);
         })->where('page_groups.is_active', 1)
             ->get()
