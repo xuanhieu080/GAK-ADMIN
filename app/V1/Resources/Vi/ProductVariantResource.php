@@ -14,59 +14,142 @@ class ProductVariantResource extends JsonResource
      */
     public function toArray($request)
     {
-        $thumb = [];
-        $data = [
-            'id'                      => $this->id,
-            'code'                    => $this->code,
-            'name'                    => object_get($this, 'productVariantMain.name', object_get($this, 'product.name')),
-            'product_id'              => $this->product_id,
-            'product_name'            => object_get($this, 'product.name'),
-            'slug'                    => object_get($this, 'product.slug'),
-            'slug_other'              => object_get($this, 'product.slug_en'),
-            //            'description'             => $this->description,
-            'price'                   => $this->price,
-            'category_id'             => object_get($this, 'product.category.id'),
-            'qty'                     => $this->qty,
-            'is_active'               => $this->is_active,
-            'price_discount'          => $this->price_discount,
-            'discount'                => $this->discount,
-            'percent'                 => $this->price <= 0 ? 0 : (int)(round($this->discount / $this->price, 2) * 100),
-            'options'                 => $this->options,
-            'option_all'              => $this->option_all,
-            'option_group'            => $this->option_group,
-            'product_variant_main_id' => object_get($this, 'productVariantMain.id'),
-            'meta_title'              => $this->meta_title,
-            'meta_description'        => $this->meta_description,
-            'meta_key'                => $this->meta_key,
-        ];
+        // Cache frequently accessed objects
+        $product = $this->product;
+        $productVariantMain = $this->productVariantMain;
 
-        $image = null;
-        if (!empty($this->productVariantMain)) {
-            foreach ($this->productVariantMain->getMedia("thumb") as $item) {
-                $thumb[] = $item->getFullUrl();
-            }
-            $image = $this->productVariantMain->getFirstMediaUrl();
-//            $data['image'] = $this->productVariantMain->getFirstMediaUrl();
-        } else {
-            $image = $this->product->getFirstMediaUrl();
-//            $data['image'] = $this->product->getFirstMediaUrl();
-            foreach ($this->product->getMedia("thumb") as $item) {
-                $thumb[] = $item->getFullUrl();
-            }
+        // Handle null product case
+        if (!$product) {
+            return $this->getMinimalProductData();
         }
 
-//        if (empty($thumb)) {
-//            foreach ($this->product->getMedia("thumb") as $item) {
-//                $thumb[] = $item->getFullUrl();
-//            }
-//        }
-        $data['image_url'] = !empty($thumb[0]) ? $thumb[0] : $image;
-        $data['image'] = !empty($thumb[0]) ? $thumb[0] : $image;
-        $data['thumb_image'] = $thumb;
-        $data['out_of_stock'] = empty($thumb) || empty($data['image']) || $this->qty <= 0;
-        $data['created_at'] = !empty($this->resource->created_at) ? $this->resource->created_at->diffForHumans() : null;
-        $data['updated_at'] = !empty($this->resource->updated_at) ? $this->resource->updated_at->diffForHumans() : null;
+        $productPrice = $product->price ?? 0;
+        $productDiscount = $product->discount ?? 0;
 
-        return $data;
+        // Determine image source priority
+        $imageSource = $productVariantMain ?? $product;
+
+        // Get thumbnails efficiently
+        $thumbUrls = $imageSource ? $this->getThumbUrls($imageSource) : [];
+        $primaryImage = $imageSource?->getFirstMediaUrl();
+        $finalImage = $thumbUrls[0] ?? $primaryImage;
+
+        return [
+            // Basic info
+            'id' => $this->id,
+            'code' => $this->code,
+            'name' => $productVariantMain->name ?? $product->name,
+            'product_id' => $this->product_id,
+            'product_name' => $product->name,
+            'qty' => $this->qty,
+            'is_active' => $this->is_active,
+
+            // URLs
+            'slug' => $product->slug ?? null,
+            'slug_other' => $product->slug_en ?? null,
+
+            // Pricing
+            'price' => $productPrice,
+            'price_discount' => $product->price_discount ?? null,
+            'discount' => $productDiscount,
+            'percent' => $this->calculateDiscountPercent($productPrice, $productDiscount),
+
+            // Category
+            'category_id' => $product->category?->id ?? null,
+
+            // Variants and options
+            'options' => $this->options,
+            'option_all' => $this->option_all,
+            'option_group' => $this->option_group,
+            'product_variant_main_id' => $productVariantMain->id ?? null,
+
+            // Images
+            'image_url' => $finalImage,
+            'image' => $finalImage,
+            'thumb_image' => $thumbUrls,
+
+            // Status
+            'out_of_stock' => $this->isOutOfStock($thumbUrls, $finalImage),
+
+            // SEO
+            'meta_title' => $this->meta_title,
+            'meta_description' => $this->meta_description,
+            'meta_key' => $this->meta_key,
+
+            // Timestamps
+            'created_at' => $this->created_at?->diffForHumans(),
+            'updated_at' => $this->updated_at?->diffForHumans(),
+        ];
+    }
+
+    /**
+     * Return minimal data when product is null
+     */
+    private function getMinimalProductData(): array
+    {
+        $productVariantMain = $this->productVariantMain;
+        $thumbUrls = $productVariantMain ? $this->getThumbUrls($productVariantMain) : [];
+        $primaryImage = $productVariantMain?->getFirstMediaUrl();
+        $finalImage = $thumbUrls[0] ?? $primaryImage;
+
+        return [
+            'id' => $this->id,
+            'code' => $this->code,
+            'name' => $productVariantMain->name ?? null,
+            'product_id' => $this->product_id,
+            'product_name' => null,
+            'qty' => $this->qty,
+            'is_active' => $this->is_active,
+            'slug' => null,
+            'slug_other' => null,
+            'price' => 0,
+            'price_discount' => null,
+            'discount' => 0,
+            'percent' => 0,
+            'category_id' => null,
+            'options' => $this->options,
+            'option_all' => $this->option_all,
+            'option_group' => $this->option_group,
+            'product_variant_main_id' => $productVariantMain->id ?? null,
+            'image_url' => $finalImage,
+            'image' => $finalImage,
+            'thumb_image' => $thumbUrls,
+            'out_of_stock' => true, // Always out of stock if no product
+            'meta_title' => $this->meta_title,
+            'meta_description' => $this->meta_description,
+            'meta_key' => $this->meta_key,
+            'created_at' => $this->created_at?->diffForHumans(),
+            'updated_at' => $this->updated_at?->diffForHumans(),
+        ];
+    }
+
+    /**
+     * Get thumbnail URLs from media collection
+     */
+    private function getThumbUrls($imageSource): array
+    {
+        if (!$imageSource) {
+            return [];
+        }
+
+        return $imageSource->getMedia('thumb')
+            ->map(fn($item) => $item->getFullUrl())
+            ->toArray();
+    }
+
+    /**
+     * Calculate discount percentage
+     */
+    private function calculateDiscountPercent(float $price, float $discount): int
+    {
+        return $price <= 0 ? 0 : (int)(round($discount / $price, 2) * 100);
+    }
+
+    /**
+     * Check if product is out of stock
+     */
+    private function isOutOfStock(array $thumbUrls, ?string $image): bool
+    {
+        return empty($thumbUrls) || empty($image) || $this->qty <= 0;
     }
 }
