@@ -60,11 +60,11 @@ class ProductModel extends AbstractModel
         $resource = !empty($input['lang']) && $input['lang'] === 'en'
             ? ProductHotResourceEn::class
             : ProductHotResource::class;
-        
+
         $input['is_hot'] = 1;
 
         if (Arr::get($input, 'page', 1) == 1) {
-            return $this->getProductCache('product_new_data', 'product_new_data_en', $input, $resource);
+            return $this->getProductCache('product_hot_data', 'product_hot_data_en', $input, $resource);
         }
 
         return $this->getProductResult($input, $resource);
@@ -117,45 +117,62 @@ class ProductModel extends AbstractModel
 
     public function cacheProductHot($input)
     {
-        $resource = !empty($input['lang']) && $input['lang'] === 'en'
-            ? ProductHotResourceEn::class
-            : ProductHotResource::class;
-
         $input['is_hot'] = 1;
 
+        //en
+        $input['lang'] = 'en';
+        $resource = ProductHotResourceEn::class;
+        $this->cacheProductData('product_hot_data', 'product_hot_data_en', $input, $resource);
+
+        //vi
+        $input['lang'] = 'vi';
+        $resource = ProductHotResource::class;
         $this->cacheProductData('product_hot_data', 'product_hot_data_en', $input, $resource);
     }
-    
+
     public function cacheProductNew($input)
     {
-        $resource = !empty($input['lang']) && $input['lang'] === 'en'
-            ? ProductHotResourceEn::class
-            : ProductHotResource::class;
-
         $input['is_new'] = 1;
 
+        //en
+        $input['lang'] = 'en';
+        $resource = ProductHotResourceEn::class;
+        $this->cacheProductData('product_new_data', 'product_new_data_en', $input, $resource);
+
+        //vi
+        $input['lang'] = 'vi';
+        $resource = ProductHotResource::class;
         $this->cacheProductData('product_new_data', 'product_new_data_en', $input, $resource);
     }
 
     public function cacheProductUpcoming($input)
     {
-        $resource = !empty($input['lang']) && $input['lang'] === 'en'
-            ? ProductHotResourceEn::class
-            : ProductHotResource::class;
 
         $input['is_upcoming'] = 1;
 
+        //en
+        $input['lang'] = 'en';
+        $resource = ProductHotResourceEn::class;
+        $this->cacheProductData('product_upcoming_data', 'product_upcoming_data_en', $input, $resource);
+
+        //vi
+        $input['lang'] = 'vi';
+        $resource = ProductHotResource::class;
         $this->cacheProductData('product_upcoming_data', 'product_upcoming_data_en', $input, $resource);
     }
 
     public function cacheProductUniform($input)
     {
-        $resource = !empty($input['lang']) && $input['lang'] === 'en'
-            ? ProductHotResourceEn::class
-            : ProductHotResource::class;
-
         $input['is_uniform'] = 1;
 
+        //en
+        $input['lang'] = 'en';
+        $resource = ProductHotResourceEn::class;
+        $this->cacheProductData('product_uniform_data', 'product_uniform_data_en', $input, $resource);
+
+        //vi
+        $input['lang'] = 'vi';
+        $resource = ProductHotResource::class;
         $this->cacheProductData('product_uniform_data', 'product_uniform_data_en', $input, $resource);
     }
 
@@ -195,69 +212,88 @@ class ProductModel extends AbstractModel
 
     public function cacheProductAll()
     {
-        $attributeColumn = 'slug';
-        if (!empty($input['lang']) && $input['lang'] == 'en') {
-            $attributeColumn = 'slug_en';
-        }
-
         $cacheKey = 'product_all';
         $cacheKeyEn = 'product_all_en';
         $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
-        $categories = Category::with(['variants' => function ($query) {
-            $query->whereIn('product_variants.code', [
-                'F56YtbAEmYc7Wkp2',
-                'iWpp9vK4V6EQAh2T',
-                'AFL0P0UrtxOMQSRN',
-                'OUtwzd8iobpOZq93',
-
-                'hHC7X2NI6Y0e698p',
-                '4dA6r88gKMAdLuMt',
-                'js8YrUeeJtAfjYCJ',
-                'oK43C3YcLTwe8Snc',
-
-                'QEQpWwpfwAo1iyIq',
-                'oCavhwBOC1RilkVh',
-                'ORULu95P51kiWwGB',
-                '5OclkuKf6gpuG9Y8',
-
-                '1s9fzozMzvgpePsn',
-                'NO2tv5wHtWeDJpir',
-                '4kr8c560Q2tEB3Ie',
-                'jM1Fme2PzC7OA50x',
-
-                'bqCsv4kf4G4mIoNJ',
-                'ZQ5H0zoh8bbqiTUl',
-                'kd3WD1kFoRJrpkxg',
-                'FCvTzECvyPxsRrJN',
-            ]);
-        }])
-//            ->whereHas('variantMains')
-            ->where('is_active', 1)
-            ->whereNotNull($attributeColumn)
-            ->whereIn('slug', [
-                'ao-phan-quang-thun-2-ben',
-                'ao-phan-quang-ha-noi',
-                'ao-phan-quang-kieu-3m',
-                'ao-phan-quang-palize',
-                'dong-phuc-cong-nhan',
-            ])
-//            ->with('variantMains.media')
-            ->get();
-//            ->map(function ($category) {
-//                // Giữ chỉ 4 variantMains cho mỗi category.
-//                $category->variants = $category->variants->filter(function ($variants) {
-//                    return $variants->media->contains(function ($media) {
-//                        return in_array($media->collection_name, ['thumb']);
-//                    });
-//                })->take(4);
-//
-//                return $category;
-//            });
-
 
         if (!empty($input['lang']) && $input['lang'] == 'en') {
+            $categories = Category::with(['variants' => function ($query) {
+                $query->whereIn('product_variants.code', [
+                    'F56YtbAEmYc7Wkp2',
+                    'iWpp9vK4V6EQAh2T',
+                    'AFL0P0UrtxOMQSRN',
+                    'OUtwzd8iobpOZq93',
+
+                    'hHC7X2NI6Y0e698p',
+                    '4dA6r88gKMAdLuMt',
+                    'js8YrUeeJtAfjYCJ',
+                    'oK43C3YcLTwe8Snc',
+
+                    'QEQpWwpfwAo1iyIq',
+                    'oCavhwBOC1RilkVh',
+                    'ORULu95P51kiWwGB',
+                    '5OclkuKf6gpuG9Y8',
+
+                    '1s9fzozMzvgpePsn',
+                    'NO2tv5wHtWeDJpir',
+                    '4kr8c560Q2tEB3Ie',
+                    'jM1Fme2PzC7OA50x',
+
+                    'bqCsv4kf4G4mIoNJ',
+                    'ZQ5H0zoh8bbqiTUl',
+                    'kd3WD1kFoRJrpkxg',
+                    'FCvTzECvyPxsRrJN',
+                ]);
+            }])
+                ->where('is_active', 1)
+                ->whereNotNull('slug_en')
+                ->whereIn('slug', [
+                    'ao-phan-quang-thun-2-ben',
+                    'ao-phan-quang-ha-noi',
+                    'ao-phan-quang-kieu-3m',
+                    'ao-phan-quang-palize',
+                    'dong-phuc-cong-nhan',
+                ])
+                ->get();
             Cache::put($cacheKeyEn, CategorySearchAllResourceEn::collection($categories), $seconds);
         } else {
+            $categories = Category::with(['variants' => function ($query) {
+                $query->whereIn('product_variants.code', [
+                    'F56YtbAEmYc7Wkp2',
+                    'iWpp9vK4V6EQAh2T',
+                    'AFL0P0UrtxOMQSRN',
+                    'OUtwzd8iobpOZq93',
+
+                    'hHC7X2NI6Y0e698p',
+                    '4dA6r88gKMAdLuMt',
+                    'js8YrUeeJtAfjYCJ',
+                    'oK43C3YcLTwe8Snc',
+
+                    'QEQpWwpfwAo1iyIq',
+                    'oCavhwBOC1RilkVh',
+                    'ORULu95P51kiWwGB',
+                    '5OclkuKf6gpuG9Y8',
+
+                    '1s9fzozMzvgpePsn',
+                    'NO2tv5wHtWeDJpir',
+                    '4kr8c560Q2tEB3Ie',
+                    'jM1Fme2PzC7OA50x',
+
+                    'bqCsv4kf4G4mIoNJ',
+                    'ZQ5H0zoh8bbqiTUl',
+                    'kd3WD1kFoRJrpkxg',
+                    'FCvTzECvyPxsRrJN',
+                ]);
+            }])
+                ->where('is_active', 1)
+                ->whereIn('slug', [
+                    'ao-phan-quang-thun-2-ben',
+                    'ao-phan-quang-ha-noi',
+                    'ao-phan-quang-kieu-3m',
+                    'ao-phan-quang-palize',
+                    'dong-phuc-cong-nhan',
+                ])
+                ->get();
             Cache::put($cacheKey, CategorySearchAllResource::collection($categories), $seconds);
         }
     }
