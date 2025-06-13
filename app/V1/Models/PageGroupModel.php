@@ -37,6 +37,7 @@ class PageGroupModel extends AbstractModel
                         $query->where('pages.is_active', 1);
                     }])->whereHas('details', function ($query) {
                         $query->selectRaw('name,title,slug,name_en,title_en,slug_en')
+                            ->whereNotNull('pages.slug_en')
                             ->where('pages.is_active', 1);
                     })->where('page_groups.is_active', 1)
                         ->get();
@@ -57,6 +58,7 @@ class PageGroupModel extends AbstractModel
                         $query->where('pages.is_active', 1);
                     }])->whereHas('details', function ($query) {
                         $query->selectRaw('name,title,slug,name_en,title_en,slug_en')
+                            ->whereNotNull('pages.slug')
                             ->where('pages.is_active', 1);
                     })->where('page_groups.is_active', 1)
                         ->get();
@@ -73,10 +75,15 @@ class PageGroupModel extends AbstractModel
                 'data' => $pages
             ]);
         } else {
+            $slugAttribute = 'slug';
+            if (!empty($input['lang']) && $input['lang'] == 'en') {
+                $slugAttribute = 'slug_en';
+            }
             $pages = PageGroup::with(['details' => function ($query) {
                 $query->where('pages.is_active', 1);
-            }])->whereHas('details', function ($query) {
+            }])->whereHas('details', function ($query) use ($slugAttribute){
                 $query->selectRaw('name,title,slug,name_en,title_en,slug_en')
+                    ->whereNotNull("pages.$slugAttribute")
                     ->where('pages.is_active', 1);
             })->where('page_groups.is_active', 1)
                 ->get();
@@ -115,9 +122,9 @@ class PageGroupModel extends AbstractModel
                 $query->where('pages.is_active', 1);
             }])->whereHas('details', function ($query) {
                 $query->selectRaw('name,title,slug,name_en,title_en,slug_en')
+                    ->whereNotNull('pages.slug_en')
                     ->where('pages.is_active', 1);
             })->where('page_groups.is_active', 1)
-                ->whereNotNull('page_groups.slug_en')
                 ->get()
                 ->groupBy('column');
             $resource = $pages->map(function ($group) {
@@ -129,9 +136,9 @@ class PageGroupModel extends AbstractModel
                 $query->where('pages.is_active', 1);
             }])->whereHas('details', function ($query) {
                 $query->selectRaw('name,title,slug,name_en,title_en,slug_en')
+                    ->whereNotNull('pages.slug')
                     ->where('pages.is_active', 1);
             })->where('page_groups.is_active', 1)
-                ->whereNotNull('page_groups.slug')
                 ->get()
                 ->groupBy('column');
             $resource = $pages->map(function ($group) {
