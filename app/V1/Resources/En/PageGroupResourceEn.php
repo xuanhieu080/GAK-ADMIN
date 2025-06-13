@@ -23,7 +23,7 @@ class PageGroupResourceEn extends JsonResource
             'id'     => $this->id,
             'name'   => $this->name_en ?? $this->name,
             'column' => $this->column,
-            'details' => PageResourceEn::collection($this->whenLoaded('details')),
+            'details' => PageShortResourceEn::collection($this->whenLoaded('details')),
         ];
     }
 }
