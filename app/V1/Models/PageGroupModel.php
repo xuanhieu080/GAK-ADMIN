@@ -34,7 +34,8 @@ class PageGroupModel extends AbstractModel
                 // Kiểm tra xem dữ liệu có trong cache không
                 $pages = Cache::remember($cacheKeyEn, $seconds, function () use ($input) {
                     $pages = PageGroup::with(['details' => function ($query) {
-                        $query->where('pages.is_active', 1);
+                        $query->where('pages.is_active', 1)
+                            ->whereNotNull('pages.slug_en');
                     }])->whereHas('details', function ($query) {
                         $query->selectRaw('name,title,slug,name_en,title_en,slug_en')
                             ->whereNotNull('pages.slug_en')
@@ -55,7 +56,8 @@ class PageGroupModel extends AbstractModel
             } else {
                 $pages = Cache::remember($cacheKey, $seconds, function () use ($input) {
                     $pages = PageGroup::with(['details' => function ($query) {
-                        $query->where('pages.is_active', 1);
+                        $query->where('pages.is_active', 1)
+                            ->whereNotNull('pages.slug');
                     }])->whereHas('details', function ($query) {
                         $query->selectRaw('name,title,slug,name_en,title_en,slug_en')
                             ->whereNotNull('pages.slug')
@@ -79,8 +81,9 @@ class PageGroupModel extends AbstractModel
             if (!empty($input['lang']) && $input['lang'] == 'en') {
                 $slugAttribute = 'slug_en';
             }
-            $pages = PageGroup::with(['details' => function ($query) {
-                $query->where('pages.is_active', 1);
+            $pages = PageGroup::with(['details' => function ($query) use ($slugAttribute) {
+                $query->where('pages.is_active', 1)
+                    ->whereNotNull("pages.$slugAttribute");
             }])->whereHas('details', function ($query) use ($slugAttribute){
                 $query->selectRaw('name,title,slug,name_en,title_en,slug_en')
                     ->whereNotNull("pages.$slugAttribute")
@@ -119,7 +122,8 @@ class PageGroupModel extends AbstractModel
 
         if (!empty($input['lang']) && $input['lang'] === 'en') {
             $pages = PageGroup::with(['details' => function ($query) {
-                $query->where('pages.is_active', 1);
+                $query->where('pages.is_active', 1)
+                    ->whereNotNull('pages.slug_en');
             }])->whereHas('details', function ($query) {
                 $query->selectRaw('name,title,slug,name_en,title_en,slug_en')
                     ->whereNotNull('pages.slug_en')
@@ -133,7 +137,8 @@ class PageGroupModel extends AbstractModel
             Cache::put($cacheKeyEn, $resource, $seconds);
         } else {
             $pages = PageGroup::with(['details' => function ($query) {
-                $query->where('pages.is_active', 1);
+                $query->where('pages.is_active', 1)
+                    ->whereNotNull('pages.slug');
             }])->whereHas('details', function ($query) {
                 $query->selectRaw('name,title,slug,name_en,title_en,slug_en')
                     ->whereNotNull('pages.slug')
