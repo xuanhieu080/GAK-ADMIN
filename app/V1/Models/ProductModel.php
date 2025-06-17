@@ -192,20 +192,31 @@ class ProductModel extends AbstractModel
         }
 
         $input['sort'] = $sorts;
-        if (!empty($input['search'])) {
-            $input['name'] = ['like' => $input['search']];
-        }
-        $result = $this->search($input,
-            [
-                'attributeVariants',
-                //                'variants' => function ($query) {
-                //                    $query->where('qty', '>', 0);
-                //                }
-            ], $limit);
+
 
         if (!empty($input['lang']) && $input['lang'] == 'en') {
+            if (!empty($input['search'])) {
+                $input['name_en'] = ['like' => $input['search']];
+            }
+            $result = $this->search($input,
+                [
+                    'attributeVariants',
+                    //                'variants' => function ($query) {
+                    //                    $query->where('qty', '>', 0);
+                    //                }
+                ], $limit);
             Cache::put($cacheKeyEn, ProductResourceEn::collection($result), $seconds);
         } else {
+            if (!empty($input['search'])) {
+                $input['name'] = ['like' => $input['search']];
+            }
+            $result = $this->search($input,
+                [
+                    'attributeVariants',
+                    //                'variants' => function ($query) {
+                    //                    $query->where('qty', '>', 0);
+                    //                }
+                ], $limit);
             Cache::put($cacheKey, ProductResource::collection($result), $seconds);
         }
     }
