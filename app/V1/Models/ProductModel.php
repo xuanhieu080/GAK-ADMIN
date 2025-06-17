@@ -436,6 +436,7 @@ class ProductModel extends AbstractModel
             $query->whereHas('category', function ($query) use ($categorySlug, $lang) {
                 $category = Category::with(['descendants'])
                     ->where("slug$lang", $categorySlug)
+                    ->orWhere("slug", $categorySlug)
                     ->first();
                 if ($category) {
                     // Lấy ID của tất cả descendants và thêm ID của cha vào đầu mảng
