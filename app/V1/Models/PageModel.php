@@ -129,13 +129,16 @@ class PageModel extends AbstractModel
         $input['sort'] = ['id' => 'desc'];
         $input['is_active'] = 1;
         $input['show_header'] = 1;
-        $result = $this->search($input, [], $limit);
 
-        if (!empty($input['lang']) && $input['lang'] == 'en') {
-            Cache::put($cacheKeyEn, PageResourceEn::collection($result), $seconds);
-        } else {
-            Cache::put($cacheKey, PageResource::collection($result), $seconds);
-        }
+
+        $input['lang'] = 'en';
+        $result = $this->search($input, [], $limit);
+        Cache::put($cacheKeyEn, PageResourceEn::collection($result), $seconds);
+
+        $input['lang'] = 'vi';
+        $result = $this->search($input, [], $limit);
+        Cache::put($cacheKey, PageResource::collection($result), $seconds);
+
     }
 
     public function search($input = [], $with = [], $limit = null)
@@ -236,7 +239,15 @@ class PageModel extends AbstractModel
             }
         });
 
-        $query->whereNotNull($attributeColumn);
+        $query->where('is_active', 1)
+            ->where(function ($qr) use ($attributeColumn) {
+                $qr->where(function ($q) {
+                    $q->where('is_button', 1);
+                })->orWhere(function ($q) use ($attributeColumn){
+                    $q->whereNotNull($attributeColumn)
+                        ->where('is_button', 0);
+                });
+            });
 
         if ($limit) {
             if ($limit === 1) {

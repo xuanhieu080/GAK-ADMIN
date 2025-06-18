@@ -35,11 +35,25 @@ class PageGroupModel extends AbstractModel
                 $pages = Cache::remember($cacheKeyEn, $seconds, function () use ($input) {
                     $pages = PageGroup::with(['details' => function ($query) {
                         $query->where('pages.is_active', 1)
-                            ->whereNotNull('pages.slug_en');
+                            ->where(function ($qr) {
+                                $qr->where(function ($q) {
+                                    $q->where('pages.is_button', 1);
+                                })->orWhere(function ($q) {
+                                    $q->whereNotNull('pages.slug_en')
+                                        ->where('pages.is_button', 0);
+                                });
+                            });
                     }])->whereHas('details', function ($query) {
                         $query->selectRaw('name,title,slug,name_en,title_en,slug_en')
-                            ->whereNotNull('pages.slug_en')
-                            ->where('pages.is_active', 1);
+                            ->where('pages.is_active', 1)
+                            ->where(function ($qr) {
+                                $qr->where(function ($q) {
+                                    $q->where('pages.is_button', 1);
+                                })->orWhere(function ($q) {
+                                    $q->whereNotNull('pages.slug_en')
+                                        ->where('pages.is_button', 0);
+                                });
+                            });
                     })->where('page_groups.is_active', 1)
                         ->get();
                     $groupedPages = $pages->groupBy('column');
@@ -57,11 +71,25 @@ class PageGroupModel extends AbstractModel
                 $pages = Cache::remember($cacheKey, $seconds, function () use ($input) {
                     $pages = PageGroup::with(['details' => function ($query) {
                         $query->where('pages.is_active', 1)
-                            ->whereNotNull('pages.slug');
+                            ->where(function ($qr) {
+                                $qr->where(function ($q) {
+                                    $q->where('pages.is_button', 1);
+                                })->orWhere(function ($q) {
+                                    $q->whereNotNull('pages.slug')
+                                        ->where('pages.is_button', 0);
+                                });
+                            });
                     }])->whereHas('details', function ($query) {
                         $query->selectRaw('name,title,slug,name_en,title_en,slug_en')
-                            ->whereNotNull('pages.slug')
-                            ->where('pages.is_active', 1);
+                            ->where('pages.is_active', 1)
+                            ->where(function ($qr) {
+                                $qr->where(function ($q) {
+                                    $q->where('pages.is_button', 1);
+                                })->orWhere(function ($q) {
+                                    $q->whereNotNull('pages.slug')
+                                        ->where('pages.is_button', 0);
+                                });
+                            });
                     })->where('page_groups.is_active', 1)
                         ->get();
                     $groupedPages = $pages->groupBy('column');
@@ -83,11 +111,25 @@ class PageGroupModel extends AbstractModel
             }
             $pages = PageGroup::with(['details' => function ($query) use ($slugAttribute) {
                 $query->where('pages.is_active', 1)
-                    ->whereNotNull("pages.$slugAttribute");
-            }])->whereHas('details', function ($query) use ($slugAttribute){
+                    ->where(function ($qr) use ($slugAttribute) {
+                        $qr->where(function ($q) {
+                            $q->where('pages.is_button', 1);
+                        })->orWhere(function ($q) use ($slugAttribute) {
+                            $q->whereNotNull("pages.$slugAttribute")
+                                ->where('pages.is_button', 0);
+                        });
+                    });
+            }])->whereHas('details', function ($query) use ($slugAttribute) {
                 $query->selectRaw('name,title,slug,name_en,title_en,slug_en')
-                    ->whereNotNull("pages.$slugAttribute")
-                    ->where('pages.is_active', 1);
+                    ->where('pages.is_active', 1)
+                    ->where(function ($qr) use ($slugAttribute) {
+                        $qr->where(function ($q) {
+                            $q->where('pages.is_button', 1);
+                        })->orWhere(function ($q) use ($slugAttribute) {
+                            $q->whereNotNull("pages.$slugAttribute")
+                                ->where('pages.is_button', 0);
+                        });
+                    });
             })->where('page_groups.is_active', 1)
                 ->get();
             $groupedPages = $pages->groupBy('column');
@@ -119,38 +161,63 @@ class PageGroupModel extends AbstractModel
         $cacheKeyEn = 'page_group_data_en';
         $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
 
+        $pages = PageGroup::with(['details' => function ($query) {
+            $query->where('pages.is_active', 1)
+                ->where(function ($qr) {
+                    $qr->where(function ($q) {
+                        $q->where('pages.is_button', 1);
+                    })->orWhere(function ($q) {
+                        $q->whereNotNull('pages.slug_en')
+                            ->where('pages.is_button', 0);
+                    });
+                });
+        }])->whereHas('details', function ($query) {
+            $query->selectRaw('name,title,slug,name_en,title_en,slug_en')
+                ->where('pages.is_active', 1)
+                ->where(function ($qr) {
+                    $qr->where(function ($q) {
+                        $q->where('pages.is_button', 1);
+                    })->orWhere(function ($q) {
+                        $q->whereNotNull('pages.slug_en')
+                            ->where('pages.is_button', 0);
+                    });
+                });
+        })->where('page_groups.is_active', 1)
+            ->get()
+            ->groupBy('column');
+        $resource = $pages->map(function ($group) {
+            return PageGroupResourceEn::collection($group);
+        })->values();
+        Cache::put($cacheKeyEn, $resource, $seconds);
 
-        if (!empty($input['lang']) && $input['lang'] === 'en') {
-            $pages = PageGroup::with(['details' => function ($query) {
-                $query->where('pages.is_active', 1)
-                    ->whereNotNull('pages.slug_en');
-            }])->whereHas('details', function ($query) {
-                $query->selectRaw('name,title,slug,name_en,title_en,slug_en')
-                    ->whereNotNull('pages.slug_en')
-                    ->where('pages.is_active', 1);
-            })->where('page_groups.is_active', 1)
-                ->get()
-                ->groupBy('column');
-            $resource = $pages->map(function ($group) {
-                return PageGroupResourceEn::collection($group);
-            })->values();
-            Cache::put($cacheKeyEn, $resource, $seconds);
-        } else {
-            $pages = PageGroup::with(['details' => function ($query) {
-                $query->where('pages.is_active', 1)
-                    ->whereNotNull('pages.slug');
-            }])->whereHas('details', function ($query) {
-                $query->selectRaw('name,title,slug,name_en,title_en,slug_en')
-                    ->whereNotNull('pages.slug')
-                    ->where('pages.is_active', 1);
-            })->where('page_groups.is_active', 1)
-                ->get()
-                ->groupBy('column');
-            $resource = $pages->map(function ($group) {
-                return PageGroupResource::collection($group);
-            })->values();
-            Cache::put($cacheKey, $resource, $seconds);
-        }
+        $pages = PageGroup::with(['details' => function ($query) {
+            $query->where('pages.is_active', 1)
+                ->where(function ($qr) {
+                    $qr->where(function ($q) {
+                        $q->where('pages.is_button', 1);
+                    })->orWhere(function ($q) {
+                        $q->whereNotNull('pages.slug')
+                            ->where('pages.is_button', 0);
+                    });
+                });
+        }])->whereHas('details', function ($query) {
+            $query->selectRaw('name,title,slug,name_en,title_en,slug_en')
+                ->where('pages.is_active', 1)
+                ->where(function ($qr) {
+                    $qr->where(function ($q) {
+                        $q->where('pages.is_button', 1);
+                    })->orWhere(function ($q) {
+                        $q->whereNotNull('pages.slug')
+                            ->where('pages.is_button', 0);
+                    });
+                });
+        })->where('page_groups.is_active', 1)
+            ->get()
+            ->groupBy('column');
+        $resource = $pages->map(function ($group) {
+            return PageGroupResource::collection($group);
+        })->values();
+        Cache::put($cacheKey, $resource, $seconds);
     }
 
     public function search($input = [], $with = [], $limit = null)
