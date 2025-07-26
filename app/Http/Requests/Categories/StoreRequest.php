@@ -18,7 +18,7 @@ class StoreRequest extends BaseRequest
             'name_en'             => 'nullable|string|max:255|unique:categories,name_en',
             'image'               => 'required|image|max:3145728|mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,ogx,oga,ogv,ogg,webm',
             'parent_id'           => 'nullable|exists:categories,id',
-            'description'         => 'nullable|max:255',
+            'description'         => 'nullable|max:13000',
             'description_en'      => 'nullable|max:255',
             'meta_description'    => 'required|max:400',
             'meta_description_en' => 'nullable|max:400',
