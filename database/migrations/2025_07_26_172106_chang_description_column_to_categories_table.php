@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('categories', function (Blueprint $table) {
-            $table->longText('description')->nullable()->change();
+            $table->text('description')->nullable()->change();
+            $table->longText('content_seo')->nullable()->change();
+            $table->longText('content_seo_en')->nullable()->change();
         });
     }
 
@@ -22,7 +24,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('categories', function (Blueprint $table) {
-            $table->longText('description')->nullable()->change();
+            $table->text('description')->nullable()->change();
+            $table->longText('content_seo')->nullable()->change();
+            $table->longText('content_seo_en')->nullable()->change();
         });
     }
 };
