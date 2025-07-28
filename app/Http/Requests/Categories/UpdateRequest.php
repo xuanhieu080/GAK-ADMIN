@@ -35,8 +35,8 @@ class UpdateRequest extends BaseRequest
             'meta_description_en' => 'nullable|max:400',
             'meta_title'          => 'required|max:400',
             'meta_title_en'       => 'nullable|max:255',
-            'content_seo'         => 'nullable|max:33000',
-            'content_seo_en'      => 'nullable|max:33000',
+            'content_seo'         => 'nullable|max:3300000',
+            'content_seo_en'      => 'nullable|max:3300000',
             'slug'                => [
                 'required',
                 'string',
