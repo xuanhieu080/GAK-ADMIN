@@ -479,6 +479,8 @@ class ProductModel extends AbstractModel
 
         $item = Product::with([
             'attributeVariants',
+            'category:id,name,slug,name_en,slug_en,_lft,_rgt,parent_id',
+            'category.ancestors:id,name,slug,name_en,slug_en,_lft,_rgt,parent_id',
             'variants'          => function ($query) {
                 $query->where('qty', '>', 0);
             },
