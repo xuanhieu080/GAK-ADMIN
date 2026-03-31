@@ -54,14 +54,16 @@ class Product extends Model implements HasMedia
         'highlight_image',
         'highlight',
         'highlight_en',
-        'price_en', 'price_discount_en', 'discount_en'
+        'price_en',
+        'price_discount_en',
+        'discount_en'
     ];
 
     protected $casts = [
-        'is_active'   => 'boolean',
-        'is_hot'      => 'boolean',
-        'is_uniform'  => 'boolean',
-        'is_new'      => 'boolean',
+        'is_active' => 'boolean',
+        'is_hot' => 'boolean',
+        'is_uniform' => 'boolean',
+        'is_new' => 'boolean',
         'is_upcoming' => 'boolean',
     ];
 
@@ -122,5 +124,10 @@ class Product extends Model implements HasMedia
     public function getMediaFolderName()
     {
         return 'products';
+    }
+
+    public function variantItem()
+    {
+        return $this->variantMainDetail();
     }
 }
