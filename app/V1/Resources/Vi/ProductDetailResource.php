@@ -24,12 +24,12 @@ class ProductDetailResource extends JsonResource
                 ->groupBy('attribute_group_id') as $key => $item
         ) {
             $variants[] = [
-                'id'         => $key,
-                'name'       => $item[0]['attribute_group_name'],
-                'slug'       => $item[0]['attribute_group_slug'],
+                'id' => $key,
+                'name' => $item[0]['attribute_group_name'],
+                'slug' => $item[0]['attribute_group_slug'],
                 'slug_other' => $item[0]['attribute_group_slug_en'],
-                'link'       => $item[0]['attribute_group_link'],
-                'is_color'   => $item[0]['is_color'],
+                'link' => $item[0]['attribute_group_link'],
+                'is_color' => $item[0]['is_color'],
                 'attributes' => VariantResource::collection($item),
             ];
         }
@@ -48,18 +48,18 @@ class ProductDetailResource extends JsonResource
             // ancestors trước
             foreach ($cat->ancestors as $ancestor) {
                 $categoryChain[] = [
-                    'id'         => $ancestor->id,
-                    'name'       => $ancestor->name,
-                    'slug'       => $ancestor->slug,
+                    'id' => $ancestor->id,
+                    'name' => $ancestor->name,
+                    'slug' => $ancestor->slug,
                     'slug_other' => $ancestor->slug_en,
                 ];
             }
 
             // cuối cùng là category hiện tại
             $categoryChain[] = [
-                'id'         => $cat->id,
-                'name'       => $cat->name,
-                'slug'       => $cat->slug,
+                'id' => $cat->id,
+                'name' => $cat->name,
+                'slug' => $cat->slug,
                 'slug_other' => $cat->slug_en,
             ];
         }
@@ -68,70 +68,71 @@ class ProductDetailResource extends JsonResource
         $topReview = $this->reviews->first();
 
         $data = [
-            'id'                  => $this->id,
-            'code'                => $this->code,
-            'slug'                => $this->slug,
-            'slug_other'          => $this->slug_en,
-            'name'                => $this->name,
-            'description'         => $this->description,
-            'price'               => $this->price,
+            'id' => $this->id,
+            'code' => $this->code,
+            'slug' => $this->slug,
+            'slug_other' => $this->slug_en,
+            'name' => $this->name,
+            'description' => $this->description,
+            'price' => $this->price,
 
-            'category_id'         => $this->category_id,
+            'category_id' => $this->category_id,
 
             // thông tin category hiện tại (để FE vẫn dùng như cũ)
             'category' => $cat ? [
-                'id'         => $cat->id,
-                'name'       => $cat->name,
-                'slug'       => $cat->slug,
+                'id' => $cat->id,
+                'name' => $cat->name,
+                'slug' => $cat->slug,
                 'slug_other' => $cat->slug_en,
             ] : null,
 
             // breadcrumb đầy đủ: root -> ... -> current
-            'categories'          => $categoryChain,
+            'categories' => $categoryChain,
 
-            'qty'                 => $this->qty,
-            'is_active'           => $this->is_active,
-            'qty_sold'            => $this->qty_sold,
-            'priority'            => $this->priority,
-            'meta_title'          => $this->meta_title,
-            'meta_description'    => $this->meta_description,
-            'meta_key'            => $this->meta_key,
-            'video_link'          => $this->video_link,
-            'price_discount'      => $this->price_discount,
-            'discount'            => $this->discount,
-            'percent'             => $this->price <= 0
+            'qty' => $this->qty,
+            'is_active' => $this->is_active,
+            'qty_sold' => $this->qty_sold,
+            'priority' => $this->priority,
+            'meta_title' => $this->meta_title,
+            'meta_description' => $this->meta_description,
+            'meta_key' => $this->meta_key,
+            'video_link' => $this->video_link,
+            'price_discount' => $this->price_discount,
+            'discount' => $this->discount,
+            'percent' => $this->price <= 0
                 ? 0
-                : (int)(round($this->discount / $this->price, 2) * 100),
+                : (int) (round($this->discount / $this->price, 2) * 100),
 
-            'is_hot'              => $this->is_hot,
-            'rate'                => $this->rate,
-            'rate_count'          => $this->rate_count == 0 ? 1 : $this->rate_count,
-            'average_rate'        => $this->rate_count == 0
+            'is_hot' => $this->is_hot,
+            'rate' => $this->rate,
+            'rate_count' => $this->rate_count == 0 ? 1 : $this->rate_count,
+            'average_rate' => $this->rate_count == 0
                 ? 0
                 : round($this->rate / $this->rate_count, 1),
 
-            'variants'            => ProductVariantResource::collection($this->variants),
-            'variantMainDetail'   => new ProductVariantMainResource($this->variantMainDetail),
-            'variantAttribute'    => (array)$variants,
+            'variants' => ProductVariantResource::collection($this->variants),
+            'variantMainDetail' => new ProductVariantMainResource($this->variantMainDetail),
+            'variantItem' => new ProductVariantMainResource($this->variantItem),
+            'variantAttribute' => (array) $variants,
 
-            'highlight'           => $this->highlight,
+            'highlight' => $this->highlight,
             'highlight_image_url' => $this->getFirstMediaUrl('highlight'),
-            'highlight_image'     => $this->getFirstMediaUrl('highlight'),
+            'highlight_image' => $this->getFirstMediaUrl('highlight'),
 
-            'reviews'             => $this->reviews,
-            'top_review'          => $topReview,
+            'reviews' => $this->reviews,
+            'top_review' => $topReview,
 
-            'image'               => $this->getFirstMediaUrl(),
-            'image_url'           => !empty($thumb[0]) ? $thumb[0] : $this->getFirstMediaUrl(),
-            'thumb_image'         => $thumb,
+            'image' => $this->getFirstMediaUrl(),
+            'image_url' => !empty($thumb[0]) ? $thumb[0] : $this->getFirstMediaUrl(),
+            'thumb_image' => $thumb,
 
             // giữ trường cũ để không gãy FE legacy
-            'category_name'       => data_get($this, 'category.name'),
+            'category_name' => data_get($this, 'category.name'),
 
-            'created_at'          => !empty($this->resource->created_at)
+            'created_at' => !empty($this->resource->created_at)
                 ? $this->resource->created_at->diffForHumans()
                 : null,
-            'updated_at'          => !empty($this->resource->updated_at) ? $this->resource->updated_at->diffForHumans()
+            'updated_at' => !empty($this->resource->updated_at) ? $this->resource->updated_at->diffForHumans()
                 : null,
         ];
 

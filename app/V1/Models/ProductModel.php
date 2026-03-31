@@ -198,25 +198,31 @@ class ProductModel extends AbstractModel
             if (!empty($input['search'])) {
                 $input['name_en'] = ['like' => $input['search']];
             }
-            $result = $this->search($input,
+            $result = $this->search(
+                $input,
                 [
                     'attributeVariants',
                     //                'variants' => function ($query) {
                     //                    $query->where('qty', '>', 0);
                     //                }
-                ], $limit);
+                ],
+                $limit
+            );
             Cache::put($cacheKeyEn, ProductResourceEn::collection($result), $seconds);
         } else {
             if (!empty($input['search'])) {
                 $input['name'] = ['like' => $input['search']];
             }
-            $result = $this->search($input,
+            $result = $this->search(
+                $input,
                 [
                     'attributeVariants',
                     //                'variants' => function ($query) {
                     //                    $query->where('qty', '>', 0);
                     //                }
-                ], $limit);
+                ],
+                $limit
+            );
             Cache::put($cacheKey, ProductResource::collection($result), $seconds);
         }
     }
@@ -228,34 +234,36 @@ class ProductModel extends AbstractModel
         $seconds = 365 * 24 * 60 * 60; // 31.536.000 giây cho 1 năm
 
         if (!empty($input['lang']) && $input['lang'] == 'en') {
-            $categories = Category::with(['variants' => function ($query) {
-                $query->whereIn('product_variants.code', [
-                    'F56YtbAEmYc7Wkp2',
-                    'iWpp9vK4V6EQAh2T',
-                    'AFL0P0UrtxOMQSRN',
-                    'OUtwzd8iobpOZq93',
+            $categories = Category::with([
+                'variants' => function ($query) {
+                    $query->whereIn('product_variants.code', [
+                        'F56YtbAEmYc7Wkp2',
+                        'iWpp9vK4V6EQAh2T',
+                        'AFL0P0UrtxOMQSRN',
+                        'OUtwzd8iobpOZq93',
 
-                    'hHC7X2NI6Y0e698p',
-                    '4dA6r88gKMAdLuMt',
-                    'js8YrUeeJtAfjYCJ',
-                    'oK43C3YcLTwe8Snc',
+                        'hHC7X2NI6Y0e698p',
+                        '4dA6r88gKMAdLuMt',
+                        'js8YrUeeJtAfjYCJ',
+                        'oK43C3YcLTwe8Snc',
 
-                    'QEQpWwpfwAo1iyIq',
-                    'oCavhwBOC1RilkVh',
-                    'ORULu95P51kiWwGB',
-                    '5OclkuKf6gpuG9Y8',
+                        'QEQpWwpfwAo1iyIq',
+                        'oCavhwBOC1RilkVh',
+                        'ORULu95P51kiWwGB',
+                        '5OclkuKf6gpuG9Y8',
 
-                    '1s9fzozMzvgpePsn',
-                    'NO2tv5wHtWeDJpir',
-                    '4kr8c560Q2tEB3Ie',
-                    'jM1Fme2PzC7OA50x',
+                        '1s9fzozMzvgpePsn',
+                        'NO2tv5wHtWeDJpir',
+                        '4kr8c560Q2tEB3Ie',
+                        'jM1Fme2PzC7OA50x',
 
-                    'bqCsv4kf4G4mIoNJ',
-                    'ZQ5H0zoh8bbqiTUl',
-                    'kd3WD1kFoRJrpkxg',
-                    'FCvTzECvyPxsRrJN',
-                ]);
-            }])
+                        'bqCsv4kf4G4mIoNJ',
+                        'ZQ5H0zoh8bbqiTUl',
+                        'kd3WD1kFoRJrpkxg',
+                        'FCvTzECvyPxsRrJN',
+                    ]);
+                }
+            ])
                 ->where('is_active', 1)
                 ->whereNotNull('slug_en')
                 ->whereIn('slug', [
@@ -268,34 +276,36 @@ class ProductModel extends AbstractModel
                 ->get();
             Cache::put($cacheKeyEn, CategorySearchAllResourceEn::collection($categories), $seconds);
         } else {
-            $categories = Category::with(['variants' => function ($query) {
-                $query->whereIn('product_variants.code', [
-                    'F56YtbAEmYc7Wkp2',
-                    'iWpp9vK4V6EQAh2T',
-                    'AFL0P0UrtxOMQSRN',
-                    'OUtwzd8iobpOZq93',
+            $categories = Category::with([
+                'variants' => function ($query) {
+                    $query->whereIn('product_variants.code', [
+                        'F56YtbAEmYc7Wkp2',
+                        'iWpp9vK4V6EQAh2T',
+                        'AFL0P0UrtxOMQSRN',
+                        'OUtwzd8iobpOZq93',
 
-                    'hHC7X2NI6Y0e698p',
-                    '4dA6r88gKMAdLuMt',
-                    'js8YrUeeJtAfjYCJ',
-                    'oK43C3YcLTwe8Snc',
+                        'hHC7X2NI6Y0e698p',
+                        '4dA6r88gKMAdLuMt',
+                        'js8YrUeeJtAfjYCJ',
+                        'oK43C3YcLTwe8Snc',
 
-                    'QEQpWwpfwAo1iyIq',
-                    'oCavhwBOC1RilkVh',
-                    'ORULu95P51kiWwGB',
-                    '5OclkuKf6gpuG9Y8',
+                        'QEQpWwpfwAo1iyIq',
+                        'oCavhwBOC1RilkVh',
+                        'ORULu95P51kiWwGB',
+                        '5OclkuKf6gpuG9Y8',
 
-                    '1s9fzozMzvgpePsn',
-                    'NO2tv5wHtWeDJpir',
-                    '4kr8c560Q2tEB3Ie',
-                    'jM1Fme2PzC7OA50x',
+                        '1s9fzozMzvgpePsn',
+                        'NO2tv5wHtWeDJpir',
+                        '4kr8c560Q2tEB3Ie',
+                        'jM1Fme2PzC7OA50x',
 
-                    'bqCsv4kf4G4mIoNJ',
-                    'ZQ5H0zoh8bbqiTUl',
-                    'kd3WD1kFoRJrpkxg',
-                    'FCvTzECvyPxsRrJN',
-                ]);
-            }])
+                        'bqCsv4kf4G4mIoNJ',
+                        'ZQ5H0zoh8bbqiTUl',
+                        'kd3WD1kFoRJrpkxg',
+                        'FCvTzECvyPxsRrJN',
+                    ]);
+                }
+            ])
                 ->where('is_active', 1)
                 ->whereIn('slug', [
                     'ao-phan-quang-thun-2-ben',
@@ -318,7 +328,7 @@ class ProductModel extends AbstractModel
             $lang = '_en';
         }
 
-        $attributes = (array)Arr::get($input, 'attributes');
+        $attributes = (array) Arr::get($input, 'attributes');
         $categoryName = Arr::get($input, 'category_name');
         $categorySlug = Arr::get($input, 'category_slug');
         $query = $this->make($with);
@@ -426,7 +436,7 @@ class ProductModel extends AbstractModel
             $query->whereHas('variants', function ($qr) use ($attributes) {
                 $attributeQuery = function ($query) use ($attributes) {
                     foreach ($attributes as $attribute) {
-                        $query->whereJsonContains("options", (int)$attribute);
+                        $query->whereJsonContains("options", (int) $attribute);
                     }
                 };
 
@@ -477,14 +487,14 @@ class ProductModel extends AbstractModel
             $attributeColumn = 'slug_en';
         }
 
-        $item = Product::with([
+        $with = [
             'attributeVariants',
             'category:id,name,slug,name_en,slug_en,_lft,_rgt,parent_id',
             'category.ancestors:id,name,slug,name_en,slug_en,_lft,_rgt,parent_id',
-            'variants'          => function ($query) {
+            'variants' => function ($query) {
                 $query->where('qty', '>', 0);
             },
-            'reviews'           => function ($query) {
+            'reviews' => function ($query) {
                 $query->orderByDesc('rate')->first();
             },
             'variantMainDetail' => function ($query) use ($data) {
@@ -494,7 +504,17 @@ class ProductModel extends AbstractModel
                     });
                 }
             }
-        ])->where($attributeColumn, $slug)
+        ];
+
+        if (!empty($data['code'])) {
+            $with['variantItem'] = function ($query) use ($data) {
+                $query->whereHas('variants', function ($qr) use ($data) {
+                    $qr->where('code', $data['code']);
+                });
+            };
+        }
+
+        $item = Product::with($with)->where($attributeColumn, $slug)
             ->where('is_active', 1)
             ->whereHas('media', function ($query) {
                 // Điều kiện cho hình ảnh
@@ -535,22 +555,22 @@ class ProductModel extends AbstractModel
     protected function formatPaginatedResponse($resourceClass, $result)
     {
         return [
-            'data'  => $resourceClass::collection($result)->resolve(),
+            'data' => $resourceClass::collection($result)->resolve(),
             'links' => [
                 'first' => $result->url(1),
-                'last'  => $result->url($result->lastPage()),
-                'prev'  => $result->previousPageUrl(),
-                'next'  => $result->nextPageUrl(),
+                'last' => $result->url($result->lastPage()),
+                'prev' => $result->previousPageUrl(),
+                'next' => $result->nextPageUrl(),
             ],
-            'meta'  => [
+            'meta' => [
                 'current_page' => $result->currentPage(),
-                'from'         => $result->firstItem(),
-                'last_page'    => $result->lastPage(),
-                'links'        => $result->linkCollection(),
-                'path'         => $result->path(),
-                'per_page'     => $result->perPage(),
-                'to'           => $result->lastItem(),
-                'total'        => $result->total(),
+                'from' => $result->firstItem(),
+                'last_page' => $result->lastPage(),
+                'links' => $result->linkCollection(),
+                'path' => $result->path(),
+                'per_page' => $result->perPage(),
+                'to' => $result->lastItem(),
+                'total' => $result->total(),
             ],
         ];
     }
@@ -609,6 +629,7 @@ class ProductModel extends AbstractModel
         $input = $this->prepareSearchInput($input);
         $result = $this->search($input, ['attributeVariants'], $limit);
 
-        return $this->formatPaginatedResponse($resourceClass, $result);;
+        return $this->formatPaginatedResponse($resourceClass, $result);
+        ;
     }
 }
