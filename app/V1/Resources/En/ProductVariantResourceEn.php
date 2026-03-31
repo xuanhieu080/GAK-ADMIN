@@ -17,7 +17,7 @@ class ProductVariantResourceEn extends JsonResource
     {
         // Cache frequently accessed objects
         $product = $this->product;
-        $productVariantMain = $this->productVariantMain;
+        $productVariantMain = optional($this->productVariantMain);
 
         // Handle null product case
         if (!$product) {
@@ -37,49 +37,49 @@ class ProductVariantResourceEn extends JsonResource
 
         return [
             // Basic info
-            'id'                      => $this->id,
-            'code'                    => $this->code,
-            'name'                    => $productVariantMain->name_en ?? $product->name_en ?? $product->name,
-            'product_id'              => $this->product_id,
-            'product_name'            => $product->name_en ?? $product->name,
-            'qty'                     => $this->qty,
-            'is_active'               => $this->is_active,
+            'id' => $this->id,
+            'code' => $this->code,
+            'name' => $productVariantMain->name_en ?? $product->name_en ?? $product->name,
+            'product_id' => $this->product_id,
+            'product_name' => $product->name_en ?? $product->name,
+            'qty' => $this->qty,
+            'is_active' => $this->is_active,
 
             // URLs
-            'slug'                    => $product->slug_en ?? null,
-            'slug_other'              => $product->slug ?? null,
+            'slug' => $product->slug_en ?? null,
+            'slug_other' => $product->slug ?? null,
 
             // Pricing
-            'price'                   => $productPrice,
-            'price_discount'          => $product->price_discount_en ?? null,
-            'discount'                => $productDiscount,
-            'percent'                 => $this->calculateDiscountPercent($productPrice, $productDiscount),
+            'price' => $productPrice,
+            'price_discount' => $product->price_discount_en ?? null,
+            'discount' => $productDiscount,
+            'percent' => $this->calculateDiscountPercent($productPrice, $productDiscount),
 
             // Category
-            'category_id'             => $product->category?->id ?? null,
+            'category_id' => $product->category?->id ?? null,
 
             // Variants and options
-            'options'                 => $this->options,
-            'option_all'              => $this->option_all,
-            'option_group'            => $this->option_group,
+            'options' => $this->options,
+            'option_all' => $this->option_all,
+            'option_group' => $this->option_group,
             'product_variant_main_id' => $productVariantMain->id ?? null,
 
             // Images
-            'image_url'               => $finalImage,
-            'image'                   => $finalImage,
-            'thumb_image'             => $thumbUrls,
+            'image_url' => $finalImage,
+            'image' => $finalImage,
+            'thumb_image' => $thumbUrls,
 
             // Status
-            'out_of_stock'            => $this->isOutOfStock($thumbUrls, $finalImage),
+            'out_of_stock' => $this->isOutOfStock($thumbUrls, $finalImage),
 
             // SEO
-            'meta_title'              => $this->meta_title_en ?? $this->meta_title,
-            'meta_description'        => $this->meta_description_en ?? $this->meta_description,
-            'meta_key'                => $this->meta_key_en ?? $this->meta_key,
+            'meta_title' => $productVariantMain->meta_title_en ?? $productVariantMain->meta_title ?? $this->meta_title_en ?? $this->meta_title,
+            'meta_description' => $productVariantMain->meta_description_en ?? $productVariantMain->meta_description ?? $this->meta_description_en ?? $this->meta_description,
+            'meta_key' => $productVariantMain->meta_key_en ?? $productVariantMain->meta_key ?? $this->meta_key_en ?? $this->meta_key,
 
             // Timestamps
-            'created_at'              => $this->created_at?->diffForHumans(),
-            'updated_at'              => $this->updated_at?->diffForHumans(),
+            'created_at' => $this->created_at?->diffForHumans(),
+            'updated_at' => $this->updated_at?->diffForHumans(),
         ];
     }
 
@@ -94,33 +94,33 @@ class ProductVariantResourceEn extends JsonResource
         $finalImage = $thumbUrls[0] ?? $primaryImage;
 
         return [
-            'id'                      => $this->id,
-            'code'                    => $this->code,
-            'name'                    => $productVariantMain->name_en ?? null,
-            'product_id'              => $this->product_id,
-            'product_name'            => null,
-            'qty'                     => $this->qty,
-            'is_active'               => $this->is_active,
-            'slug'                    => null,
-            'slug_other'              => null,
-            'price'                   => 0,
-            'price_discount'          => null,
-            'discount'                => 0,
-            'percent'                 => 0,
-            'category_id'             => null,
-            'options'                 => $this->options,
-            'option_all'              => $this->option_all,
-            'option_group'            => $this->option_group,
+            'id' => $this->id,
+            'code' => $this->code,
+            'name' => $productVariantMain->name_en ?? null,
+            'product_id' => $this->product_id,
+            'product_name' => null,
+            'qty' => $this->qty,
+            'is_active' => $this->is_active,
+            'slug' => null,
+            'slug_other' => null,
+            'price' => 0,
+            'price_discount' => null,
+            'discount' => 0,
+            'percent' => 0,
+            'category_id' => null,
+            'options' => $this->options,
+            'option_all' => $this->option_all,
+            'option_group' => $this->option_group,
             'product_variant_main_id' => $productVariantMain->id ?? null,
-            'image_url'               => $finalImage,
-            'image'                   => $finalImage,
-            'thumb_image'             => $thumbUrls,
-            'out_of_stock'            => true, // Always out of stock if no product
-            'meta_title'              => $this->meta_title_en ?? $this->meta_title,
-            'meta_description'        => $this->meta_description_en ?? $this->meta_description,
-            'meta_key'                => $this->meta_key_en ?? $this->meta_key,
-            'created_at'              => $this->created_at?->diffForHumans(),
-            'updated_at'              => $this->updated_at?->diffForHumans(),
+            'image_url' => $finalImage,
+            'image' => $finalImage,
+            'thumb_image' => $thumbUrls,
+            'out_of_stock' => true, // Always out of stock if no product
+            'meta_title' => $this->meta_title_en ?? $this->meta_title,
+            'meta_description' => $this->meta_description_en ?? $this->meta_description,
+            'meta_key' => $this->meta_key_en ?? $this->meta_key,
+            'created_at' => $this->created_at?->diffForHumans(),
+            'updated_at' => $this->updated_at?->diffForHumans(),
         ];
     }
 
@@ -143,7 +143,7 @@ class ProductVariantResourceEn extends JsonResource
      */
     private function calculateDiscountPercent(float $price, float $discount): int
     {
-        return $price <= 0 ? 0 : (int)(round($discount / $price, 2) * 100);
+        return $price <= 0 ? 0 : (int) (round($discount / $price, 2) * 100);
     }
 
     /**
@@ -158,28 +158,28 @@ class ProductVariantResourceEn extends JsonResource
     {
         $thumb = [];
         $data = [
-            'id'                      => $this->id,
-            'code'                    => $this->code,
-            'name'                    => optional($this->productVariantMain)->name_en_en ?? optional($this->product)->name_en_en ?? optional($this->product)->name_en,
-            'product_id'              => $this->product_id,
-            'product_name'            => optional($this->product)->name_en_en ?? optional($this->product)->name_en,
-            'slug'                    => object_get($this, 'product.slug_en'),
-            'slug_other'              => object_get($this, 'product.slug'),
+            'id' => $this->id,
+            'code' => $this->code,
+            'name' => optional($this->productVariantMain)->name_en_en ?? optional($this->product)->name_en_en ?? optional($this->product)->name_en,
+            'product_id' => $this->product_id,
+            'product_name' => optional($this->product)->name_en_en ?? optional($this->product)->name_en,
+            'slug' => object_get($this, 'product.slug_en'),
+            'slug_other' => object_get($this, 'product.slug'),
             //            'description'             => $this->description,
-            'price'                   => $this->price_en,
-            'category_id'             => object_get($this, 'product.category.id'),
-            'qty'                     => $this->qty,
-            'is_active'               => $this->is_active,
-            'price_discount'          => $this->price_discount_en,
-            'discount'                => $this->discount_en,
-            'percent'                 => $this->price_en <= 0 ? 0 : (int)(round($this->discount_en / $this->price_en, 2) * 100),
-            'options'                 => $this->options,
-            'option_all'              => $this->option_all,
-            'option_group'            => $this->option_group,
+            'price' => $this->price_en,
+            'category_id' => object_get($this, 'product.category.id'),
+            'qty' => $this->qty,
+            'is_active' => $this->is_active,
+            'price_discount' => $this->price_discount_en,
+            'discount' => $this->discount_en,
+            'percent' => $this->price_en <= 0 ? 0 : (int) (round($this->discount_en / $this->price_en, 2) * 100),
+            'options' => $this->options,
+            'option_all' => $this->option_all,
+            'option_group' => $this->option_group,
             'product_variant_main_id' => object_get($this, 'productVariantMain.id'),
-            'meta_title'              => $this->meta_title_en ?? $this->meta_title,
-            'meta_description'        => $this->meta_description_en ?? $this->meta_description,
-            'meta_key'                => $this->meta_key_en ?? $this->meta_key,
+            'meta_title' => $this->meta_title_en ?? $this->meta_title,
+            'meta_description' => $this->meta_description_en ?? $this->meta_description,
+            'meta_key' => $this->meta_key_en ?? $this->meta_key,
         ];
 
         $image = null;
@@ -188,16 +188,16 @@ class ProductVariantResourceEn extends JsonResource
                 $thumb[] = $item->getFullUrl();
             }
             $image = $this->productVariantMain->getFirstMediaUrl();
-//            $data['image'] = $this->productVariantMain->getFirstMediaUrl();
+            //            $data['image'] = $this->productVariantMain->getFirstMediaUrl();
         } else {
             $image = $this->product->getFirstMediaUrl();
-//            $data['image'] = $this->product->getFirstMediaUrl();
+            //            $data['image'] = $this->product->getFirstMediaUrl();
             foreach ($this->product->getMedia("thumb") as $item) {
                 $thumb[] = $item->getFullUrl();
             }
         }
 
-//        if (empty($thumb)) {
+        //        if (empty($thumb)) {
 //            foreach ($this->product->getMedia("thumb") as $item) {
 //                $thumb[] = $item->getFullUrl();
 //            }

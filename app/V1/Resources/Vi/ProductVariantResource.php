@@ -16,7 +16,7 @@ class ProductVariantResource extends JsonResource
     {
         // Cache frequently accessed objects
         $product = $this->product;
-        $productVariantMain = $this->productVariantMain;
+        $productVariantMain = optional($this->productVariantMain);
 
         // Handle null product case
         if (!$product) {
@@ -72,9 +72,9 @@ class ProductVariantResource extends JsonResource
             'out_of_stock' => $this->isOutOfStock($thumbUrls, $finalImage),
 
             // SEO
-            'meta_title' => $this->meta_title,
-            'meta_description' => $this->meta_description,
-            'meta_key' => $this->meta_key,
+            'meta_title' => $productVariantMain->meta_title ?? $this->meta_title,
+            'meta_description' => $productVariantMain->meta_description ?? $this->meta_description,
+            'meta_key' => $productVariantMain->meta_key ?? $this->meta_key,
 
             // Timestamps
             'created_at' => $this->created_at?->diffForHumans(),
@@ -142,7 +142,7 @@ class ProductVariantResource extends JsonResource
      */
     private function calculateDiscountPercent(float $price, float $discount): int
     {
-        return $price <= 0 ? 0 : (int)(round($discount / $price, 2) * 100);
+        return $price <= 0 ? 0 : (int) (round($discount / $price, 2) * 100);
     }
 
     /**
