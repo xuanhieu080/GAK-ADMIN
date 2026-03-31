@@ -67,6 +67,8 @@ class ProductDetailResourceEn extends JsonResource
             $thumb[] = $m->getFullUrl();
         }
 
+        $variantItem = optional($this->variantItem);
+
         $data = [
             'id' => $this->id,
             'code' => $this->code,
@@ -97,9 +99,9 @@ class ProductDetailResourceEn extends JsonResource
             'qty_sold' => $this->qty_sold,
             'priority' => $this->priority,
 
-            'meta_title' => $this->meta_title_en ?? $this->meta_title,
-            'meta_description' => $this->meta_description_en ?? $this->meta_description,
-            'meta_key' => $this->meta_key_en ?? $this->meta_key,
+            'meta_title' => $variantItem->meta_title_en ?? $this->meta_title_en ?? $this->meta_title,
+            'meta_description' => $variantItem->meta_description_en ?? $this->meta_description_en ?? $this->meta_description,
+            'meta_key' => $variantItem->meta_key_en ?? $this->meta_key_en ?? $this->meta_key,
 
             'video_link' => $this->video_link,
 

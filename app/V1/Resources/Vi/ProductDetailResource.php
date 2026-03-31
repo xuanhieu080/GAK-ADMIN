@@ -67,6 +67,8 @@ class ProductDetailResource extends JsonResource
         // --- TOP REVIEW (vì eager load reviews sort desc rate) ---
         $topReview = $this->reviews->first();
 
+        $variantItem = optional($this->variantItem);
+
         $data = [
             'id' => $this->id,
             'code' => $this->code,
@@ -93,9 +95,11 @@ class ProductDetailResource extends JsonResource
             'is_active' => $this->is_active,
             'qty_sold' => $this->qty_sold,
             'priority' => $this->priority,
-            'meta_title' => $this->meta_title,
-            'meta_description' => $this->meta_description,
-            'meta_key' => $this->meta_key,
+
+            'meta_title' => $variantItem->meta_title ?? $this->meta_title,
+            'meta_description' => $variantItem->meta_description ?? $this->meta_description,
+            'meta_key' => $variantItem->meta_key ?? $this->meta_key,
+
             'video_link' => $this->video_link,
             'price_discount' => $this->price_discount,
             'discount' => $this->discount,
