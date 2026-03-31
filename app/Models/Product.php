@@ -128,6 +128,6 @@ class Product extends Model implements HasMedia
 
     public function variantItem()
     {
-        return $this->variantMainDetail();
+        return $this->hasOne(ProductVariantMain::class, 'product_id', 'id');
     }
 }
