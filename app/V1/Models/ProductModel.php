@@ -236,84 +236,41 @@ class ProductModel extends AbstractModel
         if (!empty($input['lang']) && $input['lang'] == 'en') {
             $categories = Category::with([
                 'variants' => function ($query) {
-                    $query->whereIn('product_variants.code', [
-                        'F56YtbAEmYc7Wkp2',
-                        'iWpp9vK4V6EQAh2T',
-                        'AFL0P0UrtxOMQSRN',
-                        'OUtwzd8iobpOZq93',
-
-                        'hHC7X2NI6Y0e698p',
-                        '4dA6r88gKMAdLuMt',
-                        'js8YrUeeJtAfjYCJ',
-                        'oK43C3YcLTwe8Snc',
-
-                        'QEQpWwpfwAo1iyIq',
-                        'oCavhwBOC1RilkVh',
-                        'ORULu95P51kiWwGB',
-                        '5OclkuKf6gpuG9Y8',
-
-                        '1s9fzozMzvgpePsn',
-                        'NO2tv5wHtWeDJpir',
-                        '4kr8c560Q2tEB3Ie',
-                        'jM1Fme2PzC7OA50x',
-
-                        'bqCsv4kf4G4mIoNJ',
-                        'ZQ5H0zoh8bbqiTUl',
-                        'kd3WD1kFoRJrpkxg',
-                        'FCvTzECvyPxsRrJN',
-                    ]);
+//                    $query->whereIn('product_variants.code', [
+//                        'F56YtbAEmYc7Wkp2',
+//                        'iWpp9vK4V6EQAh2T',
+//                        'AFL0P0UrtxOMQSRN',
+//                        'OUtwzd8iobpOZq93',
+//
+//                        'hHC7X2NI6Y0e698p',
+//                        '4dA6r88gKMAdLuMt',
+//                        'js8YrUeeJtAfjYCJ',
+//                        'oK43C3YcLTwe8Snc',
+//
+//                        'QEQpWwpfwAo1iyIq',
+//                        'oCavhwBOC1RilkVh',
+//                        'ORULu95P51kiWwGB',
+//                        '5OclkuKf6gpuG9Y8',
+//
+//                        '1s9fzozMzvgpePsn',
+//                        'NO2tv5wHtWeDJpir',
+//                        '4kr8c560Q2tEB3Ie',
+//                        'jM1Fme2PzC7OA50x',
+//
+//                        'bqCsv4kf4G4mIoNJ',
+//                        'ZQ5H0zoh8bbqiTUl',
+//                        'kd3WD1kFoRJrpkxg',
+//                        'FCvTzECvyPxsRrJN',
+//                    ]);
                 }
             ])
                 ->where('is_active', 1)
                 ->whereNotNull('slug_en')
-                ->whereIn('slug', [
-                    'ao-phan-quang-thun-2-ben',
-                    'ao-phan-quang-ha-noi',
-                    'ao-phan-quang-kieu-3m',
-                    'ao-phan-quang-palize',
-                    'dong-phuc-cong-nhan',
-                ])
                 ->get();
             Cache::put($cacheKeyEn, CategorySearchAllResourceEn::collection($categories), $seconds);
         } else {
-            $categories = Category::with([
-                'variants' => function ($query) {
-                    $query->whereIn('product_variants.code', [
-                        'F56YtbAEmYc7Wkp2',
-                        'iWpp9vK4V6EQAh2T',
-                        'AFL0P0UrtxOMQSRN',
-                        'OUtwzd8iobpOZq93',
-
-                        'hHC7X2NI6Y0e698p',
-                        '4dA6r88gKMAdLuMt',
-                        'js8YrUeeJtAfjYCJ',
-                        'oK43C3YcLTwe8Snc',
-
-                        'QEQpWwpfwAo1iyIq',
-                        'oCavhwBOC1RilkVh',
-                        'ORULu95P51kiWwGB',
-                        '5OclkuKf6gpuG9Y8',
-
-                        '1s9fzozMzvgpePsn',
-                        'NO2tv5wHtWeDJpir',
-                        '4kr8c560Q2tEB3Ie',
-                        'jM1Fme2PzC7OA50x',
-
-                        'bqCsv4kf4G4mIoNJ',
-                        'ZQ5H0zoh8bbqiTUl',
-                        'kd3WD1kFoRJrpkxg',
-                        'FCvTzECvyPxsRrJN',
-                    ]);
-                }
-            ])
+            $categories = Category::with(['variants'])
                 ->where('is_active', 1)
-                ->whereIn('slug', [
-                    'ao-phan-quang-thun-2-ben',
-                    'ao-phan-quang-ha-noi',
-                    'ao-phan-quang-kieu-3m',
-                    'ao-phan-quang-palize',
-                    'dong-phuc-cong-nhan',
-                ])
                 ->get();
             Cache::put($cacheKey, CategorySearchAllResource::collection($categories), $seconds);
         }
@@ -492,7 +449,7 @@ class ProductModel extends AbstractModel
             'category:id,name,slug,name_en,slug_en,_lft,_rgt,parent_id',
             'category.ancestors:id,name,slug,name_en,slug_en,_lft,_rgt,parent_id',
             'variants' => function ($query) {
-                $query->where('qty', '>', 0);
+//                $query->where('qty', '>', 0);
             },
             'reviews' => function ($query) {
                 $query->orderByDesc('rate')->first();
@@ -630,6 +587,5 @@ class ProductModel extends AbstractModel
         $result = $this->search($input, ['attributeVariants'], $limit);
 
         return $this->formatPaginatedResponse($resourceClass, $result);
-        ;
     }
 }

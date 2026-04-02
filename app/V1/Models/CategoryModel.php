@@ -194,32 +194,32 @@ class CategoryModel extends AbstractModel
         }
 
         $categories = Category::with(['variants' => function ($query) {
-            $query->whereIn('product_variants.code', [
-                'F56YtbAEmYc7Wkp2',
-                'iWpp9vK4V6EQAh2T',
-                'AFL0P0UrtxOMQSRN',
-                'OUtwzd8iobpOZq93',
-
-                'hHC7X2NI6Y0e698p',
-                '4dA6r88gKMAdLuMt',
-                'js8YrUeeJtAfjYCJ',
-                'oK43C3YcLTwe8Snc',
-
-                'QEQpWwpfwAo1iyIq',
-                'oCavhwBOC1RilkVh',
-                'ORULu95P51kiWwGB',
-                '5OclkuKf6gpuG9Y8',
-
-                '1s9fzozMzvgpePsn',
-                'NO2tv5wHtWeDJpir',
-                '4kr8c560Q2tEB3Ie',
-                'jM1Fme2PzC7OA50x',
-
-                'bqCsv4kf4G4mIoNJ',
-                'ZQ5H0zoh8bbqiTUl',
-                'kd3WD1kFoRJrpkxg',
-                'FCvTzECvyPxsRrJN',
-            ]);
+//            $query->whereIn('product_variants.code', [
+//                'F56YtbAEmYc7Wkp2',
+//                'iWpp9vK4V6EQAh2T',
+//                'AFL0P0UrtxOMQSRN',
+//                'OUtwzd8iobpOZq93',
+//
+//                'hHC7X2NI6Y0e698p',
+//                '4dA6r88gKMAdLuMt',
+//                'js8YrUeeJtAfjYCJ',
+//                'oK43C3YcLTwe8Snc',
+//
+//                'QEQpWwpfwAo1iyIq',
+//                'oCavhwBOC1RilkVh',
+//                'ORULu95P51kiWwGB',
+//                '5OclkuKf6gpuG9Y8',
+//
+//                '1s9fzozMzvgpePsn',
+//                'NO2tv5wHtWeDJpir',
+//                '4kr8c560Q2tEB3Ie',
+//                'jM1Fme2PzC7OA50x',
+//
+//                'bqCsv4kf4G4mIoNJ',
+//                'ZQ5H0zoh8bbqiTUl',
+//                'kd3WD1kFoRJrpkxg',
+//                'FCvTzECvyPxsRrJN',
+//            ]);
         }])
 //            ->whereHas('variantMains')
             ->where('is_active', 1)
