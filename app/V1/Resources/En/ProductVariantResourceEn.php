@@ -133,7 +133,13 @@ class ProductVariantResourceEn extends JsonResource
             return [];
         }
 
-        return $imageSource->getMedia('thumb')
+        $media = $imageSource->getMedia('thumb');
+
+        if (!$media) {
+            return [];
+        }
+
+        return $media
             ->map(fn($item) => $item->getFullUrl())
             ->toArray();
     }
