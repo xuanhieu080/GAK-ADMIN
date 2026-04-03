@@ -120,15 +120,17 @@ class ProductVariantMainResourceEn extends JsonResource
     private function getThumbUrls(): array
     {
         // Try to get thumbnails from current model first
-        $thumbUrls = $this->getMedia('thumb')
-            ->map(fn($item) => $item->getFullUrl())
-            ->toArray();
+        $media = $this->getMedia('thumb');
+        $thumbUrls = $media
+            ? $media->map(fn($item) => $item->getFullUrl())->toArray()
+            : [];
 
         // Fallback to product thumbnails if empty
         if (empty($thumbUrls) && $this->product) {
-            $thumbUrls = $this->product->getMedia('thumb')
-                ->map(fn($item) => $item->getFullUrl())
-                ->toArray();
+            $productMedia = $this->product->getMedia('thumb');
+            $thumbUrls = $productMedia
+                ? $productMedia->map(fn($item) => $item->getFullUrl())->toArray()
+                : [];
         }
 
         return $thumbUrls;
