@@ -41,7 +41,7 @@ class UpdateRequest extends BaseRequest
             'price_en'               => 'nullable|numeric|min:0|max:999999999999',
             'qty'                 => 'nullable|numeric|min:0|max:10000000',
             'priority'            => 'required|numeric|min:0|max:1000',
-            'meta_description'    => 'required|max:400',
+            'meta_description'    => 'nullable|max:400',
             'meta_description_en' => 'nullable|max:400',
             'meta_title'          => 'required|max:255',
             'meta_title_en'       => 'nullable|max:255',
@@ -63,7 +63,7 @@ class UpdateRequest extends BaseRequest
                 'regex:/^[a-z0-9-]+$/',
                 Rule::unique('products', 'slug_en')->ignore($this->route('product')->id)
             ],
-            'meta_key'            => 'required|max:255',
+            'meta_key'            => 'nullable|max:255',
             'meta_key_en'         => 'nullable|max:255',
             'video_link'          => 'nullable|url|max:350',
             'discount'            => [

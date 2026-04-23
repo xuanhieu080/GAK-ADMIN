@@ -53,7 +53,7 @@ class UpdateRequest extends BaseRequest
                 'regex:/^[a-z0-9-]+$/',
                 Rule::unique('posts', 'slug_en')->ignore($this->route('post')->id)
             ],
-            'meta_key'            => 'required|max:255',
+            'meta_key'            => 'nullable|max:255',
             'meta_key_en'         => 'nullable|max:255',
         ];
     }

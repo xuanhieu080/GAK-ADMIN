@@ -44,7 +44,7 @@ class UpdateVariantRequest extends BaseRequest
             'details.*.discount'         => 'nullable|max:1000000000000|min:0|numeric',
             'details.*.discount_en'      => 'nullable|max:1000000000000|min:0|numeric',
             //            'priority'           => 'required|numeric|min:0|max:1000',
-            'details.*.meta_description' => 'required|max:255',
+            'details.*.meta_description' => 'nullable|max:255',
             'details.*.meta_title'       => 'required|max:255',
             //            'slug'               => [
             //                'required',
@@ -53,7 +53,7 @@ class UpdateVariantRequest extends BaseRequest
             //                'regex:/^[a-z0-9-]+$/',
             //                Rule::unique('products', 'slug')->ignore($this->route('product')->id)
             //            ],
-            'details.*.meta_key'         => 'required|max:255',
+            'details.*.meta_key'         => 'nullable|max:255',
             'details.*.is_hot'           => 'nullable|in:true,false,1,0',
             'details.*.params'           => 'required|string|max:255',
 

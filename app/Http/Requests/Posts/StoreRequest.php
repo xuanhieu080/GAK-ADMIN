@@ -23,7 +23,7 @@ class StoreRequest extends BaseRequest
             'view'                => 'required|numeric|min:0|max:99999999',
             'content'             => 'required|string',
             'content_en'          => 'nullable|string',
-            'meta_description'    => 'required|max:400',
+            'meta_description'    => 'nullable|max:400',
             'meta_description_en' => 'nullable|max:400',
             'meta_title'          => 'required|max:255',
             'meta_title_en'       => 'nullable|max:255',
