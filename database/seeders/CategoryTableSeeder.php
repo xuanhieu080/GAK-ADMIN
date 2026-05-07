@@ -36,6 +36,7 @@ class CategoryTableSeeder extends Seeder
 
             $slug = Str::slug($nameVi);
             $slugEn = Str::slug($nameEn);
+            $code = strtoupper($slugEn);
 
             // Tìm category hiện có theo tên
             $category = Category::where('name', $nameVi)->first();
@@ -43,6 +44,7 @@ class CategoryTableSeeder extends Seeder
             $data = [
                 'name' => $nameVi,
                 'name_en' => $nameEn,
+                'code' => $code,
                 'slug' => $category ? $category->slug : $slug,
                 'slug_en' => $category ? $category->slug_en : $slugEn,
                 'is_active' => true,
