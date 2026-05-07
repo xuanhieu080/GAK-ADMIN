@@ -56,8 +56,16 @@ class CategoryTableSeeder extends Seeder
                 'slug' => $slug,
                 'slug_en' => $slugEn,
                 'is_active' => true,
-                'show_header' => true,
-                'show_dashboard' => true,
+                'show_header' => false,
+                'show_dashboard' => false,
+                'meta_title' => $nameVi,
+                'meta_title_en' => $nameEn,
+                'meta_description' => $nameVi,
+                'meta_description_en' => $nameEn,
+                'meta_key' => $nameVi,
+                'meta_key_en' => $nameEn,
+                'content_seo' => $nameVi,
+                'content_seo_en' => $nameEn,
             ];
 
             if ($isBold) {
