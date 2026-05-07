@@ -37,24 +37,14 @@ class CategoryTableSeeder extends Seeder
             $slug = Str::slug($nameVi);
             $slugEn = Str::slug($nameEn);
 
-            // Xử lý trùng slug bằng cách thêm hậu tố số nếu cần
-            $originalSlug = $slug;
-            $count = 1;
-            while (Category::where('slug', $slug)->exists()) {
-                $slug = $originalSlug . '-' . $count++;
-            }
-
-            $originalSlugEn = $slugEn;
-            $countEn = 1;
-            while (Category::where('slug_en', $slugEn)->exists()) {
-                $slugEn = $originalSlugEn . '-' . $countEn++;
-            }
+            // Tìm category hiện có theo tên
+            $category = Category::where('name', $nameVi)->first();
 
             $data = [
                 'name' => $nameVi,
                 'name_en' => $nameEn,
-                'slug' => $slug,
-                'slug_en' => $slugEn,
+                'slug' => $category ? $category->slug : $slug,
+                'slug_en' => $category ? $category->slug_en : $slugEn,
                 'is_active' => true,
                 'show_header' => false,
                 'show_dashboard' => false,
@@ -69,16 +59,28 @@ class CategoryTableSeeder extends Seeder
             ];
 
             if ($isBold) {
-                // Tạo category cha
-                $parentCategory = Category::create($data);
-                $this->command->info("Đã tạo danh mục cha: " . $nameVi);
+                // Tạo hoặc cập nhật category cha
+                if ($category) {
+                    $category->update($data);
+                    $parentCategory = $category;
+                    $this->command->info("Đã cập nhật danh mục cha: " . $nameVi);
+                } else {
+                    $parentCategory = Category::create($data);
+                    $this->command->info("Đã tạo danh mục cha: " . $nameVi);
+                }
             } else {
-                // Tạo category con
+                // Tạo hoặc cập nhật category con
                 if ($parentCategory) {
                     $data['parent_id'] = $parentCategory->id;
                 }
-                Category::create($data);
-                $this->command->info("  - Đã tạo danh mục con: " . $nameVi);
+
+                if ($category) {
+                    $category->update($data);
+                    $this->command->info("  - Đã cập nhật danh mục con: " . $nameVi);
+                } else {
+                    Category::create($data);
+                    $this->command->info("  - Đã tạo danh mục con: " . $nameVi);
+                }
             }
         }
 
