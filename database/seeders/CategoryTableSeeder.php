@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Category;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
-use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class CategoryTableSeeder extends Seeder
 {
@@ -14,33 +13,26 @@ class CategoryTableSeeder extends Seeder
      */
     public function run(): void
     {
-        $filePath = public_path('Danh mục.xlsx');
-        if (!file_exists($filePath)) {
-            $this->command->error("File không tồn tại: {$filePath}");
+        $jsonPath = public_path('categories_data.json');
+        if (!file_exists($jsonPath)) {
+            $this->command->error("File không tồn tại: {$jsonPath}");
             return;
         }
 
-        $spreadsheet = IOFactory::load($filePath);
-        $worksheet = $spreadsheet->getActiveSheet();
-        $rows = $worksheet->toArray(null, true, true, true);
+        $dataJson = file_get_contents($jsonPath);
+        $rows = json_decode($dataJson, true);
 
         $parentCategory = null;
 
-        // Bỏ qua dòng tiêu đề (dòng 1)
-        foreach ($rows as $rowIndex => $row) {
-            if ($rowIndex == 1) continue;
+        // Bỏ qua dòng tiêu đề (dòng 0 trong JSON)
+        foreach ($rows as $index => $row) {
+            if ($index == 0) continue;
 
-            $nameEn = trim($row['A'] ?? '');
-            $nameVi = trim($row['B'] ?? '');
+            $nameEn = trim($row[0] ?? '');
+            $nameVi = trim($row[1] ?? '');
+            $isBold = (bool)($row[2] ?? false);
 
             if (empty($nameEn) && empty($nameVi)) continue;
-
-            $isBold = false;
-            try {
-                $isBold = $worksheet->getStyle('A' . $rowIndex)->getFont()->getBold();
-            } catch (\Exception $e) {
-                // Ignore error if cannot get style
-            }
 
             $slug = Str::slug($nameVi);
             $slugEn = Str::slug($nameEn);
